@@ -49,6 +49,7 @@ class User:
         return f'{self.auth_method}.{self.ident}'
     @property
     def requests_remaining(self):
+        """Return the number of requests remaining for the user."""
         return self._requests_remaining
     
     @requests_remaining.setter
@@ -85,25 +86,67 @@ class User:
             bool: True if the users are not equal, False otherwise.
         """
         equal = self.__eq__(other)
-        if equal is NotImplemented:
-            return NotImplemented
         return not equal
 
 class BaseAuthenticator(ABC):
+    """
+    Base class for authenticators.
+    """
+
+    @abstractmethod
+    def __init__(self, *args: Any, **kwargs: Any):
+        """
+        Initialize the authenticator with any required arguments.
+        """
+        pass
+
     @abstractmethod
     def authenticate(self, *args: Any, **kwargs: Any) -> Union[tuple, None]:
+        """
+        Authenticate a user.
+
+        Args:
+            *args: Positional arguments for authentication.
+            **kwargs: Keyword arguments for authentication.
+
+        Returns:
+            tuple or None: A tuple containing the user's username, real name, and user group if authentication is successful, otherwise None.
+        """
         pass
 
     @abstractmethod
     def fetch_user(self, ident: str) -> Union[User, None]:
+        """
+        Fetch a user from the authenticator.
+
+        Args:
+            ident (str): The identifier of the user to fetch.
+
+        Returns:
+            User or None: The fetched user object or None if not found.
+        """
         pass
 
 class GithubAuthenticator(BaseAuthenticator):
+    """
+    This class handles authentication with GitHub OAuth.
+    """
+
     def __init__(self, client_id: str, client_secret: str):
         self.client_id = client_id
         self.client_secret = client_secret
 
     def authenticate(self, request_args: dict, oauth_state: str) -> Union[tuple, None]:
+        """
+        Authenticate a user with GitHub OAuth.
+
+        Args:
+            request_args (dict): The request arguments containing the authorization code and state.
+            oauth_state (str): The state value used to prevent CSRF attacks.
+
+        Returns:
+            tuple or None: A tuple containing the user's username, real name, and user group if authentication is successful, otherwise None.
+        """
         if request_args['state'] != oauth_state or 'code' not in request_args:
             return None
 
@@ -141,6 +184,15 @@ class GithubAuthenticator(BaseAuthenticator):
         return json_response['login'], json_response['name'], 'b\'guest\''
 
     def fetch_user(self, username: str) -> Union[User, None]:
+        """
+        Fetch a user from the GitHub API.
+
+        Args:
+            username (str): The username of the user to fetch.
+
+        Returns:
+            User or None: The fetched user object or None if the user is not found.
+        """
         user_info_url = f'https://api.github.com/users/{username}'
         response = requests.get(user_info_url)
         if response.status_code == 200:
@@ -150,6 +202,10 @@ class GithubAuthenticator(BaseAuthenticator):
         return None
 
 class UserManager:
+    """
+    Manages user operations including authentication, database interactions, and request tracking.
+    """
+
     def __init__(self, db_file_path: str, max_requests: int = 10):
         self.db_file_path = db_file_path
         self.authenticators: Dict[str, BaseAuthenticator] = {}
@@ -157,11 +213,30 @@ class UserManager:
         self._create_tables()
 
     def register_authenticator(self, name: str, authenticator: BaseAuthenticator):
+        """
+        Register a new authentication method.
+
+        Args:
+            name (str): The name of the authentication method.
+            authenticator (BaseAuthenticator): The authenticator object.
+
+        Raises:
+            ValueError: If the provided name is invalid or the authenticator is already registered.
+        """
         self.authenticators[name] = authenticator
         self._create_table(name)
 
     @property
     def db_connection(self) -> sqlite3.Connection:
+        """
+        Open a connection to the SQLite database.
+
+        Returns:
+            sqlite3.Connection: The database connection.
+
+        Raises:
+            sqlite3.OperationalError: If the database cannot be opened.
+        """
         try:
             return sqlite3.connect(self.db_file_path)
         except sqlite3.OperationalError as e:
@@ -169,7 +244,7 @@ class UserManager:
             return sqlite3.connect(':memory:')
 
     def _create_tables(self):
-        for auth_method in self.authenticators.keys():
+        for auth_method in self.authenticators:
             self._create_table(auth_method)
 
     def _create_table(self, auth_method: str):
@@ -191,6 +266,19 @@ class UserManager:
             ''')
 
     def get_user(self, auth_method: str, ident: str) -> Union[User, None]:
+        """
+        Retrieve a user from the database.
+
+        Args:
+            auth_method (str): The authentication method used.
+            ident (str): The unique identifier of the user.
+
+        Returns:
+            User: The user object, or None if not found.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
         if not auth_method.isalnum():
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
@@ -206,6 +294,20 @@ class UserManager:
         return None
 
     def authenticate(self, auth_method: str, *args: Any, **kwargs: Any) -> Union[User, None]:
+        """
+        Authenticate a user using the specified authentication method.
+
+        Args:
+            auth_method (str): The authentication method to use.
+            *args: Positional arguments for the authentication method.
+            **kwargs: Keyword arguments for the authentication method.
+
+        Returns:
+            User: The authenticated user object, or None if authentication fails.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
         authenticator = self.authenticators.get(auth_method)
         if not authenticator:
             raise ValueError(f"Unsupported authentication method: {auth_method}")
@@ -217,7 +319,22 @@ class UserManager:
         return None
 
     def _create_or_update_user(self, auth_method: str, user_id: str, display_name: str, user_group: str) -> User:
-        if auth_method not in self.authenticators.keys():
+        """
+        Create or update a user in the database.
+
+        Args:
+            auth_method (str): The authentication method used.
+            user_id (str): The unique identifier of the user.
+            display_name (str): The display name of the user.
+            user_group (str): The group the user belongs to.
+
+        Returns:
+            User: The user object.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        if auth_method not in self.authenticators:
             raise ValueError(f"Unsupported authentication method: {auth_method}")
         with self.db_connection as db:
             table_name = f"{auth_method}Users"
@@ -237,7 +354,18 @@ class UserManager:
         return user
 
     def update_admin_status(self, auth_method: str, ident: str, is_admin: bool):
-        if auth_method not in self.authenticators.keys():
+        """
+        Update the admin status of a user.
+
+        Args:
+            auth_method (str): The authentication method used.
+            ident (str): The identifier of the user.
+            is_admin (bool): Whether the user should be an admin or not.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"
@@ -246,7 +374,18 @@ class UserManager:
             db.commit()
 
     def update_banned_status(self, auth_method: str, ident: str, is_banned: bool):
-        if auth_method not in self.authenticators.keys():
+        """
+        Update the banned status of a user.
+
+        Args:
+            auth_method (str): The authentication method used.
+            ident (str): The identifier of the user.
+            is_banned (bool): Whether the user should be banned or not.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"
@@ -255,8 +394,14 @@ class UserManager:
             db.commit()
 
     def refresh_requests(self, inc_by: int = 1):
+        """
+        Refresh the number of requests for all users by the given amount.
+
+        Args:
+            inc_by (int, optional): The amount to increase the requests by. Defaults to 1.
+        """
         with self.db_connection as db:
-            for auth_method in self.authenticators.keys():
+            for auth_method in self.authenticators:
                 table_name = f"{auth_method}Users"
                 db.execute(f'''
                     UPDATE "{table_name}"
@@ -265,7 +410,18 @@ class UserManager:
             db.commit()
 
     def decrease_requests(self, auth_method: str, user_id: str, dec_by: int = 1):
-        for auth_method in self.authenticators.keys():
+        """
+        Decrease the number of requests remaining for a user.
+
+        Args:
+            auth_method (str): The authentication method used.
+            user_id (str): The identifier of the user.
+            dec_by (int, optional): The amount to decrease the requests by. Defaults to 1.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        for auth_method in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"
@@ -278,10 +434,43 @@ class UserManager:
             db.commit()
 
     def increase_requests(self, auth_method: str, user_id: str, inc_by: int = 1):
-        self.decrease_requests(auth_method, user_id, -inc_by)
+        """
+        Increase the number of requests remaining for a user.
+
+        Args:
+            auth_method (str): The authentication method used.
+            user_id (str): The identifier of the user.
+            inc_by (int, optional): The amount to increase the requests by. Defaults to 1.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        for auth_method in self.authenticators:
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
+        with self.db_connection as db:
+            db.execute(f'''
+                UPDATE "{table_name}"
+                SET requests_left = MIN(?, MAX(0, requests_left + ?))
+                WHERE user_id = ?
+            ''', (self.max_requests, inc_by, user_id))
 
     def get_requests_remaining(self, auth_method: str, user_id: str) -> Union[int, None]:
-        for auth_method in self.authenticators.keys():
+        """
+        Get the number of requests remaining for a user.
+
+        Args:
+            auth_method (str): The authentication method used.
+            user_id (str): The identifier of the user.
+
+        Returns:
+            Union[int, None]: The number of requests remaining, or None if the user is not found.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        for auth_method in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"
