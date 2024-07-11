@@ -1,16 +1,13 @@
 import sqlite3
-from typing import Union, Dict
-import os
-import ssl
-from ldap3 import Server, Connection, ALL, SUBTREE, Tls
-from ldap3.core.exceptions import LDAPException, LDAPAttributeError, LDAPBindError
+from typing import Union, Dict, Any
 import requests
+from abc import ABC, abstractmethod
+
 try:
     from flask import url_for
 except ImportError:
     def url_for(*args, **kwargs):
         raise NotImplementedError('Flask was not actually imported when this function was accessed.\nDid you follow the installation?')
-
 
 class User:
     """
@@ -92,28 +89,24 @@ class User:
             return NotImplemented
         return not equal
 
-class BaseAuthenticator:
-    def authenticate(self, *args, **kwargs):
-        raise NotImplementedError
+class BaseAuthenticator(ABC):
+    @abstractmethod
+    def authenticate(self, *args: Any, **kwargs: Any) -> Union[tuple, None]:
+        pass
 
-    def fetch_user(self, ident: str):
-        raise NotImplementedError
+    @abstractmethod
+    def fetch_user(self, ident: str) -> Union[User, None]:
+        pass
 
-class GithubAuthenticator:
-    def __init__(self, client_id, client_secret):
+class GithubAuthenticator(BaseAuthenticator):
+    def __init__(self, client_id: str, client_secret: str):
         self.client_id = client_id
         self.client_secret = client_secret
-    
+
     def authenticate(self, request_args: dict, oauth_state: str) -> Union[tuple, None]:
-        # make sure that the state parameter matches the one we created in the
-        # authorization request
-        if request_args['state'] != oauth_state:
+        if request_args['state'] != oauth_state or 'code' not in request_args:
             return None
 
-        # make sure that the authorization code is present
-        if 'code' not in request_args:
-            return None
-            
         token_url = 'https://github.com/login/oauth/access_token'
         user_info_url = 'https://api.github.com/user'
 
@@ -123,86 +116,85 @@ class GithubAuthenticator:
             'client_secret': self.client_secret,
             'code': request_args['code'],
             'grant_type': 'authorization_code',
-            'redirect_uri': url_for('github_auth_callback',
-                                    _external=True),
+            'redirect_uri': url_for('github_auth_callback', _external=True),
         }, headers={'Accept': 'application/json'})
+
         if response.status_code != 200:
-            print(f'A user failed to authenticate using the GitHub callback during auth code and access token exchange\n{response}\nStatus code: {response.status_code}\n{response.headers}\n{response.reason}\n{response.elapsed}\n{response.cookies}\n{response.encoding}', ' ERROR')
-            return None
-        oauth2_token = response.json().get('access_token')
-        if not oauth2_token:
-            print('A user failed to authenticate using the GitHub callback due to token mismatch', ' ERROR')
+            print(f'GitHub authentication failed during token exchange: {response.status_code}', 'ERROR')
             return None
 
-        # use the access token to get the user's information
+        oauth2_token = response.json().get('access_token')
+        if not oauth2_token:
+            print('GitHub authentication failed: No access token received', 'ERROR')
+            return None
+
         response = requests.get(user_info_url, headers={
             'Authorization': 'Bearer ' + oauth2_token,
             'Accept': 'application/json',
         })
+
         if response.status_code != 200:
-            print(f'A user failed to authenticate using the GitHub callback after attempting to use access token\n{response}\nStatus code: {response.status_code}\n{response.headers}\n{response.reason}\n{response.elapsed}\n{response.cookies}\n{response.encoding}', ' ERROR')
+            print(f'GitHub authentication failed when fetching user info: {response.status_code}', 'ERROR')
             return None
-            
+
         json_response = response.json()
         return json_response['login'], json_response['name'], 'b\'guest\''
-    
+
     def fetch_user(self, username: str) -> Union[User, None]:
         user_info_url = f'https://api.github.com/users/{username}'
         response = requests.get(user_info_url)
         if response.status_code == 200:
             json_response = response.json()
             return User(json_response['login'], realname=json_response.get('name', ''), usergroup='b\'guest\'', authmethod='github')
-        print(f'No github user "{username}" found', " WARNING")
+        print(f'No GitHub user "{username}" found', "WARNING")
         return None
 
-
 class UserManager:
-    def __init__(self, db_file_path: str, max_requests=10):
+    def __init__(self, db_file_path: str, max_requests: int = 10):
         self.db_file_path = db_file_path
         self.authenticators: Dict[str, BaseAuthenticator] = {}
         self.max_requests = max_requests
+        self._create_tables()
 
     def register_authenticator(self, name: str, authenticator: BaseAuthenticator):
         self.authenticators[name] = authenticator
+        self._create_table(name)
 
     @property
     def db_connection(self) -> sqlite3.Connection:
         try:
-            db = sqlite3.connect(self.db_file_path)
+            return sqlite3.connect(self.db_file_path)
         except sqlite3.OperationalError as e:
-            print(f'Unable to open sqlite db: {e}')
-            db = sqlite3.connect(':memory:')
-        return db
+            print(f'Unable to open sqlite db, using tempory storage: {e}')
+            return sqlite3.connect(':memory:')
 
     def _create_tables(self):
+        for auth_method in self.authenticators.keys():
+            self._create_table(auth_method)
+
+    def _create_table(self, auth_method: str):
+        if not auth_method.isalnum():
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
         with self.db_connection as db:
-            for auth_method in self.authenticators.keys():
-                # Validate the table name
-                if not auth_method.isalnum():
-                    raise ValueError(f"Invalid authenticator name: {auth_method}")
-                
-                table_name = f"{auth_method}Users"
-                
-                # Use parameterized query for table creation
-                db.execute('''
-                    CREATE TABLE IF NOT EXISTS "{}" (
-                        user_id TEXT PRIMARY KEY,
-                        blacklisted BOOL,
-                        admin BOOL,
-                        realname TEXT,
-                        usertype TEXT,
-                        requests_left INT,
-                        aka TEXT
-                    )
-                '''.format(table_name))
-            db.commit()
+            db.execute(f'''
+                CREATE TABLE IF NOT EXISTS "{table_name}" (
+                    user_id TEXT PRIMARY KEY,
+                    blacklisted BOOL,
+                    admin BOOL,
+                    realname TEXT,
+                    usertype TEXT,
+                    requests_left INT,
+                    aka TEXT
+                )
+            ''')
 
     def get_user(self, auth_method: str, ident: str) -> Union[User, None]:
         if not auth_method.isalnum():
             raise ValueError(f"Invalid authenticator name: {auth_method}")
-        
+
         table_name = f"{auth_method}Users"
-        
         with self.db_connection as db:
             cursor = db.execute(
                 f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}" WHERE user_id=?',
@@ -210,10 +202,10 @@ class UserManager:
             )
             row = cursor.fetchone()
             if row:
-                return User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5])
+                return User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method)
         return None
 
-    def authenticate(self, auth_method: str, *args, **kwargs) -> Union[User, None]:
+    def authenticate(self, auth_method: str, *args: Any, **kwargs: Any) -> Union[User, None]:
         authenticator = self.authenticators.get(auth_method)
         if not authenticator:
             raise ValueError(f"Unsupported authentication method: {auth_method}")
@@ -225,15 +217,18 @@ class UserManager:
         return None
 
     def _create_or_update_user(self, auth_method: str, user_id: str, display_name: str, user_group: str) -> User:
+        if auth_method not in self.authenticators.keys():
+            raise ValueError(f"Unsupported authentication method: {auth_method}")
         with self.db_connection as db:
-            cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM {auth_method}Users WHERE user_id=?', (user_id,))
+            table_name = f"{auth_method}Users"
+            cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}" WHERE user_id=?', (user_id,))
             row = cursor.fetchone()
 
             if row:
                 user = User(row[0], bool(row[1]), bool(row[2]), realname=row[3], requests_left=row[5], authmethod=auth_method)
             else:
                 db.execute(
-                    f'INSERT INTO {auth_method}Users (user_id, blacklisted, admin, realname, usertype, requests_left) VALUES (?, ?, ?, ?, ?, ?)',
+                    f'INSERT INTO "{table_name}" (user_id, blacklisted, admin, realname, usertype, requests_left) VALUES (?, ?, ?, ?, ?, ?)',
                     (str(user_id), False, False, str(display_name), str(user_group), int(self.max_requests))
                 )
                 db.commit()
@@ -241,5 +236,56 @@ class UserManager:
 
         return user
 
-    # Other methods (update_admin_status, update_banned_status, refresh_requests, etc.) 
-    # can be implemented similarly, using the auth_method to determine the correct table
+    def update_admin_status(self, auth_method: str, ident: str, is_admin: bool):
+        if auth_method not in self.authenticators.keys():
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
+        with self.db_connection as db:
+            db.execute(f'UPDATE "{table_name}" SET admin=? WHERE user_id=?', (is_admin, ident))
+            db.commit()
+
+    def update_banned_status(self, auth_method: str, ident: str, is_banned: bool):
+        if auth_method not in self.authenticators.keys():
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
+        with self.db_connection as db:
+            db.execute(f'UPDATE "{table_name}" SET blacklisted=? WHERE user_id=?', (is_banned, ident))
+            db.commit()
+
+    def refresh_requests(self, inc_by: int = 1):
+        with self.db_connection as db:
+            for auth_method in self.authenticators.keys():
+                table_name = f"{auth_method}Users"
+                db.execute(f'''
+                    UPDATE "{table_name}"
+                    SET requests_left = MIN(?, MAX(0, requests_left + ?))
+                ''', (self.max_requests, inc_by))
+            db.commit()
+
+    def decrease_requests(self, auth_method: str, user_id: str, dec_by: int = 1):
+        for auth_method in self.authenticators.keys():
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
+        with self.db_connection as db:
+            db.execute(f'''
+                UPDATE "{table_name}"
+                SET requests_left = MAX(0, requests_left - ?)
+                WHERE user_id = ?
+            ''', (dec_by, user_id))
+            db.commit()
+
+    def increase_requests(self, auth_method: str, user_id: str, inc_by: int = 1):
+        self.decrease_requests(auth_method, user_id, -inc_by)
+
+    def get_requests_remaining(self, auth_method: str, user_id: str) -> Union[int, None]:
+        for auth_method in self.authenticators.keys():
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
+        with self.db_connection as db:
+            cursor = db.execute(f'SELECT requests_left FROM "{table_name}" WHERE user_id = ?', (user_id,))
+            result = cursor.fetchone()
+            return result[0] if result else None
