@@ -1,0 +1,15 @@
+# Ignore virtual environment
+.venv*
+# Ignore config files
+config.yaml
+# Ignore IDE specific configuration
+.vscode
+# Ignore Python cache
+*__pycache__
+# Ignore built docs
+sphinx_docs/_build
+# Ignore auto generated docs
+sphinx_docs/autodoc/src
+sphinx_docs/autodoc/scripts
+# Ignore local logs and runtime data
+logs
