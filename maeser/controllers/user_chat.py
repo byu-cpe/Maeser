@@ -3,7 +3,7 @@ from flask import render_template
 from flask_login import current_user
 from typing import List
 
-def user_chat_controller(log_path: str, chat_branches: List[dict], max_requests: int, rate_limit_interval: int):
+def controller(log_path: str, chat_branches: List[dict], max_requests: int, rate_limit_interval: int):
     links = []
     conversations = get_file_list(log_path + '/chat_history')
     for conversation in conversations:

@@ -1,7 +1,7 @@
 from flask import request
 from flask_login import current_user
 
-def sess_handler_controller(session_handler):
+def controller(session_handler):
     """
     Handle session requests.
 

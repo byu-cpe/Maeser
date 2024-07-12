@@ -46,7 +46,7 @@ def get_test_file_template(content: dict, conversation_index: int, filename: str
         filename=filename
     )
 
-def display_test_controller(test_yaml_path: str, filename: str, conversation_index: str):
+def controller(test_yaml_path: str, filename: str, conversation_index: str):
     """
     Display the content of a specified test file.
 

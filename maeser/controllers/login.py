@@ -2,6 +2,9 @@ from flask import render_template, redirect, url_for, request, session
 from flask_login import login_user
 from urllib.parse import urljoin, urlparse
 
+def controller():
+    raise NotImplementedError('Please import specify the login controller you want ("login_controller", "github_authorize_controller", "github_auth_callback_controller")')
+
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))

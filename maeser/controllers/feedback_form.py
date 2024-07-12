@@ -1,6 +1,6 @@
 from flask import render_template
 
-def feedback_form_controller():
+def controller():
     """
     Display the feedback form.
 

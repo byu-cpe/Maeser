@@ -1,6 +1,6 @@
 from flask import render_template
 
-def train_controller():
+def controller():
     """
     Display the training form.
 

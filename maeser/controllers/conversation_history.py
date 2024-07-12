@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from common.render import get_response_html
 
-def conversation_history_controller(session_handler):
+def controller(session_handler):
     data = request.get_json()
 
     session = data.get('session')

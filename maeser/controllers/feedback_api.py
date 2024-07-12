@@ -1,6 +1,6 @@
 from flask import request
 
-def feedback_controller(session_handler):
+def controller(session_handler):
     """
     Handle feedback for messages.
 

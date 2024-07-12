@@ -3,7 +3,7 @@ from flask import request, render_template
 from common.file_info import get_file_list
 import yaml
 
-def chat_logs_controller(log_path: str, chat_branches: List[dict]):
+def controller(log_path: str, chat_branches: List[dict]):
     """
     Render the home page with log files and aggregate token and cost data.
 

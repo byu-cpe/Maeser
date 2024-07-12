@@ -51,7 +51,7 @@ def get_log_file_template(content: dict) -> str:
         messages=messages
     )
 
-def display_log_controller(chat_log_path: str, branch, filename):
+def controller(chat_log_path: str, branch, filename):
     """
     Display the content of a specified log file.
 
