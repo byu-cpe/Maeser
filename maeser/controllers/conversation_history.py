@@ -1,5 +1,7 @@
 from flask import jsonify, request
-from common.render import get_response_html
+
+from .common.render import get_response_html
+
 
 def controller(session_handler):
     data = request.get_json()

@@ -1,6 +1,6 @@
 from flask import request, abort
 from openai import RateLimitError
-from common.render import get_response_html
+from .common.render import get_response_html
 
 def controller(chat_session, chat_session_handler):
     """

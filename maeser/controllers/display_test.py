@@ -1,7 +1,8 @@
-from flask import render_template, abort
 import yaml
+from flask import abort, render_template
 
-from common.render import get_response_html
+from .common.render import get_response_html
+
 
 def get_test_file_template(content: dict, conversation_index: int, filename: str) -> str:
     """

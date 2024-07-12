@@ -1,7 +1,10 @@
-from common.file_info import get_file_list
+from typing import List
+
 from flask import render_template
 from flask_login import current_user
-from typing import List
+
+from .common.file_info import get_file_list
+
 
 def controller(log_path: str, chat_branches: List[dict], max_requests: int, rate_limit_interval: int):
     links = []

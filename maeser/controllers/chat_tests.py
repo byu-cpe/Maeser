@@ -1,5 +1,7 @@
 from flask import render_template, request
-from common.file_info import get_file_list
+
+from .common.file_info import get_file_list
+
 
 def tests_controller(chat_test_yaml_path: str):
     """
