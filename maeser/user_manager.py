@@ -3,12 +3,6 @@ from typing import Union, Dict, Any
 import requests
 from abc import ABC, abstractmethod
 
-try:
-    from flask import url_for
-except ImportError:
-    def url_for(*args, **kwargs):
-        raise NotImplementedError('Flask was not actually imported when this function was accessed.\nDid you follow the installation?')
-
 class User:
     """
     This provides default implementations for the methods that Flask-Login expects user objects to have.
@@ -132,9 +126,12 @@ class GithubAuthenticator(BaseAuthenticator):
     This class handles authentication with GitHub OAuth.
     """
 
-    def __init__(self, client_id: str, client_secret: str):
+    def __init__(self, client_id: str, client_secret: str, auth_callback_uri: str):
         self.client_id = client_id
         self.client_secret = client_secret
+        # Generally this should be set from your Flask app as this will differ between applications
+        # url_for('github_auth_callback', _external=True)
+        self.auth_callback_uri = auth_callback_uri
 
     def authenticate(self, request_args: dict, oauth_state: str) -> Union[tuple, None]:
         """
@@ -159,7 +156,7 @@ class GithubAuthenticator(BaseAuthenticator):
             'client_secret': self.client_secret,
             'code': request_args['code'],
             'grant_type': 'authorization_code',
-            'redirect_uri': url_for('github_auth_callback', _external=True),
+            'redirect_uri': self.auth_callback_uri
         }, headers={'Accept': 'application/json'})
 
         if response.status_code != 200:
