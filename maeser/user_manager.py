@@ -1,5 +1,7 @@
+import secrets
 import sqlite3
-from typing import Union, Dict, Any
+from typing import Tuple, Union, Dict, Any
+from urllib.parse import urlencode
 import requests
 from abc import ABC, abstractmethod
 
@@ -93,7 +95,11 @@ class BaseAuthenticator(ABC):
         Initialize the authenticator with any required arguments.
         """
         pass
-
+    
+    @abstractmethod
+    def __str__(self) -> str:
+        return 'BaseAuthenticator'
+    
     @abstractmethod
     def authenticate(self, *args: Any, **kwargs: Any) -> Union[tuple, None]:
         """
@@ -132,6 +138,9 @@ class GithubAuthenticator(BaseAuthenticator):
         # Generally this should be set from your Flask app as this will differ between applications
         # url_for('github_auth_callback', _external=True)
         self.auth_callback_uri = auth_callback_uri
+        
+    def __str__(self) -> str:
+        return 'GithubAuthenticator'
 
     def authenticate(self, request_args: dict, oauth_state: str) -> Union[tuple, None]:
         """
@@ -197,6 +206,26 @@ class GithubAuthenticator(BaseAuthenticator):
             return User(json_response['login'], realname=json_response.get('name', ''), usergroup='b\'guest\'', authmethod='github')
         print(f'No GitHub user "{username}" found', "WARNING")
         return None
+    
+    def get_auth_info(self) -> Tuple[str, str]:
+        authorize_url = 'https://github.com/login/oauth/authorize'
+        scopes = ['user:email']
+
+        # generate a random string for the state parameter
+        oauth_state = secrets.token_urlsafe(16)
+        
+        # create a query string with all the OAuth2 parameters
+        query_string = urlencode({
+            'client_id': self.client_id,
+            'redirect_uri': self.auth_callback_uri,
+            'response_type': 'code',
+            'scope': ' '.join(scopes),
+            'state': oauth_state,
+        })
+        
+        provider_url = authorize_url + '?' + query_string
+        
+        return oauth_state, provider_url
 
 class UserManager:
     """
