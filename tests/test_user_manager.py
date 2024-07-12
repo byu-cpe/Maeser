@@ -42,7 +42,7 @@ class TestUser(unittest.TestCase):
 class TestGithubAuthenticator(unittest.TestCase):
 
     def setUp(self):
-        self.auth = GithubAuthenticator('fake_client_id', 'fake_client_secret')
+        self.auth = GithubAuthenticator('fake_client_id', 'fake_client_secret', 'https://example.com/callback')
 
     @patch('requests.post')
     @patch('requests.get')
@@ -67,6 +67,20 @@ class TestGithubAuthenticator(unittest.TestCase):
         result = self.auth.authenticate({'code': 'fake_code', 'state': 'fake_state'}, 'fake_state')
         self.assertIsNone(result)
 
+    @patch('requests.get')
+    def test_fetch_user_success(self, mock_get):
+        mock_get.return_value = Mock(status_code=200, json=lambda: {'login': 'testuser', 'name': 'Test User'})
+        user = self.auth.fetch_user('testuser')
+        self.assertIsNotNone(user)
+        self.assertEqual(user.ident, 'testuser')
+        self.assertEqual(user.realname, 'Test User')
+
+    @patch('requests.get')
+    def test_fetch_user_fail(self, mock_get):
+        mock_get.return_value = Mock(status_code=404)
+        user = self.auth.fetch_user('unknownuser')
+        self.assertIsNone(user)
+
 
 class TestUserManager(unittest.TestCase):
 
@@ -82,7 +96,7 @@ class TestUserManager(unittest.TestCase):
     @patch('sqlite3.connect')
     def test_register_authenticator(self, mock_connect):
         mock_connect.return_value = MagicMock()
-        auth = GithubAuthenticator('id', 'secret')
+        auth = GithubAuthenticator('id', 'secret', 'https://example.com/callback')
         self.user_manager.register_authenticator('github', auth)
         self.assertIn('github', self.user_manager.authenticators)
 
@@ -100,7 +114,7 @@ class TestUserManager(unittest.TestCase):
     @patch('sqlite3.connect')
     def test_authenticate(self, mock_connect):
         mock_connect.return_value = MagicMock()
-        auth = GithubAuthenticator('id', 'secret')
+        auth = GithubAuthenticator('id', 'secret', 'https://example.com/callback')
         self.user_manager.register_authenticator('github', auth)
 
         with patch.object(auth, 'authenticate', return_value=('testuser', 'Test User', "b'guest'")):
