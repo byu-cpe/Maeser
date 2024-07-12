@@ -1,6 +1,5 @@
 from src.chat.graphs import get_graph
 from src.sys_logger import log
-from src.user_manager import User
 from datetime import datetime
 import os
 import yaml
