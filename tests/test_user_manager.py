@@ -101,37 +101,48 @@ class TestUserManager(unittest.TestCase):
         self.assertIn('github', self.user_manager.authenticators)
 
     @patch('sqlite3.connect')
-    def test_get_user(self, mock_connect):
+    @patch('maeser.user_manager.User')
+    def test_get_user(self, mock_user, mock_connect):
         mock_db = MagicMock()
         mock_connect.return_value = mock_db
         mock_cursor = MagicMock()
         mock_db.cursor.return_value = mock_cursor
         mock_cursor.execute.return_value = None
-        mock_cursor.fetchone.return_value = ('testuser', 0, 0, 'Test User', "b'guest'", 5)
+        mock_cursor.fetchone.return_value = ('testuser', 0, 0, 'Test User', b'guest', 5)
+
+        mock_user_instance = MagicMock()
+        mock_user_instance.ident = 'testuser'
+        mock_user_instance.realname = 'Test User'
+        mock_user.return_value = mock_user_instance
 
         user = self.user_manager.get_user('github', 'testuser')
         self.assertIsNotNone(user)
-        print(f'get_user:\n\tUser: {user}\n\tident: {user.ident}\n\tReal Name: {user.realname}')
         self.assertEqual(user.ident, 'testuser')
         self.assertEqual(user.realname, 'Test User')
 
     @patch('sqlite3.connect')
-    def test_authenticate(self, mock_connect):
+    @patch('maeser.user_manager.User')
+    def test_authenticate(self, mock_user, mock_connect):
         mock_db = MagicMock()
         mock_connect.return_value = mock_db
         mock_cursor = MagicMock()
         mock_db.cursor.return_value = mock_cursor
         mock_cursor.execute.return_value = None
-        mock_cursor.fetchone.return_value = ('testuser', 0, 0, 'Test User', "b'guest'", 5)
+        mock_cursor.fetchone.return_value = ('testuser', 0, 0, 'Test User', b'guest', 5)
+
+        mock_user_instance = MagicMock()
+        mock_user_instance.ident = 'testuser'
+        mock_user_instance.realname = 'Test User'
+        mock_user.return_value = mock_user_instance
 
         auth = GithubAuthenticator('id', 'secret', 'https://example.com/callback')
         self.user_manager.register_authenticator('github', auth)
 
-        with patch.object(auth, 'authenticate', return_value=('testuser', 'Test User', "b'guest'")):
+        with patch.object(auth, 'authenticate', return_value=('testuser', 'Test User', b'guest')):
             user = self.user_manager.authenticate('github', {'code': 'fake_code', 'state': 'fake_state'}, 'fake_state')
-            print(f'authenticate:\n\tUser: {user}\n\tident: {user.ident}\n\tReal Name: {user.realname}')
             self.assertIsNotNone(user)
             self.assertEqual(user.ident, 'testuser')
+            self.assertEqual(user.realname, 'Test User')
 
 if __name__ == '__main__':
     unittest.main()
