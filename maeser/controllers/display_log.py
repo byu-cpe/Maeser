@@ -1,7 +1,8 @@
-from flask import abort, render_template
 import yaml
+from flask import abort, render_template
 
-from common.render import get_response_html
+from .common.render import get_response_html
+
 
 def process_messages(messages: dict) -> dict:
     '''
