@@ -51,7 +51,7 @@ def get_log_file_template(content: dict) -> str:
         messages=messages
     )
 
-def display_log_controller(log_path: str, branch, filename):
+def display_log_controller(chat_log_path: str, branch, filename):
     """
     Display the content of a specified log file.
 
@@ -63,7 +63,7 @@ def display_log_controller(log_path: str, branch, filename):
         str: Rendered template with log file content.
     """
     try:
-        with open(f"{log_path}/chat_history/{branch}/{filename}", "r") as file:
+        with open(f"{chat_log_path}/chat_history/{branch}/{filename}", "r") as file:
             file_content = yaml.safe_load(file)
         log_template = get_log_file_template(file_content)
         return log_template
