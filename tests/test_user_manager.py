@@ -81,6 +81,27 @@ class TestGithubAuthenticator(unittest.TestCase):
         user = self.auth.fetch_user('unknownuser')
         self.assertIsNone(user)
 
+    @patch('secrets.token_urlsafe')
+    def test_get_auth_info(self, mock_token_urlsafe):
+        # Arrange
+        mock_token_urlsafe.return_value = 'fake_state'
+        auth = GithubAuthenticator('fake_client_id', 'fake_client_secret', 'https://example.com/callback')
+
+        # Act
+        oauth_state, provider_url = auth.get_auth_info()
+
+        # Assert
+        self.assertEqual(oauth_state, 'fake_state')
+        self.assertIn('https://github.com/login/oauth/authorize', provider_url)
+        self.assertIn('client_id=fake_client_id', provider_url)
+        self.assertIn('redirect_uri=https%3A%2F%2Fexample.com%2Fcallback', provider_url)
+        self.assertIn('response_type=code', provider_url)
+        self.assertIn('scope=user%3Aemail', provider_url)
+        self.assertIn('state=fake_state', provider_url)
+
+        # Verify that token_urlsafe was called
+        mock_token_urlsafe.assert_called_once_with(16)
+
 
 class TestUserManager(unittest.TestCase):
 
