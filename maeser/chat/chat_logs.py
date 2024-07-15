@@ -42,7 +42,7 @@ class ChatLogsManager(BaseChatLogsManager):
         Returns:
             None
         '''
-        if not self._does_log_exist(session_id):
+        if not self._does_log_exist(branch_name, session_id):
             self._create_log_file(branch_name, session_id, log_data.get("user_info", {}))
         else:
             self._update_log_file(branch_name, session_id, log_data)
@@ -104,7 +104,7 @@ class ChatLogsManager(BaseChatLogsManager):
         with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "w") as file:
             yaml.dump(log, file)
 
-    def _does_log_exist(self, session_id: str) -> bool:
+    def _does_log_exist(self, branch_name: str, session_id: str) -> bool:
         '''
         Checks if a log file exists for the given session ID.
 
@@ -114,4 +114,4 @@ class ChatLogsManager(BaseChatLogsManager):
         Returns:
             bool: True if the log file exists, False otherwise.
         '''
-        return os.path.exists(f"{self.chat_log_path}/{session_id}.log")
+        return os.path.exists(f"{self.chat_log_path}/{branch_name}/{session_id}.log")
