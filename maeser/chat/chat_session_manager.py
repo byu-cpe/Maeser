@@ -22,6 +22,9 @@ class ChatSessionManager:
             llm_model (str): The language model to be used.
             chat_branches (list): A list of chat branches with their actions.
             log_path (str): Path where logs are to be stored.
+
+        Returns:
+            None
         """
         self.log_path: str = log_path
         self.graphs: dict = {}
@@ -43,50 +46,67 @@ class ChatSessionManager:
             "graph": graph
         }
 
-    def new_session(self, branch_action: str, user_info: dict) -> str:
+    def _create_log_file(self, path: str, branch_name: str, user_info: dict, session_id: str) -> None:
         """
-        Creates a new chat session for the given branch action.
-        Includes creating a new log file for the session.
+        Creates a log file at the given path.
 
         Args:
-            branch_action (str): The action of the branch to create a session for.
+            path (str): The path to create the log file at.
+            branch_name (str): The action of the branch to create the log file for.
             user_info (dict): The user information for the session.
+            session_id (str): The session ID for the conversation.
 
         Returns:
-            str: The session ID for the new session.
+            None
         """
-        session_id = str(uid())
-
-        log_branch_path = self.log_path + '/chat_history/' + branch_action
-
         # create log directory if it does not exist
-        if not os.path.exists(log_branch_path):
-            os.makedirs(log_branch_path)
-        
-        # create log file
-        log_info = {
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        # compile log information
+        log_info: dict = {
             "session_id": session_id,
             "user": user_info.get("full_id_name", "default_user"),
             "real_name": user_info.get("realname", "Default User"),
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "branch": branch_action,
+            "branch": branch_name,
             "total_cost": 0,
             "total_tokens": 0,
             "messages": []
         }
 
-        with open(f"{log_branch_path}/{session_id}.log", "w") as file:
+        # create log file
+        with open(f"{path}/{session_id}.log", "w") as file:
             yaml.dump(log_info, file)
+
+    def get_new_session_id(self, branch_name: str, user_info: dict) -> str:
+        """
+        Creates a new chat session for the given branch action.
+        Includes creating a new log file for the session.
+
+        Args:
+            branch_name (str): The action of the branch to create a session for.
+            user_info (dict): The user information for the session.
+
+        Returns:
+            str: The session ID for the new session.
+        """
+        # generate session ID
+        session_id: str = str(uid())
+
+        # create log file
+        log_branch_path: str = self.log_path + '/chat_history/' + branch_name
+        self._create_log_file(log_branch_path, branch_name, user_info, session_id)
 
         return session_id
     
-    def ask_question(self, message: str, branch_action: str, sess_id: str) -> dict:
+    def ask_question(self, message: str, branch_name: str, sess_id: str) -> dict:
         """
         Asks a question in a specific session of a branch.
 
         Args:
             message (str): The question to ask.
-            branch_action (str): The action of the branch to ask the question in.
+            branch_name (str): The action of the branch to ask the question in.
             sess_id (str): The session ID to ask the question in.
 
         Returns:
@@ -96,7 +116,7 @@ class ChatSessionManager:
         start_time = time.time()
         # get token count for the response
         with get_openai_callback() as cb:
-            response = self.graphs[branch_action].invoke({
+            response = self.graphs[branch_name].invoke({
                 "messages": [message],
             }, config=config)
             response["tokens_used"] = cb.total_tokens
@@ -105,10 +125,10 @@ class ChatSessionManager:
         execution_time = end_time - start_time
 
         response["execution_time"] = execution_time
-        self._update_log(branch_action, sess_id, response)
+        self._update_log(branch_name, sess_id, response)
         return response
     
-    def add_feedback_to_log(self, branch_action: str, session_id: str, message_index: int, feedback: str) -> None:
+    def add_feedback_to_log(self, branch_name: str, session_id: str, message_index: int, feedback: str) -> None:
         """
         Adds feedback to the log for a specific response in a specific session.
 
@@ -120,7 +140,7 @@ class ChatSessionManager:
         Returns:
             None
         """
-        log_branch_path = self.log_path + '/chat_history/' + branch_action
+        log_branch_path = self.log_path + '/chat_history/' + branch_name
         filename = f"{session_id}.log"
 
         with open(f"{log_branch_path}/{filename}", "r") as file:
@@ -130,29 +150,29 @@ class ChatSessionManager:
         with open(f"{log_branch_path}/{filename}", "w") as file:
             yaml.dump(log, file)
 
-    def get_conversation_history(self, branch_action: str, session_id: str) -> dict:
+    def get_conversation_history(self, branch_name: str, session_id: str) -> dict:
         """
         Gets the conversation history for a specific session in a specific branch.
 
         Args:
-            branch_action (str): The action of the branch to get the conversation history from.
+            branch_name (str): The action of the branch to get the conversation history from.
             session_id (str): The session ID to get the conversation history from.
 
         Returns:
             dict: The conversation history for the session.
         """
-        log_branch_path = self.log_path + '/chat_history/' + branch_action
+        log_branch_path = self.log_path + '/chat_history/' + branch_name
         filename = f"{session_id}.log"
 
         with open(f"{log_branch_path}/{filename}", "r") as file:
             return yaml.safe_load(file)
 
-    def _update_log(self, branch_action: str, session_id: str, response: dict) -> None:
+    def _update_log(self, branch_name: str, session_id: str, response: dict) -> None:
         """
         Updates the log with the response to the question.
 
         Args:
-            branch_action (str): The action of the branch to update the log for.
+            branch_name (str): The action of the branch to update the log for.
             session_id (str): The session ID for the conversation.
             response (dict): The response to the question.
 
@@ -165,7 +185,7 @@ class ChatSessionManager:
             except KeyError:
                 return []
         
-        log_branch_path = self.log_path + '/chat_history/' + branch_action
+        log_branch_path = self.log_path + '/chat_history/' + branch_name
             
         filename = f"{session_id}.log"
 
