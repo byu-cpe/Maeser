@@ -1,7 +1,5 @@
 name: Run Python tests
-
 on: [push]
-
 jobs:
   build:
     name: Run tests
@@ -9,11 +7,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.10"]
-
     steps:
-      - uses: szenius/set-timezone@v1.2
-        with:
-          timezoneLinux: "Europe/Berlin"
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
@@ -22,9 +16,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements/requirements.txt
       - name: Install pytest
-        run: pip install pytest pytest-md pytest-emoji
-      - uses: pavelzw/pytest-action@v2
-        with:
-          emoji: false
-          verbose: true
-          job-summary: true
+        run: pip install pytest
+      - name: Set PYTHONPATH
+        run: export PYTHONPATH=$(pwd)/maeser:$PYTHONPATH
+      - name: Run pytest
+        run: pytest tests/
