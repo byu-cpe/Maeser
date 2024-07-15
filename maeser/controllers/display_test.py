@@ -3,8 +3,9 @@ from flask import abort, render_template
 
 from .common.render import get_response_html
 
+from typing import Dict, Any
 
-def get_test_file_template(content: dict, conversation_index: int, filename: str) -> str:
+def get_test_file_template(content: Dict[str, Any], conversation_index: int, filename: str) -> str:
     """
     Get the test file template.
 
@@ -16,22 +17,23 @@ def get_test_file_template(content: dict, conversation_index: int, filename: str
     Returns:
         str: The test file template.
     """
-    def get_content(key):
-        try:
-            return content[key]
-        except KeyError:
-            return "unknown"
-    
-    version = get_content("version")
-    test_num = get_content("test-num")
-    conversations = get_content("conversations")
-    conversation = conversations[conversation_index]
-    metrics = conversation["metrics"]
-    context = conversation["contexts"]
 
-    question = get_response_html(conversation["question"])
-    answer = get_response_html(conversation["answer"])
-    branch = conversation["branch"]
+
+    version = content.get("version", "unknown")
+    test_num = content.get("test-num", "unknown")
+    conversations = content.get("conversations", "unknown")
+
+    if not isinstance(conversations, list) or conversation_index >= len(conversations):
+        raise ValueError(f"Invalid conversation index: {conversation_index}")
+
+    conversation: Dict[str, Any] = conversations[conversation_index]
+
+    metrics = conversation.get("metrics", {})
+    context = conversation.get("contexts", {})
+
+    question = get_response_html(conversation.get("question", ""))
+    answer = get_response_html(conversation.get("answer", ""))
+    branch = conversation.get("branch", "")
 
     return render_template(
         'test_file.html',
@@ -61,9 +63,11 @@ def controller(test_yaml_path: str, filename: str, conversation_index: str):
     try:
         with open(f"{test_yaml_path}/{filename}", "r") as file:
             file_content = yaml.safe_load(file)
-        test_template = get_test_file_template(file_content, conversation_index, filename)
+        test_template = get_test_file_template(file_content, int(conversation_index), filename)
         return test_template
     except FileNotFoundError:
         abort(404, description="Test file not found")
     except yaml.YAMLError as e:
         abort(500, description=f"Error parsing test file: {e}")
+    except ValueError as e:
+        abort(400, description=str(e))
