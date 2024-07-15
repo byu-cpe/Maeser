@@ -17,7 +17,7 @@ jobs:
         run: pip install -r requirements/requirements.txt
       - name: Install pytest
         run: pip install pytest
-      - name: Run pytest with modified PYTHONPATH
-        env:
-          PYTHONPATH: ${{ github.workspace }}/maeser:$PYTHONPATH
+      - name: Set PYTHONPATH using GITHUB_ENV
+        run: echo "PYTHONPATH=${{ github.workspace }}/maeser:$PYTHONPATH" >> $GITHUB_ENV
+      - name: Run pytest
         run: pytest tests/
