@@ -1,7 +1,6 @@
 from maeser.chat.chat_logs import BaseChatLogsManager
+from maeser.user_manager import User
 from datetime import datetime
-import os
-import yaml
 import time
 from uuid import uuid4 as uid
 from langchain_community.callbacks import get_openai_callback
@@ -45,24 +44,27 @@ class ChatSessionManager:
             "graph": graph
         }
 
-    def get_new_session_id(self, branch_name: str, user_info: dict) -> str:
+    def get_new_session_id(self, branch_name: str, user: User | None = None) -> str:
         """
         Creates a new chat session for the given branch action.
         Includes creating a new log file for the session.
 
         Args:
             branch_name (str): The action of the branch to create a session for.
-            user_info (dict): The user information for the session.
+            user (User | None): The user to create the session for.
 
         Returns:
             str: The session ID for the new session.
         """
-        # generate session ID
-        session_id: str = str(uid())
+        # generate session ID with user information if it exists
+        if user:
+            session_id: str = f"{uid()}-{user.auth_method}-{user.ident}"
+        else:
+            session_id: str = f"{uid()}-anon"
 
         # create log file if chat logs manager is available
         if self.chat_logs_manager:
-            self.chat_logs_manager.log(branch_name, session_id, user_info)
+            self.chat_logs_manager.log(branch_name, session_id, {user: user})
 
         return session_id
     

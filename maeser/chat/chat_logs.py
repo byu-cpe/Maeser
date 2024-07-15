@@ -1,11 +1,13 @@
+from maeser.user_manager import UserManager, User
 from abc import ABC, abstractmethod
 from datetime import datetime
 import os
 import yaml
 
 class BaseChatLogsManager(ABC):
-    def __init__(self, chat_log_path: str) -> None:
+    def __init__(self, chat_log_path: str, user_manager: UserManager | None = None) -> None:
         self.chat_log_path: str = chat_log_path
+        self.user_manager: UserManager | None = user_manager
 
         # create log directory if it does not exist
         if not os.path.exists(self.chat_log_path):
@@ -67,13 +69,13 @@ class ChatLogsManager(BaseChatLogsManager):
         Args:
             branch_name (str): The name of the branch.
             session_id (str): The session ID for the conversation.
-            log_data (dict): The data to be logged. Should contain the following keys: "user_info", "cost", "tokens", and "message".
+            log_data (dict): The data to be logged. Should contain the following keys: "user", "cost", "tokens", and "message".
         
         Returns:
             None
         '''
         if not self._does_log_exist(branch_name, session_id):
-            self._create_log_file(branch_name, session_id, log_data.get("user_info", {}))
+            self._create_log_file(branch_name, session_id, log_data.get("user", None))
         else:
             self._update_log_file(branch_name, session_id, log_data)
 
@@ -111,12 +113,12 @@ class ChatLogsManager(BaseChatLogsManager):
         with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "r") as file:
             return yaml.safe_load(file)
 
-    def _create_log_file(self, branch_name: str, session_id: str, user_info: dict) -> None:
+    def _create_log_file(self, branch_name: str, session_id: str, user: User | None = None) -> None:
         # compile log information
         log_info: dict = {
             "session_id": session_id,
-            "user": user_info.get("full_id_name", "default_user"),
-            "real_name": user_info.get("realname", "Default User"),
+            "user": user.full_id_name if user else "default_user",
+            "real_name": user.realname if user else "default_user",
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "branch": branch_name,
             "total_cost": 0,
