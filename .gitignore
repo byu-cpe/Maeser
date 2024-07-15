@@ -6,6 +6,7 @@ config.yaml
 .vscode
 # Ignore Python cache
 *__pycache__
+tests/.pytest_cache
 # Ignore built docs
 sphinx_docs/_build
 # Ignore auto generated docs
