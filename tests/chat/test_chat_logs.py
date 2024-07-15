@@ -74,3 +74,98 @@ def test_does_log_exist(chat_logs_manager):
     chat_logs_manager._create_log_file(branch_name, session_id, user_info)
 
     assert chat_logs_manager._does_log_exist(branch_name, session_id)
+
+def test_log_feedback(chat_logs_manager):
+    branch_name = "test_branch"
+    session_id = "test_session"
+    initial_log_data = {
+        "user_info": {"full_id_name": "test_user", "realname": "Test User"},
+        "message": "Test message",
+        "response": "Test response",
+        "context": ["context1"],
+        "execution_time": 1.0,
+        "tokens": 50,
+        "cost": 0.001
+    }
+    chat_logs_manager.log(branch_name, session_id, initial_log_data)
+
+    # Add message to log
+    chat_logs_manager._update_log_file(branch_name, session_id, {
+        "message": "Test message",
+        "response": "Test response",
+        "context": ["context1"],
+        "execution_time": 1.0,
+        "tokens": 50,
+        "cost": 0.001
+    })
+
+    # Test adding positive feedback
+    chat_logs_manager.log_feedback(branch_name, session_id, 1, True)
+
+    log_path = f"{chat_logs_manager.chat_log_path}/{branch_name}/{session_id}.log"
+    with open(log_path, "r") as file:
+        log_content = yaml.safe_load(file)
+
+    assert log_content["messages"][1]["liked"] == True
+
+    # Test adding negative feedback
+    chat_logs_manager.log_feedback(branch_name, session_id, 1, False)
+
+    with open(log_path, "r") as file:
+        log_content = yaml.safe_load(file)
+
+    assert log_content["messages"][1]["liked"] == False
+
+def test_log_feedback_invalid_index(chat_logs_manager):
+    branch_name = "test_branch"
+    session_id = "test_session"
+    initial_log_data = {
+        "user_info": {"full_id_name": "test_user", "realname": "Test User"},
+        "message": "Test message",
+        "response": "Test response",
+    }
+    chat_logs_manager.log(branch_name, session_id, initial_log_data)
+
+    with pytest.raises(IndexError):
+        chat_logs_manager.log_feedback(branch_name, session_id, 5, True)
+
+def test_get_chat_history(chat_logs_manager):
+    branch_name = "test_branch"
+    session_id = "test_session"
+    initial_log_data = {
+        "user_info": {"full_id_name": "test_user", "realname": "Test User"},
+        "message": "Test message",
+        "response": "Test response",
+        "context": ["context1"],
+        "execution_time": 1.0,
+        "tokens": 50,
+        "cost": 0.001
+    }
+    chat_logs_manager.log(branch_name, session_id, initial_log_data)
+
+    # Add messages to log
+    chat_logs_manager._update_log_file(branch_name, session_id, {
+        "message": "Test message",
+        "response": "Test response",
+        "context": ["context1"],
+        "execution_time": 1.0,
+        "tokens": 50,
+        "cost": 0.001
+    })
+
+    chat_history = chat_logs_manager.get_chat_history(branch_name, session_id)
+
+    assert chat_history["session_id"] == session_id
+    assert chat_history["user"] == "test_user"
+    assert chat_history["real_name"] == "Test User"
+    assert chat_history["branch"] == branch_name
+    assert len(chat_history["messages"]) == 2
+    assert chat_history["total_cost"] == 0.001
+    assert chat_history["total_tokens"] == 50
+
+def test_get_chat_history_nonexistent(chat_logs_manager):
+    branch_name = "nonexistent_branch"
+    session_id = "nonexistent_session"
+
+    with pytest.raises(FileNotFoundError):
+        chat_logs_manager.get_chat_history(branch_name, session_id)
