@@ -448,7 +448,7 @@ class UserManager:
         Raises:
             ValueError: If the provided auth_method is invalid.
         """
-        for auth_method in self.authenticators:
+        if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"
@@ -472,7 +472,7 @@ class UserManager:
         Raises:
             ValueError: If the provided auth_method is invalid.
         """
-        for auth_method in self.authenticators:
+        if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"
@@ -497,11 +497,8 @@ class UserManager:
         Raises:
             ValueError: If the provided auth_method is invalid.
         """
-        for auth_method in self.authenticators:
+        if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
-        table_name = f"{auth_method}Users"
-        with self.db_connection as db:
-            cursor = db.execute(f'SELECT requests_left FROM "{table_name}" WHERE user_id = ?', (user_id,))
-            result = cursor.fetchone()
-            return result[0] if result else None
+        user = self.get_user(auth_method, user_id)
+        return user.requests_remaining if user else None
