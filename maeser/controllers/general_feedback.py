@@ -26,13 +26,13 @@ def save_feedback(log_path: str, feedback: dict) -> None:
 
     print(f"Feedback saved to {filename}")
 
-def controller():
+def controller(log_path: str):
     name = request.form.get('name')
     feedback = request.form.get('feedback')
     role = request.form.get('role')
     category = request.form.get('category')
 
-    save_feedback({
+    save_feedback(log_path, {
         'name': name,
         'feedback': feedback,
         'role': role,

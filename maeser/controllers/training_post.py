@@ -26,14 +26,14 @@ def save_training_data(log_path: str, training_data: dict) -> None:
 
     print(f"Training data saved to {filename}")
 
-def controller():
+def controller(log_path: str):
     name = request.form.get('name')
     role = request.form.get('role')
     type = request.form.get('type')
     question = request.form.get('question')
     answer = request.form.get('answer')
 
-    save_training_data({
+    save_training_data(log_path,{
         'name': name,
         'role': role,
         'type': type,
