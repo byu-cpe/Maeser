@@ -5,7 +5,7 @@ from .common.render import get_response_html
 
 
 def process_messages(messages: dict) -> dict:
-    '''
+    """
     Process each system response in the conversation and convert it to HTML.
 
     Args:
@@ -13,7 +13,7 @@ def process_messages(messages: dict) -> dict:
     
     Returns:
         dict: The processed messages in HTML format.
-    '''
+    """
     for message in messages:
         message["content"] = get_response_html(message["content"])
     
