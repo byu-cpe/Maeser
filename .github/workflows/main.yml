@@ -17,7 +17,7 @@ jobs:
         run: pip install -r requirements/requirements.txt
       - name: Install pytest
         run: pip install pytest
-      - name: Set PYTHONPATH
-        run: export PYTHONPATH=$(pwd)/maeser:$PYTHONPATH
-      - name: Run pytest
+      - name: Run pytest with modified PYTHONPATH
+        env:
+          PYTHONPATH: ${{ github.workspace }}/maeser:$PYTHONPATH
         run: pytest tests/
