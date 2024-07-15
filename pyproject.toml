@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "maeser"
-version = "0.1.0"
-description = "Python package for managing chat functionality and user interactions."
+version = "0.0.1"
+description = "A package for building RAG chatbot applications for educational contexts."
 authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <sfrocks@gmail.com>"]
 
 # Dependencies required by your project
 [tool.poetry.dependencies]
 # Specify where your Python interpreter is located
 # Replace with your Python version if different
-python = "^3.10"
+python = ">=3.10"
 
 # Data manipulation and numerical computations
 pandas = "^2.2.2"
