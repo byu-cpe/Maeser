@@ -26,6 +26,36 @@ class BaseChatLogsManager(ABC):
         '''
         pass
 
+    @abstractmethod
+    def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: bool):
+        '''
+        Abstract method to log feedback for a message.
+
+        Args:
+            branch_name (str): The name of the branch.
+            session_id (str): The session ID for the conversation.
+            message_index (int): The index of the message to add feedback to.
+            feedback (bool): The feedback to add to the message.
+        
+        Returns:
+            None
+        '''
+        pass
+
+    @abstractmethod
+    def get_chat_history(self, branch_name: str, session_id: str) -> dict:
+        '''
+        Abstract method to get chat history for a session.
+
+        Args:
+            branch_name (str): The name of the branch.
+            session_id (str): The session ID for the conversation.
+        
+        Returns:
+            dict: The chat history for the session.
+        '''
+        pass
+
 class ChatLogsManager(BaseChatLogsManager):
     def __init__(self, chat_log_path: str) -> None:
         super().__init__(chat_log_path)
@@ -46,6 +76,40 @@ class ChatLogsManager(BaseChatLogsManager):
             self._create_log_file(branch_name, session_id, log_data.get("user_info", {}))
         else:
             self._update_log_file(branch_name, session_id, log_data)
+
+    def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: bool) -> None:
+        '''
+        Adds feedback to the log for a specific response in a specific session.
+
+        Args:
+            branch_name (str): The name of the branch.
+            session_id (str): The session ID for the conversation.
+            message_index (int): The index of the message to add feedback to.
+            feedback (bool): The feedback to add to the message.
+
+        Returns:
+            None
+        '''
+        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "r") as file:
+            log: dict = yaml.safe_load(file)
+            log['messages'][message_index]['liked'] = feedback
+
+        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "w") as file:
+            yaml.dump(log, file)
+
+    def get_chat_history(self, branch_name: str, session_id: str) -> dict:
+        '''
+        Gets the chat history for a specific session in a specific branch.
+
+        Args:
+            branch_name (str): The name of the branch.
+            session_id (str): The session ID for the conversation.
+
+        Returns:
+            dict: The chat history for the session.
+        '''
+        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "r") as file:
+            return yaml.safe_load(file)
 
     def _create_log_file(self, branch_name: str, session_id: str, user_info: dict) -> None:
         # compile log information
