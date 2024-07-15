@@ -7,6 +7,24 @@ from .common.file_info import get_file_list
 
 
 def controller(log_path: str, chat_branches: List[dict], max_requests: int, rate_limit_interval: int):
+    """
+    Renders the chat interface template with relevant data.
+
+    Args:
+        log_path (str): The path to the directory containing chat history logs.
+        chat_branches (List[dict]): A list of dictionaries representing available chat branches.
+        max_requests (int): The maximum number of requests a user can make.
+        rate_limit_interval (int): The interval in seconds for rate limiting requests.
+
+    Returns:
+        The rendered chat.html template with the following data:
+            - conversation: None (no active conversation)
+            - buttons: The list of available chat branches
+            - links: A list of dictionaries representing previous chat sessions for the current user
+            - requests_remaining: The number of requests remaining for the current user
+            - max_requests_remaining: The maximum number of requests allowed
+            - requests_remaining_interval_ms: The interval in milliseconds for rate limiting requests
+    """
     links = []
     conversations = get_file_list(log_path + '/chat_history')
     for conversation in conversations:
