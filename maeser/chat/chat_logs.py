@@ -27,7 +27,7 @@ class BaseChatLogsManager(ABC):
         pass
 
     @abstractmethod
-    def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: bool):
+    def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: str):
         '''
         Abstract method to log feedback for a message.
 
@@ -35,7 +35,7 @@ class BaseChatLogsManager(ABC):
             branch_name (str): The name of the branch.
             session_id (str): The session ID for the conversation.
             message_index (int): The index of the message to add feedback to.
-            feedback (bool): The feedback to add to the message.
+            feedback (str): The feedback to add to the message.
         
         Returns:
             None
@@ -77,7 +77,7 @@ class ChatLogsManager(BaseChatLogsManager):
         else:
             self._update_log_file(branch_name, session_id, log_data)
 
-    def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: bool) -> None:
+    def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: str) -> None:
         '''
         Adds feedback to the log for a specific response in a specific session.
 
@@ -85,7 +85,7 @@ class ChatLogsManager(BaseChatLogsManager):
             branch_name (str): The name of the branch.
             session_id (str): The session ID for the conversation.
             message_index (int): The index of the message to add feedback to.
-            feedback (bool): The feedback to add to the message.
+            feedback (str): The feedback to add to the message.
 
         Returns:
             None

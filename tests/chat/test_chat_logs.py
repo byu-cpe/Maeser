@@ -127,7 +127,7 @@ def test_log_feedback_invalid_index(chat_logs_manager):
     chat_logs_manager.log(branch_name, session_id, initial_log_data)
 
     with pytest.raises(IndexError):
-        chat_logs_manager.log_feedback(branch_name, session_id, 5, True)
+        chat_logs_manager.log_feedback(branch_name, session_id, 5, "positive")
 
 def test_get_chat_history(chat_logs_manager):
     branch_name = "test_branch"
