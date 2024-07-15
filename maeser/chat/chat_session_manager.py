@@ -1,11 +1,10 @@
-from src.chat.graphs import get_graph
-from src.sys_logger import log
 from datetime import datetime
 import os
 import yaml
 import time
 from uuid import uuid4 as uid
 from langchain_community.callbacks import get_openai_callback
+from langgraph.graph import StateGraph
 
 class ChatSessionManager:
     """
@@ -14,10 +13,8 @@ class ChatSessionManager:
     
     def __init__(
         self,
-        llm_model: str = "gpt-4o",
-        chat_branches: list = [{"action": "homework", "label": "Homework Help", "graph": "homework_simple_rag"}],
-        log_path: str = "logs",
-    ):
+        log_path: str
+    ) -> None:
         """
         Initializes the ChatSessionManager with given directories, model, and chat branches.
 
@@ -26,11 +23,26 @@ class ChatSessionManager:
             chat_branches (list): A list of chat branches with their actions.
             log_path (str): Path where logs are to be stored.
         """
-        self.log_path = log_path
-        self.graphs = {branch["action"]: get_graph(branch["graph"]) for branch in chat_branches}
+        self.log_path: str = log_path
+        self.graphs: dict = {}
+
+    def register_branch(self, branch_name: str, branch_label: str, graph: StateGraph) -> None:
+        """
+        Registers a branch with its information and graph.
+
+        Args:
+            branch_name (str): The name of the branch.
+            branch_label (str): The label of the branch.
+            graph (StateGraph): The graph for the branch.
         
-        log(f"LLM MODEL: {llm_model}")
-    
+        Returns:
+            None
+        """
+        self.graphs[branch_name] = {
+            "label": branch_label,
+            "graph": graph
+        }
+
     def new_session(self, branch_action: str, user_info: dict) -> str:
         """
         Creates a new chat session for the given branch action.
