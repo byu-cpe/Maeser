@@ -189,7 +189,7 @@ class GithubAuthenticator(BaseAuthenticator):
         json_response = response.json()
         return json_response['login'], json_response['name'], 'b\'guest\''
 
-    def fetch_user(self, username: str) -> Union[User, None]:
+    def fetch_user(self, ident: str) -> Union[User, None]:
         """
         Fetch a user from the GitHub API.
 
@@ -199,12 +199,12 @@ class GithubAuthenticator(BaseAuthenticator):
         Returns:
             User or None: The fetched user object or None if the user is not found.
         """
-        user_info_url = f'https://api.github.com/users/{username}'
+        user_info_url = f'https://api.github.com/users/{ident}'
         response = requests.get(user_info_url)
         if response.status_code == 200:
             json_response = response.json()
             return User(json_response['login'], realname=json_response.get('name', ''), usergroup='b\'guest\'', authmethod='github')
-        print(f'No GitHub user "{username}" found', "WARNING")
+        print(f'No GitHub user "{ident}" found', "WARNING")
         return None
     
     def get_auth_info(self) -> Tuple[str, str]:
@@ -250,7 +250,8 @@ class UserManager:
             ValueError: If the provided name is invalid or the authenticator is already registered.
         """
         self.authenticators[name] = authenticator
-        self._create_table(name)
+        with self.db_connection as db:
+            self._create_table(db, name)
 
     @property
     def db_connection(self) -> sqlite3.Connection:
@@ -270,26 +271,26 @@ class UserManager:
             return sqlite3.connect(':memory:')
 
     def _create_tables(self):
-        for auth_method in self.authenticators:
-            self._create_table(auth_method)
+        with self.db_connection as db:
+            for auth_method in self.authenticators:
+                self._create_table(db, auth_method)
 
-    def _create_table(self, auth_method: str):
+    def _create_table(self, db: sqlite3.Connection, auth_method: str):
         if not auth_method.isalnum():
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"
-        with self.db_connection as db:
-            db.execute(f'''
-                CREATE TABLE IF NOT EXISTS "{table_name}" (
-                    user_id TEXT PRIMARY KEY,
-                    blacklisted BOOL,
-                    admin BOOL,
-                    realname TEXT,
-                    usertype TEXT,
-                    requests_left INT,
-                    aka TEXT
-                )
-            ''')
+        db.execute(f'''
+            CREATE TABLE IF NOT EXISTS "{table_name}" (
+                user_id TEXT PRIMARY KEY,
+                blacklisted BOOL,
+                admin BOOL,
+                realname TEXT,
+                usertype TEXT,
+                requests_left INT,
+                aka TEXT
+            )
+        ''')
 
     def get_user(self, auth_method: str, ident: str) -> Union[User, None]:
         """
@@ -310,7 +311,7 @@ class UserManager:
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
-            cursor = db.execute(
+            cursor: sqlite3.Cursor = db.execute(
                 f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}" WHERE user_id=?',
                 (ident,)
             )
