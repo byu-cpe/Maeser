@@ -84,7 +84,7 @@ class ChatSessionManager:
         start_time = time.time()
         # get token count for the response
         with get_openai_callback() as cb:
-            response = self.graphs[branch_name].invoke({
+            response = self.graphs[branch_name]["graph"].invoke({
                 "messages": [message],
             }, config=config)
             response["tokens_used"] = cb.total_tokens
