@@ -1,3 +1,4 @@
+from maeser.chat.chat_logs import BaseChatLogsManager
 from datetime import datetime
 import os
 import yaml
@@ -13,20 +14,18 @@ class ChatSessionManager:
     
     def __init__(
         self,
-        log_path: str
+        chat_logs_manager: BaseChatLogsManager | None = None,
     ) -> None:
         """
-        Initializes the ChatSessionManager with given directories, model, and chat branches.
+        Initializes the chat session manager.
 
         Args:
-            llm_model (str): The language model to be used.
-            chat_branches (list): A list of chat branches with their actions.
-            log_path (str): Path where logs are to be stored.
+            chat_logs_manager (BaseChatLogsManager | None): The chat logs manager to use for logging chat data.
 
         Returns:
             None
         """
-        self.log_path: str = log_path
+        self.chat_logs_manager: BaseChatLogsManager | None = chat_logs_manager
         self.graphs: dict = {}
 
     def register_branch(self, branch_name: str, branch_label: str, graph: StateGraph) -> None:
@@ -46,39 +45,6 @@ class ChatSessionManager:
             "graph": graph
         }
 
-    def _create_log_file(self, path: str, branch_name: str, user_info: dict, session_id: str) -> None:
-        """
-        Creates a log file at the given path.
-
-        Args:
-            path (str): The path to create the log file at.
-            branch_name (str): The action of the branch to create the log file for.
-            user_info (dict): The user information for the session.
-            session_id (str): The session ID for the conversation.
-
-        Returns:
-            None
-        """
-        # create log directory if it does not exist
-        if not os.path.exists(path):
-            os.makedirs(path)
-
-        # compile log information
-        log_info: dict = {
-            "session_id": session_id,
-            "user": user_info.get("full_id_name", "default_user"),
-            "real_name": user_info.get("realname", "Default User"),
-            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "branch": branch_name,
-            "total_cost": 0,
-            "total_tokens": 0,
-            "messages": []
-        }
-
-        # create log file
-        with open(f"{path}/{session_id}.log", "w") as file:
-            yaml.dump(log_info, file)
-
     def get_new_session_id(self, branch_name: str, user_info: dict) -> str:
         """
         Creates a new chat session for the given branch action.
@@ -94,9 +60,9 @@ class ChatSessionManager:
         # generate session ID
         session_id: str = str(uid())
 
-        # create log file
-        log_branch_path: str = self.log_path + '/chat_history/' + branch_name
-        self._create_log_file(log_branch_path, branch_name, user_info, session_id)
+        # create log file if chat logs manager is available
+        if self.chat_logs_manager:
+            self.chat_logs_manager.log(branch_name, session_id, user_info)
 
         return session_id
     
@@ -125,10 +91,13 @@ class ChatSessionManager:
         execution_time = end_time - start_time
 
         response["execution_time"] = execution_time
-        self._update_log(branch_name, sess_id, response)
+        
+        if self.chat_logs_manager:
+            self.chat_logs_manager.log(branch_name, sess_id, response)
+        
         return response
     
-    def add_feedback_to_log(self, branch_name: str, session_id: str, message_index: int, feedback: str) -> None:
+    def add_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: str) -> None:
         """
         Adds feedback to the log for a specific response in a specific session.
 
@@ -140,15 +109,11 @@ class ChatSessionManager:
         Returns:
             None
         """
-        log_branch_path = self.log_path + '/chat_history/' + branch_name
-        filename = f"{session_id}.log"
-
-        with open(f"{log_branch_path}/{filename}", "r") as file:
-            log = yaml.safe_load(file)
-            log['messages'][message_index]['liked'] = feedback
-
-        with open(f"{log_branch_path}/{filename}", "w") as file:
-            yaml.dump(log, file)
+        # return if no chat logs manager
+        if not self.chat_logs_manager:
+            return
+        
+        self.chat_logs_manager.log_feedback(branch_name, session_id, message_index, feedback)
 
     def get_conversation_history(self, branch_name: str, session_id: str) -> dict:
         """
@@ -161,54 +126,7 @@ class ChatSessionManager:
         Returns:
             dict: The conversation history for the session.
         """
-        log_branch_path = self.log_path + '/chat_history/' + branch_name
-        filename = f"{session_id}.log"
-
-        with open(f"{log_branch_path}/{filename}", "r") as file:
-            return yaml.safe_load(file)
-
-    def _update_log(self, branch_name: str, session_id: str, response: dict) -> None:
-        """
-        Updates the log with the response to the question.
-
-        Args:
-            branch_name (str): The action of the branch to update the log for.
-            session_id (str): The session ID for the conversation.
-            response (dict): The response to the question.
-
-        Returns:
-            None
-        """
-        def get_context():
-            try:
-                return [{"content": document.page_content, "metadata": document.metadata} for document in response["retrieved_context"]]
-            except KeyError:
-                return []
+        if not self.chat_logs_manager:
+            return {}
         
-        log_branch_path = self.log_path + '/chat_history/' + branch_name
-            
-        filename = f"{session_id}.log"
-
-        with open(f"{log_branch_path}/{filename}", "r") as file:
-            log = yaml.safe_load(file)
-
-            log["messages"] = log.get("messages", [])
-            log["messages"].append(
-                {
-                    "role": "user",
-                    "content": response["messages"][-2]
-                })
-            log["messages"].append({
-                    "role": "system",
-                    "content": response["messages"][-1],
-                    "context": get_context(),
-                    "execution_time": response["execution_time"],
-                    "tokens_used": response["tokens_used"],
-                    "cost": response["cost"]
-                })
-            
-            log["total_cost"] += response["cost"]
-            log["total_tokens"] += response["tokens_used"]
-
-        with open(f"{log_branch_path}/{filename}", "w") as file:
-            yaml.dump(log, file)
+        return self.chat_logs_manager.get_chat_history(branch_name, session_id)
