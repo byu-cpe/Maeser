@@ -14,7 +14,7 @@ class User:
     # We set it back to its default implementation
     __hash__ = object.__hash__
 
-    def __init__(self, ident, blacklisted=False, admin=False, realname='Student', usergroup='b\'guest\'', authmethod='caedm', requests_left=10, max_requests=10, aka=dict()):
+    def __init__(self, ident: str, blacklisted=False, admin=False, realname='Student', usergroup='b\'guest\'', authmethod='caedm', requests_left=10, max_requests=10, aka=list()):
         self.ident = ident
         self.is_active = not blacklisted
         self.admin = admin
@@ -23,7 +23,7 @@ class User:
         self.auth_method = authmethod
         self._requests_remaining = requests_left
         self._max_requests = max_requests
-        self.aka = aka
+        self.aka: list = aka
 
     @property
     def is_authenticated(self):
