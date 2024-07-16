@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
 </head>
 <body>
     <main>
         <div class="form-login">
-            <img src="{{ url_for('static', filename='logo_light.svg') }}" alt="Logo">
+            <img src="{{ url_for('maeser.static', filename='logo_light.svg') }}" alt="Logo">
             <h2 class="form-title">Login</h2>
             {% if message %}
                 <p class="form-message">{{ message }}</p>

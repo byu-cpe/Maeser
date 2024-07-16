@@ -13,13 +13,13 @@
         <div id="chat-messages">
             <section id="all-messages">
                 <div class="message-container receiver">
-                    <img src="{{ url_for('static', filename='favicon.svg') }}">
+                    <img src="{{ url_for('maeser.static', filename='favicon.svg') }}">
                     <div class="message-controls">
                         <div class="message-bubble">
                             <p>Hello, how can I help you today?</p>
                         </div>
                         <div class="like-dislike-controls">  
-                            <a href="{{ url_for('feedback_form') }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.85rem;font-weight: bold;text-decoration: none;color: #0084ff;">Feedback?</a>
+                            {# <a href="{{ url_for('feedback_form') }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.85rem;font-weight: bold;text-decoration: none;color: #0084ff;">Feedback?</a> #}
                         </div>
                     </div>
                 </div>
