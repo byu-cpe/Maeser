@@ -1,5 +1,3 @@
-from tabnanny import check
-from typing import Dict
 from langchain_core.documents.base import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import StateGraph
@@ -8,7 +6,6 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph.graph import CompiledGraph
 from typing_extensions import TypedDict
 from typing import List, TypedDict, Annotated
-from enum import Enum
 from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
