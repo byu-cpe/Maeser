@@ -5,7 +5,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from langgraph.graph.graph import CompiledGraph
 from typing_extensions import TypedDict
-from typing import List, TypedDict, Annotated
+from typing import List, Annotated
 from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
