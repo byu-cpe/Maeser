@@ -16,7 +16,7 @@
                 <div class="header-wrapper">
                     <div id="logo-tab">
                         <button id="tab"><i class="fa fa-bars"></i></button>
-                        <img src="{{ url_for('static', filename='logo_dark.svg') }}">
+                        <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
                     </div>
                     <div id="rate-limit" style="color: white;">
                         <p>
@@ -47,7 +47,7 @@
             {% block content %}
             Not implemented yet.
             {% endblock %}
-        <script src="{{ url_for('static', filename='chat.js') }}"></script>
+        <script src="{{ url_for('maeser.static', filename='chat.js') }}"></script>
         </div>
     </body>
 </html>

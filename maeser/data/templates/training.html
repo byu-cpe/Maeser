@@ -10,7 +10,7 @@
 <body>
     <header>
         <div class="header-wrapper">
-            <img src="{{ url_for('static', filename='logo_dark.svg') }}">
+            <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
             <button id="reset-button-mobile" class="reset-button hide">
                 <i class="bi bi-trash-fill"></i>
             </button>
@@ -58,6 +58,6 @@
         </form>
         </form>
     </main>
-    <script src="{{ url_for('static', filename='feedback.js') }}"></script>
+    <script src="{{ url_for('maeser.static', filename='feedback.js') }}"></script>
 </body>
 </html>
