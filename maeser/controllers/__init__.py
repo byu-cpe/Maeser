@@ -1,4 +1,5 @@
 from flask import Blueprint
+import os
 
 from . import (
     chat_interface,
@@ -15,7 +16,6 @@ from . import (
     training_post,
 )
 from . import chat_api, conversation_history_api, feedback_api, remaining_requests_api
-
 from . import common
 
 __all__ = [
@@ -38,11 +38,14 @@ __all__ = [
     "common",
 ]
 
+# Get the directory of the current file
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Use this blueprint routing controllers if you wish to use the built-in templates
 maeser_blueprint = Blueprint(
     "chat",
     __name__,
-    template_folder="templates",
-    static_folder="static",
+    template_folder=os.path.join(current_dir, "templates"),
+    static_folder=os.path.join(current_dir, "static"),
     static_url_path="/static/maeser",
 )
