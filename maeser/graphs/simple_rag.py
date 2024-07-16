@@ -21,11 +21,11 @@ def get_simple_rag(vectorstore_path: str, memory_filepath: str, api_key: str | N
         retrieved_context: List[str]
         messages: Annotated[list, add_messages]
     
-    llm: ChatOpenAI = ChatOpenAI() if api_key is None else ChatOpenAI(api_key=api_key)
+    llm: ChatOpenAI = ChatOpenAI() if api_key is None else ChatOpenAI(api_key=api_key) # type: ignore
 
     retriever: VectorStoreRetriever = FAISS.load_local(
         vectorstore_path, 
-        OpenAIEmbeddings() if api_key is None else OpenAIEmbeddings(api_key=api_key),
+        OpenAIEmbeddings() if api_key is None else OpenAIEmbeddings(api_key=api_key), # type: ignore
         allow_dangerous_deserialization=True, 
         index_name="example"
     ).as_retriever()
