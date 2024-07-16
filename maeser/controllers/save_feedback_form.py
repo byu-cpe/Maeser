@@ -1,7 +1,7 @@
 from os import mkdir
 import time
 import yaml
-from flask import request, redirect, url_for
+from flask import request, redirect
 
 def save_feedback(log_path: str, feedback: dict) -> None:
     """

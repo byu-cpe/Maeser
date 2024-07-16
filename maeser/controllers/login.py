@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request, session
+from flask import render_template, redirect, request, session
 from flask_login import login_user
 from urllib.parse import urljoin, urlparse
 

@@ -1,7 +1,5 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from uuid import UUID
-from datetime import datetime
 from maeser.chat.chat_session_manager import ChatSessionManager
 from maeser.chat.chat_logs import BaseChatLogsManager
 from maeser.user_manager import User

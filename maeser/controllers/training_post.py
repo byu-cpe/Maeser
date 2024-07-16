@@ -1,4 +1,4 @@
-from flask import request, redirect, url_for
+from flask import request, redirect
 import time
 from os import mkdir
 import yaml
