@@ -299,7 +299,7 @@ function addMessageBubble(message, type, includeButtons = false, index=false) {
         });
     } else {
         const receiverIcon = document.createElement('img');
-        receiverIcon.src = '/static/favicon.svg';
+        receiverIcon.src = '/maeser/static/maeser-part.png';
         messageContainer.appendChild(receiverIcon);
         messageBubble.innerHTML = message;
     }

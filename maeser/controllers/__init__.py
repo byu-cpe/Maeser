@@ -47,5 +47,5 @@ maeser_blueprint = Blueprint(
     __name__,
     template_folder=os.path.join(current_dir, 'data/templates'),
     static_folder=os.path.join(current_dir, 'data/static'),
-    static_url_path="/static/maeser",
+    static_url_path="/maeser/static",
 )
