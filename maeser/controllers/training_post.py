@@ -42,4 +42,4 @@ def controller(log_path: str):
     
     })
 
-    return redirect(url_for('main_page'))
+    return redirect('/')

@@ -18,4 +18,4 @@ def controller(chat_test_yaml_path: str):
     reverse = (order == 'desc')
     test_files.sort(key=lambda x: x[sort_by], reverse=reverse)
 
-    return render_template('home.html', test_files=test_files, sort_by=sort_by, order=order)
+    return render_template('chat_tests_overview.html', test_files=test_files, sort_by=sort_by, order=order)

@@ -9,7 +9,7 @@ from . import (
     feedback_form,
     login,
     logout,
-    new_session_handler,
+    new_session_api,
     save_feedback_form,
     training,
     training_post,
@@ -28,7 +28,7 @@ __all__ = [
     "save_feedback_form",
     "login",
     "logout",
-    "new_session_handler",
+    "new_session_api",
     "training",
     "training_post",
     "chat_api",
@@ -46,5 +46,3 @@ maeser_blueprint = Blueprint(
     static_folder="static",
     static_url_path="/static/maeser",
 )
-
-
