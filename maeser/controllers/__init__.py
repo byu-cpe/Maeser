@@ -43,7 +43,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__ + '/..'))
 
 # Use this blueprint routing controllers if you wish to use the built-in templates
 maeser_blueprint = Blueprint(
-    "chat",
+    "maeser",
     __name__,
     template_folder=os.path.join(current_dir, 'data/templates'),
     static_folder=os.path.join(current_dir, 'data/static'),
