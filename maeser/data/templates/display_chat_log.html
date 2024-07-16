@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verity AI</title>
+    <link rel="icon" type="image/svg" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <b>Name: {{real_name}}</b>
+    <b>User Authentication: {{user_name}}</b>
+    <b>Time: {{time}}</b>
+    <b>Branch: {{branch}}</b>
+    <b>Total Cost: ${{total_cost}}</b>
+    <b>Total Tokens: {{total_tokens}}</b>
+    <hr style="color: black;width: 97%;margin: 1rem;">
+    {% if messages is not none %}
+        {% for message in messages %}
+            {{ message['content'] | safe }}
+            {% if message['role'] == 'system' %}
+                <b style="margin-top: 1rem">Cost: ${{ message['cost'] }}</b>
+                <b>Tokens: {{ message['tokens_used'] }}</b>
+                <b>Time to Response: {{ message['execution_time'] }} seconds</b>
+                {% if 'liked' in message %}
+                    <b>
+                        Feedback: {{ 'Positive' if message['liked'] else 'Negative' }}
+                    </b>
+                {% endif %}
+            {% endif %}
+            <hr style="color: black;width: 97%;margin: 1rem;">
+        {% endfor %}
+    {% else %}
+        <p>No messages in this conversation.</p>
+    {% endif %}
+    <br>
+    <a href="{{ url_for('logs') }}", style="margin-top: 2rem">Back to list</a>
+</body>
+</html>
+

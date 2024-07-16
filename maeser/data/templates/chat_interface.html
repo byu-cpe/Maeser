@@ -1,0 +1,48 @@
+{% extends "sidebar.html" %}
+
+{% block head %}
+<script>
+    var conversationHistory = {{ conversation|tojson|safe }} || false;
+    var requestsRemainingIntervalMs = {{ requests_remaining_interval_ms }};
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="chat-application">
+    <main>
+        <div id="chat-messages">
+            <section id="all-messages">
+                <div class="message-container receiver">
+                    <img src="{{ url_for('static', filename='favicon.svg') }}">
+                    <div class="message-controls">
+                        <div class="message-bubble">
+                            <p>Hello, how can I help you today?</p>
+                        </div>
+                        <div class="like-dislike-controls">  
+                            <a href="{{ url_for('feedback_form') }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.85rem;font-weight: bold;text-decoration: none;color: #0084ff;">Feedback?</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="button-container" class="">
+                    {% for button in buttons %}
+                        <button class="action-button" data-action="{{ button.action }}">{{ button.label }}</button>
+                    {% endfor %}
+                </div>
+                <div id="chat"></div>
+            </section>
+        </div>
+        <div id="chat-message-input">
+            <button id="scroll-button" class="hide" onclick="scrollToBottom()">
+                <i class="bi bi-arrow-down-circle-fill"></i>            
+            </button>
+            <form autocomplete="off" id="message-form" class="hide">
+                <textarea rows="1" id="message-input" placeholder="Type your message..." disabled></textarea>
+                <button type="submit" id="send-button" disabled>
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </form>
+        </div>        
+    </main>
+    <div id="notification"></div>
+</div>
+{% endblock %}

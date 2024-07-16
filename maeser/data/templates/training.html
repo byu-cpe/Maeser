@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verity AI</title>
+    <link rel="icon" type="image/svg" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-wrapper">
+            <img src="{{ url_for('static', filename='logo_dark.svg') }}">
+            <button id="reset-button-mobile" class="reset-button hide">
+                <i class="bi bi-trash-fill"></i>
+            </button>
+        </div>
+    </header>
+    <main>
+        <form action="{{ url_for('submit_train') }}" method="POST" class="standalone-form" id="train">
+            <h2>Help Train Verity AI</h2>
+            <p>
+                Help us improve Verity AI by providing an example question and answer.
+            </p>
+            <p>
+                These examples will be used to train the chatbot to provide better responses.
+            </p>
+            <p>
+                Please ensure the quality of the examples you provide.
+            </p>
+            <p>
+                Providing poor examples may result in the chatbot providing incorrect or low quality answers.
+            </p>
+                <label for="name">Name <span id="required">*</span></label>
+            <input type="text" id="name" name="name" required>
+            <label for="role">Role <span id="required">*</span></label>
+            <select id="role" name="role" required>
+            {% for option in role_options %}
+                <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+            </select>
+            <label for="type">Type <span id="required">*</span></label>
+            <p class="field-description">If you want to change <em>what</em> information the chatbot responds with, choose <b>information</b>.</p>
+            <p class="field-description">If you want to change <em>how</em> the chatbot responds, choose <b>style</b>.</p>
+            <select id="type" name="type" required>
+                {% for option in type_options %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+            <label for="question">Question <span id="required">*</span></label>
+            <textarea id="question" name="question" required style="min-height: 10rem;"></textarea>
+            <label for="answer">Answer <span id="required">*</span></label>
+            <textarea id="answer" name="answer" required style="min-height: 15rem;"></textarea>
+            <div class="button-container">
+            <button type="submit">Submit</button>
+            <button onclick="goBack()" class="negative-button">Cancel</button>
+            </div>
+        </form>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='feedback.js') }}"></script>
+</body>
+</html>

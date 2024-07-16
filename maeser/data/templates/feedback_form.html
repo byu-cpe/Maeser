@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verity AI</title>
+    <link rel="icon" type="image/svg" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-wrapper">
+            <img src="{{ url_for('static', filename='logo_dark.svg') }}">
+            <button id="reset-button-mobile" class="reset-button hide">
+                <i class="bi bi-trash-fill"></i>
+            </button>
+        </div>
+    </header>
+    <main>
+        <form action="{{ url_for('submit_feedback') }}" method="POST" class="standalone-form" id="feedback">
+            <label for="name">Name <span id="required">*</span></label>
+            <input type="text" id="name" name="name" required>
+            <label for="feedback">Feedback <span id="required">*</span></label>
+            <textarea id="feedback" name="feedback" required style="min-height: 15rem;"></textarea>
+            <label for="role">Role <span id="required">*</span></label>
+            <select id="role" name="role" required>
+                {% for option in role_options %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="category">Category <span id="required">*</span></label>
+            <select id="category" name="category" required>
+                {% for option in category_options %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+            <div class="button-container">
+                <button type="submit">Submit</button>
+                <button onclick="goBack()" class="negative-button">Cancel</button>
+            </div>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='feedback.js') }}"></script>
+</body>
+</html>
