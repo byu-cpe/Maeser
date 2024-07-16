@@ -36,7 +36,7 @@ def get_test_file_template(content: Dict[str, Any], conversation_index: int, fil
     branch = conversation.get("branch", "")
 
     return render_template(
-        'test_file.html',
+        'display_chat_test.html',
         version=version,
         test_num=test_num,
         question=question,

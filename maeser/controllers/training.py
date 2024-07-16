@@ -11,7 +11,7 @@ def controller():
     type_options = ['Information', 'Style']
 
     return render_template(
-        'train.html',
+        'training.html',
         role_options=role_options,
         type_options=type_options
     )

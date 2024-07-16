@@ -42,7 +42,7 @@ def get_log_file_template(content: dict) -> str:
         messages = None
     
     return render_template(
-        'log_file.html',
+        'display_chat_log.html',
         user_name=user_name,
         real_name=real_name,
         branch=branch,

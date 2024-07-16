@@ -101,11 +101,11 @@ def test_log_feedback(chat_logs_manager, create_test_log, test_log_data):
 
     chat_logs_manager.log_feedback(branch_name, session_id, 1, True)
     log_content = _read_log_file(chat_logs_manager, branch_name, session_id)
-    assert log_content["messages"][1]["liked"] == True
+    assert log_content["messages"][1]["liked"]
 
     chat_logs_manager.log_feedback(branch_name, session_id, 1, False)
     log_content = _read_log_file(chat_logs_manager, branch_name, session_id)
-    assert log_content["messages"][1]["liked"] == False
+    assert not log_content["messages"][1]["liked"]
 
 def test_log_feedback_invalid_index(chat_logs_manager, create_test_log, test_log_data):
     branch_name, session_id = "test_branch", "test_session"

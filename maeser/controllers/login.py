@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, request, session
+from flask import render_template, redirect, request, session
 from flask_login import login_user
 from urllib.parse import urljoin, urlparse
 
@@ -24,7 +24,7 @@ def login_controller(auth_manager):
         
         next_url = request.args.get('next')
         if not next_url or not is_safe_url(next_url):
-            next_url = url_for('main_page')
+            next_url = '/'
 
         return redirect(next_url)
 
@@ -35,7 +35,7 @@ def login_controller(auth_manager):
 
 def github_authorize_controller(current_user, github_authenticator):
     if not current_user.is_anonymous:
-        return redirect(url_for('main_page'))
+        return redirect('/')
     
     session['oauth2_state'] , provider_url = github_authenticator.get_auth_info()
 
@@ -44,7 +44,7 @@ def github_authorize_controller(current_user, github_authenticator):
 
 def github_auth_callback_controller(current_user, auth_manager):
     if not current_user.is_anonymous:
-        return redirect(url_for('main_page'))
+        return redirect('/')
 
     # if there was an error before auth, render the login page with the error message
     if 'error' in request.args:
@@ -62,4 +62,4 @@ def github_auth_callback_controller(current_user, auth_manager):
     
     login_user(user)
 
-    return redirect(url_for('main_page'))
+    return redirect('/')

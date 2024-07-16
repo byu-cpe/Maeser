@@ -42,7 +42,7 @@ def controller(log_path: str, chat_branches: List[dict], max_requests: int, rate
     requests_remaining = current_user.requests_remaining
 
     return render_template(
-        'chat.html', 
+        'chat_interface.html', 
         conversation=None, 
         buttons=chat_branches, 
         links=links,

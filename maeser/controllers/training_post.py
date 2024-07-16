@@ -1,4 +1,4 @@
-from flask import request, redirect, url_for
+from flask import request, redirect
 import time
 from os import mkdir
 import yaml
@@ -42,4 +42,4 @@ def controller(log_path: str):
     
     })
 
-    return redirect(url_for('main_page'))
+    return redirect('/')

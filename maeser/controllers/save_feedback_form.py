@@ -1,7 +1,7 @@
 from os import mkdir
 import time
 import yaml
-from flask import request, redirect, url_for
+from flask import request, redirect
 
 def save_feedback(log_path: str, feedback: dict) -> None:
     """
@@ -39,4 +39,4 @@ def controller(log_path: str):
         'category': category
     })
     
-    return redirect(url_for('main_page'))
+    return redirect('/')

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <main>
+        <div class="form-login">
+            <img src="{{ url_for('static', filename='logo_light.svg') }}" alt="Logo">
+            <h2 class="form-title">Login</h2>
+            {% if message %}
+                <p class="form-message">{{ message }}</p>
+            {% endif %}
+            <form action="{{ url_for('login', next=next) }}" method="post">
+                <input type="hidden" name="next" value="{{ next }}">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-input" required>
+                
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+                
+                <button type="submit" class="form-button">Login</button>
+            </form>
+            <p>Or</p>
+            <p>
+                <a class="btn github-login" href="{{ url_for('github_authorize', next_url=next) }}"><i class="bi bi-github"></i> Login with GitHub</a>
+            </p>
+        </div>
+    </main>
+</body>
+</html>

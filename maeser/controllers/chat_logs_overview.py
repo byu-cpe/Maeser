@@ -39,6 +39,6 @@ def controller(log_path: str, chat_branches: List[dict]):
             total_tokens += file_content.get('total_tokens', 0)
             total_cost += file_content.get('total_cost', 0.0)
 
-    return render_template('home.html', log_files=log_files, branches=branches, 
+    return render_template('chat_logs_overview.html', log_files=log_files, branches=branches, 
                            sort_by=sort_by, order=order, branch_filter=branch_filter, feedback_filter=feedback_filter,
                            total_tokens=total_tokens, total_cost=total_cost)
