@@ -1,6 +1,5 @@
 from maeser.chat.chat_logs import BaseChatLogsManager
 from maeser.user_manager import User
-from datetime import datetime
 import time
 from uuid import uuid4 as uid
 from langchain_community.callbacks import get_openai_callback
