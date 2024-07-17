@@ -54,36 +54,8 @@
         <ul id="log-files">
             {% for file in log_files %}
                 <li>
-                    <a href="{{ url_for('display_log', branch=file['branch'], filename=file['name']) }}">{{file['user']}}:{{ file['name'] }}</a>
+                    <a href="{{ url_for('maeser.display_log', branch=file['branch'], filename=file['name']) }}">{{file['user']}}:{{ file['name'] }}</a>
                     (Created: {{ file['created'] | datetimeformat }}, Modified: {{ file['modified'] | datetimeformat }}, Feedback: {{ file['has_feedback'] }})
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
-
-    {% if test_files is not undefined %}
-    <section id="test-files-section">
-        <h1 style="margin-top: 4rem">List of Test Files</h1>
-        <div>
-            <label for="test-sort-by">Sort by:</label>
-            <select id="test-sort-by">
-                <option value="created" {% if sort_by == 'created' %}selected{% endif %}>Creation Time</option>
-                <option value="modified" {% if sort_by == 'modified' %}selected{% endif %}>Modification Time</option>
-            </select>
-
-            <label for="test-order">Order:</label>
-            <select id="test-order">
-                <option value="asc" {% if order == 'asc' %}selected{% endif %}>Ascending</option>
-                <option value="desc" {% if order == 'desc' %}selected{% endif %}>Descending</option>
-            </select>
-            <button onclick="applyTestFilters()">Apply Filters</button>
-        </div>
-        <ul id="test-files">
-            {% for file in test_files %}
-                <li>
-                    <a href="{{ url_for('display_test', filename=file['name'], conversation_index=0) }}">{{ file['name'] }}</a>
-                    (Created: {{ file['created'] | datetimeformat }}, Modified: {{ file['modified'] | datetimeformat }}, Automated Metrics: {{ file['automated_metrics'] }})
                 </li>
             {% endfor %}
         </ul>
