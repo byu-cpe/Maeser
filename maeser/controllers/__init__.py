@@ -11,6 +11,7 @@ from . import (
     chat_tests_overview,
     display_chat_log,
     display_chat_test,
+    feedback_api,
     feedback_form,
     login,
     logout,
@@ -67,5 +68,9 @@ def get_maeser_blueprint_without_user_management(chat_session_manager: ChatSessi
     @maeser_blueprint_without_user_management.route("/msg/<chat_session>", methods=["POST"])
     def msg_api(chat_session):
         return chat_api.controller(chat_session_manager, chat_session)
+    
+    @maeser_blueprint_without_user_management.route('/feedback', methods=['POST'])
+    def feedback():
+        return feedback_api.controller(chat_session_manager)
 
     return maeser_blueprint_without_user_management
