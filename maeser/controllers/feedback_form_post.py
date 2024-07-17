@@ -1,9 +1,10 @@
+from maeser.chat.chat_session_manager import ChatSessionManager
 from os import mkdir
 import time
 import yaml
 from flask import request, redirect
 
-def save_feedback(log_path: str, feedback: dict) -> None:
+def save_feedback(log_path: str | None, feedback: dict) -> None:
     """
     Save the feedback to a file in the log path.
 
@@ -26,13 +27,13 @@ def save_feedback(log_path: str, feedback: dict) -> None:
 
     print(f"Feedback saved to {filename}")
 
-def controller(log_path: str):
+def controller(chat_sessions_manager: ChatSessionManager):
     name = request.form.get('name')
     feedback = request.form.get('feedback')
     role = request.form.get('role')
     category = request.form.get('category')
 
-    save_feedback(log_path, {
+    save_feedback(chat_sessions_manager.chat_log_path, {
         'name': name,
         'feedback': feedback,
         'role': role,

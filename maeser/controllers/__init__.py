@@ -12,11 +12,11 @@ from . import (
     display_chat_log,
     display_chat_test,
     feedback_api,
-    feedback_form,
+    feedback_form_get,
+    feedback_form_post,
     login,
     logout,
     new_session_api,
-    save_feedback_form,
     training,
     training_post,
 )
@@ -29,7 +29,7 @@ __all__ = [
     "chat_tests_overview",
     "display_chat_log",
     "display_chat_test",
-    "feedback_form",
+    "feedback_form_get",
     "save_feedback_form",
     "login",
     "logout",
@@ -72,5 +72,22 @@ def get_maeser_blueprint_without_user_management(chat_session_manager: ChatSessi
     @maeser_blueprint_without_user_management.route('/feedback', methods=['POST'])
     def feedback():
         return feedback_api.controller(chat_session_manager)
+
+    if chat_session_manager.chat_logs_manager:
+        @maeser_blueprint_without_user_management.route("/train")
+        def train():
+            return training.controller()
+
+        @maeser_blueprint_without_user_management.route("/submit_train", methods=["POST"])
+        def submit_train():
+            return training_post.controller(chat_session_manager)
+
+        @maeser_blueprint_without_user_management.route("/feedback_form")
+        def feedback_form():
+            return feedback_form_get.controller()
+
+        @maeser_blueprint_without_user_management.route("/submit_feedback", methods=["POST"])
+        def submit_feedback():
+            return feedback_form_post.controller(chat_session_manager)
 
     return maeser_blueprint_without_user_management
