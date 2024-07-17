@@ -117,8 +117,8 @@ class ChatLogsManager(BaseChatLogsManager):
         # compile log information
         log_info: dict = {
             "session_id": session_id,
-            "user": user.full_id_name if user else "default_user",
-            "real_name": user.realname if user else "default_user",
+            "user": user.full_id_name if user else "anon",
+            "real_name": user.realname if user else "anon",
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "branch": branch_name,
             "total_cost": 0,
@@ -153,12 +153,12 @@ class ChatLogsManager(BaseChatLogsManager):
             log["messages"].append(
                 {
                     "role": "user",
-                    "content": log_data.get("message", "No message provided.")
+                    "content": log_data["messages"][-2],
                 })
             log["messages"].append({
                     "role": "system",
-                    "content": log_data.get("response", "No response provided."),
-                    "context": log_data.get("context", []),
+                    "content": log_data["messages"][-1],
+                    "context": [context.page_content for context in log_data["retrieved_context"]],
                     "execution_time": log_data.get("execution_time", 0),
                     "tokens_used": log_data.get("tokens", 0),
                     "cost": log_data.get("cost", 0)

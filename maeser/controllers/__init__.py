@@ -1,7 +1,7 @@
 from email import message
 from flask import Blueprint, session
 import os
-import datetime
+from datetime import datetime
 
 import maeser
 from maeser.chat.chat_session_manager import ChatSessionManager
@@ -102,5 +102,9 @@ def get_maeser_blueprint_without_user_management(chat_session_manager: ChatSessi
         @maeser_blueprint_without_user_management.route("/logs/<branch>/<filename>")
         def display_log(branch, filename):
             return display_chat_log.controller(chat_session_manager, branch, filename)
+
+        @maeser_blueprint_without_user_management.route("/conversation_history", methods=["POST"])
+        def conversation_history():
+            return conversation_history_api.controller(chat_session_manager)
 
     return maeser_blueprint_without_user_management
