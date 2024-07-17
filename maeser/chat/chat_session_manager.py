@@ -131,3 +131,13 @@ class ChatSessionManager:
             return {}
         
         return self.chat_logs_manager.get_chat_history(branch_name, session_id)
+    
+    @property
+    def branches(self) -> dict:
+        """
+        Returns the list of branches available for chat.
+
+        Returns:
+            list: The list of branches available for chat.
+        """
+        return self.graphs
