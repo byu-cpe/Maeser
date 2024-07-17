@@ -1,8 +1,11 @@
+from email import message
 from flask import Blueprint, session
 import os
 
+import maeser
 from maeser.chat.chat_session_manager import ChatSessionManager
 from . import (
+    chat_api,
     chat_interface,
     chat_logs_overview,
     chat_tests_overview,
@@ -60,5 +63,9 @@ def get_maeser_blueprint_without_user_management(chat_session_manager: ChatSessi
     @maeser_blueprint_without_user_management.route("/req_session", methods=["POST"])
     def sess_handler():
         return new_session_api.controller(chat_session_manager)
+    
+    @maeser_blueprint_without_user_management.route("/msg/<chat_session>", methods=["POST"])
+    def msg_api(chat_session):
+        return chat_api.controller(chat_session_manager, chat_session)
 
     return maeser_blueprint_without_user_management

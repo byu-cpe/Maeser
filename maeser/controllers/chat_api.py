@@ -1,8 +1,9 @@
+from maeser.chat.chat_session_manager import ChatSessionManager
 from flask import request, abort
 from openai import RateLimitError
 from .common.render import get_response_html
 
-def controller(chat_session, chat_session_handler):
+def controller(chat_sessions_manager: ChatSessionManager, chat_session: str):
     """
     Handle incoming messages for a chat_session.
 
@@ -15,7 +16,7 @@ def controller(chat_session, chat_session_handler):
     posty = request.get_json()
 
     try:
-        response = chat_session_handler.ask_question(posty["message"], posty["action"], chat_session)
+        response = chat_sessions_manager.ask_question(posty["message"], posty["action"], chat_session)
     except RateLimitError as e:
         print(f"{type(e)}, {e}: Rate limit reached")
         abort(503, description="Rate limit reached, please try again later")
