@@ -1,3 +1,4 @@
+from maeser.chat.chat_session_manager import ChatSessionManager
 import yaml
 from flask import abort, render_template
 
@@ -52,7 +53,7 @@ def get_log_file_template(content: dict) -> str:
         messages=messages
     )
 
-def controller(chat_log_path: str, branch, filename):
+def controller(chat_sessions_manager: ChatSessionManager, branch, filename):
     """
     Display the content of a specified log file.
 
@@ -63,6 +64,8 @@ def controller(chat_log_path: str, branch, filename):
     Returns:
         str: Rendered template with log file content.
     """
+    chat_log_path = chat_sessions_manager.chat_log_path
+    
     try:
         with open(f"{chat_log_path}/chat_history/{branch}/{filename}", "r") as file:
             file_content = yaml.safe_load(file)

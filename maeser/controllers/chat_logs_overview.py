@@ -1,3 +1,5 @@
+from maeser import chat
+from maeser.chat.chat_session_manager import ChatSessionManager
 from typing import List
 
 import yaml
@@ -5,20 +7,24 @@ from .common.file_info import get_file_list
 from flask import render_template, request
 
 
-def controller(log_path: str, chat_branches: List[dict]):
+def controller(chat_sessions_manager: ChatSessionManager):
     """
     Render the home page with log files and aggregate token and cost data.
 
     Returns:
         str: Rendered home template with log file list.
     """
+    log_path = chat_sessions_manager.chat_log_path
+    chat_branches = chat_sessions_manager.branches
+
     sort_by = request.args.get('sort_by', 'modified')  # default sorting by modification time
     order = request.args.get('order', 'desc')  # default sorting order is ascending
     branch_filter = request.args.get('branch', '')
     feedback_filter = request.args.get('feedback', None)
 
-    log_files = get_file_list(log_path + '/chat_history')
-    branches = [branch['action'] for branch in chat_branches]
+    print(chat_branches)
+    log_files = get_file_list(log_path + '/chat_history') if log_path else []
+    branches = [branch for branch in chat_branches] if chat_branches else []
 
     if branch_filter:
         log_files = [f for f in log_files if branch_filter.lower() in f['branch'].lower()]

@@ -1,6 +1,7 @@
 from email import message
 from flask import Blueprint, session
 import os
+import datetime
 
 import maeser
 from maeser.chat.chat_session_manager import ChatSessionManager
@@ -55,6 +56,10 @@ def get_maeser_blueprint_without_user_management(chat_session_manager: ChatSessi
         static_url_path="/maeser/static",
     )
 
+    @maeser_blueprint_without_user_management.app_template_filter('datetimeformat')
+    def datetimeformat(value, format='%Y-%m-%d %H:%M:%S'):
+        return datetime.fromtimestamp(value).strftime(format)
+
     @maeser_blueprint_without_user_management.route("/")
     def chat_interface_route():
         return chat_interface.controller(
@@ -89,5 +94,13 @@ def get_maeser_blueprint_without_user_management(chat_session_manager: ChatSessi
         @maeser_blueprint_without_user_management.route("/submit_feedback", methods=["POST"])
         def submit_feedback():
             return feedback_form_post.controller(chat_session_manager)
+        
+        @maeser_blueprint_without_user_management.route('/logs', methods=['GET'])
+        def logs():
+            return chat_logs_overview.controller(chat_session_manager)
+
+        @maeser_blueprint_without_user_management.route("/logs/<branch>/<filename>")
+        def display_log(branch, filename):
+            return display_chat_log.controller(chat_session_manager, branch, filename)
 
     return maeser_blueprint_without_user_management
