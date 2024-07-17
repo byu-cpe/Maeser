@@ -11,7 +11,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 
-def get_simple_rag(vectorstore_path: str, memory_filepath: str, api_key: str | None = None) -> CompiledGraph:
+def get_simple_rag(vectorstore_path: str, vectorstore_index: str, memory_filepath: str, api_key: str | None = None) -> CompiledGraph:
     def add_messages(left: list, right: list):
         """Add-don't-overwrite."""
         return left + right
@@ -27,7 +27,7 @@ def get_simple_rag(vectorstore_path: str, memory_filepath: str, api_key: str | N
         vectorstore_path, 
         OpenAIEmbeddings() if api_key is None else OpenAIEmbeddings(api_key=api_key), # type: ignore
         allow_dangerous_deserialization=True, 
-        index_name="example"
+        index_name=vectorstore_index
     ).as_retriever()
     
     system_prompt_text: str = """You are a helpful teacher helping a student with course material.
