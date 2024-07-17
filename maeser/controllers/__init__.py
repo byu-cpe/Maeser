@@ -1,6 +1,7 @@
 from flask import Blueprint
 import os
 
+from maeser.chat.chat_session_manager import ChatSessionManager
 from . import (
     chat_interface,
     chat_logs_overview,
@@ -41,11 +42,19 @@ __all__ = [
 # Get the directory of the current file
 current_dir = os.path.dirname(os.path.abspath(__file__ + '/..'))
 
-# Use this blueprint routing controllers if you wish to use the built-in templates
-maeser_blueprint = Blueprint(
-    "maeser",
-    __name__,
-    template_folder=os.path.join(current_dir, 'data/templates'),
-    static_folder=os.path.join(current_dir, 'data/static'),
-    static_url_path="/maeser/static",
-)
+def get_maeser_blueprint_without_user_management(chat_session_manager: ChatSessionManager) -> Blueprint:
+    maeser_blueprint_without_user_management = Blueprint(
+        "maeser",
+        __name__,
+        template_folder=os.path.join(current_dir, 'data/templates'),
+        static_folder=os.path.join(current_dir, 'data/static'),
+        static_url_path="/maeser/static",
+    )
+
+    @maeser_blueprint_without_user_management.route("/")
+    def chat_interface_route():
+        return chat_interface.controller(
+            chat_session_manager
+        )
+
+    return maeser_blueprint_without_user_management

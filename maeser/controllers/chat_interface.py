@@ -4,50 +4,61 @@ from flask import render_template
 # from flask_login import current_user
 
 from .common.file_info import get_file_list
+from maeser.chat.chat_session_manager import ChatSessionManager
 
-
-def controller(log_path: str, chat_branches: List[dict], max_requests: int, rate_limit_interval: int, current_user=None):
+def controller(chat_sessions_manager: ChatSessionManager, max_requests: int | None = None, rate_limit_interval: int | None = None, current_user=None):
     """
     Renders the chat interface template with relevant data.
 
     Args:
-        log_path (str): The path to the directory containing chat history logs.
-        chat_branches (List[dict]): A list of dictionaries representing available chat branches.
-        max_requests (int): The maximum number of requests a user can make.
-        rate_limit_interval (int): The interval in seconds for rate limiting requests.
+        chat_sessions_manager (ChatSessionManager): The chat session manager object.
+        max_requests (int, optional): The maximum number of requests a user can make. Defaults to None.
+        rate_limit_interval (int, optional): The interval in seconds for rate limiting requests. Defaults to None.
+        current_user (object, optional): The current user object. Defaults to None.
 
     Returns:
-        The rendered chat.html template with the following data:
+        The rendered chat_interface.html template with the following data:
             - conversation: None (no active conversation)
-            - buttons: The list of available chat branches
+            - buttons: The dictionary of available chat branches
             - links: A list of dictionaries representing previous chat sessions for the current user
-            - requests_remaining: The number of requests remaining for the current user
+            - requests_remaining: The number of requests remaining for the current user (10 if current_user is None)
             - max_requests_remaining: The maximum number of requests allowed
-            - requests_remaining_interval_ms: The interval in milliseconds for rate limiting requests
+            - requests_remaining_interval_ms: The interval in milliseconds for rate limiting requests (rate_limit_interval * 1000 / 3)
     """
+    # get chat log path and branches from chat sessions
+    log_path: str | None = chat_sessions_manager.chat_log_path
+    chat_branches: dict = chat_sessions_manager.branches
+    
     links = []
-    conversations = get_file_list(log_path + '/chat_history')
-    for conversation in conversations:
-        current_user_name: str = 'anon' if current_user is None else current_user.full_id_name
-        if current_user_name == conversation['user']:
-            links.append({
-                "branch": conversation['branch'],
-                "session": conversation['name'].removesuffix('.log'),
-                "modified": conversation['modified'],
-                "first_message": conversation['first_message']
-            })
-    # sort conversations by date modified
-    links.sort(key=lambda x: x['modified'], reverse=True)
+    # get conversation history if log path exists
+    if log_path:
+        conversations = get_file_list(log_path + '/chat_history')
+        for conversation in conversations:
+            current_user_name: str = 'anon' if current_user is None else current_user.full_id_name
+            if current_user_name == conversation['user']:
+                links.append({
+                    "branch": conversation['branch'],
+                    "session": conversation['name'].removesuffix('.log'),
+                    "modified": conversation['modified'],
+                    "first_message": conversation['first_message']
+                })
+        # sort conversations by date modified
+        links.sort(key=lambda x: x['modified'], reverse=True)
+    
     # remove conversations with no messages
     links = [link for link in links if link['first_message'] is not None]
-    requests_remaining: int = 10 if current_user is None else current_user.requests_remaining
+    requests_remaining: int | None = None if current_user is None else current_user.requests_remaining
+    if rate_limit_interval:
+        rate_limit_interval = rate_limit_interval * 1000 // 3
+    rate_limiting: bool = requests_remaining and rate_limit_interval and max_requests
 
     return render_template(
         'chat_interface.html', 
-        conversation=None, 
-        buttons=chat_branches, 
-        links=links,
-        requests_remaining=requests_remaining,
-        max_requests_remaining=max_requests,
-        requests_remaining_interval_ms=rate_limit_interval * 1000 / 3
+        conversation=None,
+        buttons=chat_branches,                                  # dict
+        links=links,                                            # List[dict]
+        requests_remaining=requests_remaining,                  # None | int
+        max_requests_remaining=max_requests,                    # None | int
+        requests_remaining_interval_ms=rate_limit_interval,     # None | int
+        rate_limiting=rate_limiting                             # bool
     )
