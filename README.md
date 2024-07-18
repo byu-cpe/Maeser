@@ -1,6 +1,8 @@
 # Maeser
 ## Overview
 This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes. It leverages the capabilities of [LangGraph](https://langchain-ai.github.io/langgraph/), a powerful tool for serving RAG pipelines, to provide a robust backend for chatbot interactions.
+
+Detailed documentation can be found [here](https://byucpe.github.io/maeser/).
 ## Features
 - **RAG Pipeline Integration**: Utilizes LangGraph to seamlessly integrate RAG pipelines into the chatbot, enhancing its ability to generate informative and contextually relevant responses.
 - **Session Management**: Comes equipped with a session manager to handle interactions efficiently, ensuring a smooth and coherent conversation flow.
@@ -18,10 +20,10 @@ This package is designed to facilitate the creation of Retrieval-Augmented Gener
 
 ## Getting Started
 ### Development Setup
-To begin using the Maeser Chatbot, follow the [development setup instructions](https://byuccl.github.io/maeser/user/development_setup.html).
+To begin using the Maeser Chatbot, follow the [development setup instructions](https://byucpe.github.io/maeser/user/development_setup.html).
 This page includes instructions for cloning the repository and running the app.
 
-> **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byuccl.github.io/maeser/user/wsl_development.html).
+> **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byucpe.github.io/maeser/user/wsl_development.html).
 ### Example
 For a fully working example application, see the source code in the `example` directory.
 ### Graphs
