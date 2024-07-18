@@ -14,8 +14,7 @@ UNIT_TESTS_DIR := ../tests/
 PACKAGE_DOC_DIR := autodoc/maeser
 UNIT_TESTS_DOC_DIR := autodoc/tests
 
-SPHINX_VENV := .sphinx-venv
-PIP_REQUIREMENTS := ../requirements/requirements.txt
+PIP := pip
 
 # Valid Sphinx targets
 SPHINX_TARGETS := html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf latexpdfja text man texinfo info gettext changes xml pseudoxml linkcheck doctest coverage
@@ -35,17 +34,12 @@ clean: tidy
 	rm -rf $(PACKAGE_DOC_DIR)
 	rm -rf $(UNIT_TESTS_DOC_DIR)
 
-purge: clean
-	rm -rf $(SPHINX_VENV)
+deps:
+	$(PIP) install sphinx_rtd_theme myst_parser sphinx-book-theme
 
 .PHONY: help apidoc tidy clean Makefile $(SPHINX_TARGETS)
 
-$(SPHINX_VENV):
-	python -m venv $(SPHINX_VENV)
-	$(SPHINX_VENV)/bin/pip install -r $(PIP_REQUIREMENTS)
-	$(SPHINX_VENV)/bin/pip install -e ..
-
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-$(SPHINX_TARGETS): Makefile apidoc $(SPHINX_VENV)
+$(SPHINX_TARGETS): Makefile apidoc
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

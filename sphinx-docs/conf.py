@@ -38,6 +38,7 @@ autodoc_mock_imports = [
     'markdownify',
     'flask',
     'flask-login',
+    'flask_login',
     'pytest'
 ]
 
