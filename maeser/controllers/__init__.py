@@ -1,10 +1,8 @@
-from email import message
 from flask import Blueprint, session
-from flask_login import login_required, LoginManager, current_user
+from flask_login import login_required, current_user
 import os
 from datetime import datetime
 
-import maeser
 from maeser.chat.chat_session_manager import ChatSessionManager
 from maeser.controllers.common.decorators import rate_limited, admin_required
 from maeser.user_manager import UserManager
@@ -24,8 +22,28 @@ from . import (
     training,
     training_post,
 )
-from . import chat_api, conversation_history_api, feedback_api, remaining_requests_api
+from . import conversation_history_api, remaining_requests_api
 from . import common
+
+__all__ = [
+    'chat_api',
+    'chat_interface',
+    'chat_logs_overview',
+    'chat_tests_overview',
+    'display_chat_log',
+    'display_chat_test',
+    'feedback_api',
+    'feedback_form_get',
+    'feedback_form_post',
+    'login_api',
+    'logout',
+    'new_session_api',
+    'training',
+    'training_post',
+    'conversation_history_api',
+    'remaining_requests_api',
+    'common'
+]
 
 # Get the directory of the current file
 current_dir = os.path.dirname(os.path.abspath(__file__ + '/..'))
@@ -73,6 +91,7 @@ def get_maeser_blueprint_with_user_management(chat_session_manager: ChatSessionM
     
     @maeser_blueprint.route("/msg/<chat_session>", methods=["POST"])
     @login_required
+    @rate_limited(chat_session_manager, current_user)
     def msg_api(chat_session):
         return chat_api.controller(chat_session_manager, chat_session)
     
