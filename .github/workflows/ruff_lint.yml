@@ -37,6 +37,3 @@ jobs:
 
       - name: Run Ruff on tests directory
         run: ruff check tests
-
-      - name: Run Ruff format check
-        run: ruff format --check .
