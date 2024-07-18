@@ -62,7 +62,62 @@ def get_maeser_blueprint_with_user_management(chat_session_manager: ChatSessionM
     @maeser_blueprint.route('/login/github_callback')
     def github_auth_callback():
         print(session)
-        return login_api.github_auth_callback_controller(current_user, user_manager, session)
+        return login_api.github_auth_callback_controller(current_user, user_manager)
+    
+    # START COMMON ROUTES
+    
+    @maeser_blueprint.route("/req_session", methods=["POST"])
+    @login_required
+    def sess_handler():
+        return new_session_api.controller(chat_session_manager)
+    
+    @maeser_blueprint.route("/msg/<chat_session>", methods=["POST"])
+    @login_required
+    def msg_api(chat_session):
+        return chat_api.controller(chat_session_manager, chat_session)
+    
+    @maeser_blueprint.route('/feedback', methods=['POST'])
+    @login_required
+    def feedback():
+        return feedback_api.controller(chat_session_manager)
+
+    if chat_session_manager.chat_logs_manager:
+        @maeser_blueprint.route("/train")
+        @login_required
+        @admin_required(current_user)
+        def train():
+            return training.controller()
+
+        @maeser_blueprint.route("/submit_train", methods=["POST"])
+        @login_required
+        @admin_required(current_user)
+        def submit_train():
+            return training_post.controller(chat_session_manager)
+
+        @maeser_blueprint.route("/feedback_form")
+        def feedback_form():
+            return feedback_form_get.controller()
+
+        @maeser_blueprint.route("/submit_feedback", methods=["POST"])
+        def submit_feedback():
+            return feedback_form_post.controller(chat_session_manager)
+        
+        @maeser_blueprint.route('/logs', methods=['GET'])
+        @login_required
+        @admin_required(current_user)
+        def logs():
+            return chat_logs_overview.controller(chat_session_manager)
+
+        @maeser_blueprint.route("/logs/<branch>/<filename>")
+        @login_required
+        @admin_required(current_user)
+        def display_log(branch, filename):
+            return display_chat_log.controller(chat_session_manager, branch, filename)
+
+        @maeser_blueprint.route("/conversation_history", methods=["POST"])
+        @login_required
+        def conversation_history():
+            return conversation_history_api.controller(chat_session_manager)
 
     return maeser_blueprint
 
