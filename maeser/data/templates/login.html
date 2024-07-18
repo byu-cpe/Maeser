@@ -15,7 +15,7 @@
             {% if message %}
                 <p class="form-message">{{ message }}</p>
             {% endif %}
-            <form action="{{ url_for('login', next=next) }}" method="post">
+            <form action="{{ url_for('maeser.login', next=next) }}" method="post">
                 <input type="hidden" name="next" value="{{ next }}">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" id="username" name="username" class="form-input" required>
@@ -27,7 +27,7 @@
             </form>
             <p>Or</p>
             <p>
-                <a class="btn github-login" href="{{ url_for('github_authorize', next_url=next) }}"><i class="bi bi-github"></i> Login with GitHub</a>
+                <a class="btn github-login" href="{{ url_for('maeser.github_authorize', next_url=next) }}"><i class="bi bi-github"></i> Login with GitHub</a>
             </p>
         </div>
     </main>
