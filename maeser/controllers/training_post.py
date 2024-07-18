@@ -1,9 +1,10 @@
+from maeser.chat.chat_session_manager import ChatSessionManager
 from flask import request, redirect
 import time
 from os import mkdir
 import yaml
 
-def save_training_data(log_path: str, training_data: dict) -> None:
+def save_training_data(log_path: str | None, training_data: dict) -> None:
     """
     Save the training data to a file in the log path.
 
@@ -26,14 +27,14 @@ def save_training_data(log_path: str, training_data: dict) -> None:
 
     print(f"Training data saved to {filename}")
 
-def controller(log_path: str):
+def controller(chat_session_manager: ChatSessionManager):
     name = request.form.get('name')
     role = request.form.get('role')
     type = request.form.get('type')
     question = request.form.get('question')
-    answer = request.form.get('answer')
+    answer: str | None = request.form.get('answer')
 
-    save_training_data(log_path,{
+    save_training_data(chat_session_manager.chat_log_path,{
         'name': name,
         'role': role,
         'type': type,

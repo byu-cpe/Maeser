@@ -3,7 +3,7 @@ from maeser.user_manager import User
 import time
 from uuid import uuid4 as uid
 from langchain_community.callbacks import get_openai_callback
-from langgraph.graph import StateGraph
+from langgraph.graph.graph import CompiledGraph
 
 class ChatSessionManager:
     """
@@ -26,7 +26,7 @@ class ChatSessionManager:
         self.chat_logs_manager: BaseChatLogsManager | None = chat_logs_manager
         self.graphs: dict = {}
 
-    def register_branch(self, branch_name: str, branch_label: str, graph: StateGraph) -> None:
+    def register_branch(self, branch_name: str, branch_label: str, graph: CompiledGraph) -> None:
         """
         Registers a branch with its information and graph.
 
@@ -131,3 +131,23 @@ class ChatSessionManager:
             return {}
         
         return self.chat_logs_manager.get_chat_history(branch_name, session_id)
+    
+    @property
+    def branches(self) -> dict:
+        """
+        Returns the list of branches available for chat.
+
+        Returns:
+            list: The list of branches available for chat.
+        """
+        return self.graphs
+    
+    @property
+    def chat_log_path(self) -> str | None:
+        """
+        Returns the path to the logs directory.
+
+        Returns:
+            str: The path to the logs directory.
+        """
+        return self.chat_logs_manager.chat_log_path if self.chat_logs_manager else None

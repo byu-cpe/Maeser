@@ -18,12 +18,14 @@
                         <button id="tab"><i class="fa fa-bars"></i></button>
                         <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
                     </div>
-                    <div id="rate-limit" style="color: white;">
-                        <p>
-                            <span id="requests-remaining">{{requests_remaining}}</span> / 
-                            <span id="max-requests-remaining">{{max_requests_remaining}}</span>
-                        </p>
-                    </div>
+                    {% if rate_limiting %}
+                        <div id="rate-limit" style="color: white;">
+                            <p>
+                                <span id="requests-remaining">{{requests_remaining}}</span> / 
+                                <span id="max-requests-remaining">{{max_requests_remaining}}</span>
+                            </p>
+                        </div>
+                    {% endif %}
                 </div>
             </header>
 

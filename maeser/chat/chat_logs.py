@@ -92,11 +92,11 @@ class ChatLogsManager(BaseChatLogsManager):
         Returns:
             None
         '''
-        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "r") as file:
+        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "r") as file:
             log: dict = yaml.safe_load(file)
             log['messages'][message_index]['liked'] = feedback
 
-        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "w") as file:
+        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "w") as file:
             yaml.dump(log, file)
 
     def get_chat_history(self, branch_name: str, session_id: str) -> dict:
@@ -110,15 +110,15 @@ class ChatLogsManager(BaseChatLogsManager):
         Returns:
             dict: The chat history for the session.
         '''
-        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "r") as file:
+        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "r") as file:
             return yaml.safe_load(file)
 
     def _create_log_file(self, branch_name: str, session_id: str, user: User | None = None) -> None:
         # compile log information
         log_info: dict = {
             "session_id": session_id,
-            "user": user.full_id_name if user else "default_user",
-            "real_name": user.realname if user else "default_user",
+            "user": user.full_id_name if user else "anon",
+            "real_name": user.realname if user else "anon",
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "branch": branch_name,
             "total_cost": 0,
@@ -127,11 +127,11 @@ class ChatLogsManager(BaseChatLogsManager):
         }
 
         # ensure log directory exists
-        if not os.path.exists(f"{self.chat_log_path}/{branch_name}"):
-            os.makedirs(f"{self.chat_log_path}/{branch_name}")
+        if not os.path.exists(f"{self.chat_log_path}/chat_history/{branch_name}"):
+            os.makedirs(f"{self.chat_log_path}/chat_history/{branch_name}")
 
         # create log file
-        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "w") as file:
+        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "w") as file:
             yaml.dump(log_info, file)
 
     def _update_log_file(self, branch_name: str, session_id: str, log_data: dict) -> None:
@@ -146,19 +146,19 @@ class ChatLogsManager(BaseChatLogsManager):
         Returns:
             None
         '''
-        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "r") as file:
+        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "r") as file:
             log: dict = yaml.safe_load(file)
 
             log["messages"] = log.get("messages", [])
             log["messages"].append(
                 {
                     "role": "user",
-                    "content": log_data.get("message", "No message provided.")
+                    "content": log_data["messages"][-2],
                 })
             log["messages"].append({
                     "role": "system",
-                    "content": log_data.get("response", "No response provided."),
-                    "context": log_data.get("context", []),
+                    "content": log_data["messages"][-1],
+                    "context": [context.page_content for context in log_data["retrieved_context"]],
                     "execution_time": log_data.get("execution_time", 0),
                     "tokens_used": log_data.get("tokens", 0),
                     "cost": log_data.get("cost", 0)
@@ -167,7 +167,7 @@ class ChatLogsManager(BaseChatLogsManager):
             log["total_cost"] += log_data.get("cost", 0)
             log["total_tokens"] += log_data.get("tokens", 0)
 
-        with open(f"{self.chat_log_path}/{branch_name}/{session_id}.log", "w") as file:
+        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "w") as file:
             yaml.dump(log, file)
 
     def _does_log_exist(self, branch_name: str, session_id: str) -> bool:
@@ -180,4 +180,4 @@ class ChatLogsManager(BaseChatLogsManager):
         Returns:
             bool: True if the log file exists, False otherwise.
         '''
-        return os.path.exists(f"{self.chat_log_path}/{branch_name}/{session_id}.log")
+        return os.path.exists(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log")

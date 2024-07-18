@@ -10,14 +10,14 @@
 <body>
     <header>
         <div class="header-wrapper">
-            <img src="{{ url_for('maeser.static', filename='logo_dark.svg') }}">
+            <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
             <button id="reset-button-mobile" class="reset-button hide">
                 <i class="bi bi-trash-fill"></i>
             </button>
         </div>
     </header>
     <main>
-        <form action="{{ url_for('submit_feedback') }}" method="POST" class="standalone-form" id="feedback">
+        <form action="{{ url_for('maeser.submit_train') }}" method="POST" class="standalone-form" id="feedback">
             <label for="name">Name <span id="required">*</span></label>
             <input type="text" id="name" name="name" required>
             <label for="feedback">Feedback <span id="required">*</span></label>

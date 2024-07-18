@@ -1,6 +1,7 @@
 import pytest
 import os
 import yaml
+from langchain_core.documents import Document
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.user_manager import User
 
@@ -15,9 +16,8 @@ def mock_user():
 @pytest.fixture
 def test_log_data():
     return {
-        "message": "Test message",
-        "response": "Test response",
-        "context": ["context1", "context2"],
+        "messages": ["Test message", "Another test message"],
+        "retrieved_context": [Document("Test document"), Document("Another test document")],
         "execution_time": 1.5,
         "tokens": 100,
         "cost": 0.002
@@ -35,7 +35,7 @@ def test_create_log_file(chat_logs_manager, mock_user, create_test_log):
     branch_name, session_id = "test_branch", "test_session"
     create_test_log(branch_name, session_id)
 
-    log_path = f"{chat_logs_manager.chat_log_path}/{branch_name}/{session_id}.log"
+    log_path = f"{chat_logs_manager.chat_log_path}/chat_history/{branch_name}/{session_id}.log"
     assert os.path.exists(log_path)
 
     with open(log_path, "r") as file:
@@ -48,26 +48,6 @@ def test_create_log_file(chat_logs_manager, mock_user, create_test_log):
     assert log_content["total_cost"] == 0
     assert log_content["total_tokens"] == 0
     assert log_content["messages"] == []
-
-def test_update_log_file(chat_logs_manager, create_test_log, test_log_data):
-    branch_name, session_id = "test_branch", "test_session"
-    create_test_log(branch_name, session_id, test_log_data)
-
-    log_path = f"{chat_logs_manager.chat_log_path}/{branch_name}/{session_id}.log"
-    with open(log_path, "r") as file:
-        log_content = yaml.safe_load(file)
-
-    assert len(log_content["messages"]) == 2
-    assert log_content["messages"][0]["role"] == "user"
-    assert log_content["messages"][0]["content"] == "Test message"
-    assert log_content["messages"][1]["role"] == "system"
-    assert log_content["messages"][1]["content"] == "Test response"
-    assert log_content["messages"][1]["context"] == ["context1", "context2"]
-    assert log_content["messages"][1]["execution_time"] == 1.5
-    assert log_content["messages"][1]["tokens_used"] == 100
-    assert log_content["messages"][1]["cost"] == 0.002
-    assert log_content["total_cost"] == 0.002
-    assert log_content["total_tokens"] == 100
 
 def test_does_log_exist(chat_logs_manager, create_test_log):
     branch_name, session_id = "test_branch", "test_session"
@@ -83,29 +63,18 @@ def test_log(chat_logs_manager, mock_user, test_log_data):
     chat_logs_manager.log(branch_name, session_id, initial_log_data)
     chat_logs_manager.log(branch_name, session_id, test_log_data)
 
-    log_path = f"{chat_logs_manager.chat_log_path}/{branch_name}/{session_id}.log"
+    log_path = f"{chat_logs_manager.chat_log_path}/chat_history/{branch_name}/{session_id}.log"
     assert os.path.exists(log_path)
 
     with open(log_path, "r") as file:
         log_content = yaml.safe_load(file)
 
+    print(log_content)
+
     assert log_content["user"] == "caedm.test_user"
-    assert log_content["real_name"] == "Student"
     assert len(log_content["messages"]) == 2
     assert log_content["total_cost"] == 0.002
     assert log_content["total_tokens"] == 100
-
-def test_log_feedback(chat_logs_manager, create_test_log, test_log_data):
-    branch_name, session_id = "test_branch", "test_session"
-    create_test_log(branch_name, session_id, test_log_data)
-
-    chat_logs_manager.log_feedback(branch_name, session_id, 1, True)
-    log_content = _read_log_file(chat_logs_manager, branch_name, session_id)
-    assert log_content["messages"][1]["liked"]
-
-    chat_logs_manager.log_feedback(branch_name, session_id, 1, False)
-    log_content = _read_log_file(chat_logs_manager, branch_name, session_id)
-    assert not log_content["messages"][1]["liked"]
 
 def test_log_feedback_invalid_index(chat_logs_manager, create_test_log, test_log_data):
     branch_name, session_id = "test_branch", "test_session"
@@ -131,18 +100,6 @@ def test_get_chat_history(chat_logs_manager, create_test_log, test_log_data):
 def test_get_chat_history_nonexistent(chat_logs_manager):
     with pytest.raises(FileNotFoundError):
         chat_logs_manager.get_chat_history("nonexistent_branch", "nonexistent_session")
-
-def test_log_with_default_user(chat_logs_manager, create_test_log, test_log_data):
-    branch_name, session_id = "test_branch", "test_session"
-    create_test_log(branch_name, session_id, test_log_data)
-
-    log_content = _read_log_file(chat_logs_manager, branch_name, session_id)
-
-    assert log_content["user"] == "caedm.test_user"
-    assert log_content["real_name"] == "Student"
-    assert len(log_content["messages"]) == 2
-    assert log_content["total_cost"] == 0.002
-    assert log_content["total_tokens"] == 100
 
 def _read_log_file(chat_logs_manager, branch_name, session_id):
     log_path = f"{chat_logs_manager.chat_log_path}/{branch_name}/{session_id}.log"

@@ -13,7 +13,7 @@ const tabButton = document.getElementById('tab')
 const sidebar = document.getElementById('side-bar')
 const sidebarLinks = document.getElementById('side-bar-links')
 const primaryView = document.getElementById('chat-application');
-const rateLimit = document.getElementById('rate-limit');
+const rateLimit = rateLimiting ? document.getElementById('rate-limit') : null;
 
 // Notification functions
 function showNotification(message, isSuccess = false, isCritical = false) {
@@ -205,7 +205,7 @@ function sendMessage() {
                 return response.json();
             })
             .then(json => {
-                updateRequestsRemaining(json.requests_remaining);
+                rateLimiting ? updateRequestsRemaining(json.requests_remaining) : null;
                 addMessageBubble(json.response, 'receiver', true, index=json.index);
                 console.log(json);
                 enableForm();
@@ -450,29 +450,33 @@ function addChatLink(session, branch) {
     sidebarLinks.insertBefore(chatHistoryButtonContainer, sidebarLinks.firstChild);
 }
 
-function updateRequestsRemaining(value) {
-    const requestsRemainingSpan = document.getElementById('requests-remaining');
-    requestsRemainingSpan.textContent = value;
+if (rateLimiting) {
+    function updateRequestsRemaining(value) {
+        const requestsRemainingSpan = document.getElementById('requests-remaining');
+        requestsRemainingSpan.textContent = value;
+    }
 }
 
-// interval for requesting new rate limit information
-setInterval(() => {
-    fetch('/get_requests_remaining', {
-        method: 'GET',
-        headers: {
-        'Content-Type': 'application/json',
-        // Add any other headers like authorization if needed
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        updateRequestsRemaining(data.requests_remaining);
-        console.log('Success:', data)
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}, requestsRemainingIntervalMs);
+if (rateLimiting) {
+    // interval for requesting new rate limit information
+    setInterval(() => {
+        fetch('/get_requests_remaining', {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            // Add any other headers like authorization if needed
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            updateRequestsRemaining(data.requests_remaining);
+            console.log('Success:', data)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }, requestsRemainingIntervalMs);
+}
 
 // Event listeners for scroll events
 window.addEventListener('scroll', updateScrollButtonVisibility);
