@@ -44,7 +44,7 @@ def github_authorize_controller(current_user, github_authenticator):
     # redirect the user to the OAuth2 provider authorization URL
     return redirect(provider_url)
 
-def github_auth_callback_controller(current_user, auth_manager, session_in):
+def github_auth_callback_controller(current_user, auth_manager):
     if not current_user.is_anonymous:
         return redirect('/')
 
@@ -54,7 +54,8 @@ def github_auth_callback_controller(current_user, auth_manager, session_in):
         error_message = request.args.get('error_description', 'Authentication failed')
         return render_template('login.html', message=error_message)
     
-    oauth_state = session_in.get('oauth2_state')
+    oauth_state = session.get('oauth2_state')
+    print(f'OAuth2 state at callback: {oauth_state}')
 
     user = auth_manager.authenticate('github', request.args, oauth_state)
     if user is None:
