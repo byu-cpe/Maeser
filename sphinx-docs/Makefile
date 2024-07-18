@@ -35,7 +35,7 @@ clean: tidy
 	rm -rf $(UNIT_TESTS_DOC_DIR)
 
 deps:
-	$(PIP) install sphinx_rtd_theme myst_parser sphinx-book-theme
+	$(PIP) install sphinx sphinx_rtd_theme myst_parser sphinx-book-theme
 
 .PHONY: help apidoc tidy clean Makefile $(SPHINX_TARGETS)
 
