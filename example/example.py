@@ -31,7 +31,7 @@ sessions_manager.register_branch("homework", "Homework", textbook_simple_rag)
 labs_system_rag: CompiledGraph = get_simple_rag("../verity/resources/vectorstore", "labs", "chat_logs/labs.db", system_prompt_text=labs_prompt)
 sessions_manager.register_branch("labs", "Labs", labs_system_rag)
 
-github_authenticator = GithubAuthenticator("Ov23liS9TxlVakrrwO4c", "31f61d0c8644e708685d4a91ed05db43dfb85a72", "http://localhost:5000/login/github_callback")
+github_authenticator = GithubAuthenticator("", "", "http://localhost:5000/login/github_callback")
 user_manager = UserManager("chat_logs/users")
 user_manager.register_authenticator("github", github_authenticator)
 maeser_blueprint: Blueprint = get_maeser_blueprint_with_user_management(sessions_manager, user_manager)
