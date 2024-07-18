@@ -15,3 +15,5 @@ sphinx_docs/autodoc/scripts
 # Ignore local logs and runtime data
 logs
 chat_logs
+# Ignore package build
+dist

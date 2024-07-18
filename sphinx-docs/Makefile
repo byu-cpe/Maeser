@@ -9,10 +9,8 @@ SOURCEDIR     = .
 BUILDDIR      = _build
 
 PACKAGE_DIR := ../maeser/
-UNIT_TESTS_DIR := ../tests/
 
 PACKAGE_DOC_DIR := autodoc/maeser
-UNIT_TESTS_DOC_DIR := autodoc/tests
 
 PIP := pip
 
@@ -25,14 +23,12 @@ help:
 
 apidoc:
 	sphinx-apidoc -fMe -o $(PACKAGE_DOC_DIR) $(PACKAGE_DIR)
-	sphinx-apidoc -fMe -o $(UNIT_TESTS_DOC_DIR) $(UNIT_TESTS_DIR)
 
 tidy: Makefile
 	$(SPHINXBUILD) -M clean "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O);
 
 clean: tidy
 	rm -rf $(PACKAGE_DOC_DIR)
-	rm -rf $(UNIT_TESTS_DOC_DIR)
 
 deps:
 	$(PIP) install sphinx sphinx_rtd_theme myst_parser sphinx-book-theme
