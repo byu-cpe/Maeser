@@ -12,7 +12,6 @@ Welcome to Maeser's documentation!
    :caption: Source Reference
 
    autodoc/maeser/modules.rst
-   autodoc/tests/modules.rst
 
 Indices and tables
 ==================
