@@ -154,6 +154,7 @@ class GithubAuthenticator(BaseAuthenticator):
             tuple or None: A tuple containing the user's username, real name, and user group if authentication is successful, otherwise None.
         """
         if request_args['state'] != oauth_state or 'code' not in request_args:
+            print(request_args['state'], oauth_state, 'ERROR') 
             return None
 
         token_url = 'https://github.com/login/oauth/access_token'
@@ -187,6 +188,7 @@ class GithubAuthenticator(BaseAuthenticator):
             return None
 
         json_response = response.json()
+        print(json_response)
         return json_response['login'], json_response['name'], 'b\'guest\''
 
     def fetch_user(self, ident: str) -> Union[User, None]:
@@ -340,6 +342,7 @@ class UserManager:
             raise ValueError(f"Unsupported authentication method: {auth_method}")
 
         auth_result = authenticator.authenticate(*args, **kwargs)
+        print(auth_result)
         if auth_result:
             user_id, display_name, user_group = auth_result
             return self._create_or_update_user(auth_method, user_id, display_name, user_group)

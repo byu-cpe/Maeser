@@ -56,12 +56,13 @@ def get_maeser_blueprint_with_user_management(chat_session_manager: ChatSessionM
     
     @maeser_blueprint.route('/login/github', methods=["GET"])
     def github_authorize():
-        return login_api.github_authorize_controller(current_user, user_manager)
+        print(session)
+        return login_api.github_authorize_controller(current_user, user_manager.authenticators['github'])
 
     @maeser_blueprint.route('/login/github_callback')
     def github_auth_callback():
-        print('goofy, ah, callback')
-        return login_api.github_auth_callback_controller(current_user, user_manager)
+        print(session)
+        return login_api.github_auth_callback_controller(current_user, user_manager, session)
 
     return maeser_blueprint
 
