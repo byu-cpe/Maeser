@@ -5,21 +5,25 @@ from datetime import datetime
 from typing import Optional
 
 from maeser.chat.chat_session_manager import ChatSessionManager
-from maeser.controllers.common.decorators import admin_required
+from maeser.controllers.common.decorators import admin_required, rate_limited
 from maeser.user_manager import UserManager
 from .controllers import (
     chat_api,
     chat_interface,
     chat_logs_overview,
+    chat_tests_overview,
     display_chat_log,
+    display_chat_test,
     feedback_api,
     feedback_form_get,
     feedback_form_post,
     login_api,
+    logout,
     new_session_api,
     training,
     training_post,
     conversation_history_api,
+    remaining_requests_api,
 )
 
 current_dir = os.path.dirname(os.path.abspath(__file__ + '/.'))
@@ -60,11 +64,18 @@ def add_flask_blueprint(app: Flask, chat_session_manager: ChatSessionManager, us
         
         @maeser_blueprint.route('/login/github', methods=["GET"])
         def github_authorize():
+            print(session)
             return login_api.github_authorize_controller(current_user, user_manager.authenticators['github'])
 
         @maeser_blueprint.route('/login/github_callback')
         def github_auth_callback():
+            print(session)
             return login_api.github_auth_callback_controller(current_user, user_manager)
+
+        @maeser_blueprint.route("/logout")
+        @login_required
+        def logout_route():
+            return logout.controller()
 
         @maeser_blueprint.route("/req_session", methods=["POST"])
         @login_required
@@ -73,6 +84,7 @@ def add_flask_blueprint(app: Flask, chat_session_manager: ChatSessionManager, us
         
         @maeser_blueprint.route("/msg/<chat_session>", methods=["POST"])
         @login_required
+        @rate_limited(chat_session_manager, current_user)
         def msg_api(chat_session):
             return chat_api.controller(chat_session_manager, chat_session)
         
