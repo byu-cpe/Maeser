@@ -29,12 +29,21 @@ sessions_manager.register_branch("homework", "Homework", textbook_simple_rag)
 labs_system_rag: CompiledGraph = get_simple_rag("../verity/resources/vectorstore", "labs", "chat_logs/labs.db", system_prompt_text=labs_prompt)
 sessions_manager.register_branch("labs", "Labs", labs_system_rag)
 
-github_authenticator = GithubAuthenticator("Ov23liuCiq30uKfA4D69", "1d2c7d268e1cd15be991cfb2cc23350f737b65b5", "http://localhost:5000/login/github_callback")
-user_manager = UserManager("chat_logs/users")
+github_authenticator = GithubAuthenticator("...", "...", "http://localhost:5000/login/github_callback")
+user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=5)
 user_manager.register_authenticator("github", github_authenticator)
 
 base_app = Flask(__name__)
-app: Flask = add_flask_blueprint(base_app, sessions_manager, user_manager)
+app: Flask = add_flask_blueprint(
+    base_app, 
+    "secret",
+    sessions_manager, 
+    user_manager,
+    app_name="Test App",
+    chat_head="/static/chat_head.png",
+    main_logo_light="/static/main_logo_light.png",
+    favicon="/static/favicon.png",
+)
 
 if __name__ == "__main__":
     app.run()
