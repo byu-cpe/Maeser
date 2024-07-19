@@ -32,6 +32,7 @@ def add_flask_blueprint(
         flask_secret_key: str,
         chat_session_manager: ChatSessionManager, 
         user_manager: UserManager | None = None,
+        app_name: str | None = None,
         main_logo_light: str | None = None,
         main_logo_dark: str | None = None,
         chat_head: str | None = None,
@@ -88,7 +89,8 @@ def add_flask_blueprint(
                 main_logo_light=main_logo_light,
                 main_logo_dark=main_logo_dark,
                 favicon=favicon,
-                chat_head=chat_head
+                chat_head=chat_head,
+                app_name=app_name
             )
 
         @maeser_blueprint.route('/login', methods=['GET', 'POST'])
@@ -98,6 +100,7 @@ def add_flask_blueprint(
                 main_logo_light=main_logo_light,
                 main_logo_dark=main_logo_dark,
                 favicon=favicon,
+                app_name=app_name
             )
         
         @maeser_blueprint.route('/login/github', methods=["GET"])
@@ -115,6 +118,7 @@ def add_flask_blueprint(
                 main_logo_light=main_logo_light,
                 main_logo_dark=main_logo_dark,
                 favicon=favicon,
+                app_name=app_name
             )
 
         @maeser_blueprint.route("/logout")
@@ -151,7 +155,8 @@ def add_flask_blueprint(
                 main_logo_light=main_logo_light,
                 main_logo_dark=main_logo_dark,
                 favicon=favicon,
-                chat_head=chat_head
+                chat_head=chat_head,
+                app_name=app_name
             )
 
         @maeser_blueprint.route("/req_session", methods=["POST"])
@@ -182,6 +187,7 @@ def add_flask_blueprint(
                 main_logo_dark=main_logo_dark,
                 main_logo_light=main_logo_light,
                 favicon=favicon,
+                app_name=app_name,
             )
 
         @maeser_blueprint.route("/submit_train", methods=["POST"])
@@ -198,6 +204,7 @@ def add_flask_blueprint(
                 main_logo_dark=main_logo_dark,
                 main_logo_light=main_logo_light,
                 favicon=favicon,
+                app_name=app_name,
             )
 
         @maeser_blueprint.route("/submit_feedback", methods=["POST"])
@@ -211,13 +218,14 @@ def add_flask_blueprint(
             return chat_logs_overview.controller(
                 chat_session_manager,
                 favicon=favicon,
+                app_name=app_name
             )
 
         @maeser_blueprint.route("/logs/<branch>/<filename>")
         @login_required if user_manager else lambda x: x
         @admin_required(current_user) if user_manager else lambda x: x
         def display_log(branch, filename):
-            return display_chat_log.controller(chat_session_manager, branch, filename)
+            return display_chat_log.controller(chat_session_manager, branch, filename, app_name=app_name)
 
         @maeser_blueprint.route("/conversation_history", methods=["POST"])
         @login_required if user_manager else lambda x: x

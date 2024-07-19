@@ -20,7 +20,7 @@ def process_messages(messages: dict) -> dict:
     
     return messages
 
-def get_log_file_template(content: dict) -> str:
+def get_log_file_template(content: dict, app_name: str | None = None) -> str:
     """
     Get the log file template.
 
@@ -50,10 +50,11 @@ def get_log_file_template(content: dict) -> str:
         time=time,
         total_cost=total_cost,
         total_tokens=total_tokens,
-        messages=messages
+        messages=messages,
+        app_name=app_name if app_name else "Maeser"
     )
 
-def controller(chat_sessions_manager: ChatSessionManager, branch, filename):
+def controller(chat_sessions_manager: ChatSessionManager, branch, filename, app_name: str | None = None):
     """
     Display the content of a specified log file.
 
@@ -69,7 +70,7 @@ def controller(chat_sessions_manager: ChatSessionManager, branch, filename):
     try:
         with open(f"{chat_log_path}/chat_history/{branch}/{filename}", "r") as file:
             file_content = yaml.safe_load(file)
-        log_template = get_log_file_template(file_content)
+        log_template = get_log_file_template(file_content, app_name)
         return log_template
     except FileNotFoundError:
         abort(404, description="Log file not found")

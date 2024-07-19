@@ -5,7 +5,7 @@ from .common.file_info import get_file_list
 from flask import render_template, request
 
 
-def controller(chat_sessions_manager: ChatSessionManager, favicon: str | None = None) -> str:
+def controller(chat_sessions_manager: ChatSessionManager, app_name: str | None = None, favicon: str | None = None) -> str:
     """
     Render the home page with log files and aggregate token and cost data.
 
@@ -43,14 +43,16 @@ def controller(chat_sessions_manager: ChatSessionManager, favicon: str | None = 
             total_tokens += file_content.get('total_tokens', 0)
             total_cost += file_content.get('total_cost', 0.0)
 
-    return render_template('chat_logs_overview.html', 
-                            log_files=log_files, 
-                            branches=branches, 
-                            sort_by=sort_by, 
-                            order=order, 
-                            branch_filter=branch_filter, 
-                            feedback_filter=feedback_filter,
-                            total_tokens=total_tokens, 
-                            total_cost=total_cost,
-                            favicon=favicon
-                            )
+    return render_template(
+        'chat_logs_overview.html', 
+        log_files=log_files, 
+        branches=branches, 
+        sort_by=sort_by, 
+        order=order, 
+        branch_filter=branch_filter, 
+        feedback_filter=feedback_filter,
+        total_tokens=total_tokens, 
+        total_cost=total_cost,
+        favicon=favicon,
+        app_name=app_name if app_name else "Maeser",
+    )

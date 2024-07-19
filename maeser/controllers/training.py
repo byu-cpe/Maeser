@@ -1,6 +1,6 @@
 from flask import render_template
 
-def controller(main_logo_light: str | None  = None, main_logo_dark: str | None = None, favicon: str | None = None) -> str:
+def controller(app_name: str | None = None, main_logo_light: str | None  = None, main_logo_dark: str | None = None, favicon: str | None = None) -> str:
     """
     Display the training form.
 
@@ -14,6 +14,7 @@ def controller(main_logo_light: str | None  = None, main_logo_dark: str | None =
         'training.html',
         role_options=role_options,
         type_options=type_options,
+        app_name=app_name if app_name else "Maeser",
         main_logo_light=main_logo_light,
         main_logo_dark=main_logo_dark,
         favicon=favicon

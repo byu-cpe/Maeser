@@ -1,6 +1,6 @@
 from flask import render_template
 
-def controller(main_logo_light: str | None = None, main_logo_dark: str | None = None, favicon: str | None = None) -> str:
+def controller(app_name: str | None = None, main_logo_light: str | None = None, main_logo_dark: str | None = None, favicon: str | None = None) -> str:
     """
     Display the feedback form.
 
@@ -15,5 +15,6 @@ def controller(main_logo_light: str | None = None, main_logo_dark: str | None = 
         category_options=category_options,
         main_logo_light=main_logo_light,
         main_logo_dark=main_logo_dark,
-        favicon=favicon
+        favicon=favicon,
+        app_name=app_name if app_name else "Maeser"
     )

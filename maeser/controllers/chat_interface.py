@@ -10,6 +10,7 @@ def controller(
         max_requests: int | None = None, 
         rate_limit_interval: int | None = None, 
         current_user=None,
+        app_name: str | None = None,
         main_logo_light: str | None = None,
         main_logo_dark: str | None = None,
         chat_head: str | None = None,
@@ -75,4 +76,5 @@ def controller(
         main_logo_dark=main_logo_dark,                          # None | str
         chat_head=chat_head,                                    # None | str
         favicon=favicon,                                        # None | str
+        app_name=app_name if app_name else "Maeser",
     )
