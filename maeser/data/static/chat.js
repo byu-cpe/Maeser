@@ -14,6 +14,7 @@ const sidebar = document.getElementById('side-bar')
 const sidebarLinks = document.getElementById('side-bar-links')
 const primaryView = document.getElementById('chat-application');
 const rateLimit = rateLimiting ? document.getElementById('rate-limit') : null;
+const chatHeadIcon = chatHead ? chatHead : '/maeser/static/maeser-part.png';
 
 // Notification functions
 function showNotification(message, isSuccess = false, isCritical = false) {
@@ -299,7 +300,7 @@ function addMessageBubble(message, type, includeButtons = false, index=false) {
         });
     } else {
         const receiverIcon = document.createElement('img');
-        receiverIcon.src = '/maeser/static/maeser-part.png';
+        receiverIcon.src = chatHeadIcon;
         messageContainer.appendChild(receiverIcon);
         messageBubble.innerHTML = message;
     }
