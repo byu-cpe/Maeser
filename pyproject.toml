@@ -15,10 +15,6 @@ include = [
 # Replace with your Python version if different
 python = ">=3.10"
 
-# Data manipulation and numerical computations
-pandas = "^2.2.2"
-numpy = "^1.26.4"
-
 # Langchain libraries for text processing and embeddings
 langchain = "^0.2.8"
 langchain_core = "^0.2.19"
@@ -27,8 +23,10 @@ langchain_openai = "^0.1.16"
 langchain-text-splitters = "^0.2.2"
 langgraph = "^0.1.8"
 
-# FAISS for vector stores (choose either faiss-cpu or faiss-gpu depending on your setup)
+# FAISS for vector stores (CPU version by default, GPU as optional)
+# pip install maeser[gpu] for the GPU variant
 faiss-cpu = "^1.8.0.post1"
+faiss-gpu = { version = "^1.8.0.post1", optional = true }
 
 # Web backend
 flask = "^3.0.3"
@@ -42,11 +40,6 @@ markdownify = "^0.13.1"
 # Unit testing
 ragas = "^0.1.10"
 
-# Documentation
-sphinx_rtd_theme = "^2.0.0"
-myst_parser = "^3.0.1"
-sphinx-book-theme = "^1.1.3"
-
 # Configuration
 pyYAML = "^6.0.1"
 
@@ -57,7 +50,16 @@ requests = "^2.32.3"
 [tool.poetry.dev-dependencies]
 pytest = "^8.2"
 
+# Documentation
+sphinx_rtd_theme = "^2.0.0"
+myst_parser = "^3.0.1"
+sphinx-book-theme = "^1.1.3"
+
 # Build system configuration
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+# Define extra dependencies
+[tool.poetry.extras]
+gpu = ["faiss-gpu"]

@@ -22,6 +22,7 @@ def get_simple_rag(
 
     {context}
     """,
+    model: str = "gpt-4o-mini"
 ) -> CompiledGraph:
     def add_messages(left: list, right: list):
         """Add-don't-overwrite."""
@@ -33,7 +34,7 @@ def get_simple_rag(
         retrieved_context: List[str]
         messages: Annotated[list, add_messages]
 
-    llm: ChatOpenAI = ChatOpenAI() if api_key is None else ChatOpenAI(api_key=api_key)  # type: ignore
+    llm: ChatOpenAI = ChatOpenAI(model=model) if api_key is None else ChatOpenAI(api_key=api_key, model=model)  # type: ignore
 
     retriever: VectorStoreRetriever = FAISS.load_local(
         vectorstore_path,

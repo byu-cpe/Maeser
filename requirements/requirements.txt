@@ -1,10 +1,3 @@
-# Data manipulation and numerical computations
-# pandas
-# numpy
-
-# Plotting and visualization
-# matplotlib
-
 # Langchain libraries for text processing and embeddings
 langchain
 langchain_core
@@ -13,9 +6,6 @@ langchain_openai
 langchain-text-splitters
 langgraph
 
-# Jekyll site processing
-# python-frontmatter
-
 # FAISS for vector stores (choose either faiss-cpu or faiss-gpu depending on your setup)
 faiss-cpu
 # faiss-gpu
@@ -23,17 +13,12 @@ faiss-cpu
 # Web backend
 flask
 flask-login
-# flask-principal
-# ldap3
 
 # Turning markdown into HTML for display
 markdown
 pymdown-extensions
 markdownify
-# pdf2image
-
-# Interactive terminal session
-# pyinputplus
+requests
 
 # Unit testing
 ragas
@@ -44,9 +29,5 @@ sphinx_rtd_theme
 myst_parser
 sphinx-book-theme
 
-# configuration
+# Default logger
 pyYAML
-
-# python-poppler  # This needs CMAKE
-
-requests

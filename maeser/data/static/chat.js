@@ -120,7 +120,7 @@ input.addEventListener('keydown', function(event) {
 function requestNewSession(action) {
     const ses_req_type = {
         type: "new",
-        from: "Verity AI Frontend",
+        from: "Maeser Frontend",
         action: action
     };
     fetch("/req_session", {
@@ -170,7 +170,7 @@ function sendMessage() {
             method: "POST",
             body: JSON.stringify({
                 message: messageText,
-                from: "Verity AI Frontend",
+                from: "Maeser Frontend",
                 action: chat_branch,
                 session: session,
             }),
@@ -185,7 +185,7 @@ function sendMessage() {
                         if (response.status === 503) {
                             errMsg = 'Service Unavailable (503). You have exceeded your server-wide OpenAI token quota.';
                         } else if (response.status === 502) {
-                            errMsg = 'Bad Gateway (502). The web server is running, but Verity cannot be accessed.';
+                            errMsg = 'Bad Gateway (502). The web server is running, but Maeser cannot be accessed.';
                         } else {
                             errMsg = `Internal Server Error (${response.status})`;
                         }

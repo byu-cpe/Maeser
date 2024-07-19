@@ -1,6 +1,4 @@
-from maeser import chat
 from maeser.chat.chat_session_manager import ChatSessionManager
-from typing import List
 
 import yaml
 from .common.file_info import get_file_list
