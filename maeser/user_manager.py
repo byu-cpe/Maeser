@@ -1,13 +1,13 @@
 import secrets
 import sqlite3
-from typing import Tuple, Union, Dict, Any
+from typing import Any, Tuple, Union
 from urllib.parse import urlencode
 import requests
 from abc import ABC, abstractmethod
 
 class User:
     """
-    This provides default implementations for the methods that Flask-Login expects user objects to have.
+    Provides default implementations for the methods that Flask-Login expects user objects to have.
     """
 
     # Python 3 implicitly sets __hash__ to None if we override __eq__
@@ -15,6 +15,20 @@ class User:
     __hash__ = object.__hash__
 
     def __init__(self, ident: str, blacklisted=False, admin=False, realname='Student', usergroup='b\'guest\'', authmethod='caedm', requests_left=10, max_requests=10, aka=list()):
+        """
+        Initialize a User object.
+
+        Args:
+            ident (str): The user's identifier.
+            blacklisted (bool, optional): Whether the user is blacklisted. Defaults to False.
+            admin (bool, optional): Whether the user is an admin. Defaults to False.
+            realname (str, optional): The user's real name. Defaults to 'Student'.
+            usergroup (str, optional): The user's group. Defaults to 'b\'guest\''.
+            authmethod (str, optional): The authentication method. Defaults to 'caedm'.
+            requests_left (int, optional): The number of requests left. Defaults to 10.
+            max_requests (int, optional): The maximum number of requests. Defaults to 10.
+            aka (list, optional): A list of alternate names. Defaults to an empty list.
+        """
         self.ident = ident
         self.is_active = not blacklisted
         self.admin = admin
@@ -43,13 +57,20 @@ class User:
     def full_id_name(self):
         """Return the user's full identifier name including authentication method."""
         return f'{self.auth_method}.{self.ident}'
+
     @property
     def requests_remaining(self):
         """Return the number of requests remaining for the user."""
         return self._requests_remaining
-    
+
     @requests_remaining.setter
     def requests_remaining(self, num: int):
+        """
+        Set the number of requests remaining for the user.
+
+        Args:
+            num (int): The new number of requests remaining.
+        """
         if num >= self._max_requests:
             self._requests_remaining = self._max_requests
         elif num <= 0:
@@ -84,24 +105,26 @@ class User:
         equal = self.__eq__(other)
         return not equal
 
+
 class BaseAuthenticator(ABC):
     """
     Base class for authenticators.
     """
 
     @abstractmethod
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args, **kwargs):
         """
         Initialize the authenticator with any required arguments.
         """
         pass
-    
+
     @abstractmethod
     def __str__(self) -> str:
-        return 'BaseAuthenticator'
-    
+        """Return the string representation of the authenticator."""
+        pass
+
     @abstractmethod
-    def authenticate(self, *args: Any, **kwargs: Any) -> Union[tuple, None]:
+    def authenticate(self, *args, **kwargs) -> Union[tuple, None]:
         """
         Authenticate a user.
 
@@ -127,18 +150,27 @@ class BaseAuthenticator(ABC):
         """
         pass
 
+
 class GithubAuthenticator(BaseAuthenticator):
     """
-    This class handles authentication with GitHub OAuth.
+    Handles authentication with GitHub OAuth.
     """
 
     def __init__(self, client_id: str, client_secret: str, auth_callback_uri: str):
+        """
+        Initialize the GitHub authenticator.
+
+        Args:
+            client_id (str): The GitHub client ID.
+            client_secret (str): The GitHub client secret.
+            auth_callback_uri (str): The callback URI for GitHub authentication.
+        """
         self.client_id = client_id
         self.client_secret = client_secret
         # Generally this should be set from your Flask app as this will differ between applications
         # url_for('github_auth_callback', _external=True)
         self.auth_callback_uri = auth_callback_uri
-        
+
     def __str__(self) -> str:
         return 'GithubAuthenticator'
 
@@ -196,7 +228,7 @@ class GithubAuthenticator(BaseAuthenticator):
         Fetch a user from the GitHub API.
 
         Args:
-            username (str): The username of the user to fetch.
+            ident (str): The username of the user to fetch.
 
         Returns:
             User or None: The fetched user object or None if the user is not found.
@@ -206,17 +238,22 @@ class GithubAuthenticator(BaseAuthenticator):
         if response.status_code == 200:
             json_response = response.json()
             return User(json_response['login'], realname=json_response.get('name', ''), usergroup='b\'guest\'', authmethod='github')
-        print(f'No GitHub user "{ident}" found', "WARNING")
+        print(f'WARNING: No GitHub user "{ident}" found')
         return None
-    
+
     def get_auth_info(self) -> Tuple[str, str]:
+        """
+        Get the GitHub authorization information.
+
+        Returns:
+            tuple: A tuple containing the OAuth state and provider URL.
+        """
         authorize_url = 'https://github.com/login/oauth/authorize'
         scopes = ['user:email']
 
         # generate a random string for the state parameter
         oauth_state = secrets.token_urlsafe(16)
-        
-        # create a query string with all the OAuth2 parameters
+
         query_string = urlencode({
             'client_id': self.client_id,
             'redirect_uri': self.auth_callback_uri,
@@ -224,10 +261,11 @@ class GithubAuthenticator(BaseAuthenticator):
             'scope': ' '.join(scopes),
             'state': oauth_state,
         })
-        
+
         provider_url = authorize_url + '?' + query_string
-        
+
         return oauth_state, provider_url
+
 
 class UserManager:
     """
@@ -235,8 +273,15 @@ class UserManager:
     """
 
     def __init__(self, db_file_path: str, max_requests: int = 10, rate_limit_interval: int = 180):
+        """
+        Initialize the UserManager.
+
+        Args:
+            db_file_path (str): The file path to the SQLite database.
+            max_requests (int, optional): The maximum number of requests a user can have. Defaults to 10.
+        """
         self.db_file_path = db_file_path
-        self.authenticators: Dict[str, BaseAuthenticator] = {}
+        self.authenticators: dict[str, BaseAuthenticator] = {}
         self.max_requests = max_requests
         self.rate_limit_interval = rate_limit_interval
         self._create_tables()

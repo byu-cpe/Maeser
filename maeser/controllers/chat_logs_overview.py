@@ -1,3 +1,9 @@
+"""
+This module contains the controller function for rendering the chat logs overview page.
+
+It handles fetching log files, applying filters, and calculating aggregate data such as total tokens and cost.
+"""
+
 from maeser.chat.chat_session_manager import ChatSessionManager
 
 import yaml
@@ -9,14 +15,17 @@ def controller(chat_sessions_manager: ChatSessionManager, app_name: str | None =
     """
     Render the home page with log files and aggregate token and cost data.
 
+    Args:
+        chat_sessions_manager (ChatSessionManager): An instance of ChatSessionManager to manage chat sessions.
+
     Returns:
         str: Rendered home template with log file list.
     """
     log_path = chat_sessions_manager.chat_log_path
     chat_branches = chat_sessions_manager.branches
 
-    sort_by = request.args.get('sort_by', 'modified')  # default sorting by modification time
-    order = request.args.get('order', 'desc')  # default sorting order is ascending
+    sort_by = request.args.get('sort_by', 'modified')  # Default sorting by modification time
+    order = request.args.get('order', 'desc')  # Default sorting order is descending
     branch_filter = request.args.get('branch', '')
     feedback_filter = request.args.get('feedback', None)
 
@@ -38,7 +47,7 @@ def controller(chat_sessions_manager: ChatSessionManager, app_name: str | None =
     total_tokens = 0
     total_cost = 0.0
     for file in log_files:
-        with open(f"{log_path}/chat_history/{file['branch']}/{file['name']}", "r") as log_file:
+        with open(f"{log_path}/chat_history/{file['branch']}/{file['name']}", 'r') as log_file:
             file_content = yaml.safe_load(log_file)
             total_tokens += file_content.get('total_tokens', 0)
             total_cost += file_content.get('total_cost', 0.0)
