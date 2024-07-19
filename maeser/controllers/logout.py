@@ -5,4 +5,4 @@ def controller():
     logout_user()
     for key in ('identity.name', 'identity.auth_type'):
         session.pop(key, None)
-    return redirect(url_for('login'))
+    return redirect(url_for('maeser.login'))
