@@ -47,7 +47,7 @@ def add_flask_blueprint(app: Flask, chat_session_manager: ChatSessionManager, us
                 time.sleep(user_manager.rate_limit_interval)
                 user_manager.refresh_requests()
 
-        rate_limit_global_timer = threading.Thread(target=refresh_requests, daemon=True).start()
+        threading.Thread(target=refresh_requests, daemon=True).start()
 
         app.secret_key = 'awkwerfnerfderf'  # Replace with a secure secret key
         login_manager = LoginManager(app)
