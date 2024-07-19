@@ -2,7 +2,7 @@ from langgraph.graph.graph import CompiledGraph
 from maeser.user_manager import UserManager, GithubAuthenticator
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
-from maeser.controllers.blueprints import add_flask_blueprint
+from maeser.blueprints import add_flask_blueprint
 from maeser.graphs.simple_rag import get_simple_rag
 from flask import Flask
 
