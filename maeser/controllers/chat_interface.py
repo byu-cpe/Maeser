@@ -63,9 +63,8 @@ def controller(
     requests_remaining: int | None = None if current_user is None else current_user.requests_remaining
     if rate_limit_interval:
         rate_limit_interval = rate_limit_interval * 1000 // 3
-    rate_limiting: bool = bool(requests_remaining and rate_limit_interval and max_requests)
-
-    print(favicon)
+    rate_limiting_bool = bool(requests_remaining and rate_limit_interval and max_requests)
+    rate_limiting_str: str = str(rate_limiting_bool).lower()
 
     return render_template(
         'chat_interface.html',
@@ -75,7 +74,7 @@ def controller(
         requests_remaining=requests_remaining,                  # None | int
         max_requests_remaining=max_requests,                    # None | int
         requests_remaining_interval_ms=rate_limit_interval,     # None | int
-        rate_limiting=rate_limiting,                            # bool
+        rate_limiting=rate_limiting_str,                        # bool
         main_logo_light=main_logo_light,                        # None | str
         main_logo_dark=main_logo_dark,                          # None | str
         chat_head=chat_head,                                    # None | str

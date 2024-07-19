@@ -3,6 +3,7 @@
 {% block head %}
 <script>
     var rateLimiting = {{ rate_limiting }};
+    var rateLimiting = true;
     var conversationHistory = {{ conversation|tojson|safe }} || false;
     var requestsRemainingIntervalMs = {{ requests_remaining_interval_ms }};
     var chatHead = "{{ chat_head }}";

@@ -129,7 +129,7 @@ def add_flask_blueprint(
         @maeser_blueprint.route("/req_session", methods=["POST"])
         @login_required
         def sess_handler():
-            return new_session_api.controller(chat_session_manager)
+            return new_session_api.controller(chat_session_manager, True)
         
         @maeser_blueprint.route("/msg/<chat_session>", methods=["POST"])
         @login_required
