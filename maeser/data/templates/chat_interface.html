@@ -5,6 +5,7 @@
     var rateLimiting = {{ rate_limiting }};
     var conversationHistory = {{ conversation|tojson|safe }} || false;
     var requestsRemainingIntervalMs = {{ requests_remaining_interval_ms }};
+    var chatHead = "{{ chat_head }}";
 </script>
 {% endblock %}
 
@@ -14,7 +15,11 @@
         <div id="chat-messages">
             <section id="all-messages">
                 <div class="message-container receiver">
-                    <img src="{{ url_for('maeser.static', filename='maeser-part.png') }}">
+                    {% if chat_head %}
+                        <img src="{{ chat_head }}">
+                    {% else %}
+                        <img src="{{ url_for('maeser.static', filename='maeser-part.png') }}">
+                    {% endif %}
                     <div class="message-controls">
                         <div class="message-bubble">
                             <p>Hello, how can I help you today?</p>
