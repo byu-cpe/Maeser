@@ -1,4 +1,4 @@
-from flask import Blueprint, session, Flask
+from flask import Blueprint, Flask
 from flask_login import login_required, current_user, LoginManager
 import os
 from datetime import datetime
@@ -11,9 +11,7 @@ from .controllers import (
     chat_api,
     chat_interface,
     chat_logs_overview,
-    chat_tests_overview,
     display_chat_log,
-    display_chat_test,
     feedback_api,
     feedback_form_get,
     feedback_form_post,
@@ -56,7 +54,7 @@ def add_flask_blueprint(app: Flask, chat_session_manager: ChatSessionManager, us
         @maeser_blueprint.route("/")
         @login_required
         def chat_interface_route():
-            return chat_interface.controller(chat_session_manager)
+            return chat_interface.controller(chat_session_manager, user_manager.max_requests, user_manager.rate_limit_interval, current_user)
 
         @maeser_blueprint.route('/login', methods=['GET', 'POST'])
         def login():
@@ -82,7 +80,7 @@ def add_flask_blueprint(app: Flask, chat_session_manager: ChatSessionManager, us
         
         @maeser_blueprint.route("/msg/<chat_session>", methods=["POST"])
         @login_required
-        @rate_limited(chat_session_manager, current_user)
+        @rate_limited(user_manager, current_user)
         def msg_api(chat_session):
             return chat_api.controller(chat_session_manager, chat_session)
         
@@ -90,6 +88,11 @@ def add_flask_blueprint(app: Flask, chat_session_manager: ChatSessionManager, us
         @login_required
         def feedback():
             return feedback_api.controller(chat_session_manager)
+        
+        @app.route("/get_requests_remaining", methods=["GET"])
+        @login_required
+        def get_requests_remaining():
+            return remaining_requests_api.controller(user_manager, current_user)
 
     else:
         @maeser_blueprint.route("/")
