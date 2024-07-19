@@ -34,12 +34,12 @@ def test_register_branch(chat_session_manager, state_graph_mock):
 def test_get_new_session_id_with_user(chat_session_manager, mock_user):
     session_id = chat_session_manager.get_new_session_id("test_branch", mock_user)
     assert f"{mock_user.auth_method}-{mock_user.ident}" in session_id
-    chat_session_manager.chat_logs_manager.log.assert_called_once_with("test_branch", session_id, {mock_user: mock_user})
+    chat_session_manager.chat_logs_manager.log.assert_called_once_with("test_branch", session_id, {'user': mock_user})
 
 def test_get_new_session_id_without_user(chat_session_manager):
     session_id = chat_session_manager.get_new_session_id("test_branch")
     assert "anon" in session_id
-    chat_session_manager.chat_logs_manager.log.assert_called_once_with("test_branch", session_id, {None: None})
+    chat_session_manager.chat_logs_manager.log.assert_called_once_with("test_branch", session_id, {'user': None})
 
 @patch('maeser.chat.chat_session_manager.get_openai_callback')
 @patch('maeser.chat.chat_session_manager.time')

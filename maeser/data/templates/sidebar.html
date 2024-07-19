@@ -3,8 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Maeser</title>
-        <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+        <title>{{ app_name }}</title>
+        {% if favicon %}
+            <link rel="icon" href="{{ favicon }}">
+        {% else %}
+            <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+        {% endif %}        
         <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         {% block head %}
@@ -16,7 +20,11 @@
                 <div class="header-wrapper">
                     <div id="logo-tab">
                         <button id="tab"><i class="fa fa-bars"></i></button>
-                        <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
+                        {% if main_logo_light %}
+                            <img src="{{ main_logo_light }}">
+                        {% else %}
+                            <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
+                        {% endif %}
                     </div>
                     {% if rate_limiting %}
                         <div id="rate-limit" style="color: white;">

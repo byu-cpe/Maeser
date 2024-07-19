@@ -272,7 +272,7 @@ class UserManager:
     Manages user operations including authentication, database interactions, and request tracking.
     """
 
-    def __init__(self, db_file_path: str, max_requests: int = 10):
+    def __init__(self, db_file_path: str, max_requests: int = 10, rate_limit_interval: int = 180):
         """
         Initialize the UserManager.
 
@@ -283,6 +283,7 @@ class UserManager:
         self.db_file_path = db_file_path
         self.authenticators: dict[str, BaseAuthenticator] = {}
         self.max_requests = max_requests
+        self.rate_limit_interval = rate_limit_interval
         self._create_tables()
 
     def register_authenticator(self, name: str, authenticator: BaseAuthenticator):

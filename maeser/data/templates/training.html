@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maeser</title>
-    <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+    <title>{{ app_name }}</title>
+    {% if favicon %}
+        <link rel="icon" href="{{ favicon }}">
+    {% else %}
+        <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+    {% endif %}
     <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
 </head>
 <body>
     <header>
         <div class="header-wrapper">
-            <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
+            {% if main_logo_light %}
+                <img src="{{ main_logo_light }}">
+            {% else %}
+                <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
+            {% endif %}
             <button id="reset-button-mobile" class="reset-button hide">
                 <i class="bi bi-trash-fill"></i>
             </button>
@@ -18,9 +26,9 @@
     </header>
     <main>
         <form action="{{ url_for('maeser.submit_train') }}" method="POST" class="standalone-form" id="train">
-            <h2>Help Train Maeser</h2>
+            <h2>Help Train {{ app_name }}</h2>
             <p>
-                Help us improve Maeser by providing an example question and answer.
+                Help us improve {{ app_name }} by providing an example question and answer.
             </p>
             <p>
                 These examples will be used to train the chatbot to provide better responses.

@@ -63,7 +63,7 @@ class ChatSessionManager:
 
         # create log file if chat logs manager is available
         if self.chat_logs_manager:
-            self.chat_logs_manager.log(branch_name, session_id, {user: user})
+            self.chat_logs_manager.log(branch_name, session_id, {"user": user})
 
         return session_id
     
