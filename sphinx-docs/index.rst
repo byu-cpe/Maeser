@@ -9,10 +9,19 @@ Welcome to Maeser's documentation!
 
 .. toctree::
    :maxdepth: 3
-   :caption: Source Reference
+   :caption: Source Reference:
 
    autodoc/maeser/modules.rst
-   autodoc/tests/modules.rst
+
+.. toctree ::
+   :maxdepth: 2
+   :caption: Development:
+
+   development/development_setup.md
+   development/wsl_development.md
+   development/wsl_development.md
+   development/graphs.md
+   development/example.md
 
 Indices and tables
 ==================

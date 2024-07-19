@@ -2,11 +2,10 @@ from langgraph.graph.graph import CompiledGraph
 from maeser.user_manager import UserManager, GithubAuthenticator
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
-from maeser.controllers import get_maeser_blueprint_without_user_management, get_maeser_blueprint_with_user_management
-from maeser.controllers import chat_interface
+from maeser.controllers import get_maeser_blueprint_with_user_management
 from maeser.graphs.simple_rag import get_simple_rag
-from flask import Blueprint, Flask, session, url_for
-from flask_login import LoginManager, login_required
+from flask import Blueprint, Flask
+from flask_login import LoginManager
 
 chat_logs_manager = ChatLogsManager("chat_logs")
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
