@@ -1,8 +1,12 @@
+"""Module for handling feedback form display.
+
+This module contains the controller function to render the feedback form template.
+"""
+
 from flask import render_template
 
 def controller():
-    """
-    Display the feedback form.
+    """Display the feedback form.
 
     Returns:
         str: Rendered feedback form template.
