@@ -39,14 +39,6 @@ def add_flask_blueprint(
         favicon: str | None = None,
     ) -> Flask:
 
-    # set images automatically if not provided
-    first_available_image: str | None = main_logo_light or main_logo_dark or chat_head or favicon
-    if first_available_image:
-        chat_head = chat_head or first_available_image
-        favicon = favicon or first_available_image
-        main_logo_dark = main_logo_dark or first_available_image
-        main_logo_light = main_logo_light or first_available_image
-
     maeser_blueprint = Blueprint(
         "maeser",
         __name__,
