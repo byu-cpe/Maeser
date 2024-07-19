@@ -3,6 +3,8 @@ from flask_login import login_required, current_user, LoginManager
 import os
 from datetime import datetime
 from typing import Optional
+import threading
+import time
 
 from maeser.chat.chat_session_manager import ChatSessionManager
 from maeser.controllers.common.decorators import admin_required, rate_limited
@@ -40,6 +42,13 @@ def add_flask_blueprint(app: Flask, chat_session_manager: ChatSessionManager, us
         return datetime.fromtimestamp(value).strftime(format)
 
     if user_manager:
+        def refresh_requests():
+            while True:
+                time.sleep(user_manager.rate_limit_interval)
+                user_manager.refresh_requests()
+
+        rate_limit_global_timer = threading.Thread(target=refresh_requests, daemon=True).start()
+
         app.secret_key = 'awkwerfnerfderf'  # Replace with a secure secret key
         login_manager = LoginManager(app)
         login_manager.init_app(app)
