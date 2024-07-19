@@ -33,10 +33,9 @@ def get_file_info(file_path: str) -> dict:
         with open(file_path, 'r') as file:
             chat_log = yaml.safe_load(file)
             file_info['has_feedback'] = has_feedback(chat_log.get('messages', []))
-            file_info['first_message'] = chat_log.get('messages', [{}])[0].get('content', None)
+            file_info['first_message'] = chat_log.get('messages', [{}])[0]["content"] if len(chat_log.get('messages', [])) > 0 else None
             file_info['user'] = chat_log.get('user', 'unknown user')
             file_info['real_name'] = chat_log.get('real_name', 'Student')
-            
     except Exception as e:
         print(f"Error: Cannot read file {file_path}: {e}")
     return file_info
