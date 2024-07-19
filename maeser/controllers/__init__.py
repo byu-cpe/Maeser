@@ -82,6 +82,11 @@ def get_maeser_blueprint_with_user_management(chat_session_manager: ChatSessionM
         print(session)
         return login_api.github_auth_callback_controller(current_user, user_manager)
     
+    @maeser_blueprint.route("/logout")
+    @login_required
+    def logout_route():
+        return logout.controller()
+    
     # START COMMON ROUTES
     
     @maeser_blueprint.route("/req_session", methods=["POST"])
