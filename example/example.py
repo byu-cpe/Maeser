@@ -40,9 +40,10 @@ app: Flask = add_flask_blueprint(
     sessions_manager, 
     user_manager,
     app_name="Test App",
-    chat_head="/static/chat_head.png",
-    main_logo_light="/static/main_logo_light.png",
-    favicon="/static/favicon.png",
+    chat_head="/static/Karl_G_Maeser.png",
+    # Note that you can change other images too! We stick with the defaults for the logo and favicon.
+    # main_logo_light="/static/main_logo_light.png",
+    # favicon="/static/favicon.png",
 )
 
 if __name__ == "__main__":
