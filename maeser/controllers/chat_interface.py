@@ -1,3 +1,7 @@
+"""Module for handling chat interface rendering.
+
+This module contains a function to render the chat interface template with relevant data.
+"""
 
 from flask import render_template
 # from flask_login import current_user
@@ -5,7 +9,12 @@ from flask import render_template
 from .common.file_info import get_file_list
 from maeser.chat.chat_session_manager import ChatSessionManager
 
-def controller(chat_sessions_manager: ChatSessionManager, max_requests: int | None = None, rate_limit_interval: int | None = None, current_user=None):
+def controller(
+    chat_sessions_manager: ChatSessionManager,
+    max_requests: int | None = None,
+    rate_limit_interval: int | None = None,
+    current_user=None
+):
     """
     Renders the chat interface template with relevant data.
 
@@ -16,7 +25,7 @@ def controller(chat_sessions_manager: ChatSessionManager, max_requests: int | No
         current_user (object, optional): The current user object. Defaults to None.
 
     Returns:
-        The rendered chat_interface.html template with the following data:
+        The rendered 'chat_interface.html' template with the following data:
             - conversation: None (no active conversation)
             - buttons: The dictionary of available chat branches
             - links: A list of dictionaries representing previous chat sessions for the current user
@@ -24,35 +33,35 @@ def controller(chat_sessions_manager: ChatSessionManager, max_requests: int | No
             - max_requests_remaining: The maximum number of requests allowed
             - requests_remaining_interval_ms: The interval in milliseconds for rate limiting requests (rate_limit_interval * 1000 / 3)
     """
-    # get chat log path and branches from chat sessions
+    # Get chat log path and branches from chat sessions
     log_path: str | None = chat_sessions_manager.chat_log_path
     chat_branches: dict = chat_sessions_manager.branches
-    
+
     links = []
-    # get conversation history if log path exists
+    # Get conversation history if log path exists
     if log_path:
         conversations = get_file_list(log_path + '/chat_history')
         for conversation in conversations:
             current_user_name: str = 'anon' if current_user is None else current_user.full_id_name
             if current_user_name == conversation['user']:
                 links.append({
-                    "branch": conversation['branch'],
-                    "session": conversation['name'].removesuffix('.log'),
-                    "modified": conversation['modified'],
-                    "first_message": conversation['first_message']
+                    'branch': conversation['branch'],
+                    'session': conversation['name'].removesuffix('.log'),
+                    'modified': conversation['modified'],
+                    'first_message': conversation['first_message']
                 })
-        # sort conversations by date modified
+        # Sort conversations by date modified
         links.sort(key=lambda x: x['modified'], reverse=True)
-    
-    # remove conversations with no messages
+
+    # Remove conversations with no messages
     links = [link for link in links if link['first_message'] is not None]
     requests_remaining: int | None = None if current_user is None else current_user.requests_remaining
     if rate_limit_interval:
         rate_limit_interval = rate_limit_interval * 1000 // 3
-    rate_limiting: bool = requests_remaining and rate_limit_interval and max_requests
+    rate_limiting: bool = bool(requests_remaining and rate_limit_interval and max_requests)
 
     return render_template(
-        'chat_interface.html', 
+        'chat_interface.html',
         conversation=None,
         buttons=chat_branches,                                  # dict
         links=links,                                            # List[dict]
