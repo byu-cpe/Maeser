@@ -64,12 +64,10 @@ def add_flask_blueprint(app: Flask, chat_session_manager: ChatSessionManager, us
         
         @maeser_blueprint.route('/login/github', methods=["GET"])
         def github_authorize():
-            print(session)
             return login_api.github_authorize_controller(current_user, user_manager.authenticators['github'])
 
         @maeser_blueprint.route('/login/github_callback')
         def github_auth_callback():
-            print(session)
             return login_api.github_auth_callback_controller(current_user, user_manager)
 
         @maeser_blueprint.route("/logout")
