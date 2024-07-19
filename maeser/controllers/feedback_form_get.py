@@ -5,7 +5,7 @@ This module contains the controller function to render the feedback form templat
 
 from flask import render_template
 
-def controller():
+def controller(main_logo_light: str | None = None, main_logo_dark: str | None = None, favicon: str | None = None) -> str:
     """Display the feedback form.
 
     Returns:
@@ -16,5 +16,8 @@ def controller():
     return render_template(
         'feedback_form.html', 
         role_options=role_options,
-        category_options=category_options
+        category_options=category_options,
+        main_logo_light=main_logo_light,
+        main_logo_dark=main_logo_dark,
+        favicon=favicon
     )

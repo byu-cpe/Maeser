@@ -10,11 +10,15 @@ from .common.file_info import get_file_list
 from maeser.chat.chat_session_manager import ChatSessionManager
 
 def controller(
-    chat_sessions_manager: ChatSessionManager,
-    max_requests: int | None = None,
-    rate_limit_interval: int | None = None,
-    current_user=None
-):
+        chat_sessions_manager: ChatSessionManager,
+        max_requests: int | None = None,
+        rate_limit_interval: int | None = None,
+        current_user=None,
+        main_logo_light: str | None = None,
+        main_logo_dark: str | None = None,
+        chat_head: str | None = None,
+        favicon: str | None = None,        
+    ):
     """
     Renders the chat interface template with relevant data.
 
@@ -60,6 +64,8 @@ def controller(
         rate_limit_interval = rate_limit_interval * 1000 // 3
     rate_limiting: bool = bool(requests_remaining and rate_limit_interval and max_requests)
 
+    print(favicon)
+
     return render_template(
         'chat_interface.html',
         conversation=None,
@@ -68,5 +74,9 @@ def controller(
         requests_remaining=requests_remaining,                  # None | int
         max_requests_remaining=max_requests,                    # None | int
         requests_remaining_interval_ms=rate_limit_interval,     # None | int
-        rate_limiting=rate_limiting                             # bool
+        rate_limiting=rate_limiting,                            # bool
+        main_logo_light=main_logo_light,                        # None | str
+        main_logo_dark=main_logo_dark,                          # None | str
+        chat_head=chat_head,                                    # None | str
+        favicon=favicon,                                        # None | str
     )
