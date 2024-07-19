@@ -1,4 +1,12 @@
+"""
+This module contains the controller function to display the training form.
+
+Functions:
+    controller: Renders the training form template.
+"""
+
 from flask import render_template
+
 
 def controller():
     """
