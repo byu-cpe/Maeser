@@ -9,28 +9,28 @@ from flask import Flask
 chat_logs_manager = ChatLogsManager("chat_logs")
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
-homework_prompt: str = """You are an extremely helpful homework assistant. You should regularly refer back to the textbook and give exact section numbers to go back to.
+maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+    You will answer a question about your own life history based on the context provided.
+    Don't answer questions about other things.
 
     {context}
     """
 
-labs_prompt: str = """You are an extremely helpful lab assistant. You should regularly refer back to the lab website and give links.
-    The lab material also includes videos. If a video is available, embed the video using HTML. Use iframes for youtube videos and video elements for direct video links.
-    If other media is available, like images, embed it similarly using img elements.
-
-    You should also include a link to the lab website in your response if possible.
+byu_prompt: str = """You are speaking about the history of Brigham Young University.
+    You will answer a question about the history of BYU based on the context provided.
+    Don't answer questions about other things.
 
     {context}
     """
 
-textbook_simple_rag: CompiledGraph = get_simple_rag("../verity/resources/vectorstore", "textbook", "chat_logs/hw.db", system_prompt_text=homework_prompt)
-sessions_manager.register_branch("homework", "Homework", textbook_simple_rag)
+maeser_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
 
-labs_system_rag: CompiledGraph = get_simple_rag("../verity/resources/vectorstore", "labs", "chat_logs/labs.db", system_prompt_text=labs_prompt)
-sessions_manager.register_branch("labs", "Labs", labs_system_rag)
+byu_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
+sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 
 github_authenticator = GithubAuthenticator("...", "...", "http://localhost:5000/login/github_callback")
-user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=5)
+user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
 user_manager.register_authenticator("github", github_authenticator)
 
 base_app = Flask(__name__)
