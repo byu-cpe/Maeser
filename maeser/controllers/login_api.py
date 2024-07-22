@@ -42,7 +42,7 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
         if user is None:
             return render_template(
                 'login.html', 
-                message='CAEDM Authentication Failed',
+                message='Authentication Failed',
                 main_logo_light=main_logo_light,
                 main_logo_dark=main_logo_dark,
                 favicon=favicon,
@@ -57,9 +57,9 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
                 favicon=favicon,
                 app_name=app_name if app_name else "Maeser",
             )
-        
+
         login_user(user)
-        
+
         next_url = request.args.get('next')
         if not next_url or not is_safe_url(next_url):
             next_url = '/'
