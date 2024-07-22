@@ -1,9 +1,11 @@
 import secrets
 import sqlite3
+from abc import ABC, abstractmethod
 from typing import Any, Tuple, Union
 from urllib.parse import urlencode
+
 import requests
-from abc import ABC, abstractmethod
+
 
 class User:
     """
@@ -14,7 +16,7 @@ class User:
     # We set it back to its default implementation
     __hash__ = object.__hash__
 
-    def __init__(self, ident: str, blacklisted=False, admin=False, realname='Student', usergroup='b\'guest\'', authmethod='caedm', requests_left=10, max_requests=10, aka=list()):
+    def __init__(self, ident: str, blacklisted=False, admin=False, realname='Student', usergroup='b\'guest\'', authmethod='invalid', requests_left=10, max_requests=10, aka=[]):
         """
         Initialize a User object.
 
@@ -24,7 +26,7 @@ class User:
             admin (bool, optional): Whether the user is an admin. Defaults to False.
             realname (str, optional): The user's real name. Defaults to 'Student'.
             usergroup (str, optional): The user's group. Defaults to 'b\'guest\''.
-            authmethod (str, optional): The authentication method. Defaults to 'caedm'.
+            authmethod (str, optional): The authentication method. Defaults to 'invalid'.
             requests_left (int, optional): The number of requests left. Defaults to 10.
             max_requests (int, optional): The maximum number of requests. Defaults to 10.
             aka (list, optional): A list of alternate names. Defaults to an empty list.
@@ -156,7 +158,7 @@ class GithubAuthenticator(BaseAuthenticator):
     Handles authentication with GitHub OAuth.
     """
 
-    def __init__(self, client_id: str, client_secret: str, auth_callback_uri: str):
+    def __init__(self, client_id: str, client_secret: str, auth_callback_uri: str, timeout: int = 10):
         """
         Initialize the GitHub authenticator.
 
@@ -170,6 +172,7 @@ class GithubAuthenticator(BaseAuthenticator):
         # Generally this should be set from your Flask app as this will differ between applications
         # url_for('github_auth_callback', _external=True)
         self.auth_callback_uri = auth_callback_uri
+        self.timeout = timeout
 
     def __str__(self) -> str:
         return 'GithubAuthenticator'
@@ -199,7 +202,8 @@ class GithubAuthenticator(BaseAuthenticator):
             'code': request_args['code'],
             'grant_type': 'authorization_code',
             'redirect_uri': self.auth_callback_uri
-        }, headers={'Accept': 'application/json'})
+        }, headers={'Accept': 'application/json'},
+        timeout=self.timeout)
 
         if response.status_code != 200:
             print(f'GitHub authentication failed during token exchange: {response.status_code}', 'ERROR')
@@ -213,7 +217,7 @@ class GithubAuthenticator(BaseAuthenticator):
         response = requests.get(user_info_url, headers={
             'Authorization': 'Bearer ' + oauth2_token,
             'Accept': 'application/json',
-        })
+        }, timeout=self.timeout)
 
         if response.status_code != 200:
             print(f'GitHub authentication failed when fetching user info: {response.status_code}', 'ERROR')
