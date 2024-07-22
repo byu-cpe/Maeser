@@ -1,3 +1,10 @@
+"""
+User management module for authentication and authorization.
+
+This module provides classes and utilities for managing users,
+including authentication methods, database operations, and request tracking.
+"""
+
 import secrets
 import sqlite3
 from abc import ABC, abstractmethod
