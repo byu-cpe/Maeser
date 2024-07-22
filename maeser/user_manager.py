@@ -115,6 +115,26 @@ class User:
         return not equal
 
 
+class LoginStyle:
+    
+    def __init__(self, icon: str, login_submit: str, direct_submit: bool=False):
+        # Not a url, but a controller name for url_for. i.e. 'maeser.github_authorize' or 'localauth'
+        self.login_submit = login_submit
+        self.direct_submit = direct_submit
+        # HTML for a custom form (labels and inputs only)
+        self._custom_form: str = '<label for="username" class="form-label">Username</label><input type="text" id="username" name="username" class="form-input" required><label for="password" class="form-label">Password</label><input type="password" id="password" name="password" class="form-input" required>'
+        self.icon_html = f'<i class="bi bi-{icon}"></i>'
+
+    @property
+    def form_html(self) -> str:
+        if self.direct_submit:
+            raise ValueError("Cannot use form_html with direct_submit=True")
+        return self._custom_form
+    
+    @form_html.setter
+    def form_html(self, html: str):
+        self._custom_form = html
+
 class BaseAuthenticator(ABC):
     """
     Base class for authenticators.
@@ -158,6 +178,17 @@ class BaseAuthenticator(ABC):
             User or None: The fetched user object or None if not found.
         """
         pass
+    
+    @property
+    @abstractmethod
+    def style(self) -> LoginStyle:
+        """
+        Get the login style for the authenticator.
+
+        Returns:
+            LoginStyle: The login style object.
+        """
+        pass
 
 
 class GithubAuthenticator(BaseAuthenticator):
@@ -180,9 +211,14 @@ class GithubAuthenticator(BaseAuthenticator):
         # url_for('github_auth_callback', _external=True)
         self.auth_callback_uri = auth_callback_uri
         self.timeout = timeout
+        self._login_style = LoginStyle('github', 'maeser.github_authorize', direct_submit=True)
 
     def __str__(self) -> str:
-        return 'GithubAuthenticator'
+        return 'GitHub'
+    
+    @property
+    def style(self) -> LoginStyle:
+        return self._login_style
 
     def authenticate(self, request_args: dict, oauth_state: str) -> Union[tuple, None]:
         """
@@ -302,12 +338,14 @@ class UserManager:
         Register a new authentication method.
 
         Args:
-            name (str): The name of the authentication method.
+            name (str): The shorthand name of the authentication method. Must only contain letters.
             authenticator (BaseAuthenticator): The authenticator object.
 
         Raises:
             ValueError: If the provided name is invalid or the authenticator is already registered.
         """
+        if not name.isalpha():
+            raise ValueError(f"Invalid authenticator name: {name}, must only contain letters!")
         self.authenticators[name] = authenticator
         with self.db_connection as db:
             self._create_table(db, name)
