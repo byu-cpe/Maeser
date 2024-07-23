@@ -115,6 +115,10 @@ code, pre {
   box-sizing: border-box;
 }
 
+.login-plugin-form {
+  margin-bottom: 20px;
+}
+
 .form-title {
   margin-bottom: 20px;
   color: #333;
