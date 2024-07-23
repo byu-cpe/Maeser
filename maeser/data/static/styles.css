@@ -609,6 +609,10 @@ select {
   color: red;
 }
 
+#login-methods-list button {
+  margin: .15rem 0 .15rem 0;
+}
+
 /* Media Queries for Mobile Responsiveness */
 @media screen and (max-width: 1024px) {
   body {
