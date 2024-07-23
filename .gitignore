@@ -8,10 +8,11 @@ config.yaml
 *__pycache__
 tests/.pytest_cache
 # Ignore built docs
-sphinx_docs/_build
+sphinx-docs/_build
 # Ignore auto generated docs
-sphinx_docs/autodoc/src
-sphinx_docs/autodoc/scripts
+sphinx-docs/autodoc/src
+sphinx-docs/autodoc/scripts
+sphinx-docs/autodoc/maeser
 # Ignore local logs and runtime data
 logs
 chat_logs
