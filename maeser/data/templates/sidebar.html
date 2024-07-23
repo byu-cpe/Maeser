@@ -20,8 +20,8 @@
                 <div class="header-wrapper">
                     <div id="logo-tab">
                         <button id="tab"><i class="fa fa-bars"></i></button>
-                        {% if main_logo_light %}
-                            <img src="{{ main_logo_light }}">
+                        {% if main_logo_dark %}
+                            <img src="{{ main_logo_dark }}">
                         {% else %}
                             <img src="{{ url_for('maeser.static', filename='maeser-dark.png') }}">
                         {% endif %}

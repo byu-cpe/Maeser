@@ -14,8 +14,8 @@
 <body>
     <header>
         <div class="header-wrapper">
-            {% if main_logo_light %}
-                <img src="{{ main_logo_light }}">
+            {% if main_logo_dark %}
+                <img src="{{ main_logo_dark }}">
             {% else %}
                 <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
             {% endif %}
