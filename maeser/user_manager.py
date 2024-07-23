@@ -417,6 +417,30 @@ class UserManager:
                 return User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method)
         return None
 
+    def list_users(self, auth_method: str) -> list[User]:
+        """
+        List all users in the database for a given authentication method.
+
+        Args:
+            auth_method (str): The authentication method to list users for.
+
+        Returns:
+            list[User]: A list of user objects.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        if not auth_method.isalnum():
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
+        users = []
+        with self.db_connection as db:
+            cursor: sqlite3.Cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}"')
+            for row in cursor.fetchall():
+                users.append(User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method))
+        return users
+
     def authenticate(self, auth_method: str, *args: Any, **kwargs: Any) -> Union[User, None]:
         """
         Authenticate a user using the specified authentication method.
