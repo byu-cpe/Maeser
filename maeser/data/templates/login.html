@@ -14,7 +14,11 @@
 <body>
     <main>
         <div class="form-login">
-            <img src="{{ url_for('maeser.static', filename='maeser.png') }}" alt="Logo">
+            {% if main_logo_light %}
+                <img src="{{ main_logo_light }}">
+            {% else %}
+                <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
+            {% endif %}
             <h2 class="title">Login</h2>
             {% if message %}
                 <p class="form-message">{{ message }}</p>
