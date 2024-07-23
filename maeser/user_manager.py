@@ -585,6 +585,8 @@ class UserManager:
         """
         if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
+        
+        dec_by = min(dec_by, self.max_requests)
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
@@ -609,6 +611,8 @@ class UserManager:
         """
         if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
+        
+        inc_by = min(inc_by, self.max_requests)
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
