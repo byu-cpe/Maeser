@@ -613,6 +613,10 @@ select {
   margin: .15rem 0 .15rem 0;
 }
 
+#login-autopopulate button {
+  margin-top: 1rem;
+}
+
 /* Media Queries for Mobile Responsiveness */
 @media screen and (max-width: 1024px) {
   body {
