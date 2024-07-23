@@ -47,6 +47,15 @@ class User:
         self._requests_remaining = requests_left
         self._max_requests = max_requests
         self.aka: list = aka
+    
+    def __str__(self) -> str:
+        return f"""User Information for {self.ident}:
+        Authentication Method: {self.auth_method}
+        Real Name: {self.realname}
+        Admin: {'Yes' if self.admin else 'No'}
+        Banned: {'Yes' if not self.is_active else 'No'}
+        User Group: {self.usergroup}
+        Requests Remaining: {self.requests_remaining}/{self._max_requests}"""
 
     @property
     def is_authenticated(self):
@@ -641,7 +650,28 @@ class UserManager:
 
         user = self.get_user(auth_method, user_id)
         return user.requests_remaining if user else None
+    
+    def fetch_user(self, auth_method: str, ident: str) -> bool:
+        """
+        Fetch a user from the authentication source and add them to the cache
+        without modifying their admin or banned status.
 
+        Args:
+            auth_method (str): The authentication method ('caedm' or 'github').
+            ident (str): The user's identifier.
+
+        Returns:
+            bool: True if the user was successfully fetched and cached, False otherwise.
+        """
+        if auth_method not in self.authenticators:
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+        
+        user = self.authenticators[auth_method].fetch_user(ident)
+        if user:
+            self._create_or_update_user(auth_method, user.ident, user.realname, user.usergroup)
+            return True
+        return False
+        
     def remove_user_from_cache(self, auth_method: str, ident: str) -> bool:
         """
         Remove a user from the cache.
