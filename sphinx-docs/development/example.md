@@ -1,139 +1,121 @@
-# Maeser Project: Building an AI-Powered Homework and Lab Assistant
+# Maeser Package Example
 
-This README will guide you through the process of setting up and understanding the Maeser project, an AI-powered assistant for homework and lab work. We'll break down the main `example.py` into manageable parts, explaining each section as we go.
+This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication.
 
-Be sure to follow the [development setup](./development_setup.md) instructions before this to install required packages. 
-
-## Step 1: Import Required Modules
-
-First, let's import all the necessary modules:
-
-```python
-from langgraph.graph.graph import CompiledGraph
-from maeser.user_manager import UserManager, GithubAuthenticator
-from maeser.chat.chat_logs import ChatLogsManager
-from maeser.chat.chat_session_manager import ChatSessionManager
-from maeser.controllers import get_maeser_blueprint_with_user_management
-from maeser.graphs.simple_rag import get_simple_rag
-from flask import Blueprint, Flask
-from flask_login import LoginManager
+The `example/example.py` file's code is shown below. You can run the example application by running:
+```shell
+python example/example.py
 ```
 
-These imports include custom modules from the Maeser project, as well as Flask and LangGraph components.
+## Overview
 
-## Step 2: Set Up Chat Logs and Session Management
+The example program sets up a Flask web application with two different chat branches: one for Karl G. Maeser's history and another for BYU's history. It uses GitHub authentication for user management and implements rate limiting.
 
-Next, we'll set up the chat logs and session management:
+## Key Components
+
+### 1. Chat Management
 
 ```python
+from maeser.chat.chat_logs import ChatLogsManager
+from maeser.chat.chat_session_manager import ChatSessionManager
+
 chat_logs_manager = ChatLogsManager("chat_logs")
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
-This creates a `ChatLogsManager` to handle chat logs and a `ChatSessionManager` to manage chat sessions.
+These lines initialize the chat logs and session managers, which handle storing and managing chat conversations.
 
-## Step 3: Define System Prompts
-
-Now, let's define the system prompts for homework and lab assistants:
+### 2. Prompt Definition
 
 ```python
-homework_prompt: str = """You are an extremely helpful homework assistant. You should regularly refer back to the textbook and give exact section numbers to go back to.
+maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+    You will answer a question about your own life history based on the context provided.
+    Don't answer questions about other things.
 
     {context}
     """
 
-labs_prompt: str = """You are an extremely helpful lab assistant. You should regularly refer back to the lab website and give links.
-    The lab material also includes videos. If a video is available, embed the video using HTML. Use iframes for youtube videos and video elements for direct video links.
-    If other media is available, like images, embed it similarly using img elements.
-
-    You should also include a link to the lab website in your response if possible.
+byu_prompt: str = """You are speaking about the history of Brigham Young University.
+    You will answer a question about the history of BYU based on the context provided.
+    Don't answer questions about other things.
 
     {context}
     """
 ```
 
-These prompts define the behavior and capabilities of our AI assistants.
+Here, we define system prompts for two different chat branches. These prompts set the context and behavior for the AI in each branch.
 
-## Step 4: Set Up RAG (Retrieval-Augmented Generation) Systems
-
-Next, we'll set up the RAG systems for both homework and labs:
+### 3. RAG (Retrieval-Augmented Generation) Setup
 
 ```python
-textbook_simple_rag: CompiledGraph = get_simple_rag("../verity/resources/vectorstore", "textbook", "chat_logs/hw.db", system_prompt_text=homework_prompt)
-sessions_manager.register_branch("homework", "Homework", textbook_simple_rag)
+from maeser.graphs.simple_rag import get_simple_rag
 
-labs_system_rag: CompiledGraph = get_simple_rag("../verity/resources/vectorstore", "labs", "chat_logs/labs.db", system_prompt_text=labs_prompt)
-sessions_manager.register_branch("labs", "Labs", labs_system_rag)
+maeser_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
+
+byu_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
+sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 ```
 
-This creates two RAG systems, one for homework and one for labs, and registers them with the session manager. These functions to retrieve these Simple RAG systems return example langgraph graphs. You can replace these with any custom graph you would like to use.
+This section sets up two RAG graphs, one for each chat branch, and registers them with the session manager. RAG enhances the AI's responses by retrieving relevant information from a knowledge base.
 
-## Step 5: Set Up User Authentication
+> **NOTE:** The `get_simple_rag` function could be replaced with any LangGraph compiled state graph. So, for a custom application, you will likely want to create a custom graph and register it with the sessions manager. For more instructions on creating custom graphs, see [Using Custom Graphs](./graphs.md)
 
-Now, let's set up user authentication using GitHub:
+### 4. User Management and Authentication
 
 ```python
-github_authenticator = GithubAuthenticator("", "", "http://localhost:5000/login/github_callback")
-user_manager = UserManager("chat_logs/users")
+from maeser.user_manager import UserManager, GithubAuthenticator
+
+github_authenticator = GithubAuthenticator("...", "...", "http://localhost:5000/login/github_callback")
+user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
 user_manager.register_authenticator("github", github_authenticator)
 ```
 
-This sets up GitHub authentication and a user manager. Note: You'll need to fill in your GitHub OAuth credentials in the `GithubAuthenticator` constructor.
+Here, we set up user management with GitHub authentication and implement rate limiting (5 requests updated every 60 seconds).
 
-## Step 6: Create Flask Application and Blueprint
-
-Next, we'll create the Flask application and register the Maeser blueprint:
+### 5. Flask Application Setup
 
 ```python
-maeser_blueprint: Blueprint = get_maeser_blueprint_with_user_management(sessions_manager, user_manager)
+from flask import Flask
+from maeser.blueprints import add_flask_blueprint
 
-app = Flask(__name__)
-app.register_blueprint(maeser_blueprint)
+base_app = Flask(__name__)
+
+app: Flask = add_flask_blueprint(
+    base_app, 
+    "secret",
+    sessions_manager, 
+    user_manager,
+    app_name="Test App",
+    chat_head="/static/Karl_G_Maeser.png",
+)
 ```
 
-This creates a Flask application and registers the Maeser blueprint with it.
+Finally, we create a Flask application and add the Maeser blueprint to it, configuring various options like the app name and chat head image.
 
-## Step 7: Configure Flask-Login
+> **NOTE:** For a custom application, you may choose to not use the `add_flask_blueprint` function but rather create your own Flask app.
+The Flask app should call the proper methods in the chat sessions manager. 
 
-Now, let's set up Flask-Login for managing user sessions:
+## Running the Application
 
-```python
-app.secret_key = 'awkwerfnerfderf'  # Replace with a secure secret key
-login_manager = LoginManager(app)
-login_manager.init_app(app)
-login_manager.login_view = "maeser.login" # type: ignore
-login_manager.session_protection = "strong"
-
-@login_manager.user_loader
-def load_user(user_full_id: str):
-    auth_method, user_id = user_full_id.split('.', 1)
-    return user_manager.get_user(auth_method, user_id)
-```
-
-This configures Flask-Login and sets up a user loader function.
-
-## Step 8: Run the Application
-
-Finally, we'll add the code to run the Flask application:
+To run the application, simply execute the script:
 
 ```python
 if __name__ == "__main__":
     app.run()
 ```
 
-This allows you to run the script directly to start the Flask development server.
+This starts the Flask development server.
 
-## Running the Application
+## Customization
 
-To run the application:
+You can customize various aspects of the application, such as:
 
-1. Make sure you have all the required dependencies installed.
-2. Set up your GitHub OAuth credentials and replace the empty strings in the `GithubAuthenticator` constructor.
-3. Replace the `app.secret_key` with a secure secret key.
-4. Run the script using Python:
+- Adding more chat branches
+- Changing the authentication method(s)
+- Modifying the rate limiting parameters
+- Updating the app name, chat head, logo, or favicon
 
-```
-python example/example.py
-```
+## Conclusion
 
-The server should start, and you can access the application at `http://localhost:5000`.
+This example demonstrates how to use the `maeser` package to create a multi-branch chatbot application with user authentication and rate limiting. You can build upon this example to create more complex applications tailored to your specific needs.

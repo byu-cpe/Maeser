@@ -11,7 +11,7 @@ wiki_wiki = wikipediaapi.Wikipedia(
 p_wiki = wiki_wiki.page("Karl G. Maeser")
 text = p_wiki.text
 
-# Split the text into chunks and vectorize them
+# Split the text into chunks
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter

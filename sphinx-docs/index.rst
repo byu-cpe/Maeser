@@ -14,14 +14,14 @@ Welcome to Maeser's documentation!
    autodoc/maeser/modules.rst
 
 .. toctree ::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Development:
 
    development/development_setup.md
    development/wsl_development.md
-   development/wsl_development.md
-   development/graphs.md
    development/example.md
+   development/embedding.md
+   development/graphs.md
 
 Indices and tables
 ==================

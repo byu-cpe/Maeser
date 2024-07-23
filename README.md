@@ -20,12 +20,14 @@ Detailed documentation can be found [here](https://byucpe.github.io/maeser/).
 
 ## Getting Started
 ### Development Setup
-To begin using the Maeser Chatbot, follow the [development setup instructions](https://byucpe.github.io/maeser/user/development_setup.html).
+To begin using the Maeser Chatbot, follow the [development setup instructions](https://byu-cpe.github.io/Maeser/development/development_setup.html).
 This page includes instructions for cloning the repository and running the app.
 
-> **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byucpe.github.io/maeser/user/wsl_development.html).
+> **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byu-cpe.github.io/Maeser/development/development_setup.html).
 ### Example
-For a fully working example application, see the source code in the `example` directory.
+For a fully working example application, follow the documentation for the [example application](https://byu-cpe.github.io/Maeser/development/development_setup.html).
+### Embedding Context
+Follow the documentation for embedding custom content [here](https://byu-cpe.github.io/Maeser/development/embedding.html).
 ### Graphs
 An understanding of langchain and langgraph is necessary for customizing the application for any use case. Follow documentation and tutorials [here](https://langchain-ai.github.io/langgraph/).
 
