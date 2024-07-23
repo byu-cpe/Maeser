@@ -26,7 +26,7 @@
 
             <div id="login-methods-list" class="login-methods-list">
                 {% for auth in authenticators.values() %}
-                    <button onclick="login{{ auth.__str__() }}()" type="button">{{ auth.style.icon_html|safe }}{{ auth.__str__()|safe }}</button>
+                    <button onclick="login{{ auth.__str__() }}()" type="button">{{ auth.style.icon_html|safe }} {{ auth.__str__()|safe }}</button>
                 {% endfor %}
             </div>
 
