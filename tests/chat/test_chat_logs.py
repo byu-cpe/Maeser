@@ -42,7 +42,7 @@ def test_create_log_file(chat_logs_manager, mock_user, create_test_log):
         log_content = yaml.safe_load(file)
 
     assert log_content["session_id"] == session_id
-    assert log_content["user"] == "caedm.test_user"
+    assert log_content["user"] == "invalid.test_user"
     assert log_content["real_name"] == "Student"
     assert log_content["branch"] == branch_name
     assert log_content["total_cost"] == 0
@@ -71,7 +71,7 @@ def test_log(chat_logs_manager, mock_user, test_log_data):
 
     print(log_content)
 
-    assert log_content["user"] == "caedm.test_user"
+    assert log_content["user"] == "invalid.test_user"
     assert len(log_content["messages"]) == 2
     assert log_content["total_cost"] == 0.002
     assert log_content["total_tokens"] == 100
@@ -90,7 +90,7 @@ def test_get_chat_history(chat_logs_manager, create_test_log, test_log_data):
     chat_history = chat_logs_manager.get_chat_history(branch_name, session_id)
 
     assert chat_history["session_id"] == session_id
-    assert chat_history["user"] == "caedm.test_user"
+    assert chat_history["user"] == "invalid.test_user"
     assert chat_history["real_name"] == "Student"
     assert chat_history["branch"] == branch_name
     assert len(chat_history["messages"]) == 2

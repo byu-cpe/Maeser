@@ -1,7 +1,7 @@
 """Module for handling login and GitHub OAuth2 authorization controllers."""
 
-from flask import render_template, redirect, request, session
-from flask_login import login_user
+from flask import render_template, redirect, url_for, request, session
+from flask_login import login_user, current_user
 from urllib.parse import urljoin, urlparse
 
 def controller():
@@ -35,18 +35,33 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
     Returns:
         Response: The response object to render the login page or redirect.
     """
+    if current_user is not None and current_user.is_authenticated:
+        return redirect('/')
+    
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = auth_manager.authenticate_caedm(username, password)
-        if user is None:
+        username = request.form.get('username', '')
+        password = request.form.get('password', '')
+        auth_method = request.form.get('authvalidator', 'invalid')
+        if auth_method == 'invalid':
             return render_template(
-                'login.html', 
-                message='CAEDM Authentication Failed',
+                'login.html',
+                message='Invalid Authentication Method in Request',
                 main_logo_light=main_logo_light,
                 main_logo_dark=main_logo_dark,
                 favicon=favicon,
                 app_name=app_name if app_name else "Maeser",
+                authenticators=auth_manager.authenticators,
+            )
+        user = auth_manager.authenticate(auth_method, username, password)
+        if user is None:
+            return render_template(
+                'login.html', 
+                message='Authentication Failed',
+                main_logo_light=main_logo_light,
+                main_logo_dark=main_logo_dark,
+                favicon=favicon,
+                app_name=app_name if app_name else "Maeser",
+                authenticators=auth_manager.authenticators,
             )
         if not user.is_active:
             return render_template(
@@ -56,10 +71,11 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
                 main_logo_dark=main_logo_dark,
                 favicon=favicon,
                 app_name=app_name if app_name else "Maeser",
+                authenticators=auth_manager.authenticators,
             )
-        
+
         login_user(user)
-        
+
         next_url = request.args.get('next')
         if not next_url or not is_safe_url(next_url):
             next_url = '/'
@@ -77,6 +93,7 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
         main_logo_dark=main_logo_dark,
         favicon=favicon,
         app_name=app_name if app_name else "Maeser",
+        authenticators=auth_manager.authenticators,
     )
 
 def github_authorize_controller(current_user, github_authenticator):
@@ -99,7 +116,7 @@ def github_authorize_controller(current_user, github_authenticator):
     # Redirect the user to the OAuth2 provider authorization URL
     return redirect(provider_url)
 
-def github_auth_callback_controller(current_user, auth_manager, app_name: str | None = None, main_logo_light: str | None = None, main_logo_dark: str | None = None, favicon: str | None = None):
+def github_auth_callback_controller(current_user, auth_manager, app_name: str | None = None, main_logo_light: str | None = None, main_logo_dark: str | None = None, favicon: str | None = None, login_redirect: str = 'maeser.login'):
     if not current_user.is_anonymous:
         return redirect('/')
 
@@ -121,23 +138,9 @@ def github_auth_callback_controller(current_user, auth_manager, app_name: str | 
 
     user = auth_manager.authenticate('github', request.args, oauth_state)
     if user is None:
-        return render_template(
-            'login.html', 
-            message='GitHub Authentication Failed',
-            main_logo_light=main_logo_light,
-            main_logo_dark=main_logo_dark,
-            favicon=favicon,
-            app_name=app_name if app_name else "Maeser",
-        )
+        return redirect(url_for(login_redirect, message='GitHub Authentication Failed'))
     if not user.is_active:
-        return render_template(
-            'login.html', 
-            message=f'User {user.full_id_name} is Banned',
-            main_logo_light=main_logo_light,
-            main_logo_dark=main_logo_dark,
-            favicon=favicon,
-            app_name=app_name if app_name else "Maeser",
-        )
+        return redirect(url_for(login_redirect, message=f'User {user.full_id_name} is Banned'))
     
     login_user(user)
 

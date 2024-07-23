@@ -15,25 +15,60 @@
     <main>
         <div class="form-login">
             <img src="{{ url_for('maeser.static', filename='maeser.png') }}" alt="Logo">
-            <h2 class="form-title">Login</h2>
+            <h2 class="title">Login</h2>
             {% if message %}
                 <p class="form-message">{{ message }}</p>
             {% endif %}
-            <form action="{{ url_for('maeser.login', next=next) }}" method="post">
-                <input type="hidden" name="next" value="{{ next }}">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" id="username" name="username" class="form-input" required>
-                
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-input" required>
-                
-                <button type="submit" class="form-button">Login</button>
-            </form>
-            <p>Or</p>
-            <p>
-                <a class="btn github-login" href="{{ url_for('maeser.github_authorize', next_url=next) }}"><i class="bi bi-github"></i> Login with GitHub</a>
-            </p>
+
+            <div id="login-methods-list" class="login-methods-list">
+                {% for auth in authenticators.values() %}
+                    <button onclick="login{{ auth.__str__() }}()" type="button">{{ auth.style.icon_html|safe }}{{ auth.__str__()|safe }}</button>
+                {% endfor %}
+            </div>
+
+            <div id="login-autopopulate" class="login-autopopulate hide">
+                {% for shortname, auth in authenticators.items() %}
+                    {% if not auth.style.direct_submit %}
+                    <form id="login-{{ shortname }}" class="login-plugin-form hide" action="{{ url_for(auth.style.login_submit, next=next) }}" method="post">
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <input type="hidden" name="authvalidator" value="{{ shortname }}">
+                        {{ auth.style.form_html|safe }}
+                        <button type="submit" class="form-button">Login</button>
+                    </form>
+                    {% endif %}
+                {% endfor %}
+                <button onclick="showAllLoginMethods()"><i class="bi bi-arrow-left"></i> Back</button>
+            </div>
+
         </div>
     </main>
+
+    <script>
+        const loginMethodsListContainer = document.getElementById('login-methods-list');
+        const autopopLogin = document.getElementById('login-autopopulate');
+        const allPluginForms = document.querySelectorAll('.login-plugin-form');
+
+        function showAllLoginMethods() {
+            allPluginForms.forEach((pluginForm) => {
+                pluginForm.classList.add('hide');
+            });
+            autopopLogin.classList.add('hide');
+            loginMethodsListContainer.classList.remove('hide');
+        }
+
+        {% for shortname, auth in authenticators.items() %}
+            function login{{ auth.__str__() }}() {
+                {% if auth.style.direct_submit %}
+                    location.href="{{ url_for(auth.style.login_submit, next=next) }}";
+                {% else %}
+                    const loginForm = document.getElementById('login-{{ shortname }}');
+                    loginForm.classList.remove('hide');
+                    autopopLogin.classList.remove('hide');
+                    loginMethodsListContainer.classList.add('hide');
+                {% endif %}
+            }
+        {% endfor %}
+    </script>
+
 </body>
 </html>
