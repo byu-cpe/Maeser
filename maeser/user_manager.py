@@ -47,6 +47,15 @@ class User:
         self._requests_remaining = requests_left
         self._max_requests = max_requests
         self.aka: list = aka
+    
+    def __str__(self) -> str:
+        return f"""User Information for {self.ident}:
+        Authentication Method: {self.auth_method}
+        Real Name: {self.realname}
+        Admin: {'Yes' if self.admin else 'No'}
+        Banned: {'Yes' if not self.is_active else 'No'}
+        User Group: {self.usergroup}
+        Requests Remaining: {self.requests_remaining}/{self._max_requests}"""
 
     @property
     def is_authenticated(self):
@@ -417,6 +426,43 @@ class UserManager:
                 return User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method)
         return None
 
+    def list_users(self, auth_method: str | None = None) -> list[User]:
+        """
+        List all users in the database, optionally filtered by authentication method.
+
+        Args:
+            auth_method (str, optional): The authentication method to list users for. If None, list all users.
+
+        Returns:
+            list[User]: A list of user objects.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        if auth_method is None:
+            # List all users
+            users: list[User] = []
+            with self.db_connection as db:
+                cursor: sqlite3.Cursor = db.execute("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%Users'")
+                for table_name in cursor.fetchall():
+                    table_name: str = table_name[0]
+                    cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}"')
+                    for row in cursor.fetchall():
+                        auth_method_from_table = table_name.replace("Users", "")
+                        users.append(User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method_from_table))
+            return users
+
+        if not auth_method.isalnum():
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
+        users = []
+        with self.db_connection as db:
+            cursor: sqlite3.Cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}"')
+            for row in cursor.fetchall():
+                users.append(User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method))
+        return users
+
     def authenticate(self, auth_method: str, *args: Any, **kwargs: Any) -> Union[User, None]:
         """
         Authenticate a user using the specified authentication method.
@@ -548,6 +594,8 @@ class UserManager:
         """
         if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
+        
+        dec_by = min(dec_by, self.max_requests)
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
@@ -572,6 +620,8 @@ class UserManager:
         """
         if auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
+        
+        inc_by = min(inc_by, self.max_requests)
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
@@ -600,3 +650,77 @@ class UserManager:
 
         user = self.get_user(auth_method, user_id)
         return user.requests_remaining if user else None
+    
+    def fetch_user(self, auth_method: str, ident: str) -> bool:
+        """
+        Fetch a user from the authentication source and add them to the cache
+        without modifying their admin or banned status.
+
+        Args:
+            auth_method (str): The authentication method ('caedm' or 'github').
+            ident (str): The user's identifier.
+
+        Returns:
+            bool: True if the user was successfully fetched and cached, False otherwise.
+        """
+        if auth_method not in self.authenticators:
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+        
+        user = self.authenticators[auth_method].fetch_user(ident)
+        if user:
+            self._create_or_update_user(auth_method, user.ident, user.realname, user.usergroup)
+            return True
+        return False
+        
+    def remove_user_from_cache(self, auth_method: str, ident: str) -> bool:
+        """
+        Remove a user from the cache.
+
+        Args:
+            auth_method (str): The authentication method used.
+            ident (str): The identifier of the user.
+
+        Returns:
+            bool: True if the user was removed, False otherwise.
+
+        Raises:
+            ValueError: If the provided auth_method is invalid.
+        """
+        if auth_method not in self.authenticators:
+            raise ValueError(f"Invalid authenticator name: {auth_method}")
+
+        table_name = f"{auth_method}Users"
+        with self.db_connection as db:
+            cursor = db.execute(f'DELETE FROM "{table_name}" WHERE user_id=?', (ident, ))
+            db.commit()
+            return bool(cursor.rowcount)
+        
+    def list_cleanables(self):
+        """
+        List non-banned and non-admin users in the cache/database.
+        
+        Returns:
+            list[str]: A list of user identifiers in the format "auth_method:user_id".
+        """
+        cleanables = []
+        with self.db_connection as db:
+            for auth_method in self.authenticators:
+                table_name = f"{auth_method}Users"
+                cursor = db.execute(f'SELECT user_id FROM "{table_name}" WHERE blacklisted=0 AND admin=0')
+                cleanables.extend([f'{auth_method}:{row[0]}' for row in cursor.fetchall()])
+        return cleanables
+
+    def clean_cache(self) -> int:
+        """
+        Clean the cache by removing non-banned and non-admin users.
+
+        Returns:
+            int: The number of users removed from the cache.
+        """
+        removed_count = 0
+        with self.db_connection as db:
+            for auth_method in self.authenticators:
+                table_name = f"{auth_method}Users"
+                removed = db.execute(f'DELETE FROM "{table_name}" WHERE blacklisted=0 AND admin=0').rowcount
+                removed_count += removed
+        return removed_count
