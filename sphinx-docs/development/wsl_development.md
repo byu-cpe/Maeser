@@ -2,7 +2,7 @@
 
 ## Cloning the Repository
 
-Follow the [development setup instructions](./development_setup.md) for how to clone the repository onto your computer.
+Follow the [development setup instructions](./development_setup.md) for how to clone the repository onto your computer. Using WSL may help you install the package with poetry and pip.
 
 ## Setting Up WSL on Windows
 
