@@ -4,6 +4,7 @@ This module contains the controller function for rendering the chat logs overvie
 It handles fetching log files, applying filters, and calculating aggregate data such as total tokens and cost.
 """
 
+from maeser.chat import chat_logs
 from maeser.chat.chat_session_manager import ChatSessionManager
 
 import yaml
@@ -20,40 +21,20 @@ def controller(chat_sessions_manager: ChatSessionManager, app_name: str | None =
     Returns:
         str: Rendered home template with log file list.
     """
-    log_path = chat_sessions_manager.chat_log_path
+    chat_logs_manager = chat_sessions_manager.chat_logs_manager
     chat_branches = chat_sessions_manager.branches
 
-    sort_by = request.args.get('sort_by', 'modified')  # Default sorting by modification time
+    sort_by: str = request.args.get('sort_by', 'modified')  # Default sorting by modification time
     order = request.args.get('order', 'desc')  # Default sorting order is descending
     branch_filter = request.args.get('branch', '')
     feedback_filter = request.args.get('feedback', None)
 
-    print(chat_branches)
-    log_files = get_file_list(log_path + '/chat_history') if log_path else []
+    chat_logs_overview, total_tokens, total_cost = chat_logs_manager.get_chat_logs_overview(sort_by, order, branch_filter, feedback_filter) if chat_logs_manager else []
     branches = [branch for branch in chat_branches] if chat_branches else []
-
-    if branch_filter:
-        log_files = [f for f in log_files if branch_filter.lower() in f['branch'].lower()]
-
-    if feedback_filter:
-        feedback_filter = feedback_filter.lower() == 'true'
-        log_files = [f for f in log_files if f['has_feedback'] == feedback_filter]
-
-    reverse = (order == 'desc')
-    log_files.sort(key=lambda x: x[sort_by], reverse=reverse)
-
-    # Calculate aggregate number of tokens and cost
-    total_tokens = 0
-    total_cost = 0.0
-    for file in log_files:
-        with open(f"{log_path}/chat_history/{file['branch']}/{file['name']}", 'r') as log_file:
-            file_content = yaml.safe_load(log_file)
-            total_tokens += file_content.get('total_tokens', 0)
-            total_cost += file_content.get('total_cost', 0.0)
 
     return render_template(
         'chat_logs_overview.html', 
-        log_files=log_files, 
+        log_files=chat_logs_overview, 
         branches=branches, 
         sort_by=sort_by, 
         order=order, 

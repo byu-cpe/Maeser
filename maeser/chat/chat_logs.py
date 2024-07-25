@@ -65,6 +65,24 @@ class BaseChatLogsManager(ABC):
         pass
 
     @abstractmethod
+    def get_chat_logs_overview(self, sort_by, order, branch_filter, feedback_filter) -> tuple[list[dict], int, float]:
+        '''
+        Abstract method to get an overview of chat logs.
+
+        Args:
+            sort_by (str): The field to sort by.
+            order (str): The order to sort by. Either "asc" or "desc".
+            branch_filter (str): The branch to filter by.
+            feedback_filter (str): The feedback to filter by.
+
+        Returns:
+            list[dict]: A list of dictionaries containing information about chat logs.
+            int: The total number of tokens used.
+            float: The total cost of the chat logs.
+        '''
+        pass
+
+    @abstractmethod
     def get_chat_history(self, branch_name: str, session_id: str) -> dict:
         '''
         Abstract method to get chat history for a session.
@@ -144,6 +162,44 @@ class ChatLogsManager(BaseChatLogsManager):
         overview = [link for link in overview if link['header'] is not None]
 
         return overview
+
+    def get_chat_logs_overview(self, sort_by, order, branch_filter, feedback_filter) -> tuple[list[dict], int, float]:
+        '''
+        Gets an overview of chat logs.
+
+        Args:
+            sort_by (str): The field to sort by.
+            order (str): The order to sort by. Either "asc" or "desc".
+            branch_filter (str): The branch to filter by.
+            feedback_filter (str): The feedback to filter by.
+
+        Returns:
+            list[dict]: A list of dictionaries containing information about chat logs.
+            int: The total number of tokens used.
+            float: The total cost of the chat logs.
+        '''
+        log_files = self._get_file_list()
+
+        if branch_filter:
+            log_files = [f for f in log_files if branch_filter.lower() in f['branch'].lower()]
+
+        if feedback_filter:
+            feedback_filter = feedback_filter.lower() == 'true'
+            log_files = [f for f in log_files if f['has_feedback'] == feedback_filter]
+
+        reverse = (order == 'desc')
+        log_files.sort(key=lambda x: x[sort_by], reverse=reverse)
+
+        # Calculate aggregate number of tokens and cost
+        total_tokens = 0
+        total_cost = 0.0
+        for file in log_files:
+            with open(f"{self.chat_log_path}/chat_history/{file['branch']}/{file['name']}", 'r') as log_file:
+                file_content = yaml.safe_load(log_file)
+                total_tokens += file_content.get('total_tokens', 0)
+                total_cost += file_content.get('total_cost', 0.0)
+
+        return log_files, total_tokens, total_cost
 
     def get_chat_history(self, branch_name: str, session_id: str) -> dict:
         '''
