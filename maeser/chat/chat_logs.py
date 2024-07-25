@@ -1,10 +1,12 @@
 from maeser.user_manager import UserManager, User
+from maeser.render import get_response_html
 from abc import ABC, abstractmethod
 from datetime import datetime
 import os
 import yaml
 from os import path, stat, walk
 import subprocess
+from flask import abort, render_template
 
 class BaseChatLogsManager(ABC):
     def __init__(self, chat_log_path: str, user_manager: UserManager | None = None) -> None:
@@ -95,6 +97,19 @@ class BaseChatLogsManager(ABC):
             dict: The chat history for the session.
         '''
         pass
+
+    @abstractmethod
+    def get_log_file_template(self, filename: str, branch: str) -> str:
+        '''
+        Abstract method to get the jinja template for a log file.
+        
+        Args:
+            filename (str): The name of the log file.
+            branch (str): The branch the log file is in.
+
+        Returns:
+            str: The rendered template for the log file.
+        '''
 
 class ChatLogsManager(BaseChatLogsManager):
     def __init__(self, chat_log_path: str) -> None:
@@ -214,6 +229,65 @@ class ChatLogsManager(BaseChatLogsManager):
         '''
         with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "r") as file:
             return yaml.safe_load(file)
+
+    def get_log_file_template(self, filename: str, branch: str) -> str:
+        '''
+        Gets the jinja template for a log file.
+
+        Args:
+            filename (str): The name of the log file.
+            branch (str): The branch the log file is in.
+
+        Returns:
+            str: The rendered template for the log file.
+        '''
+        def process_messages(messages: dict) -> dict:
+            """
+            Process each system response in the conversation and convert it to HTML.
+
+            Args:
+                filename (str): The name of the log file.
+            
+            Returns:
+                dict: The processed messages in HTML format.
+            """
+            for message in messages:
+                message['content'] = get_response_html(message['content'])
+            
+            return messages
+
+        try:
+            print(f'{self.chat_log_path}/chat_history/{branch}/{filename}')
+            with open(f'{self.chat_log_path}/chat_history/{branch}/{filename}', 'r') as file:
+                content = yaml.safe_load(file)
+            
+            user_name = content['user']
+            real_name = content['real_name']
+            branch = content['branch']
+            time = content['time']
+            total_cost = round(content['total_cost'], 3)
+            total_tokens = content['total_tokens']
+            
+            try:
+                messages = process_messages(content['messages'])
+            except KeyError:
+                messages = None
+            
+            return render_template(
+                'display_chat_log.html',
+                user_name=user_name,
+                real_name=real_name,
+                branch=branch,
+                time=time,
+                total_cost=total_cost,
+                total_tokens=total_tokens,
+                messages=messages,
+                app_name=branch
+            )
+        except FileNotFoundError:
+            abort(404, description='Log file not found')
+        except yaml.YAMLError as e:
+            abort(500, description=f'Error parsing log file: {e}')
 
     def _get_file_list(self) -> list[dict]:
         """
