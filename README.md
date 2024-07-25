@@ -23,9 +23,9 @@ Detailed documentation can be found [here](https://byucpe.github.io/maeser/).
 To begin using the Maeser Chatbot, follow the [development setup instructions](https://byu-cpe.github.io/Maeser/development/development_setup.html).
 This page includes instructions for cloning the repository and running the app.
 
-> **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byu-cpe.github.io/Maeser/development/development_setup.html).
+> **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byu-cpe.github.io/Maeser/development/wsl_development.html).
 ### Example
-For a fully working example application, follow the documentation for the [example application](https://byu-cpe.github.io/Maeser/development/development_setup.html).
+For a fully working example application, follow the documentation for the [example application](https://byu-cpe.github.io/Maeser/development/example.html).
 ### Embedding Context
 Follow the documentation for embedding custom content [here](https://byu-cpe.github.io/Maeser/development/embedding.html).
 ### Graphs
