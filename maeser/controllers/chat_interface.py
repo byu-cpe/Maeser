@@ -4,9 +4,10 @@ This module contains a function to render the chat interface template with relev
 """
 
 from flask import render_template
+
+from maeser.chat.chat_logs import BaseChatLogsManager
 # from flask_login import current_user
 
-from .common.file_info import get_file_list
 from maeser.chat.chat_session_manager import ChatSessionManager
 
 def controller(
@@ -39,27 +40,12 @@ def controller(
             - requests_remaining_interval_ms: The interval in milliseconds for rate limiting requests (rate_limit_interval * 1000 / 3)
     """
     # Get chat log path and branches from chat sessions
-    log_path: str | None = chat_sessions_manager.chat_log_path
+    log_manager: BaseChatLogsManager | None = chat_sessions_manager.chat_logs_manager
     chat_branches: dict = chat_sessions_manager.branches
 
-    links = []
-    # Get conversation history if log path exists
-    if log_path:
-        conversations = get_file_list(log_path + '/chat_history')
-        for conversation in conversations:
-            current_user_name: str = 'anon' if current_user is None else current_user.full_id_name
-            if current_user_name == conversation['user']:
-                links.append({
-                    'branch': conversation['branch'],
-                    'session': conversation['name'].removesuffix('.log'),
-                    'modified': conversation['modified'],
-                    'first_message': conversation['first_message']
-                })
-        # Sort conversations by date modified
-        links.sort(key=lambda x: x['modified'], reverse=True)
+    links = log_manager.get_chat_history_overview(current_user) if log_manager else []
 
-    # Remove conversations with no messages
-    links = [link for link in links if link['first_message'] is not None]
+    # Get rate limiting information if enabled
     requests_remaining: int | None = None if current_user is None else current_user.requests_remaining
     if rate_limit_interval:
         rate_limit_interval = rate_limit_interval * 1000 // 3
