@@ -2,9 +2,9 @@ from maeser.user_manager import UserManager, User
 from maeser.render import get_response_html
 from abc import ABC, abstractmethod
 from datetime import datetime
-import os
+import time
 import yaml
-from os import path, stat, walk
+from os import path, stat, walk, mkdir, makedirs
 import subprocess
 from flask import abort, render_template
 
@@ -14,8 +14,8 @@ class BaseChatLogsManager(ABC):
         self.user_manager: UserManager | None = user_manager
 
         # create log directory if it does not exist
-        if not os.path.exists(self.chat_log_path):
-            os.makedirs(self.chat_log_path)
+        if not path.exists(self.chat_log_path):
+            makedirs(self.chat_log_path)
 
     @abstractmethod
     def log(self, branch_name: str, session_id: str, log_data: dict) -> None:
@@ -111,7 +111,21 @@ class BaseChatLogsManager(ABC):
             str: The rendered template for the log file.
         '''
 
+    @abstractmethod
+    def save_feedback(self, feedback: dict) -> None:
+        '''
+        Abstract method to save feedback input to a file.
+
+        Args:
+            feedback (dict): The feedback to save.
+        
+        Returns:
+            None
+        '''
+        pass
+
 class ChatLogsManager(BaseChatLogsManager):
+
     def __init__(self, chat_log_path: str) -> None:
         super().__init__(chat_log_path)
 
@@ -289,6 +303,29 @@ class ChatLogsManager(BaseChatLogsManager):
         except yaml.YAMLError as e:
             abort(500, description=f'Error parsing log file: {e}')
 
+    def save_feedback(self, feedback: dict) -> None:
+        """
+        Save the feedback to a file.
+
+        Args:
+            feedback (dict): The feedback to save.
+        """
+
+        # Make directory if it doesn't exist
+        try:
+            mkdir(f'{self.chat_log_path}/feedback')
+        except FileExistsError:
+            pass
+
+        now = time.time()
+        timestamp = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(now))
+        filename = f'{self.chat_log_path}/feedback/{timestamp}.log'
+
+        with open(filename, 'w') as f:
+            yaml.dump(feedback, f)
+
+        print(f'Feedback saved to {filename}')
+
     def _get_file_list(self) -> list[dict]:
         """
         Get the list of chat history files with metadata.
@@ -369,8 +406,8 @@ class ChatLogsManager(BaseChatLogsManager):
         }
 
         # ensure log directory exists
-        if not os.path.exists(f"{self.chat_log_path}/chat_history/{branch_name}"):
-            os.makedirs(f"{self.chat_log_path}/chat_history/{branch_name}")
+        if not path.exists(f"{self.chat_log_path}/chat_history/{branch_name}"):
+            makedirs(f"{self.chat_log_path}/chat_history/{branch_name}")
 
         # create log file
         with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "w") as file:
@@ -422,4 +459,4 @@ class ChatLogsManager(BaseChatLogsManager):
         Returns:
             bool: True if the log file exists, False otherwise.
         '''
-        return os.path.exists(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log")
+        return path.exists(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log")
