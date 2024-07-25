@@ -7,9 +7,7 @@ system messages by applying HTML response formatting.
 """
 
 from flask import jsonify, request
-
-from .common.render import get_response_html
-
+from maeser.render import get_response_html
 
 def controller(session_handler):
     """
