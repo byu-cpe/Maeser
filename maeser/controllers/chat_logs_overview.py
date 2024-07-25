@@ -7,7 +7,6 @@ It handles fetching log files, applying filters, and calculating aggregate data 
 from maeser.chat.chat_session_manager import ChatSessionManager
 
 import yaml
-from .common.file_info import get_file_list
 from flask import render_template, request
 
 
