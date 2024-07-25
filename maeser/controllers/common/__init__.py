@@ -1,3 +1,3 @@
-from . import decorators, render
+from . import decorators
 
-__all__ = ["decorators", "render"]
+__all__ = ["decorators"]
