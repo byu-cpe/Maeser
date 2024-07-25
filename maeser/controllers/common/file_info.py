@@ -1,24 +1,6 @@
 
 from os import path, stat, walk
 import yaml
-import subprocess
-import platform
-
-def get_creation_time(file_path):
-    if platform.system() == 'Darwin':  # macOS
-        result = subprocess.run(['stat', '-f', '%B', file_path], capture_output=True, text=True)
-        if result.returncode != 0:
-            raise RuntimeError(f"Error getting creation time: {result.stderr}")
-        return int(result.stdout.strip())
-    elif platform.system() == 'Linux':
-        result = subprocess.run(['stat', '-c', '%W', file_path], capture_output=True, text=True)
-        if result.returncode != 0:
-            raise RuntimeError(f"Error getting creation time: {result.stderr}")
-        return int(result.stdout.strip())
-    else:
-        # Fallback for other operating systems
-        return int(path.getctime(file_path))
-
 
 def get_file_info(file_path: str) -> dict:
     """
@@ -54,10 +36,7 @@ def get_file_list(source_path: str) -> list[dict]:
         for file_name in files:
             file_path = path.join(root, file_name)
             if path.isfile(file_path):
-                try:
-                    created_time = get_creation_time(file_path)
-                except (AttributeError, RuntimeError):
-                    created_time = int(path.getctime(file_path))
+                created_time = int(path.getctime(file_path))
                 
                 file_stat = stat(file_path)
                 file_info = {
