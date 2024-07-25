@@ -2,15 +2,23 @@
 from os import path, stat, walk
 import yaml
 import subprocess
+import platform
 
 def get_creation_time(file_path):
-    result = subprocess.run(['stat', '-c', '%W', file_path], stdout=subprocess.PIPE)
-    crtime = int(result.stdout)
-    
-    if crtime == 0:
-        raise AttributeError("Creation time attribute is not available")
-    
-    return crtime
+    if platform.system() == 'Darwin':  # macOS
+        result = subprocess.run(['stat', '-f', '%B', file_path], capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Error getting creation time: {result.stderr}")
+        return int(result.stdout.strip())
+    elif platform.system() == 'Linux':
+        result = subprocess.run(['stat', '-c', '%W', file_path], capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Error getting creation time: {result.stderr}")
+        return int(result.stdout.strip())
+    else:
+        # Fallback for other operating systems
+        return int(path.getctime(file_path))
+
 
 def get_file_info(file_path: str) -> dict:
     """
@@ -41,33 +49,23 @@ def get_file_info(file_path: str) -> dict:
     return file_info
 
 def get_file_list(source_path: str) -> list[dict]:
-    """
-    Get the list of files with metadata in the specified folder and its subfolders.
-
-    Args:
-        source_path (str): The path to the folder.
-
-    Returns:
-        list: The list of files with their metadata.
-    """
     file_list = []
     for root, dirs, files in walk(source_path):
         for file_name in files:
             file_path = path.join(root, file_name)
-            if path.isfile(file_path):  # Check if the path is a file
+            if path.isfile(file_path):
                 try:
                     created_time = get_creation_time(file_path)
-                except AttributeError:
-                    created_time = stat(file_path).st_ctime
+                except (AttributeError, RuntimeError):
+                    created_time = int(path.getctime(file_path))
                 
                 file_stat = stat(file_path)
                 file_info = {
                     'name': file_name,
                     'created': created_time,
-                    'modified': file_stat.st_mtime,
-                    'branch': path.basename(root),  # Get the branch name from the directory
+                    'modified': int(file_stat.st_mtime),
+                    'branch': path.basename(root),
                 }
-                # Update file_info with additional details from get_file_info
                 file_info.update(get_file_info(file_path))
                 file_list.append(file_info)
     return file_list
