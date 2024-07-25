@@ -124,6 +124,19 @@ class BaseChatLogsManager(ABC):
         '''
         pass
 
+    @abstractmethod
+    def save_training_data(self, training_data: dict) -> None:
+        '''
+        Abstract method to save training data to a file.
+
+        Args:
+            training_data (dict): The training data to save.
+        
+        Returns:
+            None
+        '''
+        pass
+
 class ChatLogsManager(BaseChatLogsManager):
 
     def __init__(self, chat_log_path: str) -> None:
@@ -325,6 +338,29 @@ class ChatLogsManager(BaseChatLogsManager):
             yaml.dump(feedback, f)
 
         print(f'Feedback saved to {filename}')
+
+    def save_training_data(self, training_data: dict) -> None:
+        """
+        Save the training data to a file.
+
+        Args:
+            training_data (dict): The training data to save.
+        """
+
+        # Make directory if it doesn't exist
+        try:
+            mkdir(f'{self.chat_log_path}/training_data')
+        except FileExistsError:
+            pass
+
+        now = time.time()
+        timestamp = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(now))
+        filename = f'{self.chat_log_path}/training_data/{timestamp}.log'
+
+        with open(filename, 'w') as f:
+            yaml.dump(training_data, f)
+
+        print(f'Training data saved to {filename}')
 
     def _get_file_list(self) -> list[dict]:
         """
