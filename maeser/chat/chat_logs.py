@@ -45,6 +45,21 @@ class BaseChatLogsManager(ABC):
         pass
 
     @abstractmethod
+    def get_chat_history_overview(self) -> dict:
+        '''
+        Abstract method to get an overview of chat history.
+        This is used to display a list of links to previous chat conversations.
+
+        Returns:
+            dict: A dictionary containing information about previous chat conversations. Should have the following keys:
+            - "branch": The name of the branch.
+            - "session": The session ID for the conversation.
+            - "modified": The timestamp of when the chat conversation was last modified.
+            - "header": The text that will be used as the link text. Usually the first message in the conversation. Could also be a conversation title.
+        '''
+        pass
+
+    @abstractmethod
     def get_chat_history(self, branch_name: str, session_id: str) -> dict:
         '''
         Abstract method to get chat history for a session.
