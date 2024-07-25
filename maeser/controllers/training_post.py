@@ -7,7 +7,6 @@ Functions:
     controller: Handles incoming POST requests for training data.
 """
 
-from maeser.chat import chat_logs
 from maeser.chat.chat_session_manager import ChatSessionManager
 from flask import request, redirect
 

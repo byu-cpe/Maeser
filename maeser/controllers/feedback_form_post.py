@@ -2,10 +2,7 @@
 Module for handling feedback form submissions.
 """
 
-from maeser.chat import chat_logs
 from maeser.chat.chat_session_manager import ChatSessionManager
-import time
-import yaml
 from flask import request, redirect
 
 def controller(chat_sessions_manager: ChatSessionManager):

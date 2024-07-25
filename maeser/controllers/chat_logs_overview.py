@@ -4,10 +4,8 @@ This module contains the controller function for rendering the chat logs overvie
 It handles fetching log files, applying filters, and calculating aggregate data such as total tokens and cost.
 """
 
-from maeser.chat import chat_logs
 from maeser.chat.chat_session_manager import ChatSessionManager
 
-import yaml
 from flask import render_template, request
 
 
