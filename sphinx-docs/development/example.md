@@ -78,7 +78,7 @@ For the example, we register a `GithubAuthenticator` with our `UserManager`. Thi
 
     - Application name: Choose a descriptive name (e.g., "Maeser Example").
     - Homepage URL: Enter http://127.0.0.1:5000
-    - Authorization callback URL: Enter http://127.0.0.1:5000
+    - Authorization callback URL: Enter http://localhost:5000/login/github_callback
 
 3. Register and Get Credentials:
 
