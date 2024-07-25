@@ -63,13 +63,43 @@ This section sets up two RAG graphs, one for each chat branch, and registers the
 
 ### 4. User Management and Authentication
 
-```python
-from maeser.user_manager import UserManager, GithubAuthenticator
+For the example, we register a `GithubAuthenticator` with our `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application.
 
-github_authenticator = GithubAuthenticator("...", "...", "http://localhost:5000/login/github_callback")
-user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
-user_manager.register_authenticator("github", github_authenticator)
-```
+#### Registering Your GitHub OAuth App
+
+1. Go to GitHub Developer Settings:
+
+    - Navigate to your GitHub account settings.
+    - Click on "Developer settings" in the sidebar.
+    - Choose "OAuth Apps."
+    - Click the "New OAuth App" button.
+
+2. Fill in App Details:
+
+    - Application name: Choose a descriptive name (e.g., "Maeser Example").
+    - Homepage URL: Enter http://127.0.0.1:5000
+    - Authorization callback URL: Enter http://127.0.0.1:5000
+
+3. Register and Get Credentials:
+
+    - Click "Register application."
+    - You'll be taken to your new app's page.
+    - Note down the following:
+        - Client ID: A long string of characters.
+        - Client Secret: Click "Generate a new client secret" and save the value.
+
+> **NOTE:** Keep your client secret confidential. Never share it publicly.
+
+4. Using the Credentials in the maeser example:
+
+    Replace `...` in the `GithubAuthenticator` instatiation first with the client ID and then with the client secret.
+    ```python
+    from maeser.user_manager import UserManager, GithubAuthenticator
+
+    github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
+    user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
+    user_manager.register_authenticator("github", github_authenticator)
+    ```
 
 Here, we set up user management with GitHub authentication and implement rate limiting (5 requests updated every 60 seconds).
 
