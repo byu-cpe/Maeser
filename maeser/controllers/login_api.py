@@ -124,14 +124,7 @@ def github_auth_callback_controller(current_user, auth_manager, app_name: str | 
     if 'error' in request.args:
         print(f'An error occurred during the auth callback before authentication: {request.args}')
         error_message = request.args.get('error_description', 'Authentication failed')
-        return render_template(
-            'login.html', 
-            message=error_message,
-            main_logo_light=main_logo_light,
-            main_logo_dark=main_logo_dark,
-            favicon=favicon,
-            app_name=app_name if app_name else "Maeser",
-        )
+        return redirect(url_for(login_redirect, message=error_message))
     
     oauth_state = session.get('oauth2_state')
     print(f'OAuth2 state at callback: {oauth_state}')
