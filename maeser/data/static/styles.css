@@ -644,6 +644,15 @@ select {
   background-color: #959595;
 }
 
+.login-hint {
+  font-size: .8rem;
+  color: #666;
+  margin: auto;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
 /* Media Queries for Mobile Responsiveness */
 @media screen and (max-width: 1024px) {
   body {
