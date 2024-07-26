@@ -29,7 +29,7 @@ sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 
 from maeser.user_manager import UserManager, GithubAuthenticator
 
-github_authenticator = GithubAuthenticator("...", "...", "http://localhost:5000/login/github_callback")
+github_authenticator = GithubAuthenticator("Ov23lio5Ujk6kpBFfMOm", "958f4f4fb6206f449e44093dbd6b9ae35b8689a0", "http://localhost:3000/login/github_callback")
 user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
 user_manager.register_authenticator("github", github_authenticator)
 
@@ -52,4 +52,4 @@ app: Flask = add_flask_blueprint(
 )
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=3000)

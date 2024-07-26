@@ -82,8 +82,8 @@ Before you can run the app you need to register it.
 2. Fill in App Details:
 
    - Application name: Choose a descriptive name (e.g., "Maeser Example").
-   - Homepage URL: Enter http://127.0.0.1:5000
-   - Authorization callback URL: Enter http://localhost:5000/login/github_callback
+   - Homepage URL: Enter http://127.0.0.1:3000
+   - Authorization callback URL: Enter http://localhost:3000/login/github_callback
 
 3. Register and Get Credentials:
 
@@ -102,7 +102,7 @@ Before you can run the app you need to register it.
    ```python
    from maeser.user_manager import UserManager, GithubAuthenticator
 
-   github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
+   github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:3000/login/github_callback")
    user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
    user_manager.register_authenticator("github", github_authenticator)
    ```
@@ -154,29 +154,6 @@ You can customize various aspects of the application, such as:
 
 Here, we discuss a few of these.
 
-### Changing the Port
-
-You may want to change the port the server runs on. For example,
-on Mac OSX, port 5000 (the default above) is not available for use. For Mac, you will need to change it to another port, such as 3000. Here are the steps to do so:
-
-1. Go back into github.com's oauth system where you registered your app and change both URL's to use 3000 instead of 5000 and then update the application (button at bottom of screen).
-
-2. In the GithubAuthenticator() call in the example.py code above, change the 5000 to 3000.
-
-3. Finally, at the bottom of the example.py file, change this code:
-
-```python
-if __name__ == "__main__":
-    app.run()
-```
-
-to this:
-
-```python
-if __name__ == "__main__":
-    app.run(port=3000)
-```
-
 ### Removing the Authentication Method
 
 Two changes are required to remove the authentication method:
@@ -184,7 +161,7 @@ Two changes are required to remove the authentication method:
 1. Comment or remove the following three lines of code in example.py:
 
    ```python
-   #github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
+   #github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:3000/login/github_callback")
    #user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
    #user_manager.register_authenticator("github", github_authenticator)
    ```
