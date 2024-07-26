@@ -1,11 +1,11 @@
 # Maeser Example (with Flask)
 
-This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication that is rendered on a Flask web server.
+This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication that is rendered on a Flask web server.  The example program is located in the `example` directory of Maeser.
 
-The `example/flask_example.py` file's code is shown below. You can run the example application by running:
+The program is contained in `flask_example.py` and its code is shown below. You can run the example application by running:
 
 ```shell
-python example/example.py
+python flask_example.py
 ```
 
 but first some overview and setup is needed so read on.
@@ -53,10 +53,10 @@ Here, we define system prompts for two different chat branches. These prompts se
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
 sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
+byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 ```
 
@@ -123,7 +123,7 @@ app: Flask = add_flask_blueprint(
     sessions_manager,
     user_manager,
     app_name="Test App",
-    chat_head="/static/Karl_G_Maeser.png",
+    chat_head="static/Karl_G_Maeser.png",
 )
 ```
 
@@ -137,7 +137,7 @@ Finally, we create a Flask application and add the Maeser blueprint to it, confi
 To run the application, you can now run:
 
 ```shell
-python example/example.py
+python flask_example.py
 ```
 
 This should start up a local server. Opening a web browser to the address it tells will bring up the example app. Authenticating with Github should then bring up the main page where you can either ask questions about Karl G. Maeser or about BYU.
