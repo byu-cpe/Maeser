@@ -628,8 +628,20 @@ select {
 	padding: 1rem;
 }
 
-#logout-button {
-	background-color: black;
+#side-bar-bottom-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  padding: 1rem;
+}
+
+#side-bar-bottom-buttons button {
+	background-color: #A8A8A8;
+  color: black;
+}
+
+#side-bar-bottom-buttons button:hover {
+  background-color: #959595;
 }
 
 /* Media Queries for Mobile Responsiveness */

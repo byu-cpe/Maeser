@@ -53,6 +53,8 @@ def controller(
     rate_limiting_str: str = str(rate_limiting_bool).lower()
 
     user_management = True if current_user else False
+
+    is_admin = current_user.admin if current_user else False
     
     return render_template(
         'chat_interface.html',
@@ -68,5 +70,6 @@ def controller(
         main_logo_dark=main_logo_dark,                          # None | str
         chat_head=chat_head,                                    # None | str
         favicon=favicon,                                        # None | str
-        app_name=app_name if app_name else "Maeser",
+        app_name=app_name if app_name else "Maeser",            # str
+        is_admin=is_admin,                                      # bool
     )
