@@ -2,10 +2,10 @@
 
 This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches in a terminal interface.
 
-The `example/terminal_example.py` file's code is shown below. You can run the example application by running:
+The `terminal_example.py` file's code is shown below. You can run the example application by running:
 
 ```shell
-python example/terminal_example.py
+python terminal_example.py
 ```
 
 but first some overview and setup is needed so read on.
@@ -54,10 +54,10 @@ Here, we define system prompts for two different chat branches. These prompts se
 from maeser.graphs.simple_rag import get_simple_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
 sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
+byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 ```
 
@@ -114,7 +114,7 @@ while True:
 
 This section sets up the terminal interface using the `pyinputplus` library. It creates a menu for selecting chat branches, manages sessions, and handles user input and system responses.
 
-You could implement whatever logic in this interface you would like, including loading previous chat sessions. In this example, we kept it simple. 
+You could implement whatever logic in this interface you would like, including loading previous chat sessions. In this example, we kept it simple.
 
 ## Preparing and Running the Application
 
@@ -127,7 +127,7 @@ pip install pyinputplus
 Then, to run the application, you can now run:
 
 ```shell
-python example/terminal_example.py
+python terminal_example.py
 ```
 
 This will start the terminal interface. You'll be presented with a menu to choose between the Karl G. Maeser history branch, the BYU history branch, or to exit the application. Once you select a branch, you can start asking questions. Type 'exit' or 'quit' to end a session and return to the branch selection menu.
