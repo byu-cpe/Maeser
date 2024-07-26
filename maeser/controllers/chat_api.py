@@ -4,9 +4,9 @@ This module contains the controller function for managing chat sessions and proc
 """
 
 from maeser.chat.chat_session_manager import ChatSessionManager
+from maeser.render import get_response_html
 from flask import request, abort
 from openai import RateLimitError
-from .common.render import get_response_html
 
 def controller(chat_sessions_manager: ChatSessionManager, chat_session: str):
     """Handle incoming messages for a chat session.
