@@ -116,9 +116,15 @@ This section sets up the terminal interface using the `pyinputplus` library. It 
 
 You could implement whatever logic in this interface you would like, including loading previous chat sessions. In this example, we kept it simple. 
 
-## Running the Application
+## Preparing and Running the Application
 
-To run the application, you can now run:
+Before you can run the application, you will need to install the `pyinputplus` library:
+
+```shell
+pip install pyinputplus
+```
+
+Then, to run the application, you can now run:
 
 ```shell
 python example/terminal_example.py
