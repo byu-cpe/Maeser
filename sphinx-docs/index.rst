@@ -6,13 +6,6 @@
 Welcome to Maeser's documentation!
 ==================================
 
-
-.. toctree::
-   :maxdepth: 3
-   :caption: Source Reference:
-
-   autodoc/maeser/modules.rst
-
 .. toctree ::
    :numbered:
    :maxdepth: 1
@@ -20,9 +13,16 @@ Welcome to Maeser's documentation!
 
    development/development_setup.md
    development/wsl_development.md
-   development/example.md
+   development/flask_example.md
+   development/terminal_example.md
    development/embedding.md
    development/graphs.md
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Source Reference:
+
+   autodoc/maeser/modules.rst
 
 Indices and tables
 ==================
