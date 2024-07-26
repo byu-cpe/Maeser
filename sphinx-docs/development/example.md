@@ -3,9 +3,12 @@
 This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication.
 
 The `example/example.py` file's code is shown below. You can run the example application by running:
+
 ```shell
 python example/example.py
 ```
+
+but first some overview and setup is needed so read on.
 
 ## Overview
 
@@ -67,39 +70,42 @@ For the example, we register a `GithubAuthenticator` with our `UserManager`. Thi
 
 #### Registering Your GitHub OAuth App
 
+Before you can run the app you need to register it.
+
 1. Go to GitHub Developer Settings:
 
-    - Navigate to your GitHub account settings.
-    - Click on "Developer settings" in the sidebar.
-    - Choose "OAuth Apps."
-    - Click the "New OAuth App" button.
+   - Navigate to your GitHub account settings.
+   - Click on "Developer settings" in the sidebar.
+   - Choose "OAuth Apps."
+   - Click the "New OAuth App" button.
 
 2. Fill in App Details:
 
-    - Application name: Choose a descriptive name (e.g., "Maeser Example").
-    - Homepage URL: Enter http://127.0.0.1:5000
-    - Authorization callback URL: Enter http://127.0.0.1:5000
+   - Application name: Choose a descriptive name (e.g., "Maeser Example").
+   - Homepage URL: Enter http://127.0.0.1:5000
+   - Authorization callback URL: Enter http://127.0.0.1:5000
 
 3. Register and Get Credentials:
 
-    - Click "Register application."
-    - You'll be taken to your new app's page.
-    - Note down the following:
-        - Client ID: A long string of characters.
-        - Client Secret: Click "Generate a new client secret" and save the value.
+   - Click "Register application."
+   - You'll be taken to your new app's page.
+   - Note down the following:
+     - Client ID: A long string of characters.
+     - Client Secret: Click "Generate a new client secret" and save the value.
 
 > **NOTE:** Keep your client secret confidential. Never share it publicly.
 
 4. Using the Credentials in the maeser example:
 
-    Replace `...` in the `GithubAuthenticator` instatiation first with the client ID and then with the client secret.
-    ```python
-    from maeser.user_manager import UserManager, GithubAuthenticator
+   Replace `...` placeholders in the `GithubAuthenticator` instantiation first with the client ID and then with the client secret.
 
-    github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
-    user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
-    user_manager.register_authenticator("github", github_authenticator)
-    ```
+   ```python
+   from maeser.user_manager import UserManager, GithubAuthenticator
+
+   github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
+   user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
+   user_manager.register_authenticator("github", github_authenticator)
+   ```
 
 Here, we set up user management with GitHub authentication and implement rate limiting (5 requests updated every 60 seconds).
 
@@ -112,9 +118,9 @@ from maeser.blueprints import add_flask_blueprint
 base_app = Flask(__name__)
 
 app: Flask = add_flask_blueprint(
-    base_app, 
+    base_app,
     "secret",
-    sessions_manager, 
+    sessions_manager,
     user_manager,
     app_name="Test App",
     chat_head="/static/Karl_G_Maeser.png",
@@ -124,18 +130,40 @@ app: Flask = add_flask_blueprint(
 Finally, we create a Flask application and add the Maeser blueprint to it, configuring various options like the app name and chat head image.
 
 > **NOTE:** For a custom application, you may choose to not use the `add_flask_blueprint` function but rather create your own Flask app.
-The Flask app should call the proper methods in the chat sessions manager. 
+> The Flask app should call the proper methods in the chat sessions manager.
 
 ## Running the Application
 
-To run the application, simply execute the script:
+To run the application, you can now run:
+
+```shell
+python example/example.py
+```
+
+This should start up a local server. Opening a web browser to the address it tells will bring up the example app. Authenticating with Github should then bring up the main page where you can either ask questions about Karl G. Maeser or about BYU.
+
+## Changing the Port
+
+You may want to change the port the server runs on. For example,
+on Mac OSX, port 5000 (the default above) is not available for use. For Mac, you will need to change it to another port, such as 3000. Here are the steps to do so:
+
+1. Go back into github.com's oauth system where you registered your app and change both URL's to use 3000 instead of 5000 and then update the application (button at bottom of screen).
+
+2. In the GithubAuthenticator() call in the example.py code above, change the 5000 to 3000.
+
+3. Finally, at the bottom of the example.py file, change this code:
 
 ```python
 if __name__ == "__main__":
     app.run()
 ```
 
-This starts the Flask development server.
+to this:
+
+```python
+if __name__ == "__main__":
+    app.run(port=3000)
+```
 
 ## Customization
 
