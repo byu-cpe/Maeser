@@ -20,7 +20,8 @@ Welcome to Maeser's documentation!
 
    development/development_setup.md
    development/wsl_development.md
-   development/example.md
+   development/flask_example.md
+   development/terminal_example.md
    development/embedding.md
    development/graphs.md
 
