@@ -12,11 +12,7 @@
 2. Navigate to the directory where you want to clone the repository.
 3. Run the following command to clone the repository:
 
-   `git clone https://github.com/username/maeser.git`
-
-Replace `https://github.com/username/maeser.git` with the actual URL of the repository.
-
-- **Can this be updated to `https://github.com/byu-cpe/maeser.git` now?**
+   `git clone https://github.com/byu-cpe/Maeser`
 
 ## Create a Virtual Environment
 
