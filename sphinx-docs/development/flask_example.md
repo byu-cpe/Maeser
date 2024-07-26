@@ -1,8 +1,8 @@
-# Maeser Package Example
+# Maeser Example (with Flask)
 
-This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication.
+This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication that is rendered on a Flask web server.
 
-The `example/example.py` file's code is shown below. You can run the example application by running:
+The `example/flask_example.py` file's code is shown below. You can run the example application by running:
 
 ```shell
 python example/example.py
