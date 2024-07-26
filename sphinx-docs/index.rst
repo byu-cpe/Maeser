@@ -14,6 +14,7 @@ Welcome to Maeser's documentation!
    autodoc/maeser/modules.rst
 
 .. toctree ::
+   :numbered:
    :maxdepth: 1
    :caption: Development:
 
