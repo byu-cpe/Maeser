@@ -52,6 +52,11 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if user_management %}
+                    <div id="side-bar-logout">
+                        <button id="logout-button">Logout</button>
+                    </div>
+                {% endif %}
             </nav>
 
             {% block content %}

@@ -621,6 +621,17 @@ select {
   margin-top: 1rem;
 }
 
+#side-bar-logout {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+}
+
+#logout-button {
+	background-color: black;
+}
+
 /* Media Queries for Mobile Responsiveness */
 @media screen and (max-width: 1024px) {
   body {
