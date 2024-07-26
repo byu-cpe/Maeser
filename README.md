@@ -25,7 +25,7 @@ This page includes instructions for cloning the repository and running the app.
 
 > **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byu-cpe.github.io/Maeser/development/wsl_development.html).
 ### Example
-For a fully working example application, follow the documentation for the [example application](https://byu-cpe.github.io/Maeser/development/example.html).
+For a fully working example application, follow the documentation for the [example application](https://byu-cpe.github.io/Maeser/development/flask_example.html).
 ### Embedding Context
 Follow the documentation for embedding custom content [here](https://byu-cpe.github.io/Maeser/development/embedding.html).
 ### Graphs

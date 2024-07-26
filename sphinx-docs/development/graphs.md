@@ -7,7 +7,7 @@ Refer to the [LangGraph documentation](https://langchain-ai.github.io/langgraph/
 
 ## Using Custom Graphs in Maeser
 
-As shown in the [example application documentation](./example.md) you register compiled state graph objects as branches to the chat sessions manager with its name and label:
+As shown in the [example application documentation](./flask_example.md) you register compiled state graph objects as branches to the chat sessions manager with its name and label:
 
 ```python
 compiled_graph = graph_builder.compile()

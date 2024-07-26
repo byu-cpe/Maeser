@@ -2,6 +2,8 @@
 
 Maeser currently works with locally saved FAISS vectorstores.
 
+For complete information about creating vectorstores using LangChain, read [the docs](https://python.langchain.com/v0.1/docs/modules/data_connection/vectorstores/).
+
 The example directory contains two scripts that show how an individual Wikipedia page could be vectorized: 
 `create_byu_vectorstore.py` and `create_maeser_vectorstore`. 
 
@@ -40,5 +42,3 @@ The principles in these scripts could be applied to any content you would like t
     db = FAISS.from_documents(documents, OpenAIEmbeddings())
     db.save_local("example/vectorstores/maeser")
     ```
-
-For more information about creating vectorstores using LangChain, read [the docs](https://python.langchain.com/v0.1/docs/modules/data_connection/vectorstores/).
