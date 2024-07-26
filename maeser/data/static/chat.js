@@ -15,6 +15,10 @@ const sidebarLinks = document.getElementById('side-bar-links')
 const primaryView = document.getElementById('chat-application');
 const rateLimit = rateLimiting ? document.getElementById('rate-limit') : null;
 const chatHeadIcon = chatHead ? chatHead : '/maeser/static/maeser-part.png';
+const logoutButton = document.getElementById('logout-button');
+const trainButton = document.getElementById('train-button');
+const logsButton = document.getElementById('logs-button');
+const userManagementButton = document.getElementById('user-management-button');
 
 // Notification functions
 function showNotification(message, isSuccess = false, isCritical = false) {
@@ -482,3 +486,19 @@ if (rateLimiting) {
 // Event listeners for scroll events
 window.addEventListener('scroll', updateScrollButtonVisibility);
 window.addEventListener('resize', updateScrollButtonVisibility);
+
+logoutButton.addEventListener('click', function() {
+    window.location.href = '/logout';
+  });
+
+trainButton.addEventListener('click', function() {
+    window.location.href = '/train';
+});
+
+logsButton.addEventListener('click', function() {
+    window.location.href = '/logs';
+});
+
+userManagementButton.addEventListener('click', function() {
+    window.location.href = '/users';
+});
