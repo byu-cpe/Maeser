@@ -7,6 +7,7 @@ import yaml
 from os import path, stat, walk, mkdir, makedirs
 import subprocess
 from flask import abort, render_template
+import platform
 
 class BaseChatLogsManager(ABC):
     def __init__(self, chat_log_path: str, user_manager: UserManager | None = None) -> None:
@@ -370,13 +371,19 @@ class ChatLogsManager(BaseChatLogsManager):
             list: The list of files with their metadata.
         """
         def get_creation_time(file_path):
-            result = subprocess.run(['stat', '-c', '%W', file_path], stdout=subprocess.PIPE)
-            crtime = int(result.stdout)
-            
-            if crtime == 0:
-                raise AttributeError("Creation time attribute is not available")
-            
-            return crtime
+            if platform.system() == 'Darwin':  # macOS
+                result = subprocess.run(['stat', '-f', '%B', file_path], capture_output=True, text=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Error getting creation time: {result.stderr}")
+                return int(result.stdout.strip())
+            elif platform.system() == 'Linux':
+                result = subprocess.run(['stat', '-c', '%W', file_path], capture_output=True, text=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Error getting creation time: {result.stderr}")
+                return int(result.stdout.strip())
+            else:
+                # Fallback for other operating systems
+                return int(path.getctime(file_path))
         
         def get_file_info(file_path: str) -> dict:
             """
@@ -413,8 +420,9 @@ class ChatLogsManager(BaseChatLogsManager):
                 if path.isfile(file_path):  # Check if the path is a file
                     try:
                         created_time = get_creation_time(file_path)
-                    except AttributeError:
-                        created_time = stat(file_path).st_ctime
+                    except RuntimeError:
+                        # Fallback if stat doesn't work at all (may show modified time)
+                        created_time = int(path.getctime(file_path))
                     
                     file_stat = stat(file_path)
                     file_info = {
