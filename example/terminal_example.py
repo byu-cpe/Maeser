@@ -21,10 +21,10 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
 from maeser.graphs.simple_rag import get_simple_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
 sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
+byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 
 import pyinputplus as pyip

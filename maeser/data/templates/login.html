@@ -45,6 +45,9 @@
             </div>
 
         </div>
+        {% if message %}
+            <p class="login-hint">Note: If authentication fails with the proper credentials, please clear all cookies (ctr + F5) for this webpage and try again.</p>
+        {% endif %}
     </main>
 
     <script>

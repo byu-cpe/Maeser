@@ -1,11 +1,11 @@
 # Maeser Example (with Flask)
 
-This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication that is rendered on a Flask web server.
+This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication that is rendered on a Flask web server.  The example program is located in the `example` directory of Maeser.
 
-The `example/flask_example.py` file's code is shown below. You can run the example application by running:
+The program is contained in `flask_example.py` and its code is shown below. You can run the example application by running:
 
 ```shell
-python example/example.py
+python flask_example.py
 ```
 
 but first some overview and setup is needed so read on.
@@ -53,10 +53,10 @@ Here, we define system prompts for two different chat branches. These prompts se
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
 sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
+byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 ```
 
@@ -82,8 +82,8 @@ Before you can run the app you need to register it.
 2. Fill in App Details:
 
    - Application name: Choose a descriptive name (e.g., "Maeser Example").
-   - Homepage URL: Enter http://127.0.0.1:5000
-   - Authorization callback URL: Enter http://localhost:5000/login/github_callback
+   - Homepage URL: Enter http://127.0.0.1:3000
+   - Authorization callback URL: Enter http://localhost:3000/login/github_callback
 
 3. Register and Get Credentials:
 
@@ -102,7 +102,7 @@ Before you can run the app you need to register it.
    ```python
    from maeser.user_manager import UserManager, GithubAuthenticator
 
-   github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
+   github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:3000/login/github_callback")
    user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
    user_manager.register_authenticator("github", github_authenticator)
    ```
@@ -123,7 +123,7 @@ app: Flask = add_flask_blueprint(
     sessions_manager,
     user_manager,
     app_name="Test App",
-    chat_head="/static/Karl_G_Maeser.png",
+    chat_head="static/Karl_G_Maeser.png",
 )
 ```
 
@@ -137,7 +137,7 @@ Finally, we create a Flask application and add the Maeser blueprint to it, confi
 To run the application, you can now run:
 
 ```shell
-python example/example.py
+python flask_example.py
 ```
 
 This should start up a local server. Opening a web browser to the address it tells will bring up the example app. Authenticating with Github should then bring up the main page where you can either ask questions about Karl G. Maeser or about BYU.
@@ -154,29 +154,6 @@ You can customize various aspects of the application, such as:
 
 Here, we discuss a few of these.
 
-### Changing the Port
-
-You may want to change the port the server runs on. For example,
-on Mac OSX, port 5000 (the default above) is not available for use. For Mac, you will need to change it to another port, such as 3000. Here are the steps to do so:
-
-1. Go back into github.com's oauth system where you registered your app and change both URL's to use 3000 instead of 5000 and then update the application (button at bottom of screen).
-
-2. In the GithubAuthenticator() call in the example.py code above, change the 5000 to 3000.
-
-3. Finally, at the bottom of the example.py file, change this code:
-
-```python
-if __name__ == "__main__":
-    app.run()
-```
-
-to this:
-
-```python
-if __name__ == "__main__":
-    app.run(port=3000)
-```
-
 ### Removing the Authentication Method
 
 Two changes are required to remove the authentication method:
@@ -184,7 +161,7 @@ Two changes are required to remove the authentication method:
 1. Comment or remove the following three lines of code in example.py:
 
    ```python
-   #github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
+   #github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:3000/login/github_callback")
    #user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
    #user_manager.register_authenticator("github", github_authenticator)
    ```

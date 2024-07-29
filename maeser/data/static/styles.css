@@ -690,6 +690,38 @@ select {
   cursor: pointer;
 }
 
+#side-bar-logout {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+}
+
+#side-bar-bottom-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  padding: 1rem;
+}
+
+#side-bar-bottom-buttons button {
+	background-color: #A8A8A8;
+  color: black;
+}
+
+#side-bar-bottom-buttons button:hover {
+  background-color: #959595;
+}
+
+.login-hint {
+  font-size: .8rem;
+  color: #666;
+  margin: auto;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
 /* Media Queries for Mobile Responsiveness */
 @media screen and (max-width: 1024px) {
   body {
