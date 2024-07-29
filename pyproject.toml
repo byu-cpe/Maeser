@@ -2,7 +2,7 @@
 name = "maeser"
 version = "0.0.1"
 description = "A package for building RAG chatbot applications for educational contexts."
-authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <sfrocks@gmail.com>"]
+authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <blainefreestone@gmail.com>"]
 include = [
     "maeser/data/*",
     "maeser/data/templates/*",
