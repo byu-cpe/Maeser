@@ -56,6 +56,20 @@ class User:
         Banned: {'Yes' if not self.is_active else 'No'}
         User Group: {self.usergroup}
         Requests Remaining: {self.requests_remaining}/{self._max_requests}"""
+        
+    @property
+    def json(self) -> dict[str, Any]:
+        return {
+            'ident': self.ident,
+            'is_active': self.is_active,
+            'admin': self.admin,
+            'realname': self.realname,
+            'usergroup': self.usergroup,
+            'auth_method': self.auth_method,
+            'requests_remaining': self.requests_remaining,
+            'max_requests': self._max_requests,
+            'aka': self.aka
+        }
 
     @property
     def is_authenticated(self):
@@ -426,41 +440,60 @@ class UserManager:
                 return User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method)
         return None
 
-    def list_users(self, auth_method: str | None = None) -> list[User]:
+    def list_users(self, auth_filter: str | None = None, admin_filter: str | None = None, banned_filter: str | None = None) -> list[User]:
         """
-        List all users in the database, optionally filtered by authentication method.
+        List all users in the database, optionally filtered by authentication method, admin status, and banned status.
 
         Args:
-            auth_method (str, optional): The authentication method to list users for. If None, list all users.
+            auth_filter (str, optional): The authentication method to list users for. If None or 'all', list users from all authentication methods.
+            admin_filter (str, optional): Filter users by admin status. Can be 'all', 'admin', or 'non-admin'.
+            banned_filter (str, optional): Filter users by banned status. Can be 'all', 'banned', or 'non-banned'.
 
         Returns:
             list[User]: A list of user objects.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided auth_method is invalid or if admin_filter or banned_filter have invalid values.
         """
-        if auth_method is None:
-            # List all users
-            users: list[User] = []
-            with self.db_connection as db:
-                cursor: sqlite3.Cursor = db.execute("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%Users'")
-                for table_name in cursor.fetchall():
-                    table_name: str = table_name[0]
-                    cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}"')
-                    for row in cursor.fetchall():
-                        auth_method_from_table = table_name.replace("Users", "")
-                        users.append(User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method_from_table))
-            return users
+        if auth_filter is not None and auth_filter != 'all' and not auth_filter.isalnum():
+            raise ValueError(f"Invalid authenticator name: {auth_filter}")
 
-        if not auth_method.isalnum():
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+        if admin_filter is not None and admin_filter not in ['all', 'admin', 'non-admin']:
+            raise ValueError(f"Invalid admin_filter value: {admin_filter}")
 
-        table_name = f"{auth_method}Users"
-        users = []
+        if banned_filter is not None and banned_filter not in ['all', 'banned', 'non-banned']:
+            raise ValueError(f"Invalid banned_filter value: {banned_filter}")
+
+        users: list[User] = []
         with self.db_connection as db:
-            cursor: sqlite3.Cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}"')
-            for row in cursor.fetchall():
-                users.append(User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method))
+            if auth_filter is None or auth_filter == 'all':
+                cursor: sqlite3.Cursor = db.execute("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%Users'")
+                tables = [table_name[0] for table_name in cursor.fetchall()]
+            else:
+                tables = [f"{auth_filter}Users"]
+
+            for table_name in tables:
+                query = f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}"'
+                conditions = []
+                
+                if admin_filter == 'admin':
+                    conditions.append("admin = 1")
+                elif admin_filter == 'non-admin':
+                    conditions.append("admin = 0")
+
+                if banned_filter == 'banned':
+                    conditions.append("blacklisted = 1")
+                elif banned_filter == 'non-banned':
+                    conditions.append("blacklisted = 0")
+                
+                if conditions:
+                    query += " WHERE " + " AND ".join(conditions)
+
+                cursor = db.execute(query)
+                for row in cursor.fetchall():
+                    auth_method_from_table = table_name.replace("Users", "")
+                    users.append(User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method_from_table))
+
         return users
 
     def authenticate(self, auth_method: str, *args: Any, **kwargs: Any) -> Union[User, None]:
