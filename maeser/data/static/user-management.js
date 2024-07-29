@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(user);
         const userElement = document.createElement('div');
         userElement.classList.add('user-item');
+        userElement.classList.add('user-card');
         userElement.innerHTML = `
             <h3>${user.realname}</h3>
             <p>Identifer: ${user.ident}</p>
@@ -81,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const modal = document.createElement('div');
         modal.classList.add('modal');
         modal.innerHTML = `
-            <div class="modal-content">
+            <div id="user-modal" class="modal-content">
                 <h2>User Options: ${user.realname}</h2>
                 <p>Identifier: ${user.auth_method}.${user.ident}</p>
                 <button id="toggle-admin" class="${user.admin ? 'active' : ''}">Toggle Admin Status</button>
