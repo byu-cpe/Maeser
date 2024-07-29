@@ -270,7 +270,7 @@ header img {
   margin: 0;
 } */
 
-.button-highlighted {
+.button-highlighted,.active {
   background-color: #009e15;
   color: white;
   opacity: 1 !important;

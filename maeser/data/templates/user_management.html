@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    {% if favicon %}
+        <link rel="icon" href="{{ favicon }}">
+    {% else %}
+        <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+    {% endif %}
+    <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
+    <script>manageUserAPI = "{{ url_for('maeser.manage_users_api') }}";</script>
+    <script src="{{ url_for('maeser.static', filename='user-management.js') }}"></script>
+</head>
+<body>
+    <header>
+        <h2>{{ app_name }}</h2>
+    </header>
+
+    <main>
+        <section>
+            <div class="tab-container">
+                {% if len(user_manager.authenticators) > 1 %}
+                    <div id="auth-filters" class="auth-filters">
+                        <button class="tab-button active" filter="all">All</button>
+                    {% for key, auth in user_manager.authenticators.items() %}
+                        <button class="tab-button" filter="{{ key }}">{{ auth }}</button>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                <div id="admin-filters" class="admin-filters">
+                    <button class="tab-button active" filter="all">All</button>
+                    <button class="tab-button" filter="admin">Admin</button>
+                    <button class="tab-button" filter="non-admin">Non-Admin</button>
+                </div>
+                <div id="ban-filters" class="ban-filters">
+                    <button class="tab-button active" filter="all">All</button>
+                    <button class="tab-button" filter="banned">Banned</button>
+                    <button class="tab-button" filter="non-banned">Non-Banned</button>
+                </div>
+            </div>
+            <div id="user-grid" class="user-grid grid">
+                {# Auto populated with JS #}
+            </div>
+        </section>
+    </main>
+</body>
+</html>
