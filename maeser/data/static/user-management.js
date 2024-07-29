@@ -1,23 +1,16 @@
-// user-management.js
-
 // Wait for the DOM to be fully loaded before executing the script
 document.addEventListener('DOMContentLoaded', function() {
     // Constants
-    // const manageUserAPI = '/path/to/manage/user/api'; // Replace with actual API endpoint
+    // TODO: set this variable only if the variable is not already defined elsewhere (like in the jinja template)
+    // const manageUserAPI = '/users/api';
 
     // DOM Elements
     const userGrid = document.getElementById('user-grid');
-    // const tabButtons = document.querySelectorAll('.tab-button');
-    // const tabContents = document.querySelectorAll('.tab-content');
     const authFilterButtons = document.querySelectorAll('.auth-filters > .tab-button');
     const adminFilterButtons = document.querySelectorAll('.admin-filters > .tab-button');
     const banFilterButtons = document.querySelectorAll('.ban-filters > .tab-button');
 
     // Event Listeners
-    // tabButtons.forEach(button => {
-    //     button.addEventListener('click', handleTabClick);
-    // });
-
     [authFilterButtons, adminFilterButtons, banFilterButtons].forEach(buttonGroup => {
         buttonGroup.forEach(button => {
             button.addEventListener('click', () => {
@@ -29,17 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial fetch and display of users
     fetchAndDisplayUsers();
-
-    // Tab Functionality
-    // function handleTabClick() {
-    //     const tabId = this.getAttribute('data-tab');
-        
-    //     tabButtons.forEach(btn => btn.classList.remove('active'));
-    //     tabContents.forEach(content => content.classList.add('hide'));
-
-    //     this.classList.add('active');
-    //     document.getElementById(tabId).classList.remove('hide');
-    // }
 
     // Filter Functionality
     function updateActiveFilter(clickedButton, buttonGroup) {
@@ -79,14 +61,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function createUserElement(user) {
+        console.log(user);
         const userElement = document.createElement('div');
         userElement.classList.add('user-item');
         userElement.innerHTML = `
-            <h3>${user.username}</h3>
-            <p>Email: ${user.email}</p>
-            <p>Admin: ${user.is_admin ? 'Yes' : 'No'}</p>
-            <p>Banned: ${user.is_banned ? 'Yes' : 'No'}</p>
-            <p>Requests left: ${user.requests_left}</p>
+            <h3>${user.realname}</h3>
+            <p>Identifer: ${user.ident}</p>
+            <p>Authentication method: ${user.auth_method}</p>
+            <p>Admin: ${user.admin ? 'Yes' : 'No'}</p>
+            <p>Banned: ${!user.is_active ? 'Yes' : 'No'}</p>
+            <p>User group: ${user.usergroup}</p>
+            <p>Requests: ${user.requests_remaining} / ${user.max_requests}</p>
         `;
         userElement.addEventListener('click', () => showUserModal(user));
         return userElement;
@@ -97,12 +82,13 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.classList.add('modal');
         modal.innerHTML = `
             <div class="modal-content">
-                <h2>User Options: ${user.username}</h2>
-                <button id="toggle-admin">Toggle Admin Status</button>
-                <button id="toggle-ban">Toggle Ban Status</button>
+                <h2>User Options: ${user.realname}</h2>
+                <p>Identifier: ${user.auth_method}.${user.ident}</p>
+                <button id="toggle-admin" class="${user.admin ? 'active' : ''}">Toggle Admin Status</button>
+                <button id="toggle-ban" class="${!user.is_active ? 'active' : ''}">Toggle Ban Status</button>
                 <div class="request-adjust">
                     <button id="decrease-requests">-</button>
-                    <span>Requests: ${user.requests_left}</span>
+                    <span>Requests: ${user.requests_remaining}</span>
                     <button id="increase-requests">+</button>
                 </div>
                 <button id="remove-user">Remove User</button>
@@ -112,52 +98,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.body.appendChild(modal);
 
-        modal.querySelector('#toggle-admin').addEventListener('click', () => updateUserStatus(user.id, 'toggle-admin'));
-        modal.querySelector('#toggle-ban').addEventListener('click', () => updateUserStatus(user.id, 'toggle-ban'));
-        modal.querySelector('#decrease-requests').addEventListener('click', () => updateUserRequests(user.id, 'decrease'));
-        modal.querySelector('#increase-requests').addEventListener('click', () => updateUserRequests(user.id, 'increase'));
-        modal.querySelector('#remove-user').addEventListener('click', () => removeUser(user.id));
+        modal.querySelector('#toggle-admin').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-admin', !user.admin); modal.remove();});
+        modal.querySelector('#toggle-ban').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-ban', user.is_active); modal.remove();});
+        modal.querySelector('#decrease-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'remove'); modal.remove();});
+        modal.querySelector('#increase-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'add'); modal.remove();});
+        modal.querySelector('#remove-user').addEventListener('click', () => {removeUser(user.auth_method, user.ident); modal.remove();});
         modal.querySelector('#close-modal').addEventListener('click', () => modal.remove());
     }
 
-    function updateUserStatus(userId, action) {
+    function updateUserStatus(authMethod, userId, action, new_stat) {
         fetch(manageUserAPI, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: action, user_id: userId })
+            body: JSON.stringify({ type: action, user_auth: authMethod, user_id: userId, new_status: new_stat })
         })
         .then(response => response.json())
         .then(result => {
-            console.log(`User status updated: ${result.message}`);
+            console.log(`User status updated: ${result.response}`);
             fetchAndDisplayUsers();
         })
         .catch(error => console.error('Error updating user status:', error));
     }
 
-    function updateUserRequests(userId, action) {
+    function updateUserRequests(authMethod, userId, action) {
         fetch(manageUserAPI, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: 'update-requests', user_id: userId, action: action })
+            body: JSON.stringify({ type: 'update-requests', user_auth: authMethod, user_id: userId, action: action })
         })
         .then(response => response.json())
         .then(result => {
-            console.log(`User requests updated: ${result.message}`);
+            console.log(`User requests updated: ${result.response}`);
             fetchAndDisplayUsers();
         })
         .catch(error => console.error('Error updating user requests:', error));
     }
 
-    function removeUser(userId) {
+    function removeUser(authMethod, userId) {
         if (confirm('Are you sure you want to remove this user?')) {
             fetch(manageUserAPI, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'remove-user', user_id: userId })
+                body: JSON.stringify({ type: 'remove-user', user_auth: authMethod, user_id: userId })
             })
             .then(response => response.json())
             .then(result => {
-                console.log(`User removed: ${result.message}`);
+                console.log(`User removed: ${result.response}`);
                 fetchAndDisplayUsers();
             })
             .catch(error => console.error('Error removing user:', error));
@@ -168,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Note: This function needs a corresponding HTML button to trigger it
     function fetchUser() {
+        // TODO use custom modal dialogs instead of builtins
         const userId = prompt("Enter user ID to fetch:");
         if (userId) {
             fetch(manageUserAPI, {
@@ -193,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(cleanableUsers => {
+            // TODO: Show the list on the html with a brief list and a button instead of using builtin functions
             console.log('Cleanable users:', cleanableUsers);
             // TODO: Display list of cleanable users
             if (confirm('Are you sure you want to remove these users from the cache?')) {
