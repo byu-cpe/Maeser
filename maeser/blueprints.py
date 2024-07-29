@@ -187,7 +187,6 @@ def add_flask_blueprint(
     if chat_session_manager.chat_logs_manager:
         @maeser_blueprint.route("/train")
         @login_required if user_manager else lambda x: x
-        @admin_required(current_user) if user_manager else lambda x: x
         def train():
             return training.controller(
                 main_logo_dark=main_logo_dark,
@@ -198,7 +197,6 @@ def add_flask_blueprint(
 
         @maeser_blueprint.route("/submit_train", methods=["POST"])
         @login_required if user_manager else lambda x: x
-        @admin_required(current_user) if user_manager else lambda x: x
         def submit_train():
             return training_post.controller(
                 chat_session_manager
