@@ -12,7 +12,11 @@ jobs:
 
     - name: Pypi credentials
       run: |  
-        poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry config pypi-token.pypi ${{ secrets.PYPI_API_KEY }}
 
     - name: Package
-      run: poetry publish
+      run: |
+        poetry build 
+        poetry publish
