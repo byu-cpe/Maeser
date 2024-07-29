@@ -23,6 +23,8 @@ from .controllers import (
     training_post,
     conversation_history_api,
     remaining_requests_api,
+    manage_users_view,
+    user_management_api,
 )
 
 current_dir = os.path.dirname(os.path.abspath(__file__ + '/.'))
@@ -117,6 +119,18 @@ def add_flask_blueprint(
         @login_required
         def logout_route():
             return logout.controller()
+        
+        @maeser_blueprint.route("/users")
+        @login_required
+        @admin_required(current_user)
+        def manage_users():
+            return manage_users_view.controller(user_manager, main_logo_light=main_logo_light, main_logo_dark=main_logo_dark, favicon=favicon, app_name=app_name)
+        
+        @maeser_blueprint.route("/users/api", methods=["POST"])
+        @login_required
+        @admin_required(current_user)
+        def manage_users_api():
+            return user_management_api.controller(user_manager)
 
         @maeser_blueprint.route("/req_session", methods=["POST"])
         @login_required
