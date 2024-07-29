@@ -2,7 +2,7 @@
 name = "maeser"
 version = "0.0.1"
 description = "A package for building RAG chatbot applications for educational contexts."
-authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <sfrocks@gmail.com>"]
+authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <blainefreestone@gmail.com>"]
 include = [
     "maeser/data/*",
     "maeser/data/templates/*",
@@ -26,7 +26,7 @@ langgraph = "^0.1.8"
 # FAISS for vector stores (CPU version by default, GPU as optional)
 # pip install maeser[gpu] for the GPU variant
 faiss-cpu = "^1.8.0.post1"
-faiss-gpu = { version = "^1.8.0.post1", optional = true }
+# faiss-gpu = { version = "^1.7.2", optional = true }
 
 # Web backend
 flask = "^3.0.3"
