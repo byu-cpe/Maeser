@@ -40,4 +40,4 @@ An understanding of langchain and langgraph is necessary for customizing the app
 - `tests` contains unit test files for the application's source code. 
 
 This package is licensed on the LGPL version 3 or later.
-See [COPYING.md](COPYING.md) for details.
+See [COPYING.LESSER.md](COPYING.LESSER.md) and [COPYING.md](COPYING.md) for details.
