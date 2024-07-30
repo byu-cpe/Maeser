@@ -295,12 +295,9 @@ class ChatLogsManager(BaseChatLogsManager):
         Returns:
             dict: The chat history for the session.
         """
-        try:
-            with open(f'{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log', 'r') as file:
-                chat_history = yaml.safe_load(file)
-            return chat_history
-        except FileNotFoundError:
-            return {}
+        with open(f'{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log', 'r') as file:
+            chat_history = yaml.safe_load(file)
+        return chat_history
 
     def get_log_file_template(self, filename: str, branch: str) -> str:
         """
