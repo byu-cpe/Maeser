@@ -1,5 +1,6 @@
 """
-This subpackage contains the logic for all built-in endpoints, including web pages and APIs.
+This is the controllers subpackage for the Maeser package. It contains the
+controllers for the different parts of the application.
 
 © 2024 Carson Bush, Blaine Freestone
 
