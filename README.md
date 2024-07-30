@@ -41,3 +41,5 @@ An understanding of langchain and langgraph is necessary for customizing the app
 
 This package is licensed on the LGPL version 3 or later.
 See [COPYING.LESSER.md](COPYING.LESSER.md) and [COPYING.md](COPYING.md) for details.
+
+Other resourced may be licensed under different compatible licenses, such as the [MIT License](https://opensource.org/license/mit) (Bootstrap Icons), [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) (normalize.css), or [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) (images and vector stores).
