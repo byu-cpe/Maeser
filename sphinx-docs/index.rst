@@ -11,6 +11,7 @@ Welcome to Maeser's documentation!
    :maxdepth: 1
    :caption: Development:
 
+   development/user_setup.md
    development/development_setup.md
    development/wsl_development.md
    development/flask_example.md

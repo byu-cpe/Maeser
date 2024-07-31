@@ -44,12 +44,6 @@ sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simp
 byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 
-from maeser.user_manager import UserManager, GithubAuthenticator
-
-github_authenticator = GithubAuthenticator("...", "...", "http://localhost:3000/login/github_callback")
-user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
-user_manager.register_authenticator("github", github_authenticator)
-
 from flask import Flask
 
 base_app = Flask(__name__)
@@ -60,7 +54,6 @@ app: Flask = add_flask_blueprint(
     base_app, 
     "secret",
     sessions_manager, 
-    user_manager,
     app_name="Test App",
     chat_head="/static/Karl_G_Maeser.png",
     # Note that you can change other images too! We stick with the defaults for the logo and favicon.
