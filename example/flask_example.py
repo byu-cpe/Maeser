@@ -38,11 +38,11 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
 from maeser.graphs.simple_rag import get_simple_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
-sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
+maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path="vectorstores/maeser", vectorstore_index="index", memory_filepath="chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
-sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
+byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path="vectorstores/byu", vectorstore_index="index", memory_filepath="chat_logs/byu.db", system_prompt_text=byu_prompt)
+sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
 from flask import Flask
 
@@ -51,9 +51,9 @@ base_app = Flask(__name__)
 from maeser.blueprints import add_flask_blueprint
 
 app: Flask = add_flask_blueprint(
-    base_app, 
-    "secret",
-    sessions_manager, 
+    app=base_app, 
+    flask_secret_key="secret",
+    chat_session_manager=sessions_manager, 
     app_name="Test App",
     chat_head="/static/Karl_G_Maeser.png",
     # Note that you can change other images too! We stick with the defaults for the logo and favicon.
