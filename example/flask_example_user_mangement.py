@@ -47,7 +47,7 @@ sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", 
 from maeser.user_manager import UserManager, GithubAuthenticator
 
 # Replace the '...' with a client id and secret from a GitHub OAuth App that you generate
-github_authenticator = GithubAuthenticator(client_id="Ov23liS9TxlVakrrwO4c", client_secret="964906d1eaac354a8f52ce1cab1512f2a25b32bd", auth_callback_uri="http://localhost:3000/login/github_callback")
+github_authenticator = GithubAuthenticator(client_id="...", client_secret="...", auth_callback_uri="http://localhost:3000/login/github_callback")
 user_manager = UserManager(db_file_path="chat_logs/users", max_requests=5, rate_limit_interval=60)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
 
