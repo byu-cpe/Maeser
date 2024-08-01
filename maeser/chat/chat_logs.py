@@ -1,3 +1,23 @@
+"""
+Module for managing chat logs, including logging and retrieving chat history,
+feedback, and training data.
+
+© 2024 Blaine Freestone, Carson Bush
+
+This file is part of Maeser.
+
+Maeser is free software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+Maeser. If not, see <https://www.gnu.org/licenses/>.
+"""
+
 from maeser.user_manager import UserManager, User
 from maeser.render import get_response_html
 from abc import ABC, abstractmethod
@@ -9,8 +29,16 @@ import subprocess
 from flask import abort, render_template
 import platform
 
+
 class BaseChatLogsManager(ABC):
     def __init__(self, chat_log_path: str, user_manager: UserManager | None = None) -> None:
+        """
+        Initializes the BaseChatLogsManager.
+
+        Args:
+            chat_log_path (str): Path to the chat log directory.
+            user_manager (UserManager | None): Optional user manager instance.
+        """
         self.chat_log_path: str = chat_log_path
         self.user_manager: UserManager | None = user_manager
 
@@ -20,22 +48,22 @@ class BaseChatLogsManager(ABC):
 
     @abstractmethod
     def log(self, branch_name: str, session_id: str, log_data: dict) -> None:
-        '''
+        """
         Abstract method to log chat data.
 
         Args:
             branch_name (str): The name of the branch.
             session_id (str): The session ID for the conversation.
             log_data (dict): The data to be logged.
-        
+
         Returns:
             None
-        '''
+        """
         pass
 
     @abstractmethod
-    def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: str):
-        '''
+    def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: str) -> None:
+        """
         Abstract method to log feedback for a message.
 
         Args:
@@ -43,125 +71,133 @@ class BaseChatLogsManager(ABC):
             session_id (str): The session ID for the conversation.
             message_index (int): The index of the message to add feedback to.
             feedback (str): The feedback to add to the message.
-        
+
         Returns:
             None
-        '''
+        """
         pass
 
     @abstractmethod
     def get_chat_history_overview(self, user: User | None) -> list[dict]:
-        '''
+        """
         Abstract method to get an overview of chat history.
-        This is used to display a list of overview to previous chat conversations.
+        This is used to display a list of overviews of previous chat conversations.
 
         Args:
-            user (User): The user to get chat history for.
+            user (User | None): The user to get chat history for.
 
         Returns:
-            list[dict]: A of dictionaries containing information about previous chat conversations. Each should have the following keys:
-            - "branch": The name of the branch.
-            - "session": The session ID for the conversation.
-            - "modified": The timestamp of when the chat conversation was last modified.
-            - "header": The text that will be used as the link text. Usually the first message in the conversation. Could also be a conversation title.
-        '''
+            list[dict]: A list of dictionaries containing information about previous chat conversations. Each should have the following keys:
+                - 'branch': The name of the branch.
+                - 'session': The session ID for the conversation.
+                - 'modified': The timestamp of when the chat conversation was last modified.
+                - 'header': The text that will be used as the link text. Usually the first message in the conversation. Could also be a conversation title.
+        """
         pass
 
     @abstractmethod
-    def get_chat_logs_overview(self, sort_by, order, branch_filter, feedback_filter) -> tuple[list[dict], int, float]:
-        '''
+    def get_chat_logs_overview(self, sort_by: str, order: str, branch_filter: str, feedback_filter: str) -> tuple[list[dict], int, float]:
+        """
         Abstract method to get an overview of chat logs.
 
         Args:
             sort_by (str): The field to sort by.
-            order (str): The order to sort by. Either "asc" or "desc".
+            order (str): The order to sort by. Either 'asc' or 'desc'.
             branch_filter (str): The branch to filter by.
             feedback_filter (str): The feedback to filter by.
 
         Returns:
-            list[dict]: A list of dictionaries containing information about chat logs.
-            int: The total number of tokens used.
-            float: The total cost of the chat logs.
-        '''
+            tuple: A tuple containing:
+                - list[dict]: A list of dictionaries containing information about chat logs.
+                - int: The total number of tokens used.
+                - float: The total cost of the chat logs.
+        """
         pass
 
     @abstractmethod
     def get_chat_history(self, branch_name: str, session_id: str) -> dict:
-        '''
+        """
         Abstract method to get chat history for a session.
 
         Args:
             branch_name (str): The name of the branch.
             session_id (str): The session ID for the conversation.
-        
+
         Returns:
             dict: The chat history for the session.
-        '''
+        """
         pass
 
     @abstractmethod
     def get_log_file_template(self, filename: str, branch: str) -> str:
-        '''
+        """
         Abstract method to get the jinja template for a log file.
-        
+
         Args:
             filename (str): The name of the log file.
             branch (str): The branch the log file is in.
 
         Returns:
             str: The rendered template for the log file.
-        '''
+        """
+        pass
 
     @abstractmethod
     def save_feedback(self, feedback: dict) -> None:
-        '''
+        """
         Abstract method to save feedback input to a file.
 
         Args:
             feedback (dict): The feedback to save.
-        
+
         Returns:
             None
-        '''
+        """
         pass
 
     @abstractmethod
     def save_training_data(self, training_data: dict) -> None:
-        '''
+        """
         Abstract method to save training data to a file.
 
         Args:
             training_data (dict): The training data to save.
-        
+
         Returns:
             None
-        '''
+        """
         pass
 
-class ChatLogsManager(BaseChatLogsManager):
 
+class ChatLogsManager(BaseChatLogsManager):
     def __init__(self, chat_log_path: str) -> None:
+        """
+        Initializes the ChatLogsManager.
+
+        Args:
+            chat_log_path (str): Path to the chat log directory.
+        """
         super().__init__(chat_log_path)
 
     def log(self, branch_name: str, session_id: str, log_data: dict) -> None:
-        '''
+        """
         Logs chat data to a YAML file.
 
         Args:
             branch_name (str): The name of the branch.
             session_id (str): The session ID for the conversation.
-            log_data (dict): The data to be logged. Should contain the following keys: "user", "cost", "tokens", and "message".
-        
+            log_data (dict): The data to be logged. Should contain the following keys: 'user', 'cost', 'tokens', and 'message'.
+
         Returns:
             None
-        '''
+        """
         if not self._does_log_exist(branch_name, session_id):
-            self._create_log_file(branch_name, session_id, log_data.get("user", None))
+            self._create_log_file(branch_name, session_id, log_data.get('user', None))
         else:
             self._update_log_file(branch_name, session_id, log_data)
 
     def log_feedback(self, branch_name: str, session_id: str, message_index: int, feedback: str) -> None:
-        '''
+        """
         Adds feedback to the log for a specific response in a specific session.
 
         Args:
@@ -172,21 +208,24 @@ class ChatLogsManager(BaseChatLogsManager):
 
         Returns:
             None
-        '''
-        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "r") as file:
+        """
+        with open(f'{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log', 'r') as file:
             log: dict = yaml.safe_load(file)
             log['messages'][message_index]['liked'] = feedback
 
-        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "w") as file:
+        with open(f'{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log', 'w') as file:
             yaml.dump(log, file)
 
     def get_chat_history_overview(self, user: User | None) -> list[dict]:
-        '''
+        """
         Gets an overview of chat history.
 
+        Args:
+            user (User | None): The user to get chat history for.
+
         Returns:
-            dict: A dictionary containing information about previous chat conversations.
-        '''
+            list[dict]: A list of dictionaries containing information about previous chat conversations.
+        """
         overview = []
         conversations = self._get_file_list()
         for conversation in conversations:
@@ -206,29 +245,30 @@ class ChatLogsManager(BaseChatLogsManager):
 
         return overview
 
-    def get_chat_logs_overview(self, sort_by, order, branch_filter, feedback_filter) -> tuple[list[dict], int, float]:
-        '''
+    def get_chat_logs_overview(self, sort_by: str, order: str, branch_filter: str, feedback_filter: str) -> tuple[list[dict], int, float]:
+        """
         Gets an overview of chat logs.
 
         Args:
             sort_by (str): The field to sort by.
-            order (str): The order to sort by. Either "asc" or "desc".
+            order (str): The order to sort by. Either 'asc' or 'desc'.
             branch_filter (str): The branch to filter by.
             feedback_filter (str): The feedback to filter by.
 
         Returns:
-            list[dict]: A list of dictionaries containing information about chat logs.
-            int: The total number of tokens used.
-            float: The total cost of the chat logs.
-        '''
+            tuple: A tuple containing:
+                - list[dict]: A list of dictionaries containing information about chat logs.
+                - int: The total number of tokens used.
+                - float: The total cost of the chat logs.
+        """
         log_files = self._get_file_list()
 
         if branch_filter:
             log_files = [f for f in log_files if branch_filter.lower() in f['branch'].lower()]
 
         if feedback_filter:
-            feedback_filter = feedback_filter.lower() == 'true'
-            log_files = [f for f in log_files if f['has_feedback'] == feedback_filter]
+            feedback_filter_bool = feedback_filter.lower() == 'true'
+            log_files = [f for f in log_files if f['has_feedback'] == feedback_filter_bool]
 
         reverse = (order == 'desc')
         log_files.sort(key=lambda x: x[sort_by], reverse=reverse)
@@ -237,16 +277,16 @@ class ChatLogsManager(BaseChatLogsManager):
         total_tokens = 0
         total_cost = 0.0
         for file in log_files:
-            with open(f"{self.chat_log_path}/chat_history/{file['branch']}/{file['name']}", 'r') as log_file:
-                file_content = yaml.safe_load(log_file)
-                total_tokens += file_content.get('total_tokens', 0)
-                total_cost += file_content.get('total_cost', 0.0)
+            with open(f'{self.chat_log_path}/chat_history/{file["branch"]}/{file["name"]}', 'r') as f:
+                log = yaml.safe_load(f)
+                total_tokens += log.get('tokens', 0)
+                total_cost += log.get('cost', 0.0)
 
         return log_files, total_tokens, total_cost
 
     def get_chat_history(self, branch_name: str, session_id: str) -> dict:
-        '''
-        Gets the chat history for a specific session in a specific branch.
+        """
+        Retrieves chat history for a specific session.
 
         Args:
             branch_name (str): The name of the branch.
@@ -254,13 +294,14 @@ class ChatLogsManager(BaseChatLogsManager):
 
         Returns:
             dict: The chat history for the session.
-        '''
-        with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "r") as file:
-            return yaml.safe_load(file)
+        """
+        with open(f'{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log', 'r') as file:
+            chat_history = yaml.safe_load(file)
+        return chat_history
 
     def get_log_file_template(self, filename: str, branch: str) -> str:
-        '''
-        Gets the jinja template for a log file.
+        """
+        Gets the Jinja template for a log file.
 
         Args:
             filename (str): The name of the log file.
@@ -268,7 +309,7 @@ class ChatLogsManager(BaseChatLogsManager):
 
         Returns:
             str: The rendered template for the log file.
-        '''
+        """
         def process_messages(messages: dict) -> dict:
             """
             Process each system response in the conversation and convert it to HTML.
@@ -319,10 +360,13 @@ class ChatLogsManager(BaseChatLogsManager):
 
     def save_feedback(self, feedback: dict) -> None:
         """
-        Save the feedback to a file.
+        Saves feedback input to a YAML file.
 
         Args:
             feedback (dict): The feedback to save.
+            
+        Returns:
+            None
         """
 
         # Make directory if it doesn't exist
@@ -342,7 +386,7 @@ class ChatLogsManager(BaseChatLogsManager):
 
     def save_training_data(self, training_data: dict) -> None:
         """
-        Save the training data to a file.
+        Saves training data to a YAML file.
 
         Args:
             training_data (dict): The training data to save.
@@ -368,7 +412,7 @@ class ChatLogsManager(BaseChatLogsManager):
         Get the list of chat history files with metadata.
 
         Returns:
-            list: The list of files with their metadata.
+            bool: True if the log file exists, False otherwise.
         """
         def get_creation_time(file_path):
             if platform.system() == 'Darwin':  # macOS
@@ -437,6 +481,17 @@ class ChatLogsManager(BaseChatLogsManager):
         return file_list
 
     def _create_log_file(self, branch_name: str, session_id: str, user: User | None = None) -> None:
+        """
+        Creates a new log file for a chat session.
+
+        Args:
+            branch_name (str): The name of the branch.
+            session_id (str): The session ID for the conversation.
+            user (User | None): Optional User to obtain information from to include in the log.
+
+        Returns:
+            None
+        """
         # compile log information
         log_info: dict = {
             "session_id": session_id,
@@ -458,7 +513,7 @@ class ChatLogsManager(BaseChatLogsManager):
             yaml.dump(log_info, file)
 
     def _update_log_file(self, branch_name: str, session_id: str, log_data: dict) -> None:
-        '''
+        """
         Updates the log file with the new log data.
 
         Args:
@@ -468,7 +523,7 @@ class ChatLogsManager(BaseChatLogsManager):
         
         Returns:
             None
-        '''
+        """
         with open(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log", "r") as file:
             log: dict = yaml.safe_load(file)
 
@@ -494,7 +549,7 @@ class ChatLogsManager(BaseChatLogsManager):
             yaml.dump(log, file)
 
     def _does_log_exist(self, branch_name: str, session_id: str) -> bool:
-        '''
+        """
         Checks if a log file exists for the given session ID.
 
         Args:
@@ -502,5 +557,5 @@ class ChatLogsManager(BaseChatLogsManager):
         
         Returns:
             bool: True if the log file exists, False otherwise.
-        '''
+        """
         return path.exists(f"{self.chat_log_path}/chat_history/{branch_name}/{session_id}.log")

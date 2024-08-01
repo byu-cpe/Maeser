@@ -11,6 +11,7 @@ Welcome to Maeser's documentation!
    :maxdepth: 1
    :caption: Development:
 
+   development/user_setup.md
    development/development_setup.md
    development/wsl_development.md
    development/flask_example.md
@@ -18,11 +19,29 @@ Welcome to Maeser's documentation!
    development/embedding.md
    development/graphs.md
 
+.. toctree ::
+   :maxdepth: 1
+   :caption: Repository License Info:
+
+   legal/repository_info.md
+   legal/LGPL.md
+   legal/GPL.md
+   legal/CCBYSA4.md
+   legal/MIT.md
+   legal/CC0.md
+   legal/AGPL.md
+
 .. toctree::
    :maxdepth: 3
    :caption: Source Reference:
 
    autodoc/maeser/modules.rst
+
+.. toctree ::
+   :maxdepth: 1
+   :caption: License of this documentation:
+
+   legal/LICENSE.DOCS.md
 
 Indices and tables
 ==================
