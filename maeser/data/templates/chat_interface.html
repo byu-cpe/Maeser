@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script>
-            var rateLimiting = {{ rate_limiting }};
+            var rateLimiting = {{ str(rate_limiting).lower() }};
             var conversationHistory = {{ conversation|tojson|safe }} || false;
             var requestsRemainingIntervalMs = {{ requests_remaining_interval_ms if requests_remaining_interval_ms else 'false' }};
             var chatHead = "{{ chat_head }}";
@@ -73,8 +73,8 @@
                         </div>
                     {% endfor %}
                 </div>
-                {% if user_management %}
-                    <div id="side-bar-bottom-buttons">
+                <div id="side-bar-bottom-buttons">
+                    {% if user_management %}
                         {% if is_admin %}
                             <button id="user-management-button">User Management</button>
                             <button id="logs-button">Logs</button>
@@ -82,8 +82,11 @@
                         <button id="train-button">Help Train {{ app_name }}</button>
                         <button id="logout-button" style="background-color: black; color: white;">Logout</button>
                         {# <button id="settings">Settings</button> #}
-                    </div>
-                {% endif %}
+                    {% else %}
+                        <button id="logs-button">Logs</button>
+                        <button id="train-button">Help Train {{ app_name }}</button>
+                    {% endif %}
+                </div>
             </nav>
 
             <div id="chat-application">
@@ -100,6 +103,11 @@
                                     <div class="message-bubble">
                                         <p>Hello, how can I help you today?</p>
                                     </div>
+                                    <p class="hint">
+                                        Please note that you are interacting with an AI-powered chatbot, not a human.
+                                        While I strive to provide accurate and helpful information, there may be occasional errors or inaccuracies.
+                                        Be aware that your interactions are logged in plain text and may be used for training purposes.
+                                    </p>
                                     <div class="like-dislike-controls">  
                                         <a href="{{ url_for('maeser.feedback_form') }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.85rem;font-weight: bold;text-decoration: none;color: #0084ff;">Feedback?</a>
                                     </div>

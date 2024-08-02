@@ -504,9 +504,17 @@ if (rateLimiting) {
 window.addEventListener('scroll', updateScrollButtonVisibility);
 window.addEventListener('resize', updateScrollButtonVisibility);
 
-logoutButton.addEventListener('click', function() {
-    window.location.href = '/logout';
-  });
+if (logoutButton != null) {
+    logoutButton.addEventListener('click', function() {
+        window.location.href = '/logout';
+    });
+}
+
+if (userManagementButton != null) {
+    userManagementButton.addEventListener('click', function() {
+        window.location.href = '/users';
+    });
+}
 
 trainButton.addEventListener('click', function() {
     window.location.href = '/train';
@@ -514,8 +522,4 @@ trainButton.addEventListener('click', function() {
 
 logsButton.addEventListener('click', function() {
     window.location.href = '/logs';
-});
-
-userManagementButton.addEventListener('click', function() {
-    window.location.href = '/users';
 });

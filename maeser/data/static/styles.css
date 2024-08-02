@@ -730,12 +730,15 @@ select {
   background-color: #959595;
 }
 
-.login-hint {
+.hint {
   font-size: .8rem;
   color: #666;
   margin: auto;
   width: 100%;
   max-width: 400px;
+}
+
+.centered {
   text-align: center;
 }
 
