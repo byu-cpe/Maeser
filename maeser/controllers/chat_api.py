@@ -25,5 +25,7 @@ def controller(chat_sessions_manager: ChatSessionManager, chat_session: str):
     except RateLimitError as e:
         print(f'{type(e)}, {e}: Rate limit reached')
         abort(503, description='Rate limit reached, please try again later')
-    
-    return {'response': get_response_html(response['messages'][-1]), 'index': len(response['messages']) - 1}
+    # print("chat_api.controller response:",response)
+    # print("response text:",response['messages'][-1])
+    html_response = get_response_html(response['messages'][-1])
+    return {'response': html_response, 'index': len(response['messages']) - 1}
