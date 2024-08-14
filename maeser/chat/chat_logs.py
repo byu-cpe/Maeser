@@ -481,7 +481,9 @@ class ChatLogsManager(BaseChatLogsManager):
             log["messages"].append({
                     "role": "system",
                     "content": log_data["messages"][-1],
-                    "context": [context.page_content for context in log_data["retrieved_context"]],
+                    #"context": [context.page_content for context in log_data["retrieved_context"]],
+                    "context": [context.page_content for context in log_data["retrieved_context"] if log_data["retrieved_context"] is not None]
+,
                     "execution_time": log_data.get("execution_time", 0),
                     "tokens_used": log_data.get("tokens", 0),
                     "cost": log_data.get("cost", 0)
