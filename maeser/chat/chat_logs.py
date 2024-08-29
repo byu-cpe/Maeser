@@ -541,7 +541,11 @@ class ChatLogsManager(BaseChatLogsManager):
                     "tokens_used": log_data.get("tokens", 0),
                     "cost": log_data.get("cost", 0)
                 })
-            
+            if "retrieved_context" in log_data:
+                # If there is context, add it to the log
+                log["messages"].append({
+                    "context": [context.page_content for context in log_data["retrieved_context"]],
+                })
             log["total_cost"] += log_data.get("cost", 0)
             log["total_tokens"] += log_data.get("tokens", 0)
 
