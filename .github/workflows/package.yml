@@ -1,0 +1,22 @@
+name: Publish
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Pypi credentials
+      run: |  
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry config pypi-token.pypi ${{ secrets.PYPI_API_KEY }}
+
+    - name: Package
+      run: |
+        poetry build 
+        poetry publish

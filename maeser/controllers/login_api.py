@@ -1,4 +1,21 @@
-"""Module for handling login and GitHub OAuth2 authorization controllers."""
+"""
+Module for handling login and GitHub OAuth2 authorization controllers.
+
+© 2024 Carson Bush, Blaine Freestone
+
+This file is part of Maeser.
+
+Maeser is free software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+Maeser. If not, see <https://www.gnu.org/licenses/>.
+"""
 
 from flask import render_template, redirect, url_for, request, session
 from flask_login import login_user, current_user
@@ -124,14 +141,7 @@ def github_auth_callback_controller(current_user, auth_manager, app_name: str | 
     if 'error' in request.args:
         print(f'An error occurred during the auth callback before authentication: {request.args}')
         error_message = request.args.get('error_description', 'Authentication failed')
-        return render_template(
-            'login.html', 
-            message=error_message,
-            main_logo_light=main_logo_light,
-            main_logo_dark=main_logo_dark,
-            favicon=favicon,
-            app_name=app_name if app_name else "Maeser",
-        )
+        return redirect(url_for(login_redirect, message=error_message))
     
     oauth_state = session.get('oauth2_state')
     print(f'OAuth2 state at callback: {oauth_state}')

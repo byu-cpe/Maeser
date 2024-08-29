@@ -1,3 +1,20 @@
+/*
+© 2024 Carson Bush, Blaine Freestone
+
+This file is part of Maeser.
+
+Maeser is free software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+Maeser. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 @import "normalize.css";
 @import "bootstrap-icons/font/bootstrap-icons.min.css";
 
@@ -270,7 +287,7 @@ header img {
   margin: 0;
 } */
 
-.button-highlighted {
+.button-highlighted,.active {
   background-color: #009e15;
   color: white;
   opacity: 1 !important;
@@ -619,6 +636,110 @@ select {
 
 #login-autopopulate button {
   margin-top: 1rem;
+}
+
+/* User Grid */
+.user-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.user-card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 200px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.user-card:hover {
+  transform: scale(1.05);
+}
+
+.user-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2em;
+}
+
+.user-card p {
+  margin: 0;
+  color: #666;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#side-bar-logout {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+}
+
+#side-bar-bottom-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  padding: 1rem;
+}
+
+#side-bar-bottom-buttons button {
+	background-color: #A8A8A8;
+  color: black;
+}
+
+#side-bar-bottom-buttons button:hover {
+  background-color: #959595;
+}
+
+.hint {
+  font-size: .8rem;
+  color: #666;
+  margin: auto;
+  width: 100%;
+  max-width: 400px;
+}
+
+.centered {
+  text-align: center;
 }
 
 /* Media Queries for Mobile Responsiveness */

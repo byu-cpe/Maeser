@@ -1,54 +1,141 @@
-{% extends "sidebar.html" %}
-
-{% block head %}
-<script>
-    var rateLimiting = {{ rate_limiting }};
-    var conversationHistory = {{ conversation|tojson|safe }} || false;
-    var requestsRemainingIntervalMs = {{ requests_remaining_interval_ms if requests_remaining_interval_ms else 'false' }};
-    var chatHead = "{{ chat_head }}";
-</script>
-{% endblock %}
-
-{% block content %}
-<div id="chat-application">
-    <main>
-        <div id="chat-messages">
-            <section id="all-messages">
-                <div class="message-container receiver">
-                    {% if chat_head %}
-                        <img src="{{ chat_head }}">
-                    {% else %}
-                        <img src="{{ url_for('maeser.static', filename='maeser-part.png') }}">
-                    {% endif %}
-                    <div class="message-controls">
-                        <div class="message-bubble">
-                            <p>Hello, how can I help you today?</p>
-                        </div>
-                        <div class="like-dislike-controls">  
-                            <a href="{{ url_for('maeser.feedback_form') }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.85rem;font-weight: bold;text-decoration: none;color: #0084ff;">Feedback?</a>
-                        </div>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ app_name }}</title>
+        {% if favicon %}
+            <link rel="icon" href="{{ favicon }}">
+        {% else %}
+            <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+        {% endif %}        
+        <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script>
+            var rateLimiting = {{ str(rate_limiting).lower() }};
+            var conversationHistory = {{ conversation|tojson|safe }} || false;
+            var requestsRemainingIntervalMs = {{ requests_remaining_interval_ms if requests_remaining_interval_ms else 'false' }};
+            var chatHead = "{{ chat_head }}";
+        </script>
+    </head>
+    <body>
+        <!--
+        © 2024 Carson Bush, Blaine Freestone
+    
+        This file is part of Maeser.
+    
+        Maeser is free software: you can redistribute it and/or modify it under the terms of
+        the GNU Lesser General Public License as published by the Free Software Foundation,
+        either version 3 of the License, or (at your option) any later version.
+    
+        Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+        without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+        PURPOSE. See the GNU Lesser General Public License for more details.
+    
+        You should have received a copy of the GNU Lesser General Public License along with
+        Maeser. If not, see <https://www.gnu.org/licenses/>.
+        -->
+    
+        <div id="main-app">
+            <header>
+                <div class="header-wrapper">
+                    <div id="logo-tab">
+                        <button id="tab"><i class="fa fa-bars"></i></button>
+                        {% if main_logo_dark %}
+                            <img src="{{ main_logo_dark }}">
+                        {% else %}
+                            <img src="{{ url_for('maeser.static', filename='maeser-dark.png') }}">
+                        {% endif %}
                     </div>
+                    {% if rate_limiting %}
+                        <div id="rate-limit" style="color: white;">
+                            <p>
+                                <span id="requests-remaining">{{requests_remaining}}</span> / 
+                                <span id="max-requests-remaining">{{max_requests_remaining}}</span>
+                            </p>
+                        </div>
+                    {% endif %}
                 </div>
-                <div id="button-container" class="">
-                    {% for button in buttons %}
-                        <button class="action-button" data-action="{{ button }}">{{ buttons[button].label }}</button>
+            </header>
+
+            <nav id="side-bar" class="hide">
+                <div id="side-bar-top-buttons">
+                    <h3 style="margin: 0 .8rem">New Chat</h3>
+                    <button id="reset-button"><i class="bi bi-file-earmark-plus-fill"></i></button>
+                </div>
+                <div id="side-bar-links">
+                    {% for link in links %}
+                        <div class="chat-history-button-container">
+                            <button class="chat-history-button" data-session="{{link.session}}" data-branch="{{link.branch}}">
+                                <p class="chat-history-name">{{link.header}}</p>
+                                <p class="chat-history-branch">{{link.branch}}</p>
+                            </button>
+                        </div>
                     {% endfor %}
                 </div>
-                <div id="chat"></div>
-            </section>
+                <div id="side-bar-bottom-buttons">
+                    {% if user_management %}
+                        {% if is_admin %}
+                            <button id="user-management-button">User Management</button>
+                            <button id="logs-button">Logs</button>
+                        {% endif %}
+                        <button id="train-button">Help Train {{ app_name }}</button>
+                        <button id="logout-button" style="background-color: black; color: white;">Logout</button>
+                        {# <button id="settings">Settings</button> #}
+                    {% else %}
+                        <button id="logs-button">Logs</button>
+                        <button id="train-button">Help Train {{ app_name }}</button>
+                    {% endif %}
+                </div>
+            </nav>
+
+            <div id="chat-application">
+                <main>
+                    <div id="chat-messages">
+                        <section id="all-messages">
+                            <div class="message-container receiver">
+                                {% if chat_head %}
+                                    <img src="{{ chat_head }}">
+                                {% else %}
+                                    <img src="{{ url_for('maeser.static', filename='maeser-part.png') }}">
+                                {% endif %}
+                                <div class="message-controls">
+                                    <div class="message-bubble">
+                                        <p>Hello, how can I help you today?</p>
+                                    </div>
+                                    <p class="hint">
+                                        Please note that you are interacting with an AI-powered chatbot, not a human.
+                                        While I strive to provide accurate and helpful information, there may be occasional errors or inaccuracies.
+                                        Be aware that your interactions are logged in plain text and may be used for training purposes.
+                                    </p>
+                                    <div class="like-dislike-controls">  
+                                        <a href="{{ url_for('maeser.feedback_form') }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.85rem;font-weight: bold;text-decoration: none;color: #0084ff;">Feedback?</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="button-container" class="">
+                                {% for button in buttons %}
+                                    <button class="action-button" data-action="{{ button }}">{{ buttons[button].label }}</button>
+                                {% endfor %}
+                            </div>
+                            <div id="chat"></div>
+                        </section>
+                    </div>
+                    <div id="chat-message-input">
+                        <button id="scroll-button" class="hide" onclick="scrollToBottom()">
+                            <i class="bi bi-arrow-down-circle-fill"></i>            
+                        </button>
+                        <form autocomplete="off" id="message-form" class="hide">
+                            <textarea rows="1" id="message-input" placeholder="Type your message..." disabled></textarea>
+                            <button type="submit" id="send-button" disabled>
+                                <i class="bi bi-send-fill"></i>
+                            </button>
+                        </form>
+                    </div>        
+                </main>
+                <div id="notification"></div>
+            </div>
         </div>
-        <div id="chat-message-input">
-            <button id="scroll-button" class="hide" onclick="scrollToBottom()">
-                <i class="bi bi-arrow-down-circle-fill"></i>            
-            </button>
-            <form autocomplete="off" id="message-form" class="hide">
-                <textarea rows="1" id="message-input" placeholder="Type your message..." disabled></textarea>
-                <button type="submit" id="send-button" disabled>
-                    <i class="bi bi-send-fill"></i>
-                </button>
-            </form>
-        </div>        
-    </main>
-    <div id="notification"></div>
-</div>
-{% endblock %}
+        <script src="{{ url_for('maeser.static', filename='chat.js') }}"></script>
+    </body>
+</html>

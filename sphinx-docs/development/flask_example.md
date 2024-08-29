@@ -1,18 +1,18 @@
 # Maeser Example (with Flask)
 
-This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication that is rendered on a Flask web server.
+This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication that is rendered on a Flask web server. The example program is located in the `example` directory of Maeser.
 
-The `example/flask_example.py` file's code is shown below. You can run the example application by running:
+The program is contained in `flask_example.py` and its code is shown below. You can run the example application by running:
 
 ```shell
-python example/example.py
+python flask_example.py
 ```
 
 but first some overview and setup is needed so read on.
 
 ## Overview
 
-The example program sets up a Flask web application with two different chat branches: one for Karl G. Maeser's history and another for BYU's history. It uses GitHub authentication for user management and implements rate limiting.
+The example program sets up a Flask web application with two different chat branches: one for Karl G. Maeser's history and another for BYU's history.
 
 ## Key Components
 
@@ -53,61 +53,16 @@ Here, we define system prompts for two different chat branches. These prompts se
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
 sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("example/vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
+byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
 ```
 
 This section sets up two RAG graphs, one for each chat branch, and registers them with the session manager. RAG enhances the AI's responses by retrieving relevant information from a knowledge base.
 
 > **NOTE:** The `get_simple_rag` function could be replaced with any LangGraph compiled state graph. So, for a custom application, you will likely want to create a custom graph and register it with the sessions manager. For more instructions on creating custom graphs, see [Using Custom Graphs](./graphs.md)
-
-### User Management and Authentication
-
-For the example, we register a `GithubAuthenticator` with our `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application.
-
-#### Registering Your GitHub OAuth App
-
-Before you can run the app you need to register it.
-
-1. Go to GitHub Developer Settings:
-
-   - Navigate to your GitHub account settings.
-   - Click on "Developer settings" in the sidebar.
-   - Choose "OAuth Apps."
-   - Click the "New OAuth App" button.
-
-2. Fill in App Details:
-
-   - Application name: Choose a descriptive name (e.g., "Maeser Example").
-   - Homepage URL: Enter http://127.0.0.1:5000
-   - Authorization callback URL: Enter http://localhost:5000/login/github_callback
-
-3. Register and Get Credentials:
-
-   - Click "Register application."
-   - You'll be taken to your new app's page.
-   - Note down the following:
-     - Client ID: A long string of characters.
-     - Client Secret: Click "Generate a new client secret" and save the value.
-
-> **NOTE:** Keep your client secret confidential. Never share it publicly.
-
-4. Using the Credentials in the maeser example:
-
-   Replace `...` placeholders in the `GithubAuthenticator` instantiation first with the client ID and then with the client secret.
-
-   ```python
-   from maeser.user_manager import UserManager, GithubAuthenticator
-
-   github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
-   user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
-   user_manager.register_authenticator("github", github_authenticator)
-   ```
-
-Here, we set up user management with GitHub authentication and implement rate limiting (5 requests updated every 60 seconds).
 
 ### Flask Application Setup
 
@@ -121,9 +76,8 @@ app: Flask = add_flask_blueprint(
     base_app,
     "secret",
     sessions_manager,
-    user_manager,
     app_name="Test App",
-    chat_head="/static/Karl_G_Maeser.png",
+    chat_head="static/Karl_G_Maeser.png",
 )
 ```
 
@@ -137,66 +91,42 @@ Finally, we create a Flask application and add the Maeser blueprint to it, confi
 To run the application, you can now run:
 
 ```shell
-python example/example.py
+python flask_example.py
 ```
 
-This should start up a local server. Opening a web browser to the address it tells will bring up the example app. Authenticating with Github should then bring up the main page where you can either ask questions about Karl G. Maeser or about BYU.
+This should start up a local server. Opening a web browser to the address it tells you to use will bring up the example app.
 
-## Customization
+## User Management and Authentication
 
-You can customize various aspects of the application, such as:
+A common thing to add to an app like this is user authentication, giving your app some control over who is using the app. Here, will will show how to modify `flask_example.py` to use authentication. We will register a `GithubAuthenticator` with a `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application.
 
-- Changing the port the server runs on
-- Changing or removing the authentication method(s)
-- Adding more chat branches
-- Modifying the rate limiting parameters
-- Updating the app name, chat head, logo, or favicon
+### Code Changes to `flask_example.md`
 
-Here, we discuss a few of these.
-
-### Changing the Port
-
-You may want to change the port the server runs on. For example,
-on Mac OSX, port 5000 (the default above) is not available for use. For Mac, you will need to change it to another port, such as 3000. Here are the steps to do so:
-
-1. Go back into github.com's oauth system where you registered your app and change both URL's to use 3000 instead of 5000 and then update the application (button at bottom of screen).
-
-2. In the GithubAuthenticator() call in the example.py code above, change the 5000 to 3000.
-
-3. Finally, at the bottom of the example.py file, change this code:
+First, you need to add the following lines of code to `flask_example.md`:
 
 ```python
-if __name__ == "__main__":
-    app.run()
+from maeser.user_manager import UserManager, GithubAuthenticator
+
+github_authenticator = GithubAuthenticator("...", "...", "http://localhost:3000/login/github_callback")
+user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
+user_manager.register_authenticator("github", github_authenticator)
+
 ```
 
-to this:
+Add these before the line that starts with:
 
 ```python
-if __name__ == "__main__":
-    app.run(port=3000)
+from flask import Flask
 ```
 
-### Removing the Authentication Method
-
-Two changes are required to remove the authentication method:
-
-1. Comment or remove the following three lines of code in example.py:
-
-   ```python
-   #github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:5000/login/github_callback")
-   #user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
-   #user_manager.register_authenticator("github", github_authenticator)
-   ```
-
-2. In the Flask instantiation, provide `None` in place of the `user_manager` parameter:
+The second change to make is to add one parameter to the `add_flask_blueprint()` call in the code. The new call is like this:
 
 ```python
 app: Flask = add_flask_blueprint(
     base_app,
     "secret",
     sessions_manager,
-    None,  # This is the change
+    user_manager,
     app_name="Test App",
     chat_head="/static/Karl_G_Maeser.png",
     # Note that you can change other images too! We stick with the defaults for the logo and favicon.
@@ -205,6 +135,58 @@ app: Flask = add_flask_blueprint(
 )
 ```
 
+As you can see, a `user_manager` parameter has been added to the call.
+
+### Registering Your GitHub OAuth App
+
+Before you can run the app you need to register it with GitHub at the GitHub website.
+
+1. Go to GitHub Developer Settings:
+
+   - Navigate to your GitHub account settings.
+   - Click on "Developer settings" in the sidebar.
+   - Choose "OAuth Apps."
+   - Click the "New OAuth App" button.
+
+2. Fill in App Details:
+
+   - Application name: Choose a descriptive name (e.g., "Maeser Example").
+   - Homepage URL: Enter http://127.0.0.1:3000
+   - Authorization callback URL: Enter http://localhost:3000/login/github_callback
+
+3. Register and Get Credentials:
+
+   - Click "Register application."
+   - You'll be taken to your new app's page.
+   - Note down the following:
+     - Client ID: A long string of characters.
+     - Client Secret: Click "Generate a new client secret" and save the value.
+
+> **NOTE:** Keep your client secret confidential. Never share it publicly.
+
+4. Using the Credentials in the maeser example:
+
+   Replace `...` placeholders in the `GithubAuthenticator` instantiation first with the client ID and then with the client secret. This will be in the lines of code you were instructed to add above.
+
+   ```python
+   from maeser.user_manager import UserManager, GithubAuthenticator
+
+   github_authenticator = GithubAuthenticator("<your client ID>", "<your client secret>", "http://localhost:3000/login/github_callback")
+   user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
+   user_manager.register_authenticator("github", github_authenticator)
+   ```
+
+Here, we set up user management with GitHub authentication and implement rate limiting (5 requests updated every 60 seconds).
+
+## Customization
+
+Moving on, you could customize various aspects of the application, such as:
+
+- Changing the port the server runs on
+- Adding more chat branches
+- Modifying the rate limiting parameters
+- Updating the app name, chat head, logo, or favicon
+
 ## Conclusion
 
-This example demonstrates how to use the `maeser` package to create a multi-branch chatbot application with user authentication and rate limiting. You can build upon this example to create more complex applications tailored to your specific needs.
+This example demonstrates how to use the `maeser` package to create a multi-branch chatbot Web application with user authentication and rate limiting. You can build upon this example to create more complex applications tailored to your specific needs.

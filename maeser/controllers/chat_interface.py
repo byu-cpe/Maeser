@@ -1,6 +1,21 @@
 """Module for handling chat interface rendering.
 
 This module contains a function to render the chat interface template with relevant data.
+
+© 2024 Blaine Freestone, Carson Bush
+
+This file is part of Maeser.
+
+Maeser is free software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
 
 from flask import render_template
@@ -49,9 +64,12 @@ def controller(
     requests_remaining: int | None = None if current_user is None else current_user.requests_remaining
     if rate_limit_interval:
         rate_limit_interval = rate_limit_interval * 1000 // 3
-    rate_limiting_bool = bool(requests_remaining and rate_limit_interval and max_requests)
-    rate_limiting_str: str = str(rate_limiting_bool).lower()
+    rate_limiting = bool(requests_remaining and rate_limit_interval and max_requests)
 
+    user_management = True if current_user else False
+
+    is_admin = current_user.admin if current_user else False
+    
     return render_template(
         'chat_interface.html',
         conversation=None,
@@ -60,10 +78,13 @@ def controller(
         requests_remaining=requests_remaining,                  # None | int
         max_requests_remaining=max_requests,                    # None | int
         requests_remaining_interval_ms=rate_limit_interval,     # None | int
-        rate_limiting=rate_limiting_str,                        # bool
+        rate_limiting=rate_limiting,                            # str
+        user_management=user_management,                        # str
         main_logo_light=main_logo_light,                        # None | str
         main_logo_dark=main_logo_dark,                          # None | str
         chat_head=chat_head,                                    # None | str
         favicon=favicon,                                        # None | str
-        app_name=app_name if app_name else "Maeser",
+        app_name=app_name if app_name else "Maeser",            # str
+        is_admin=is_admin,                                      # bool
+        str=str,
     )

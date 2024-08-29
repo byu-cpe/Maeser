@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    {% if favicon %}
+        <link rel="icon" href="{{ favicon }}">
+    {% else %}
+        <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+    {% endif %}
+    <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
+    <script>manageUserAPI = "{{ url_for('maeser.manage_users_api') }}";</script>
+    <script src="{{ url_for('maeser.static', filename='user-management.js') }}"></script>
+</head>
+<body>
+    <!--
+    © 2024 Carson Bush, Blaine Freestone
+
+    This file is part of Maeser.
+
+    Maeser is free software: you can redistribute it and/or modify it under the terms of
+    the GNU Lesser General Public License as published by the Free Software Foundation,
+    either version 3 of the License, or (at your option) any later version.
+
+    Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+    PURPOSE. See the GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License along with
+    Maeser. If not, see <https://www.gnu.org/licenses/>.
+    -->
+
+    <header>
+        <h2>{{ app_name }}</h2>
+    </header>
+
+    <main>
+        <section>
+            <div class="tab-container">
+                {% if len(user_manager.authenticators) > 1 %}
+                    <div id="auth-filters" class="auth-filters">
+                        <button class="tab-button active" filter="all">All</button>
+                    {% for key, auth in user_manager.authenticators.items() %}
+                        <button class="tab-button" filter="{{ key }}">{{ auth }}</button>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                <div id="admin-filters" class="admin-filters">
+                    <button class="tab-button active" filter="all">All</button>
+                    <button class="tab-button" filter="admin">Admin</button>
+                    <button class="tab-button" filter="non-admin">Non-Admin</button>
+                </div>
+                <div id="ban-filters" class="ban-filters">
+                    <button class="tab-button active" filter="all">All</button>
+                    <button class="tab-button" filter="banned">Banned</button>
+                    <button class="tab-button" filter="non-banned">Non-Banned</button>
+                </div>
+            </div>
+            <div id="user-grid" class="user-grid grid">
+                {# Auto populated with JS #}
+            </div>
+        </section>
+    </main>
+</body>
+</html>

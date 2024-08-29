@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "maeser"
-version = "0.0.1"
+version = "0.1.1"
 description = "A package for building RAG chatbot applications for educational contexts."
-authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <sfrocks@gmail.com>"]
+authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <blainefreestone@gmail.com>"]
 include = [
     "maeser/data/*",
     "maeser/data/templates/*",
@@ -13,7 +13,7 @@ include = [
 [tool.poetry.dependencies]
 # Specify where your Python interpreter is located
 # Replace with your Python version if different
-python = ">=3.10"
+python = "<4.0,>=3.10"
 
 # Langchain libraries for text processing and embeddings
 langchain = "^0.2.8"
@@ -26,7 +26,7 @@ langgraph = "^0.1.8"
 # FAISS for vector stores (CPU version by default, GPU as optional)
 # pip install maeser[gpu] for the GPU variant
 faiss-cpu = "^1.8.0.post1"
-faiss-gpu = { version = "^1.8.0.post1", optional = true }
+# faiss-gpu = { version = "^1.7.2", optional = true }
 
 # Web backend
 flask = "^3.0.3"

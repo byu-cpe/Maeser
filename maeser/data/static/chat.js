@@ -1,3 +1,20 @@
+/*
+© 2024 Carson Bush, Blaine Freestone
+
+This file is part of Maeser.
+
+Maeser is free software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+Maeser. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 // Initialize variables
 let session = "";
 let chat_branch = "";
@@ -9,12 +26,16 @@ const newChatButton = document.getElementById('reset-button');
 const actionButtons = document.querySelectorAll('.action-button');
 const sendButton = document.getElementById('send-button');
 const notification = document.getElementById('notification');
-const tabButton = document.getElementById('tab')
-const sidebar = document.getElementById('side-bar')
-const sidebarLinks = document.getElementById('side-bar-links')
+const tabButton = document.getElementById('tab');
+const sidebar = document.getElementById('side-bar');
+const sidebarLinks = document.getElementById('side-bar-links');
 const primaryView = document.getElementById('chat-application');
 const rateLimit = rateLimiting ? document.getElementById('rate-limit') : null;
 const chatHeadIcon = chatHead ? chatHead : '/maeser/static/maeser-part.png';
+const logoutButton = document.getElementById('logout-button');
+const trainButton = document.getElementById('train-button');
+const logsButton = document.getElementById('logs-button');
+const userManagementButton = document.getElementById('user-management-button');
 
 // Notification functions
 function showNotification(message, isSuccess = false, isCritical = false) {
@@ -482,3 +503,23 @@ if (rateLimiting) {
 // Event listeners for scroll events
 window.addEventListener('scroll', updateScrollButtonVisibility);
 window.addEventListener('resize', updateScrollButtonVisibility);
+
+if (logoutButton != null) {
+    logoutButton.addEventListener('click', function() {
+        window.location.href = '/logout';
+    });
+}
+
+if (userManagementButton != null) {
+    userManagementButton.addEventListener('click', function() {
+        window.location.href = '/users';
+    });
+}
+
+trainButton.addEventListener('click', function() {
+    window.location.href = '/train';
+});
+
+logsButton.addEventListener('click', function() {
+    window.location.href = '/logs';
+});

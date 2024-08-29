@@ -1,3 +1,22 @@
+"""
+Module for managing chat sessions and interactions with multiple chat interfaces.
+
+© 2024 Blaine Freestone, Carson Bush
+
+This file is part of Maeser.
+
+Maeser is free software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+Maeser. If not, see <https://www.gnu.org/licenses/>.
+"""
+
 from maeser.chat.chat_logs import BaseChatLogsManager
 from maeser.user_manager import User
 import time
@@ -33,14 +52,14 @@ class ChatSessionManager:
         Args:
             branch_name (str): The name of the branch.
             branch_label (str): The label of the branch.
-            graph (StateGraph): The graph for the branch.
+            graph (CompiledGraph): The graph for the branch.
         
         Returns:
             None
         """
         self.graphs[branch_name] = {
-            "label": branch_label,
-            "graph": graph
+            'label': branch_label,
+            'graph': graph
         }
 
     def get_new_session_id(self, branch_name: str, user: User | None = None) -> str:
@@ -55,15 +74,15 @@ class ChatSessionManager:
         Returns:
             str: The session ID for the new session.
         """
-        # generate session ID with user information if it exists
+        # Generate session ID with user information if it exists
         if user:
-            session_id: str = f"{uid()}-{user.auth_method}-{user.ident}"
+            session_id: str = f'{uid()}-{user.auth_method}-{user.ident}'
         else:
-            session_id: str = f"{uid()}-anon"
+            session_id: str = f'{uid()}-anon'
 
-        # create log file if chat logs manager is available
+        # Create log file if chat logs manager is available
         if self.chat_logs_manager:
-            self.chat_logs_manager.log(branch_name, session_id, {"user": user})
+            self.chat_logs_manager.log(branch_name, session_id, {'user': user})
 
         return session_id
     
@@ -79,19 +98,19 @@ class ChatSessionManager:
         Returns:
             dict: The response to the question.
         """
-        config = {"configurable": {"thread_id": sess_id}}
+        config = {'configurable': {'thread_id': sess_id}}
         start_time = time.time()
-        # get token count for the response
+        # Get token count for the response
         with get_openai_callback() as cb:
-            response = self.graphs[branch_name]["graph"].invoke({
-                "messages": [message],
+            response = self.graphs[branch_name]['graph'].invoke({
+                'messages': [message],
             }, config=config)
-            response["tokens_used"] = cb.total_tokens
-            response["cost"] = cb.total_cost
+            response['tokens_used'] = cb.total_tokens
+            response['cost'] = cb.total_cost
         end_time = time.time()
         execution_time = end_time - start_time
 
-        response["execution_time"] = execution_time
+        response['execution_time'] = execution_time
         
         if self.chat_logs_manager:
             self.chat_logs_manager.log(branch_name, sess_id, response)
@@ -103,6 +122,7 @@ class ChatSessionManager:
         Adds feedback to the log for a specific response in a specific session.
 
         Args:
+            branch_name (str): The name of the branch.
             session_id (str): The session ID for the conversation.
             message_index (int): The index of the message to add feedback to.
             feedback (str): The feedback to add to the message.
@@ -110,7 +130,7 @@ class ChatSessionManager:
         Returns:
             None
         """
-        # return if no chat logs manager
+        # Return if no chat logs manager
         if not self.chat_logs_manager:
             return
         
@@ -138,7 +158,7 @@ class ChatSessionManager:
         Returns the list of branches available for chat.
 
         Returns:
-            list: The list of branches available for chat.
+            dict: The list of branches available for chat.
         """
         return self.graphs
     
@@ -148,6 +168,6 @@ class ChatSessionManager:
         Returns the path to the logs directory.
 
         Returns:
-            str: The path to the logs directory.
+            str | None: The path to the logs directory.
         """
         return self.chat_logs_manager.chat_log_path if self.chat_logs_manager else None
