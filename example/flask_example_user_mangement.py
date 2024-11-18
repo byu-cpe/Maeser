@@ -38,10 +38,10 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
 from maeser.graphs.simple_rag import get_simple_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path="vectorstores/maeser", vectorstore_index="index", memory_filepath="chat_logs/maeser.db", system_prompt_text=maeser_prompt)
+maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path="example/vectorstores/maeser", vectorstore_index="index", memory_filepath="chat_logs/maeser.db", system_prompt_text=maeser_prompt)
 sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path="vectorstores/byu", vectorstore_index="index", memory_filepath="chat_logs/byu.db", system_prompt_text=byu_prompt)
+byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path="example/vectorstores/maeser", vectorstore_index="index", memory_filepath="chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
 from maeser.user_manager import UserManager, GithubAuthenticator

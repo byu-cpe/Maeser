@@ -30,7 +30,7 @@ def controller(app_name: str | None = None, main_logo_light: str | None  = None,
     type_options = ['Information', 'Style']
 
     return render_template(
-        'training.html',
+        'training',
         role_options=role_options,
         type_options=type_options,
         app_name=app_name if app_name else "Maeser",

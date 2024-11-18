@@ -103,7 +103,7 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
     message = request.args.get('message', '')
 
     return render_template(
-        'login.html', 
+        'login', 
         message=message, 
         next=next_url,
         main_logo_light=main_logo_light,
