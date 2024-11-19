@@ -2,7 +2,7 @@
 ## Overview
 This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes. It leverages the capabilities of [LangGraph](https://langchain-ai.github.io/langgraph/), a powerful tool for serving RAG pipelines, to provide a robust backend for chatbot interactions.
 
-Detailed documentation can be found [here](https://byucpe.github.io/maeser/).
+Detailed documentation can be found [here](byu-cpe.github.io/Maeser/).
 ## Features
 - **RAG Pipeline Integration**: Utilizes LangGraph to seamlessly integrate RAG pipelines into the chatbot, enhancing its ability to generate informative and contextually relevant responses.
 - **Session Management**: Comes equipped with a session manager to handle interactions efficiently, ensuring a smooth and coherent conversation flow.
