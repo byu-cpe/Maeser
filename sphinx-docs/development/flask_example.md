@@ -100,9 +100,9 @@ This should start up a local server. Opening a web browser to the address it tel
 
 A common thing to add to an app like this is user authentication, giving your app some control over who is using the app. Here, we will show how to modify `flask_example.py` to use authentication. We will register a `GithubAuthenticator` with a `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application.
 
-### Code Changes to `flask_example.md`
+### Code Changes to `flask_example.py`
 
-First, you need to add the following lines of code to `flask_example.md`:
+First, you need to add the following lines of code to `flask_example.py` (alternatively, these changes have already been made in `flask_example_user_management.py`):
 
 ```python
 from maeser.user_manager import UserManager, GithubAuthenticator
