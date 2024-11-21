@@ -98,7 +98,7 @@ This should start up a local server. Opening a web browser to the address it tel
 
 ## User Management and Authentication
 
-A common thing to add to an app like this is user authentication, giving your app some control over who is using the app. Here, will will show how to modify `flask_example.py` to use authentication. We will register a `GithubAuthenticator` with a `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application.
+A common thing to add to an app like this is user authentication, giving your app some control over who is using the app. Here, we will show how to modify `flask_example.py` to use authentication. We will register a `GithubAuthenticator` with a `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application.
 
 ### Code Changes to `flask_example.md`
 
