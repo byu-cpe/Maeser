@@ -1,4 +1,4 @@
-# Setting Set Up To Use Maeser
+# Setting Up Maeser
 
 There are two possible use models for you as a user. The first is if you simply want to develop your own app that uses Maeser. That is the focus of this document. If, instead, you want to clone and start making changes to the Maeser code base itself, you should instead consult [this documentation](development_setup.md).
 
@@ -45,7 +45,7 @@ That is it - Maeser is now installed in your environment.
 
 The Maeser github repo contains an example directory with a collection of sample uses of Maeser. You will likely want use those examples as your starting point. You can either go to github and copy that directory down or you can simply clone the github repo onto your machine.
 
-To clone the repo, you would do the following shell command:
+To clone the repo, execute the following shell command:
 
 ```shell
 git clone https://github.com/byu-cpe/Maeser
