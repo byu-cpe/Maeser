@@ -20,9 +20,9 @@ Maeser. If not, see <https://www.gnu.org/licenses/>.
 import wikipediaapi
 
 wiki_wiki = wikipediaapi.Wikipedia(
-    user_agent='Maeser AI Example',
-        language='en',
-        extract_format=wikipediaapi.ExtractFormat.WIKI
+    user_agent="Maeser AI Example",
+    language="en",
+    extract_format=wikipediaapi.ExtractFormat.WIKI,
 )
 
 p_wiki = wiki_wiki.page("Brigham Young University")
@@ -41,4 +41,4 @@ documents = text_splitter.create_documents([text])
 from langchain_community.vectorstores import FAISS
 
 db = FAISS.from_documents(documents, OpenAIEmbeddings())
-db.save_local("example/vectorstores/byu")
+db.save_local("vectorstores/byu")
