@@ -32,6 +32,9 @@ faiss-cpu = "^1.8.0.post1"
 flask = "^3.0.3"
 flask-login = "^0.6.3"
 
+#Ldap3 for alternative authentication purposes
+ldap3 = "^2.9.1" 
+
 # Turning markdown into HTML for display
 markdown = "^3.6"
 pymdown-extensions = "^10.8.1"

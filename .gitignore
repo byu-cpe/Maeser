@@ -18,3 +18,8 @@ logs
 chat_logs
 # Ignore package build
 dist
+#Ignore poetry.lock files
+poetry.lock
+#Ignore 
+*.faiss
+*.pkl
