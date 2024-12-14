@@ -62,4 +62,5 @@ app: Flask = add_flask_blueprint(
 )
 
 if __name__ == "__main__":
-    app.run(port=3000)
+    extra_files = ["maeser/data/templates/chat_interface.html", "maeser/data/templates/login.html"]
+    app.run(port=3002, debug=True, extra_files=extra_files)

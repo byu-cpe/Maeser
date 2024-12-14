@@ -44,12 +44,14 @@ sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Mae
 byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path="vectorstores/byu", vectorstore_index="index", memory_filepath="chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
-from maeser.user_manager import UserManager, GithubAuthenticator
+from maeser.user_manager import UserManager, GithubAuthenticator, CAEDMAuthenticator
 
 # Replace the '...' with a client id and secret from a GitHub OAuth App that you generate
 github_authenticator = GithubAuthenticator(client_id="...", client_secret="...", auth_callback_uri="http://localhost:3000/login/github_callback")
+caedm_authenticator = CAEDMAuthenticator("/etc/ssl/certs")
 user_manager = UserManager(db_file_path="chat_logs/users", max_requests=5, rate_limit_interval=60)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
+user_manager.register_authenticator(name="caedm", authenticator=caedm_authenticator)
 
 from flask import Flask
 
@@ -70,4 +72,5 @@ app: Flask = add_flask_blueprint(
 )
 
 if __name__ == "__main__":
-    app.run(port=3000)
+    extra_files = ["maeser/data/templates/chat_interface.html", "maeser/data/templates/login.html"]
+    app.run(port=3002, debug=True, extra_files=extra_files)
