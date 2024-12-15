@@ -44,14 +44,24 @@ sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Mae
 byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path="vectorstores/byu", vectorstore_index="index", memory_filepath="chat_logs/byu.db", system_prompt_text=byu_prompt)
 sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
-from maeser.user_manager import UserManager, GithubAuthenticator, CAEDMAuthenticator
+from maeser.user_manager import UserManager, GithubAuthenticator, CAEDMAuthenticator, LDAPAuthenticator
 
 # Replace the '...' with a client id and secret from a GitHub OAuth App that you generate
 github_authenticator = GithubAuthenticator(client_id="...", client_secret="...", auth_callback_uri="http://localhost:3000/login/github_callback")
-caedm_authenticator = CAEDMAuthenticator("/etc/ssl/certs")
+caedm_authenticator = LDAPAuthenticator(
+    name='CAEDM',
+    ldap_server_urls=['ctldap.et.byu.edu', 'cbldap.et.byu.edu'],
+    ldap_base_dn='ou=accounts,ou=caedm,dc=et,dc=byu,dc=edu',
+    attribute_name='cn',
+    search_filter='(cn={ident})',
+    object_class='person',
+    attributes=['cn', 'displayName', 'CAEDMUserType'],
+    ca_cert_path='/etc/ssl/certs',
+    connection_timeout=5
+)
 user_manager = UserManager(db_file_path="chat_logs/users", max_requests=5, rate_limit_interval=60)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
-user_manager.register_authenticator(name="caedm", authenticator=caedm_authenticator)
+user_manager.register_authenticator(name="ldap", authenticator=caedm_authenticator)
 
 from flask import Flask
 
@@ -72,6 +82,5 @@ app: Flask = add_flask_blueprint(
 )
 
 if __name__ == "__main__":
-    extra_files = ["maeser/data/templates/chat_interface.html", "maeser/data/templates/login.html", "maeser/data/static/styles.css"]
+    extra_files = ["maeser/data/templates/chat_interface.html", "maeser/data/templates/login.html", "/home/gohaun/Projects/maeser/maeser/data/static/styles.css"]
     app.run(port=3002, debug=True, extra_files=extra_files)
-    pass
