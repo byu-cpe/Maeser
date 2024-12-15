@@ -43,4 +43,4 @@ llm:
 
 user_management:
   accounts_db_path: example/chat_logs/users.db
-  chat_history_path: example/chat_logs/chat_history
+  chat_history_path: example/chat_logs
