@@ -1,0 +1,46 @@
+### API keys are required for OpenAI and GitHub integrations ###
+
+api_keys:
+  openai_api_key: ''
+  github_client_secret: ''
+
+
+### Other application configurations ###
+
+application:
+  github_client_id: ''
+  github_callback_uri: 'http://localhost:3000/login/github_callback'
+rate_limit:
+  max_requests_remaining: 5            # The maximum number of requests that a user can have at any given time
+  rate_limit_interval_seconds: 180      # The time interval in seconds that the rate limit is enforced
+
+
+### Configure the logging path, prompt path, and rate vectorstore options ###
+
+logging:
+  log_source_path: example/chat_logs
+  
+
+vectorstore:
+  vec_store_path: example/vectorstores
+  vec_store_type: faiss
+
+
+### Configure the LLM and text embedding models ###
+
+embed:
+  embed_model: text-embedding-3-large
+  embed_provider: openai
+
+llm:
+  llm_model_name: gpt-4o
+  # llm_model_name: gpt-3.5-turbo
+  llm_provider: openai
+  token_limit: 400
+
+
+### Configure the user management ###
+
+user_management:
+  accounts_db_path: example/chat_logs/users.db
+  chat_history_path: example/chat_logs/chat_history
