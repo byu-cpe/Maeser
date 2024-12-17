@@ -312,7 +312,7 @@ header img {
 }
 
 .logo {
-  width: 200px;
+  width: 150px;
   height: 50px;
   margin-left: 10px;
 }
@@ -337,7 +337,7 @@ header img {
 .rate-limit-text i {
   margin-right: 5px;
   font-size: 16px;
-  color: #337ab7; /* or any other color you prefer */
+  color: #337ab7;
 }
 
 img {
