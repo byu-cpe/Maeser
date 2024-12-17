@@ -74,7 +74,7 @@ caedm_authenticator = LDAPAuthenticator(
 )
 user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS_REMAINING, rate_limit_interval=RATE_LIMIT_INTERVAL)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
-user_manager.register_authenticator(name="ldap", authenticator=caedm_authenticator)
+user_manager.register_authenticator(name="CAEDM", authenticator=caedm_authenticator)
 
 from flask import Flask
 
