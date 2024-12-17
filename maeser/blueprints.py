@@ -50,7 +50,7 @@ from .controllers import (
     user_management_api,
 )
 
-class app_manager:
+class App_Manager:
 
     def __init__(self, 
         #app and app name
@@ -74,7 +74,7 @@ class app_manager:
         #toggle animations
         animation: bool = False,
         #colors
-        primary_color: str = "#333",
+        primary_color: str = "#f5f5f5",
         secondary_color: str = "#ccc",
         button_color: str = "#0084ff",
         button_color_active: str = "#009e15", 
@@ -169,18 +169,7 @@ class app_manager:
         Template the feedback_form.html file using Jinja2 templating
         """
 
-    def add_flask_blueprint(
-        self,
-        app: Flask,
-        flask_secret_key: str,
-        chat_session_manager: ChatSessionManager, 
-        user_manager: UserManager | None = None,
-        app_name: str | None = None,
-        main_logo_light: str | None = None,
-        main_logo_dark: str | None = None,
-        chat_head: str | None = None,
-        favicon: str | None = None,
-    ) -> Flask:
+    def add_flask_blueprint(self) -> Flask:
         """
         Add the Maeser blueprint to the Flask application.
 
@@ -211,18 +200,18 @@ class app_manager:
             """Format a timestamp as a datetime string."""
             return datetime.fromtimestamp(value).strftime(format)
 
-        if user_manager:
+        if self.user_manager:
             def refresh_requests():
                 """Refresh user requests at regular intervals."""
                 while True:
-                    time.sleep(user_manager.rate_limit_interval)
-                    user_manager.refresh_requests()
+                    time.sleep(self.user_manager.rate_limit_interval)
+                    self.user_manager.refresh_requests()
 
             threading.Thread(target=refresh_requests, daemon=True).start()
 
-            app.secret_key = flask_secret_key
-            login_manager = LoginManager(app)
-            login_manager.init_app(app)
+            self.app.secret_key = self.flask_secret_key
+            login_manager = LoginManager(self.app)
+            login_manager.init_app(self.app)
             login_manager.login_view = 'maeser.login'  # type: ignore
             login_manager.session_protection = 'strong'
             
@@ -230,33 +219,33 @@ class app_manager:
             def load_user(user_full_id: str):
                 """Load a user by their ID."""
                 auth_method, user_id = user_full_id.split('.', 1)
-                return user_manager.get_user(auth_method, user_id)
+                return self.user_manager.get_user(auth_method, user_id)
 
             @maeser_blueprint.route('/')
             @login_required
             def chat_interface_route():
                 """Route for the chat interface."""
                 return chat_interface.controller(
-                    chat_session_manager, 
-                    user_manager.max_requests, 
-                    user_manager.rate_limit_interval, 
+                    self.chat_session_manager, 
+                    self.user_manager.max_requests, 
+                    self.user_manager.rate_limit_interval, 
                     current_user, 
-                    main_logo_light=main_logo_light,
-                    main_logo_dark=main_logo_dark,
-                    favicon=favicon,
-                    chat_head=chat_head,
-                    app_name=app_name
+                    main_logo_light=self.main_logo_login,
+                    main_logo_dark=self.main_logo_chat,
+                    favicon=self.favicon,
+                    chat_head=self.chat_head,
+                    app_name=self.app_name
                 )
 
             @maeser_blueprint.route('/login', methods=['GET', 'POST'])
             def login():
                 """Route for the login interface."""
                 return login_api.login_controller(
-                    user_manager,
-                    main_logo_light=main_logo_light,
-                    main_logo_dark=main_logo_dark,
-                    favicon=favicon,
-                    app_name=app_name
+                    self.user_manager,
+                    main_logo_light=self.main_logo_login,
+                    main_logo_dark=self.main_logo_chat,
+                    favicon=self.favicon,
+                    app_name=self.app_name
                 )
             
             @maeser_blueprint.route('/login/github', methods=['GET'])
@@ -264,7 +253,7 @@ class app_manager:
                 """Route for GitHub authorization."""
                 return login_api.github_authorize_controller(
                     current_user, 
-                    user_manager.authenticators['github']
+                    self.user_manager.authenticators['github']
                 )
 
             @maeser_blueprint.route('/login/github_callback')
@@ -272,11 +261,11 @@ class app_manager:
                 """Route for GitHub authorization callback."""
                 return login_api.github_auth_callback_controller(
                     current_user, 
-                    user_manager,
-                    main_logo_light=main_logo_light,
-                    main_logo_dark=main_logo_dark,
-                    favicon=favicon,
-                    app_name=app_name
+                    self.user_manager,
+                    main_logo_light=self.main_logo_login,
+                    main_logo_dark=self.main_logo_chat,
+                    favicon=self.favicon,
+                    app_name=self.app_name
                 )
 
             @maeser_blueprint.route('/logout')
@@ -291,11 +280,11 @@ class app_manager:
             def manage_users():
                 """Route for managing users."""
                 return manage_users_view.controller(
-                    user_manager, 
-                    main_logo_light=main_logo_light, 
-                    main_logo_dark=main_logo_dark, 
-                    favicon=favicon, 
-                    app_name=app_name
+                    self.user_manager, 
+                    main_logo_light=self.main_logo_login,
+                    main_logo_dark=self.main_logo_chat, 
+                    favicon=self.favicon, 
+                    app_name=self.app_name
                 )
             
             @maeser_blueprint.route('/users/api', methods=['POST'])
@@ -303,119 +292,119 @@ class app_manager:
             @admin_required(current_user)
             def manage_users_api():
                 """API route for managing users."""
-                return user_management_api.controller(user_manager)
+                return user_management_api.controller(self.user_manager)
 
             @maeser_blueprint.route('/req_session', methods=['POST'])
             @login_required
             def sess_handler():
                 """Route for handling session requests."""
-                return new_session_api.controller(chat_session_manager, True)
+                return new_session_api.controller(self.chat_session_manager, True)
             
             @maeser_blueprint.route('/msg/<chat_session>', methods=['POST'])
             @login_required
-            @rate_limited(user_manager, current_user)
+            @rate_limited(self.user_manager, current_user)
             def msg_api(chat_session):
                 """API route for handling chat messages."""
-                return chat_api.controller(chat_session_manager, chat_session)
+                return chat_api.controller(self.chat_session_manager, chat_session)
             
             @maeser_blueprint.route('/feedback', methods=['POST'])
             @login_required
             def feedback():
                 """Route for submitting feedback."""
-                return feedback_api.controller(chat_session_manager)
+                return feedback_api.controller(self.chat_session_manager)
             
-            @app.route('/get_requests_remaining', methods=['GET'])
+            @self.app.route('/get_requests_remaining', methods=['GET'])
             @login_required
             def get_requests_remaining():
                 """Route for getting the remaining requests."""
-                return remaining_requests_api.controller(user_manager, current_user)
+                return remaining_requests_api.controller(self.user_manager, current_user)
 
         else:
             @maeser_blueprint.route('/')
             def chat_interface_route():
                 """Route for the chat interface."""
                 return chat_interface.controller(
-                    chat_session_manager,
-                    main_logo_light=main_logo_light,
-                    main_logo_dark=main_logo_dark,
-                    favicon=favicon,
-                    chat_head=chat_head,
-                    app_name=app_name
+                    self.chat_session_manager,
+                    main_logo_light=self.main_logo_login,
+                    main_logo_dark=self.main_logo_chat,
+                    favicon=self.favicon,
+                    chat_head=self.chat_head,
+                    app_name=self.app_name
                 )
 
             @maeser_blueprint.route('/req_session', methods=['POST'])
             def sess_handler():
                 """Route for handling session requests."""
-                return new_session_api.controller(chat_session_manager)
+                return new_session_api.controller(self.chat_session_manager)
             
             @maeser_blueprint.route('/msg/<chat_session>', methods=['POST'])
             def msg_api(chat_session):
                 """API route for handling chat messages."""
-                return chat_api.controller(chat_session_manager, chat_session)
+                return chat_api.controller(self.chat_session_manager, chat_session)
             
             @maeser_blueprint.route('/feedback', methods=['POST'])
             def feedback():
                 """Route for submitting feedback."""
-                return feedback_api.controller(chat_session_manager)
+                return feedback_api.controller(self.chat_session_manager)
 
-        if chat_session_manager.chat_logs_manager:
+        if self.chat_session_manager.chat_logs_manager:
             @maeser_blueprint.route('/train')
-            @login_required if user_manager else lambda x: x
+            @login_required if self.user_manager else lambda x: x
             def train():
                 """Route for training."""
                 return training.controller(
-                    main_logo_dark=main_logo_dark,
-                    main_logo_light=main_logo_light,
-                    favicon=favicon,
-                    app_name=app_name,
+                    main_logo_light=self.main_logo_login,
+                    main_logo_dark=self.main_logo_chat,
+                    favicon=self.favicon,
+                    app_name=self.app_name,
                 )
 
             @maeser_blueprint.route('/submit_train', methods=['POST'])
-            @login_required if user_manager else lambda x: x
+            @login_required if self.user_manager else lambda x: x
             def submit_train():
                 """Route for submitting training data."""
-                return training_post.controller(chat_session_manager)
+                return training_post.controller(self.chat_session_manager)
 
             @maeser_blueprint.route('/feedback_form')
             def feedback_form():
                 """Route for getting the feedback form."""
                 return feedback_form_get.controller(
-                    main_logo_dark=main_logo_dark,
-                    main_logo_light=main_logo_light,
-                    favicon=favicon,
-                    app_name=app_name,
+                    main_logo_light=self.main_logo_login,
+                    main_logo_dark=self.main_logo_chat,
+                    favicon=self.favicon,
+                    app_name=self.app_name,
                 )
 
             @maeser_blueprint.route('/submit_feedback', methods=['POST'])
             def submit_feedback():
                 """Route for submitting feedback."""
-                return feedback_form_post.controller(chat_session_manager)
+                return feedback_form_post.controller(self.chat_session_manager)
             
             @maeser_blueprint.route('/logs', methods=['GET'])
-            @login_required if user_manager else lambda x: x
-            @admin_required(current_user) if user_manager else lambda x: x
+            @login_required if self.user_manager else lambda x: x
+            @admin_required(current_user) if self.user_manager else lambda x: x
             def logs():
                 """Route for viewing chat logs."""
                 return chat_logs_overview.controller(
-                    chat_session_manager,
-                    favicon=favicon,
-                    app_name=app_name
+                    self.chat_session_manager,
+                    favicon=self.favicon,
+                    app_name=self.app_name
                 )
 
             @maeser_blueprint.route('/logs/<branch>/<filename>')
-            @login_required if user_manager else lambda x: x
-            @admin_required(current_user) if user_manager else lambda x: x
+            @login_required if self.user_manager else lambda x: x
+            @admin_required(current_user) if self.user_manager else lambda x: x
             def display_log(branch, filename):
                 """Route for displaying a specific chat log."""
                 return display_chat_log.controller(
-                    chat_session_manager, branch, filename, app_name=app_name
+                    self.chat_session_manager, branch, filename, app_name=self.app_name
                 )
 
             @maeser_blueprint.route('/conversation_history', methods=['POST'])
-            @login_required if user_manager else lambda x: x
+            @login_required if self.user_manager else lambda x: x
             def conversation_history():
                 """Route for getting conversation history."""
-                return conversation_history_api.controller(chat_session_manager)
+                return conversation_history_api.controller(self.chat_session_manager)
 
-        app.register_blueprint(maeser_blueprint)
-        return app
+        self.app.register_blueprint(maeser_blueprint)
+        return self.app

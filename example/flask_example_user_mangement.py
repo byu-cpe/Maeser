@@ -80,19 +80,23 @@ from flask import Flask
 
 base_app = Flask(__name__)
 
-from maeser.blueprints import add_flask_blueprint
+from maeser.blueprints import App_Manager
 
-app: Flask = add_flask_blueprint(
-    app=base_app, 
+app_manager = App_Manager(
+    app=base_app,
+    app_name="Maeser Test App",
     flask_secret_key="secret",
-    chat_session_manager=sessions_manager, 
-    app_name="Test App",
-    chat_head="/static/Karl_G_Maeser.png",
+    chat_session_manager=sessions_manager,
     user_manager=user_manager,
-    # Note that you can change other images too! We stick with the defaults for the logo and favicon.
-    # main_logo_light="/static/main_logo_light.png",
+    chat_head="/static/Karl_G_Maeser.png"
+    # Note that you can change other aspects too! Heres some examples below
+    # main_logo_login="/static/main_logo_light.png",
     # favicon="/static/favicon.png",
+    # login_text="Welcome to Maeser. This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes."
+    # primary_color="#f5f5f5"
 )
+
+app: Flask = app_manager.add_flask_blueprint()
 
 if __name__ == "__main__":
     extra_files = ["maeser/data/templates/chat_interface.html", "maeser/data/templates/login.html", "maeser/data/static/styles.css"]
