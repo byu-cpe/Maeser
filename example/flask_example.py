@@ -57,7 +57,7 @@ app: Flask = add_flask_blueprint(
     app_name="Test App",
     chat_head="/static/Karl_G_Maeser.png",
     # Note that you can change other images too! We stick with the defaults for the logo and favicon.
-    # main_logo_light="/static/main_logo_light.png",
+    # main_logo_login="/static/main_logo_login.png",
     # favicon="/static/favicon.png",
 )
 

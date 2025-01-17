@@ -23,8 +23,8 @@ from maeser.user_manager import UserManager
 def controller(
     user_manager: UserManager,
     app_name: str | None = None,
-    main_logo_light: str | None = None,
-    main_logo_dark: str | None = None,
+    main_logo_login: str | None = None,
+    main_logo_chat: str | None = None,
     chat_head: str | None = None,
     favicon: str | None = None,
 ):
@@ -34,8 +34,8 @@ def controller(
     Args:
         user_manager (UserManager): The user manager instance.
         app_name (str | None, optional): The name of the application. Defaults to None.
-        main_logo_light (str | None, optional): The light version of the main logo. Defaults to None.
-        main_logo_dark (str | None, optional): The dark version of the main logo. Defaults to None.
+        main_logo_login (str | None, optional): The light version of the main logo. Defaults to None.
+        main_logo_chat (str | None, optional): The dark version of the main logo. Defaults to None.
         chat_head (str | None, optional): The chat head image URL. Defaults to None.
         favicon (str | None, optional): The favicon image URL. Defaults to None.
 
@@ -46,8 +46,8 @@ def controller(
         template_name_or_list='user_management.html',
         user_manager=user_manager,
         users=user_manager.list_users(),
-        main_logo_light=main_logo_light,
-        main_logo_dark=main_logo_dark,
+        main_logo_login=main_logo_login,
+        main_logo_chat=main_logo_chat,
         chat_head=chat_head,
         favicon=favicon,
         app_name=app_name if app_name else 'Maeser',

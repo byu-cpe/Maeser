@@ -179,8 +179,8 @@ class App_Manager:
             chat_session_manager (ChatSessionManager): The chat session manager instance.
             user_manager (UserManager | None, optional): The user manager instance. Defaults to None.
             app_name (str | None, optional): The name of the application. Defaults to None.
-            main_logo_light (str | None, optional): URL or path to the light logo. Defaults to None.
-            main_logo_dark (str | None, optional): URL or path to the dark logo. Defaults to None.
+            main_logo_login (str | None, optional): URL or path to the light logo. Defaults to None.
+            main_logo_chat (str | None, optional): URL or path to the dark logo. Defaults to None.
             chat_head (str | None, optional): URL or path to the chat header image. Defaults to None.
             favicon (str | None, optional): URL or path to the favicon. Defaults to None.
 
@@ -230,8 +230,8 @@ class App_Manager:
                     self.user_manager.max_requests, 
                     self.user_manager.rate_limit_interval, 
                     current_user, 
-                    main_logo_light=self.main_logo_login,
-                    main_logo_dark=self.main_logo_chat,
+                    main_logo_login=self.main_logo_login,
+                    main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     chat_head=self.chat_head,
                     app_name=self.app_name
@@ -242,8 +242,8 @@ class App_Manager:
                 """Route for the login interface."""
                 return login_api.login_controller(
                     self.user_manager,
-                    main_logo_light=self.main_logo_login,
-                    main_logo_dark=self.main_logo_chat,
+                    main_logo_login=self.main_logo_login,
+                    main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name
                 )
@@ -262,8 +262,8 @@ class App_Manager:
                 return login_api.github_auth_callback_controller(
                     current_user, 
                     self.user_manager,
-                    main_logo_light=self.main_logo_login,
-                    main_logo_dark=self.main_logo_chat,
+                    main_logo_login=self.main_logo_login,
+                    main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name
                 )
@@ -281,8 +281,8 @@ class App_Manager:
                 """Route for managing users."""
                 return manage_users_view.controller(
                     self.user_manager, 
-                    main_logo_light=self.main_logo_login,
-                    main_logo_dark=self.main_logo_chat, 
+                    main_logo_login=self.main_logo_login,
+                    main_logo_chat=self.main_logo_chat, 
                     favicon=self.favicon, 
                     app_name=self.app_name
                 )
@@ -325,8 +325,8 @@ class App_Manager:
                 """Route for the chat interface."""
                 return chat_interface.controller(
                     self.chat_session_manager,
-                    main_logo_light=self.main_logo_login,
-                    main_logo_dark=self.main_logo_chat,
+                    main_logo_login=self.main_logo_login,
+                    main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     chat_head=self.chat_head,
                     app_name=self.app_name
@@ -353,8 +353,8 @@ class App_Manager:
             def train():
                 """Route for training."""
                 return training.controller(
-                    main_logo_light=self.main_logo_login,
-                    main_logo_dark=self.main_logo_chat,
+                    main_logo_login=self.main_logo_login,
+                    main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name,
                 )
@@ -369,8 +369,8 @@ class App_Manager:
             def feedback_form():
                 """Route for getting the feedback form."""
                 return feedback_form_get.controller(
-                    main_logo_light=self.main_logo_login,
-                    main_logo_dark=self.main_logo_chat,
+                    main_logo_login=self.main_logo_login,
+                    main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name,
                 )

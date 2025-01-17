@@ -31,8 +31,8 @@ def controller(
         rate_limit_interval: int | None = None,
         current_user=None,
         app_name: str | None = None,
-        main_logo_light: str | None = None,
-        main_logo_dark: str | None = None,
+        main_logo_login: str | None = None,
+        main_logo_chat: str | None = None,
         chat_head: str | None = None,
         favicon: str | None = None,        
     ):
@@ -80,8 +80,8 @@ def controller(
         requests_remaining_interval_ms=rate_limit_interval,     # None | int
         rate_limiting=rate_limiting,                            # str
         user_management=user_management,                        # str
-        main_logo_light=main_logo_light,                        # None | str
-        main_logo_dark=main_logo_dark,                          # None | str
+        main_logo_login=main_logo_login,                        # None | str
+        main_logo_chat=main_logo_chat,                          # None | str
         chat_head=chat_head,                                    # None | str
         favicon=favicon,                                        # None | str
         app_name=app_name if app_name else "Maeser",            # str
