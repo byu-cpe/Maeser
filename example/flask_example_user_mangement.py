@@ -55,7 +55,7 @@ sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", 
 
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
-# Replace the '...' with a client id and secret from a GitHub OAuth App that you generate
+# Replace the '...' with a client id and secret from a GitHub OAuth App that you generate from config_example.yaml
 github_authenticator = GithubAuthenticator(
     client_id=GITHUB_CLIENT_ID, 
     client_secret=GITHUB_CLIENT_SECRET, 
