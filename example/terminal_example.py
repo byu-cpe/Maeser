@@ -17,8 +17,14 @@ Maeser. If not, see <https://www.gnu.org/licenses/>.
 
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
+from config_example import (
+    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH
+)
+import os
 
-chat_logs_manager = ChatLogsManager("chat_logs")
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
 maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
@@ -38,11 +44,11 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
 from maeser.graphs.simple_rag import get_simple_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
-sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
+maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt)
+sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
-sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
+byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt)
+sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
 import pyinputplus as pyip
 
