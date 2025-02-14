@@ -94,6 +94,7 @@ app_manager = App_Manager(
     # favicon="/static/favicon.png",
     # login_text="Welcome to Maeser. This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes."
     # primary_color="#f5f5f5"
+    # Please also check the documentation for further customization options!
 )
 
 app: Flask = app_manager.add_flask_blueprint()

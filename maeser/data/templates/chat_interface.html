@@ -12,9 +12,9 @@
         <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script>
-            var rateLimiting = "{{ str(rate_limiting).lower() }}";
-            var conversationHistory = "{{ conversation|tojson|safe }}" || false;
-            var requestsRemainingIntervalMs = "{{ requests_remaining_interval_ms if requests_remaining_interval_ms else 'false' }}";
+            var rateLimiting = {{ str(rate_limiting).lower() }};
+            var conversationHistory = {{ conversation|tojson|safe }} || false;
+            var requestsRemainingIntervalMs = {{ requests_remaining_interval_ms if requests_remaining_interval_ms else 'false' }};
             var chatHead = "{{ chat_head }}";
         </script>
     </head>
