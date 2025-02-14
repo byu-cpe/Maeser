@@ -16,13 +16,38 @@ The example program sets up a Flask web application with two different chat bran
 
 ## Key Components
 
+### `config_example.yaml` Initalization
+
+```python
+from config_example import (
+    LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH, 
+    VEC_STORE_PATH, MAX_REQUESTS_REMAINING, RATE_LIMIT_INTERVAL, 
+    GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_AUTH_CALLBACK_URI, 
+    GITHUB_TIMEOUT, GITHUB_MAX_REQUESTS, CHAT_HISTORY_PATH, LDAP3_NAME, 
+    LDAP_SERVER_URLS, LDAP_BASE_DN, LDAP_ATTRIBUTE_NAME, LDAP_SEARCH_FILTER, 
+    LDAP_OBJECT_CLASS, LDAP_ATTRIBUTES, LDAP_CA_CERT_PATH, LDAP_CONNECTION_TIMEOUT
+)
+```
+
+This import retreieves the values from the `config_example.yaml` to be used later in the program.
+
+### OpenAI API Key
+
+```python
+import os
+
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+```
+
+These lines initialize the OpenAI API key into envioment variables from the `config_example.yaml` file, the OpenAI API key is required for interacting with the API used. Go to [OpenAI](https://www.openai.com/api/)for attaining a key.
+
 ### Chat Management
 
 ```python
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
 
-chat_logs_manager = ChatLogsManager("chat_logs")
+chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
@@ -52,12 +77,13 @@ Here, we define system prompts for two different chat branches. These prompts se
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
+from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
-sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
+maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt)
+sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
-sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
+byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt)
+sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 ```
 
 This section sets up two RAG graphs, one for each chat branch, and registers them with the session manager. RAG enhances the AI's responses by retrieving relevant information from a knowledge base.
@@ -68,17 +94,26 @@ This section sets up two RAG graphs, one for each chat branch, and registers the
 
 ```python
 from flask import Flask
-from maeser.blueprints import add_flask_blueprint
 
 base_app = Flask(__name__)
 
-app: Flask = add_flask_blueprint(
-    base_app,
-    "secret",
-    sessions_manager,
-    app_name="Test App",
-    chat_head="static/Karl_G_Maeser.png",
+from maeser.blueprints import App_Manager
+
+app_manager = App_Manager(
+    app=base_app,
+    app_name="Maeser Test App -- NO USER MANAGER",
+    flask_secret_key="secret",
+    chat_session_manager=sessions_manager,
+    chat_head="/static/Karl_G_Maeser.png"
+    # Note that you can change other aspects too! Heres some examples below
+    # main_logo_login="/static/main_logo_login.png",
+    # favicon="/static/favicon.png",
+    # login_text="Welcome to Maeser. This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes."
+    # primary_color="#f5f5f5"
 )
+
+#initalize the flask blueprint
+app: Flask = app_manager.add_flask_blueprint()
 ```
 
 Finally, we create a Flask application and add the Maeser blueprint to it, configuring various options like the app name and chat head image.
@@ -98,19 +133,41 @@ This should start up a local server. Opening a web browser to the address it tel
 
 ## User Management and Authentication
 
-A common thing to add to an app like this is user authentication, giving your app some control over who is using the app. Here, we will show how to modify `flask_example.py` to use authentication. We will register a `GithubAuthenticator` with a `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application.
+A common thing to add to an app like this is user authentication, giving your app some control over who is using the app. Here, we will show how to modify `flask_example.py` to use authentication. We will register a `GithubAuthenticator` with a `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application. 
+
+You can also choose to use a LDAP3 method for authentication using `LDAPAuthenticator` with a `UserManager` This would require you to have a LDAP3 server or have access to one.
 
 ### Code Changes to `flask_example.py`
 
 First, you need to add the following lines of code to `flask_example.py` (alternatively, these changes have already been made in `flask_example_user_management.py`):
 
 ```python
-from maeser.user_manager import UserManager, GithubAuthenticator
+from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
-github_authenticator = GithubAuthenticator("...", "...", "http://localhost:3000/login/github_callback")
-user_manager = UserManager("chat_logs/users", max_requests=5, rate_limit_interval=60)
-user_manager.register_authenticator("github", github_authenticator)
+# Replace the '...' with a client id and secret from a GitHub OAuth App that you generate in the config_example.yaml
+github_authenticator = GithubAuthenticator(
+    client_id=GITHUB_CLIENT_ID, 
+    client_secret=GITHUB_CLIENT_SECRET, 
+    auth_callback_uri=GITHUB_AUTH_CALLBACK_URI,
+    timeout=GITHUB_TIMEOUT,
+    max_requests=GITHUB_MAX_REQUESTS
+)
+# Replace the '...' in the config_example.yaml with all the proper configurations
+ldap3_authenticator = LDAPAuthenticator(
+    name=LDAP3_NAME,
+    ldap_server_urls=LDAP_SERVER_URLS,
+    ldap_base_dn=LDAP_BASE_DN,
+    attribute_name=LDAP_ATTRIBUTE_NAME,
+    search_filter=LDAP_SEARCH_FILTER,
+    object_class=LDAP_OBJECT_CLASS,
+    attributes=LDAP_ATTRIBUTES,
+    ca_cert_path=LDAP_CA_CERT_PATH,
+    connection_timeout=LDAP_CONNECTION_TIMEOUT
+)
 
+user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS_REMAINING, rate_limit_interval=RATE_LIMIT_INTERVAL)
+user_manager.register_authenticator(name="github", authenticator=github_authenticator)
+user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
 ```
 
 Add these before the line that starts with:
@@ -119,20 +176,29 @@ Add these before the line that starts with:
 from flask import Flask
 ```
 
-The second change to make is to add one parameter to the `add_flask_blueprint()` call in the code. The new call is like this:
+The second change to make is to add one parameter to the `App_Manager` call in the code. The new call is like this:
 
 ```python
-app: Flask = add_flask_blueprint(
-    base_app,
-    "secret",
-    sessions_manager,
-    user_manager,
-    app_name="Test App",
-    chat_head="/static/Karl_G_Maeser.png",
-    # Note that you can change other images too! We stick with the defaults for the logo and favicon.
+from maeser.blueprints import App_Manager
+
+# Create the App_Manager class
+app_manager = App_Manager(
+    app=base_app,
+    app_name="Maeser Test App",
+    flask_secret_key="secret",
+    chat_session_manager=sessions_manager,
+    user_manager=user_manager,
+    chat_head="/static/Karl_G_Maeser.png"
+    # Note that you can change other aspects too! Heres some examples below
     # main_logo_login="/static/main_logo_login.png",
     # favicon="/static/favicon.png",
+    # login_text="Welcome to Maeser. This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes."
+    # primary_color="#f5f5f5"
+    # Please also check the documentation for further customization options!
 )
+
+#initalize the flask blueprint
+app: Flask = app_manager.add_flask_blueprint()
 ```
 
 As you can see, a `user_manager` parameter has been added to the call.
@@ -190,3 +256,7 @@ Moving on, you could customize various aspects of the application, such as:
 ## Conclusion
 
 This example demonstrates how to use the `maeser` package to create a multi-branch chatbot Web application with user authentication and rate limiting. You can build upon this example to create more complex applications tailored to your specific needs.
+
+### Registering your Ldap3 Authenticator
+
+- This is a work in progress and will be added soon!

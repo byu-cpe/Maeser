@@ -85,7 +85,7 @@ class App_Manager:
         help_train_button: str = "#a8a8a8",
     ):
         """
-        Initialize the HTML Manager
+        Initialize the App Manager
 
         Args:
             app (Flask): The Flask application instance.
@@ -143,6 +143,8 @@ class App_Manager:
         self.help_train_button = help_train_button
 
         self.current_dir = os.path.dirname(os.path.abspath(__file__ + '/.'))
+
+        # The following functions with no code are work in progress and will be added soon
 
     def template_styles_css (self):
         """

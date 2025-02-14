@@ -18,16 +18,23 @@
 # from the environment for the first two.
 
 
-test:
-	echo test
+.PHONY: setup test
 
 PIP := pip
 POETRY := poetry
 
-
-
 setup:
 	$(PIP) install -e .
 	$(PIP) install poetry
+	@echo "Updating poetry lock file if necessary..."
+	$(POETRY) lock --no-update
 	$(POETRY) install
 	pytest tests
+
+test:
+	@echo "Running tests..."
+	pytest tests
+
+testVerbose:
+	@echo "Running tests in verbose mode..."
+	pytest -v tests

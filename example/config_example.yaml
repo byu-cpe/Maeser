@@ -22,9 +22,28 @@ api_keys:
 
 ### Other application configurations ###
 
-application:
+### Github Auth ###
+
+github:
+  name: 'github'
   github_client_id: '...'
   github_callback_uri: '...'
+  timeout: 10
+  max_requests: 10
+
+### LDAP3 Auth ###
+
+ldap3:
+  name: '...'
+  ldap_server_urls: ['...', '...']
+  ldap_base_dn: '...'
+  attribute_name: '...'
+  search_filter: '({attribute_name}={...})'
+  object_class: '...'
+  attributes: ['{attribute_name}', '...', '...']
+  ca_cert_path: '...'
+  connection_timeout: 10
+
 rate_limit:
   max_requests_remaining: 5            # The maximum number of requests that a user can have at any given time
   rate_limit_interval_seconds: 180      # The time interval in seconds that the rate limit is enforced
@@ -49,7 +68,6 @@ embed:
 
 llm:
   llm_model_name: gpt-4o
-  # llm_model_name: gpt-3.5-turbo
   llm_provider: openai
   token_limit: 400
 

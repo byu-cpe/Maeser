@@ -14,15 +14,16 @@ PURPOSE. See the GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License along with
 Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
-
-from maeser.chat.chat_logs import ChatLogsManager
-from maeser.chat.chat_session_manager import ChatSessionManager
 from config_example import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH
 )
+
 import os
 
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+from maeser.chat.chat_logs import ChatLogsManager
+from maeser.chat.chat_session_manager import ChatSessionManager
 
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
@@ -61,7 +62,6 @@ app_manager = App_Manager(
     app_name="Maeser Test App -- NO USER MANAGER",
     flask_secret_key="secret",
     chat_session_manager=sessions_manager,
-    user_manager=None,
     chat_head="/static/Karl_G_Maeser.png"
     # Note that you can change other aspects too! Heres some examples below
     # main_logo_login="/static/main_logo_login.png",

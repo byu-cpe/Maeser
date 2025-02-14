@@ -15,17 +15,22 @@ You should have received a copy of the GNU Lesser General Public License along w
 Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from maeser.chat.chat_logs import ChatLogsManager
-from maeser.chat.chat_session_manager import ChatSessionManager
 from config_example import (
-    LOG_SOURCE_PATH, OPENAI_API_KEY, 
-    USERS_DB_PATH, VEC_STORE_PATH, MAX_REQUESTS_REMAINING, 
-    RATE_LIMIT_INTERVAL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET,
-    GITHUB_AUTH_CALLBACK_URI, CHAT_HISTORY_PATH
+    LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH, 
+    VEC_STORE_PATH, MAX_REQUESTS_REMAINING, RATE_LIMIT_INTERVAL, 
+    GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_AUTH_CALLBACK_URI, 
+    GITHUB_TIMEOUT, GITHUB_MAX_REQUESTS, CHAT_HISTORY_PATH, LDAP3_NAME, 
+    LDAP_SERVER_URLS, LDAP_BASE_DN, LDAP_ATTRIBUTE_NAME, LDAP_SEARCH_FILTER, 
+    LDAP_OBJECT_CLASS, LDAP_ATTRIBUTES, LDAP_CA_CERT_PATH, LDAP_CONNECTION_TIMEOUT
 )
+
+
 import os
 
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+from maeser.chat.chat_logs import ChatLogsManager
+from maeser.chat.chat_session_manager import ChatSessionManager
 
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
@@ -59,22 +64,26 @@ from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthentica
 github_authenticator = GithubAuthenticator(
     client_id=GITHUB_CLIENT_ID, 
     client_secret=GITHUB_CLIENT_SECRET, 
-    auth_callback_uri=GITHUB_AUTH_CALLBACK_URI
+    auth_callback_uri=GITHUB_AUTH_CALLBACK_URI,
+    timeout=GITHUB_TIMEOUT,
+    max_requests=GITHUB_MAX_REQUESTS
 )
-caedm_authenticator = LDAPAuthenticator(
-    name='CAEDM',
-    ldap_server_urls=['ctldap.et.byu.edu', 'cbldap.et.byu.edu'],
-    ldap_base_dn='ou=accounts,ou=caedm,dc=et,dc=byu,dc=edu',
-    attribute_name='cn',
-    search_filter='(cn={ident})',
-    object_class='person',
-    attributes=['cn', 'displayName', 'CAEDMUserType'],
-    ca_cert_path='/etc/ssl/certs',
-    connection_timeout=5
+# Replace the '...' in the config_example.yaml with all the proper configurations
+ldap3_authenticator = LDAPAuthenticator(
+    name=LDAP3_NAME,
+    ldap_server_urls=LDAP_SERVER_URLS,
+    ldap_base_dn=LDAP_BASE_DN,
+    attribute_name=LDAP_ATTRIBUTE_NAME,
+    search_filter=LDAP_SEARCH_FILTER,
+    object_class=LDAP_OBJECT_CLASS,
+    attributes=LDAP_ATTRIBUTES,
+    ca_cert_path=LDAP_CA_CERT_PATH,
+    connection_timeout=LDAP_CONNECTION_TIMEOUT
 )
+
 user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS_REMAINING, rate_limit_interval=RATE_LIMIT_INTERVAL)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
-user_manager.register_authenticator(name="CAEDM", authenticator=caedm_authenticator)
+user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
 
 from flask import Flask
 
@@ -82,6 +91,7 @@ base_app = Flask(__name__)
 
 from maeser.blueprints import App_Manager
 
+# Create the App_Manager class
 app_manager = App_Manager(
     app=base_app,
     app_name="Maeser Test App",
