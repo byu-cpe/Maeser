@@ -55,7 +55,7 @@ sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", 
 
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
-# Replace the '...' with a client id and secret from a GitHub OAuth App that you generate from config_example.yaml
+# Replace the '...' with a client id and secret from a GitHub OAuth App that you generate in the config_example.yaml
 github_authenticator = GithubAuthenticator(
     client_id=GITHUB_CLIENT_ID, 
     client_secret=GITHUB_CLIENT_SECRET, 
@@ -100,4 +100,4 @@ app: Flask = app_manager.add_flask_blueprint()
 
 if __name__ == "__main__":
     extra_files = ["maeser/data/templates/chat_interface.html", "maeser/data/templates/login.html", "maeser/data/static/styles.css"]
-    app.run(port=3002, debug=True, extra_files=extra_files)
+    app.run(port=3002, debug=True, extra_files=extra_files, threaded=False)

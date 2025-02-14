@@ -173,17 +173,6 @@ class App_Manager:
         """
         Add the Maeser blueprint to the Flask application.
 
-        Args:
-            app (Flask): The Flask application instance.
-            flask_secret_key (str): The secret key for the Flask application.
-            chat_session_manager (ChatSessionManager): The chat session manager instance.
-            user_manager (UserManager | None, optional): The user manager instance. Defaults to None.
-            app_name (str | None, optional): The name of the application. Defaults to None.
-            main_logo_login (str | None, optional): URL or path to the light logo. Defaults to None.
-            main_logo_chat (str | None, optional): URL or path to the dark logo. Defaults to None.
-            chat_head (str | None, optional): URL or path to the chat header image. Defaults to None.
-            favicon (str | None, optional): URL or path to the favicon. Defaults to None.
-
         Returns:
             Flask: The Flask application instance with the blueprint registered.
         """
