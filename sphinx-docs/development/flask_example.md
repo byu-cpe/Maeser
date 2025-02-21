@@ -16,7 +16,7 @@ The example program sets up a Flask web application with two different chat bran
 
 ## Key Components
 
-### `config_example.yaml` Initalization
+### `config_example.yaml` Initialization
 
 ```python
 from config_example import (
@@ -39,7 +39,7 @@ import os
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 ```
 
-These lines initialize the OpenAI API key into envioment variables from the `config_example.yaml` file, the OpenAI API key is required for interacting with the API used. Go to [OpenAI](https://www.openai.com/api/)for attaining a key.
+These lines initialize the OpenAI API key into envioment variables from the `config_example.yaml` file, the OpenAI API key is required for interacting with the API used. Go to [OpenAI](https://www.openai.com/api/) to obtain a key.
 
 ### Chat Management
 
@@ -116,6 +116,8 @@ app_manager = App_Manager(
 app: Flask = app_manager.add_flask_blueprint()
 ```
 
+For more detail on configuration options, see the documentation for `App_Manager()` in [maeser.blueprints](../autodoc/maeser/maeser.blueprints.rst).
+
 Finally, we create a Flask application and add the Maeser blueprint to it, configuring various options like the app name and chat head image.
 
 > **NOTE:** For a custom application, you may choose to not use the `add_flask_blueprint` function but rather create your own Flask app.
@@ -135,7 +137,7 @@ This should start up a local server. Opening a web browser to the address it tel
 
 A common thing to add to an app like this is user authentication, giving your app some control over who is using the app. Here, we will show how to modify `flask_example.py` to use authentication. We will register a `GithubAuthenticator` with a `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application. 
 
-You can also choose to use a LDAP3 method for authentication using `LDAPAuthenticator` with a `UserManager` This would require you to have a LDAP3 server or have access to one.
+You can also choose to use an LDAP3 method for authentication using `LDAPAuthenticator` with a `UserManager` This would require you to have an LDAP3 server or have access to one.
 
 ### Code Changes to `flask_example.py`
 
