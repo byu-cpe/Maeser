@@ -25,11 +25,9 @@ api_keys:
 ### Github Auth ###
 
 github:
-  name: 'github'
   github_client_id: '...'
   github_callback_uri: '...'
   timeout: 10
-  max_requests: 10
 
 ### LDAP3 Auth ###
 

@@ -17,9 +17,9 @@ Maeser. If not, see <https://www.gnu.org/licenses/>.
 
 from config_example import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH, 
-    VEC_STORE_PATH, MAX_REQUESTS_REMAINING, RATE_LIMIT_INTERVAL, 
+    VEC_STORE_PATH, MAX_REQUESTS, RATE_LIMIT_INTERVAL, 
     GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_AUTH_CALLBACK_URI, 
-    GITHUB_TIMEOUT, GITHUB_MAX_REQUESTS, CHAT_HISTORY_PATH, LDAP3_NAME, 
+    GITHUB_TIMEOUT, CHAT_HISTORY_PATH, LDAP3_NAME, 
     LDAP_SERVER_URLS, LDAP_BASE_DN, LDAP_ATTRIBUTE_NAME, LDAP_SEARCH_FILTER, 
     LDAP_OBJECT_CLASS, LDAP_ATTRIBUTES, LDAP_CA_CERT_PATH, LDAP_CONNECTION_TIMEOUT
 )
@@ -66,7 +66,7 @@ github_authenticator = GithubAuthenticator(
     client_secret=GITHUB_CLIENT_SECRET, 
     auth_callback_uri=GITHUB_AUTH_CALLBACK_URI,
     timeout=GITHUB_TIMEOUT,
-    max_requests=GITHUB_MAX_REQUESTS
+    max_requests=MAX_REQUESTS
 )
 # Replace the '...' in the config_example.yaml with all the proper configurations
 ldap3_authenticator = LDAPAuthenticator(
