@@ -151,7 +151,7 @@ github_authenticator = GithubAuthenticator(
     client_id=GITHUB_CLIENT_ID, 
     client_secret=GITHUB_CLIENT_SECRET, 
     auth_callback_uri=GITHUB_AUTH_CALLBACK_URI,
-    timeout=GITHUB_TIMEOUT,
+    timeout=MAX_REQUESTS,
     max_requests=GITHUB_MAX_REQUESTS
 )
 # Replace the '...' in the config_example.yaml with all the proper configurations
@@ -167,7 +167,7 @@ ldap3_authenticator = LDAPAuthenticator(
     connection_timeout=LDAP_CONNECTION_TIMEOUT
 )
 
-user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS_REMAINING, rate_limit_interval=RATE_LIMIT_INTERVAL)
+user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
 user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
 ```
@@ -252,10 +252,10 @@ Before you can run the app you need to register it with GitHub at the GitHub web
         client_secret=GITHUB_CLIENT_SECRET, 
         auth_callback_uri=GITHUB_AUTH_CALLBACK_URI,
         timeout=GITHUB_TIMEOUT,
-        max_requests=GITHUB_MAX_REQUESTS
+        max_requests=MAX_REQUESTS
     )
     
-   user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS_REMAINING, rate_limit_interval=RATE_LIMIT_INTERVAL)
+   user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
 
         user_manager.register_authenticator(name="github", authenticator=github_authenticator)
    ```
@@ -301,7 +301,7 @@ Here, we set up user management with GitHub authentication and implement rate li
         connection_timeout=LDAP_CONNECTION_TIMEOUT
     )
 
-   user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS_REMAINING, rate_limit_interval=RATE_LIMIT_INTERVAL)
+   user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
    
    user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
    ```
