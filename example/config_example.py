@@ -58,7 +58,7 @@ LDAP_CA_CERT_PATH = config.get('ldap3', {}).get('ca_cert_path')
 LDAP_CONNECTION_TIMEOUT = config.get('ldap3', {}).get('connection_timeout', 5)
 
 # Rate Limiting
-MAX_REQUESTS = config.get('rate_limit', {}).get('max_requests_remaining', 5)
+MAX_REQUESTS = config.get('rate_limit', {}).get('max_requests', 5)
 RATE_LIMIT_INTERVAL = config.get('rate_limit', {}).get('rate_limit_interval_seconds', 180)
 
 # Logging

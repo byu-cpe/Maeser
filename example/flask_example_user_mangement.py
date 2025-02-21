@@ -81,7 +81,7 @@ ldap3_authenticator = LDAPAuthenticator(
     connection_timeout=LDAP_CONNECTION_TIMEOUT
 )
 
-user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS_REMAINING, rate_limit_interval=RATE_LIMIT_INTERVAL)
+user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
 user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
 
