@@ -74,5 +74,4 @@ app_manager = App_Manager(
 app: Flask = app_manager.add_flask_blueprint()
 
 if __name__ == "__main__":
-    extra_files = ["maeser/data/templates/chat_interface.html", "maeser/data/templates/login.html", "maeser/data/static/styles.css"]
-    app.run(port=3002, debug=True, extra_files=extra_files)
+    app.run(port=3002)
