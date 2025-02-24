@@ -28,7 +28,6 @@ from typing import Any, Tuple, Union
 from urllib.parse import urlencode
 import os
 import ssl
-from typing import Union
 from ldap3 import Server, Connection, ALL, SUBTREE, Tls
 from ldap3.core.exceptions import LDAPException, LDAPAttributeError, LDAPBindError, LDAPSocketReceiveError
 
