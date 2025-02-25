@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "maeser"
-version = "0.1.1"
+version = "0.1.3"
 description = "A package for building RAG chatbot applications for educational contexts."
 authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <blainefreestone@gmail.com>"]
 include = [
