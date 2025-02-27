@@ -19,7 +19,7 @@ IN_ENV := source .venv/bin/activate;
 env:
 	@echo "Creating virtual environment..."
 	python3 -m venv .venv
-	$(IN_ENV) pip install packaging
+	$(IN_ENV) pip install setuptools packaging
 	@echo "Virtual environment setup complete."
 
 check_version_increase:
