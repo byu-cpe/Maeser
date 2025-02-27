@@ -1,2 +1,0 @@
-# FAISS for vector stores (USES GPU)
-faiss-gpu
