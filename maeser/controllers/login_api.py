@@ -43,7 +43,7 @@ def is_safe_url(target):
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
-def login_controller(auth_manager, app_name: str | None = None, main_logo_light: str | None = None, main_logo_dark: str | None = None, favicon: str | None = None):
+def login_controller(auth_manager, app_name: str | None = None, main_logo_login: str | None = None, main_logo_chat: str | None = None, favicon: str | None = None):
     """Handles user login.
 
     Args:
@@ -63,8 +63,8 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
             return render_template(
                 'login.html',
                 message='Invalid Authentication Method in Request',
-                main_logo_light=main_logo_light,
-                main_logo_dark=main_logo_dark,
+                main_logo_login=main_logo_login,
+                main_logo_chat=main_logo_chat,
                 favicon=favicon,
                 app_name=app_name if app_name else "Maeser",
                 authenticators=auth_manager.authenticators,
@@ -74,8 +74,8 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
             return render_template(
                 'login.html', 
                 message='Authentication Failed',
-                main_logo_light=main_logo_light,
-                main_logo_dark=main_logo_dark,
+                main_logo_login=main_logo_login,
+                main_logo_chat=main_logo_chat,
                 favicon=favicon,
                 app_name=app_name if app_name else "Maeser",
                 authenticators=auth_manager.authenticators,
@@ -84,8 +84,8 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
             return render_template(
                 'login.html', 
                 message=f'User {user.full_id_name} is Banned',
-                main_logo_light=main_logo_light,
-                main_logo_dark=main_logo_dark,
+                main_logo_login=main_logo_login,
+                main_logo_chat=main_logo_chat,
                 favicon=favicon,
                 app_name=app_name if app_name else "Maeser",
                 authenticators=auth_manager.authenticators,
@@ -106,8 +106,8 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_light:
         'login.html', 
         message=message, 
         next=next_url,
-        main_logo_light=main_logo_light,
-        main_logo_dark=main_logo_dark,
+        main_logo_login=main_logo_login,
+        main_logo_chat=main_logo_chat,
         favicon=favicon,
         app_name=app_name if app_name else "Maeser",
         authenticators=auth_manager.authenticators,
@@ -133,7 +133,7 @@ def github_authorize_controller(current_user, github_authenticator):
     # Redirect the user to the OAuth2 provider authorization URL
     return redirect(provider_url)
 
-def github_auth_callback_controller(current_user, auth_manager, app_name: str | None = None, main_logo_light: str | None = None, main_logo_dark: str | None = None, favicon: str | None = None, login_redirect: str = 'maeser.login'):
+def github_auth_callback_controller(current_user, auth_manager, app_name: str | None = None, main_logo_login: str | None = None, main_logo_chat: str | None = None, favicon: str | None = None, login_redirect: str = 'maeser.login'):
     if not current_user.is_anonymous:
         return redirect('/')
 

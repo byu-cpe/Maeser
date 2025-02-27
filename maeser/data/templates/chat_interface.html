@@ -40,18 +40,19 @@
             <header>
                 <div class="header-wrapper">
                     <div id="logo-tab">
-                        <button id="tab"><i class="fa fa-bars"></i></button>
-                        {% if main_logo_dark %}
-                            <img src="{{ main_logo_dark }}">
+                        <button id="tab" class="toggle-button"><i class="fa fa-bars"></i></button>
+                        {% if main_logo_chat %}
+                            <img src="{{ main_logo_chat }}" class="logo">
                         {% else %}
-                            <img src="{{ url_for('maeser.static', filename='maeser-dark.png') }}">
+                            <img src="{{ url_for('maeser.static', filename='maeser-dark-header.png') }}" class="logo">
                         {% endif %}
                     </div>
                     {% if rate_limiting %}
                         <div id="rate-limit" style="color: white;">
-                            <p>
-                                <span id="requests-remaining">{{requests_remaining}}</span> / 
-                                <span id="max-requests-remaining">{{max_requests_remaining}}</span>
+                            <p class="rate-limit-text">
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                <span id="requests-remaining" class="requests-remaining">{{requests_remaining}}</span> / 
+                                <span id="max-requests-remaining" class="max-requests-remaining">{{max_requests_remaining}}</span0>
                             </p>
                         </div>
                     {% endif %}
@@ -101,7 +102,7 @@
                                 {% endif %}
                                 <div class="message-controls">
                                     <div class="message-bubble">
-                                        <p>Hello, how can I help you today?</p>
+                                        <p>Hello, how can I help you today?</p> 
                                     </div>
                                     <p class="hint">
                                         Please note that you are interacting with an AI-powered chatbot, not a human.

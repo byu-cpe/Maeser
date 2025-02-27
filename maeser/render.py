@@ -1,9 +1,9 @@
 """
 Markdown response conversion module. Intended for use with LLM output.
 
-This module provides a utility function to convert markdown responses to HTML
-with additional processing, such as adding target="_blank" to anchor tags and
-adjusting paths for images.
+This module provides a utility function to easily customize HTML layouts and convert markdown 
+responses to HTML with additional processing, such as adding target="_blank" to anchor tags 
+and adjusting paths for images.
 
 © 2024 Carson Bush, Blaine Freestone
 

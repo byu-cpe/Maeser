@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "maeser"
-version = "0.1.1"
+version = "0.1.2"
 description = "A package for building RAG chatbot applications for educational contexts."
 authors = ["Carson Bush <hyperdriveguy@byui.edu>", "Blaine Freestone <blainefreestone@gmail.com>"]
 include = [
@@ -31,6 +31,9 @@ faiss-cpu = "^1.8.0.post1"
 # Web backend
 flask = "^3.0.3"
 flask-login = "^0.6.3"
+
+#Ldap3 for alternative authentication purposes
+ldap3 = "^2.9.1" 
 
 # Turning markdown into HTML for display
 markdown = "^3.6"

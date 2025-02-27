@@ -16,6 +16,14 @@ It is highly recommended that you use a python virtual environment for your syst
 
 ## Installing Dependencies
 
+A. MakeFile Method (Recommended)
+
+`make setup`
+
+This MakeFile will do all the steps in the Manual Method in a single command plus runnning tests
+
+B. Manual Method
+
 1. Change to the cloned directory:
 
 `cd Maeser`
@@ -38,7 +46,7 @@ This will install Maeser in a way that allows you to make changes to the source 
 
 After installing the dependencies, you can run the test suite to ensure everything is working correctly:
 
-`pytest tests`
+`pytest tests` or `make test` or `make testVerbose`
 
 ## Building Documentation
 
@@ -52,5 +60,5 @@ This will generate the HTML documentation in the `sphinx-docs/_build/html` direc
 
 ## Additional Steps
 
-- Set up any required environment variables or configuration files.
+- Set up any required environment variables or configuration files (Using the `config_example.yaml` as a starting point is recommended)
 - Refer to the project's README or contributing guidelines for more information on development workflows, coding standards, and other relevant details.

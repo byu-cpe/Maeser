@@ -9,10 +9,14 @@ langgraph
 # FAISS for vector stores (choose either faiss-cpu or faiss-gpu depending on your setup)
 faiss-cpu
 # faiss-gpu
+faiss-gpu
 
 # Web backend
 flask
 flask-login
+
+#Caedm Authenticator 
+ldap3
 
 # Turning markdown into HTML for display
 markdown
