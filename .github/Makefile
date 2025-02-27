@@ -41,7 +41,7 @@ check_version_increase:
 	$(IN_ENV) pip uninstall -y maeser
 
 	@echo "Building and installing local version of Maeser..."
-	$(IN_ENV) pip install dist/maeser-*.tar.gz
+	$(IN_ENV) pip install ../dist/maeser-*.tar.gz
 
 	@echo "Fetching installed local Maeser version..."
 	$(IN_ENV) python print_version.py > current_version.txt
