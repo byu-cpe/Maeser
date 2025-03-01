@@ -579,8 +579,10 @@ class UserManager:
         try:
             return sqlite3.connect(self.db_file_path)
         except sqlite3.OperationalError as e:
-            print(f'Unable to open sqlite db file {self.db_file_path}, using tempory storage: {e}')
-            return sqlite3.connect(':memory:')
+            print(
+                f"\033[31mUnable to open sqlite db file {self.db_file_path}, using tempory storage: {e}\033[0m"
+            )
+            return sqlite3.connect(":memory:")
 
     def _create_tables(self):
         with self.db_connection as db:
