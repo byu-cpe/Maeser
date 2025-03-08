@@ -21,6 +21,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import StateGraph, START, END
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
+from langchain_core.messages import SystemMessage
 from langgraph.graph.graph import CompiledGraph
 from typing_extensions import TypedDict
 from typing import List, Annotated, Dict, Tuple
@@ -79,3 +80,31 @@ def get_pipeline_rag (
     ])
     llm = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
     chain = system_prompt | llm | StrOutputParser()
+
+    #format topics for later topic extraction
+    def format_topic_keys(topics):
+        keys = list(topics.keys())  # Get dictionary keys as a list
+        if not keys:
+            return ""  # Return empty string if dictionary is empty
+        elif len(keys) == 1:
+            return f"'{keys[0]}'"  # If only one key, return it without "or"
+        else:
+            return ", ".join(f"'{key}'" for key in keys[:-1]) + f", or '{keys[-1]}'"
+
+    # Node: initial topic extraction, establish the initial topic for the chat
+    def initial_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
+        if not state.get("current_topic"):
+            formated_topics = format_topic_keys(vectorstore_config)
+            establish_topic = ChatPromptTemplate.from_messages([
+                ('system', f"You are an assistant who extracts a concise topic label from a user's explanation. The label should be one of these topics {formated_topics}."),
+                ('human', "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
+            ])
+            current_topic = state.get("current_topic") or "none"
+            question = state["messages"][-1]
+            formatted_prompt = establish_topic.format(question=question)
+            llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
+            result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
+            topic = result.content.strip().lower()
+            return {"current_topic": topic}
+        return {}
+    
