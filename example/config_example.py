@@ -69,7 +69,7 @@ VEC_STORE_PATH = config.get('vectorstore', {}).get('vec_store_path')
 VEC_STORE_TYPE = config.get('vectorstore', {}).get('vec_store_type', 'faiss')
 
 # LLM Configuration
-LLM_MODEL_NAME = config.get('llm', {}).get('llm_model_name', 'gpt-4o')
+LLM_MODEL_NAME = config.get('llm', {}).get('llm_model_name', 'gpt-4o-mini')
 LLM_PROVIDER = config.get('llm', {}).get('llm_provider', 'openai')
 LLM_TOKEN_LIMIT = config.get('llm', {}).get('token_limit', 400)
 
