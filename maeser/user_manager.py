@@ -884,7 +884,7 @@ class UserManager:
         without modifying their admin or banned status.
 
         Args:
-            auth_method (str): The authentication method ('caedm' or 'github').
+            auth_method (str): The authentication method.
             ident (str): The user's identifier.
 
         Returns:
