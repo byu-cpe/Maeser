@@ -44,7 +44,16 @@ def controller(user_manager: UserManager) -> list[dict[str, Any]] | dict[str, st
     auth_method = request.json.get('user_auth', '')
     user_ident = request.json.get('user_id', '')
 
-    if command == 'list-users':
+    if command == "get-user":
+        if not (auth_method):
+            return abort(400, "Missing user_auth")
+        if not (user_ident):
+            return abort(400, f"Missing user_id")
+
+        user = user_manager.get_user(auth_method, user_ident)
+        return user.json
+
+    if command == "list-users":
         # Get arguments for the filter by auth, admin, and banned status
         auth_filter = request.json.get('auth-filter', 'all')
         admin_filter = request.json.get('admin-filter', 'all')
