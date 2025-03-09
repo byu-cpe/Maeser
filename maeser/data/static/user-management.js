@@ -77,6 +77,17 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching users:', error));
     }
 
+    function getUser(authMethod, userId) {
+        return fetch(manageUserAPI, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: "get-user", user_auth: authMethod, user_id: userId})
+        })
+        .then(response => {return response.json()})
+        // .then(user => {return user})
+        .catch(error => console.error('Error getting user data:', error));
+    }
+
     function createUserElement(user) {
         console.log(user);
         const userElement = document.createElement('div');
@@ -114,18 +125,23 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
+    function refreshUserModal(modal, user) {
+        modal.remove();
+        showUserModal(user);
+    }
+
         document.body.appendChild(modal);
 
-        modal.querySelector('#toggle-admin').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-admin', !user.admin); modal.remove();});
-        modal.querySelector('#toggle-ban').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-ban', user.is_active); modal.remove();});
-        modal.querySelector('#decrease-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'remove'); modal.remove();});
-        modal.querySelector('#increase-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'add'); modal.remove();});
+        modal.querySelector('#toggle-admin').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-admin', !user.admin).then(user => refreshUserModal(modal, user));});
+        modal.querySelector('#toggle-ban').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-ban', user.is_active).then(user => refreshUserModal(modal, user));});
+        modal.querySelector('#decrease-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'remove').then(user => refreshUserModal(modal, user));});
+        modal.querySelector('#increase-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'add').then(user => refreshUserModal(modal, user));});
         modal.querySelector('#remove-user').addEventListener('click', () => {removeUser(user.auth_method, user.ident); modal.remove();});
         modal.querySelector('#close-modal').addEventListener('click', () => modal.remove());
     }
 
     function updateUserStatus(authMethod, userId, action, new_stat) {
-        fetch(manageUserAPI, {
+        return fetch(manageUserAPI, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ type: action, user_auth: authMethod, user_id: userId, new_status: new_stat })
@@ -134,12 +150,13 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(result => {
             console.log(`User status updated: ${result.response}`);
             fetchAndDisplayUsers();
+            return getUser(authMethod, userId);
         })
         .catch(error => console.error('Error updating user status:', error));
     }
 
     function updateUserRequests(authMethod, userId, action) {
-        fetch(manageUserAPI, {
+        return fetch(manageUserAPI, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ type: 'update-requests', user_auth: authMethod, user_id: userId, action: action })
@@ -148,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(result => {
             console.log(`User requests updated: ${result.response}`);
             fetchAndDisplayUsers();
+            return getUser(authMethod, userId);
         })
         .catch(error => console.error('Error updating user requests:', error));
     }
