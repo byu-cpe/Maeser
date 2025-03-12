@@ -99,7 +99,6 @@ def get_pipeline_rag (
                 ('system', f"You are an assistant who extracts a concise topic label from a user's explanation. The label should be one of these topics {formated_topics}."),
                 ('human', "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
             ])
-            current_topic = state.get("current_topic") or "none"
             question = state["messages"][-1]
             formatted_prompt = establish_topic.format(question=question)
             llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
@@ -108,3 +107,69 @@ def get_pipeline_rag (
             return {"current_topic": topic}
         return {}
     
+    # Node: routing to update or to maintain the current topic
+    def routing_node(state: StateGraph, vectorstoreconfig: Dict) -> dict:
+        formated_topics = format_topic_keys(vectorstore_config)
+        current_topic = state.get("current_topic") or "none"
+        prompt = ChatPromptTemplate.from_messages([
+
+            ("system", f"You are an assistant monitoring conversation context. The current topic is '{current_topic}'. If the user's latest message indicates a switch from the current topic to another(use this list of topics to determine if the topic is changed, {formated_topics}), output the new topic; otherwise, output the current topic."),
+            ("human", "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
+        ])
+        question = state["messages"][-1]
+        formatted = prompt.format(question=question, current_topic=current_topic)
+        llm_route = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
+        result = llm_route.invoke([SystemMessage(content=formatted)])
+        new_topic = result.content.strip().lower()
+        return {"current_topic": new_topic}
+    
+    # Create a factory for retrieval nodes to return relevant information
+    def make_retrieval_node(topic: str):
+        def retrieval_node(state: GraphState) -> dict:
+            question = state["messages"][-1]
+            documents: List[Document] = retrievers[topic].invoke(question)
+            return {"retrieved_context": documents}
+        return retrieval_node
+    
+    # Map topics with retrieval node names
+    vectorstore_nodes = {}
+    for topic in vectorstore_config.keys():
+        node_name = f"retrieve_{topic}"
+        vectorstore_nodes[topic] = node_name
+
+    # Node: answer generation.
+    def generate_node(state: GraphState) -> dict:
+        messages = state["messages"]
+        documents = state.get("retrieved_context", [])
+        generation = chain.invoke({
+            "context": documents,
+            "input": messages[-1],
+            "messages": messages[:-1],
+        })
+        # Update conversation history with the generated answer.
+        return {"messages": messages + [generation]}
+    
+    # Build the state graph.
+    graph = StateGraph(GraphState)
+    graph.add_node("initial_topic", initial_topic_node)
+    graph.add_node("routing", routing_node)
+
+    # Add retrieval nodes for each topic.
+    for topic in vectorstore_config.keys():
+        node_name = f"retrieve_{topic}"
+        graph.add_node(node_name, make_retrieval_node(topic))
+
+    graph.add_node("generate", generate_node)
+
+    # Define the flow: START → initial_topic → routing → conditional retrieval → generate → END.
+    graph.add_edge(START, "initial_topic")
+    graph.add_edge("initial_topic", "routing")
+    graph.add_conditional_edges("routing", lambda state: state["current_topic"], vectorstore_nodes)
+    for node in vectorstore_nodes.values():
+        graph.add_edge(node, "generate")
+    graph.add_edge("generate", END)
+
+    # Set up memory checkpoint using SQLite.
+    memory = SqliteSaver.from_conn_string(f"{memory_filepath}")
+    compiled_graph: CompiledGraph = graph.compile(checkpointer=memory)
+    return compiled_graph
