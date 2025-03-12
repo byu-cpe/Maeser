@@ -76,7 +76,7 @@ def get_pipeline_rag (
     system_prompt = ChatPromptTemplate.from_messages([
         ('system', system_prompt_text),
         MessagesPlaceholder('messages'),
-        ('human', {input})
+        ('human', "{input}")
     ])
     llm = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
     chain = system_prompt | llm | StrOutputParser()
@@ -94,10 +94,11 @@ def get_pipeline_rag (
     # Node: initial topic extraction, establish the initial topic for the chat
     def initial_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
         if not state.get("current_topic"):
-            formated_topics = format_topic_keys(vectorstore_config)
+            formatted_topics = format_topic_keys(vectorstore_config)
             establish_topic = ChatPromptTemplate.from_messages([
-                ('system', f"You are an assistant who extracts a concise topic label from a user's explanation. The label should be one of these topics {formated_topics}."),
-                ('human', "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
+                ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. "
+                           f"Choose one of these topics: {formatted_topics}."),
+                ("human", "User message: {question}\nExtract the topic:")
             ])
             question = state["messages"][-1]
             formatted_prompt = establish_topic.format(question=question)
@@ -109,11 +110,13 @@ def get_pipeline_rag (
     
     # Node: routing to update or to maintain the current topic
     def routing_node(state: StateGraph, vectorstoreconfig: Dict) -> dict:
-        formated_topics = format_topic_keys(vectorstore_config)
+        formatted_topics = format_topic_keys(vectorstore_config)
         current_topic = state.get("current_topic") or "none"
         prompt = ChatPromptTemplate.from_messages([
 
-            ("system", f"You are an assistant monitoring conversation context. The current topic is '{current_topic}'. If the user's latest message indicates a switch from the current topic to another(use this list of topics to determine if the topic is changed, {formated_topics}), output the new topic; otherwise, output the current topic."),
+                        ("system", f"You are monitoring the conversation. The current topic is '{current_topic}'. "
+                       f"Using these topics ({formatted_topics}), if the user's latest message indicates a change, "
+                       f"output the new topic; otherwise, repeat the current topic."),
             ("human", "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
         ])
         question = state["messages"][-1]
@@ -151,8 +154,8 @@ def get_pipeline_rag (
     
     # Build the state graph.
     graph = StateGraph(GraphState)
-    graph.add_node("initial_topic", initial_topic_node)
-    graph.add_node("routing", routing_node)
+    graph.add_node("initial_topic", lambda state: initial_topic_node(state, vectorstore_config))
+    graph.add_node("routing", lambda state: routing_node(state, vectorstore_config))
 
     # Add retrieval nodes for each topic.
     for topic in vectorstore_config.keys():
