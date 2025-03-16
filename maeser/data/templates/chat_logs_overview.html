@@ -30,7 +30,7 @@
     -->
 
     <header>
-        <h2>{{ app_name }}</h2>
+        <h2 >{{ app_name }}</h2>
     </header>
 
     {% if log_files is not undefined %}
@@ -54,6 +54,14 @@
                 <option value="" {% if branch_filter == '' %}selected{% endif %}>All Branches</option>
                 {% for branch in branches %}
                     <option value="{{ branch }}" {% if branch_filter == branch %}selected{% endif %}>{{ branch }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="log-user-filter">User:</label>
+            <select id="log-user-filter">
+                <option value="" {% if user_filter == '' %}selected{% endif %}>All Users</option>
+                {% for user in users %}
+                    <option value="{{ user }}" {% if user_filter == user %}selected{% endif %}>{{ user }}</option>
                 {% endfor %}
             </select>
 
@@ -89,12 +97,14 @@
             const sortBy = document.getElementById('log-sort-by').value;
             const order = document.getElementById('log-order').value;
             const branchFilter = document.getElementById('log-branch-filter').value;
+            const userFilter = document.getElementById('log-user-filter').value;
             const feedbackFilter = document.getElementById('log-feedback-filter').value;
             const params = new URLSearchParams();
 
             if (sortBy) params.append('sort_by', sortBy);
             if (order) params.append('order', order);
             if (branchFilter) params.append('branch', branchFilter);
+            if (userFilter) params.append('user', userFilter);
             if (feedbackFilter) params.append('feedback', feedbackFilter);
 
             window.location.href = `/logs?${params.toString()}`;
