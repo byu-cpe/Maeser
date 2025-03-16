@@ -30,8 +30,20 @@
     -->
 
     <header>
-        <h2 >{{ app_name }}</h2>
+        <div class="header-wrapper">
+            <div id="logo-tab">
+                <a href="/">
+                    {% if main_logo_chat %}
+                    <img src="{{ main_logo_chat }}" class="logo">
+                    {% else %}
+                    <img src="{{ url_for('maeser.static', filename='maeser-dark-header.png') }}" class="logo">
+                    {% endif %}
+                </a>
+            </div>
+            <h2 style="color: white;">{{ app_name }} — Chat Logs Management</h2>
+        </div>
     </header>
+
 
     {% if log_files is not undefined %}
     <section id="log-files-section">
