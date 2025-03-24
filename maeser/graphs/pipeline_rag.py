@@ -24,8 +24,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
 from langgraph.graph.graph import CompiledGraph
 from typing_extensions import TypedDict
-from typing import List, Annotated, Dict, Tuple
-from langchain_core.vectorstores import VectorStoreRetriever
+from typing import List, Dict
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
@@ -38,7 +37,7 @@ class GraphState (TypedDict):
 
 def ensure_state_defaults(func):
     def wrapper(state, *args, **kwargs):
-        if state["first_messsage"] == None:
+        if not state["first_messsage"]:
             state["first_messsage"] = True
         return func(state, *args, **kwargs)
     return wrapper
@@ -114,7 +113,7 @@ def get_pipeline_rag (
     # Node: initial topic extraction, establish the initial topic for the chat
     @ensure_state_defaults
     def initial_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
-        if state.get("first_messsage") == True:
+        if not state.get("first_messsage"):
             state["first_messsage"] = False
             formatted_topics = format_topic_keys(vectorstore_config)
             establish_topic = ChatPromptTemplate.from_messages([
@@ -132,7 +131,7 @@ def get_pipeline_rag (
     
     # Node: routing to update or to maintain the current topic
     def routing_node(state: StateGraph, vectorstore_config: Dict) -> dict:
-        if state.get("first_messsage") == False:
+        if not state.get("first_messsage"):
             formatted_topics = format_topic_keys(vectorstore_config)
             current_topic = state.get("current_topic")
             # If there's no valid current topic, do nothing (or optionally signal an error)
