@@ -606,6 +606,9 @@ class UserManager:
             )
         ''')
 
+    def check_user_auth(self, auth_method: str) -> bool:
+        return auth_method in self.authenticators
+
     def get_user(self, auth_method: str, ident: str) -> Union[User, None]:
         """
         Retrieve a user from the database.
@@ -899,7 +902,7 @@ class UserManager:
             return True
         return False
         
-    def remove_user_from_cache(self, auth_method: str, ident: str) -> bool:
+    def remove_user_from_cache(self, auth_method: str, ident: str, force_remove: bool = False) -> bool:
         """
         Remove a user from the cache.
 
@@ -913,7 +916,7 @@ class UserManager:
         Raises:
             ValueError: If the provided auth_method is invalid.
         """
-        if auth_method not in self.authenticators:
+        if not force_remove and auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"
