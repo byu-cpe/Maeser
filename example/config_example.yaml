@@ -1,4 +1,4 @@
-# © 2024 Blaine Freestone, Carson Bush, Brent Nelson
+# © 2024 Gohaun Manley
 
 # This file is part of the Maeser usage example.
 
@@ -65,7 +65,7 @@ embed:
   embed_provider: openai
 
 llm:
-  llm_model_name: gpt-4o
+  llm_model_name: gpt-4o-mini
   llm_provider: openai
   token_limit: 400
 

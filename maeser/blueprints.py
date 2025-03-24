@@ -5,7 +5,7 @@ This module sets up the Flask blueprint and associated routes for the Maeser
 application. It includes route handlers for chat interfaces, user management,
 feedback, and training functionalities.
 
-© 2024 Blaine Freestone, Carson Bush
+© 2024 Blaine Freestone, Carson Bush, Gohaun Manley
 
 This file is part of Maeser.
 

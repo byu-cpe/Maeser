@@ -34,6 +34,14 @@ class GraphState (TypedDict):
     messages: List[str]
     current_topic: str | None = None
     retrieved_context: List[Document] | None = None
+    first_messsage: bool = True
+
+def ensure_state_defaults(func):
+    def wrapper(state, *args, **kwargs):
+        if state["first_messsage"] == None:
+            state["first_messsage"] = True
+        return func(state, *args, **kwargs)
+    return wrapper
 
 def get_pipeline_rag (
     vectorstore_config: Dict[str, str],
@@ -92,39 +100,46 @@ def get_pipeline_rag (
             return ", ".join(f"'{key}'" for key in keys[:-1]) + f", or '{keys[-1]}'"
 
     # Node: initial topic extraction, establish the initial topic for the chat
+    @ensure_state_defaults
     def initial_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
-        if not state.get("current_topic"):
+        if state.get("first_messsage") == True:
+            state["first_messsage"] = False
             formatted_topics = format_topic_keys(vectorstore_config)
             establish_topic = ChatPromptTemplate.from_messages([
                 ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. "
-                           f"Choose one of these topics: {formatted_topics}."),
+                            f"Choose one of these topics (it is vital to match case and letters exactly): {formatted_topics}."),
                 ("human", "User message: {question}\nExtract the topic:")
             ])
             question = state["messages"][-1]
             formatted_prompt = establish_topic.format(question=question)
             llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
             result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
-            topic = result.content.strip().lower()
+            topic = normalize_topic(result.content)
             return {"current_topic": topic}
-        return {}
+        topic = state.get("current_topic")
+        return {"current_topic": topic}
     
     # Node: routing to update or to maintain the current topic
-    def routing_node(state: StateGraph, vectorstoreconfig: Dict) -> dict:
-        formatted_topics = format_topic_keys(vectorstore_config)
-        current_topic = state.get("current_topic") or "none"
-        prompt = ChatPromptTemplate.from_messages([
+    def routing_node(state: StateGraph, vectorstore_config: Dict) -> dict:
+        if state.get("first_messsage") == False:
+            formatted_topics = format_topic_keys(vectorstore_config)
+            current_topic = state.get("current_topic") or "none"
+            prompt = ChatPromptTemplate.from_messages([
 
-                        ("system", f"You are monitoring the conversation. The current topic is '{current_topic}'. "
-                       f"Using these topics ({formatted_topics}), if the user's latest message indicates a change, "
-                       f"output the new topic; otherwise, repeat the current topic."),
-            ("human", "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
-        ])
-        question = state["messages"][-1]
-        formatted = prompt.format(question=question, current_topic=current_topic)
-        llm_route = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
-        result = llm_route.invoke([SystemMessage(content=formatted)])
-        new_topic = result.content.strip().lower()
-        return {"current_topic": new_topic}
+                ("system", f"You are monitoring the conversation. The current topic is '{current_topic}'. "
+                f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates a change, "
+                f"output the new topic; otherwise, repeat the current topic."),
+                ("human", "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
+            ])
+            question = state["messages"][-1]
+            formatted = prompt.format(question=question, current_topic=current_topic)
+            llm_route = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
+            result = llm_route.invoke([SystemMessage(content=formatted)])
+            new_topic = normalize_topic(result.content)
+            if not new_topic:
+                new_topic = state.get("current_topic")
+            return {"current_topic": new_topic}
+
     
     # Create a factory for retrieval nodes to return relevant information
     def make_retrieval_node(topic: str):
