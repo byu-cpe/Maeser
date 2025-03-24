@@ -51,7 +51,8 @@ sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Mae
 byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
 sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
-# one for the history of BYU and one for the life of Karl G. Maeser.
+# One for the history of BYU and one for the life of Karl G. Maeser.
+# Ensure that topics are all lower case and spaces between words
 vectorstore_config = {
     "byu history": "example/vectorstores/byu",      # Vectorstore for BYU history.
     "karl g maeser": "example/vectorstores/maeser"  # Vectorstore for Karl G. Maeser.
@@ -59,7 +60,7 @@ vectorstore_config = {
 
 byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
     vectorstore_config=vectorstore_config, 
-    memory_filepath="maeser_memory_REMOVE.db",
+    memory_filepath="chat_logs/pipeline_memory.db",
         api_key=OPENAI_API_KEY, 
         system_prompt_text=(
             "You are speaking from the perspective of Karl G. Maeser."

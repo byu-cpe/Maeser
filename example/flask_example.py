@@ -1,5 +1,5 @@
 """
-© 2024 Blaine Freestone, Carson Bush, Brent Nelson
+© 2024 Blaine Freestone, Carson Bush, Brent Nelson, Gohaun Manley
 
 This file is part of the Maeser usage example.
 
@@ -15,7 +15,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
 from config_example import (
-    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH
+    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 
 import os
@@ -43,13 +43,35 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
     """
 
 from maeser.graphs.simple_rag import get_simple_rag
+from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt)
+maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt, model=LLM_MODEL_NAME)
 sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt)
+byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
 sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
+
+# One for the history of BYU and one for the life of Karl G. Maeser.
+# Ensure that topics are all lower case and spaces between words
+vectorstore_config = {
+    "byu history": "example/vectorstores/byu",      # Vectorstore for BYU history.
+    "karl g maeser": "example/vectorstores/maeser"  # Vectorstore for Karl G. Maeser.
+}
+
+byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
+    vectorstore_config=vectorstore_config, 
+    memory_filepath="chat_logs/pipeline_memory.db",
+        api_key=OPENAI_API_KEY, 
+        system_prompt_text=(
+            "You are speaking from the perspective of Karl G. Maeser."
+            "Answer questions about your life and BYU's history only. "
+            "Do not answer questions about other things. \n\n"
+            "{context}\n"
+        ),
+        model=LLM_MODEL_NAME
+    )
+sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
 
 from flask import Flask
 

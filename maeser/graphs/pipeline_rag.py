@@ -43,6 +43,18 @@ def ensure_state_defaults(func):
         return func(state, *args, **kwargs)
     return wrapper
 
+def normalize_topic(topic: str) -> str:
+    """
+    Converts the input topic string to lowercase.
+
+    Args:
+        topic (str): The topic string to be normalized.
+
+    Returns:
+        str: The normalized topic string in lowercase.
+    """
+    return topic.lower()
+
 def get_pipeline_rag (
     vectorstore_config: Dict[str, str],
     memory_filepath: str,
@@ -60,7 +72,7 @@ def get_pipeline_rag (
     compiled graph (with memory checkpoint) that you can run by providing an initial state.
     
     Args:
-        vectorstore_config (Dict[str, Tuple[str, str]]): Mapping of topic to (vectorstore_path, index name)
+        vectorstore_config (Dict[str, Tuple[str, str]]): Mapping of topic to (vectorstore_path, index name) *WARNING* TOPIC MUST BE ALL LOWER CASE
         memory_filepath (str): Path for the memory checkpoint (SQLite database).
         api_key (Optional[str]): API key for language models and embeddings.
         system_prompt_text (str): System prompt template for answer generation.
@@ -107,7 +119,7 @@ def get_pipeline_rag (
             formatted_topics = format_topic_keys(vectorstore_config)
             establish_topic = ChatPromptTemplate.from_messages([
                 ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. "
-                            f"Choose one of these topics (it is vital to match case and letters exactly): {formatted_topics}."),
+                            f"Choose one of these topics (it is vital to match case and letters exactly): {formatted_topics}. If you can't extract a topic default to the first topic."),
                 ("human", "User message: {question}\nExtract the topic:")
             ])
             question = state["messages"][-1]
@@ -116,19 +128,20 @@ def get_pipeline_rag (
             result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
             topic = normalize_topic(result.content)
             return {"current_topic": topic}
-        topic = state.get("current_topic")
-        return {"current_topic": topic}
+        return {"current_topic": state.get("current_topic")}
     
     # Node: routing to update or to maintain the current topic
     def routing_node(state: StateGraph, vectorstore_config: Dict) -> dict:
         if state.get("first_messsage") == False:
             formatted_topics = format_topic_keys(vectorstore_config)
-            current_topic = state.get("current_topic") or "none"
+            current_topic = state.get("current_topic")
+            # If there's no valid current topic, do nothing (or optionally signal an error)
+            if not current_topic or current_topic not in vectorstore_config:
+                raise ValueError(f"Invalid topic '{current_topic}' encountered in state. Please ensure a valid topic is set.")
             prompt = ChatPromptTemplate.from_messages([
-
                 ("system", f"You are monitoring the conversation. The current topic is '{current_topic}'. "
-                f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates a change, "
-                f"output the new topic; otherwise, repeat the current topic."),
+                        f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates a change, "
+                        f"output the new topic; otherwise, repeat the current topic."),
                 ("human", "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
             ])
             question = state["messages"][-1]
@@ -136,9 +149,14 @@ def get_pipeline_rag (
             llm_route = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
             result = llm_route.invoke([SystemMessage(content=formatted)])
             new_topic = normalize_topic(result.content)
-            if not new_topic:
-                new_topic = state.get("current_topic")
+            # If the new topic is invalid, retain the current topic.
+            if new_topic not in vectorstore_config:
+                new_topic = current_topic
             return {"current_topic": new_topic}
+        else:
+            state["first_messsage"] = False
+            return {"current_topic": state.get("current_topic")}
+
 
     
     # Create a factory for retrieval nodes to return relevant information
