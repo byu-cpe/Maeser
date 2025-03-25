@@ -208,15 +208,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error updating user requests:', error));
     }
 
-    // /**
-    //  * Removes a user from the database if the user is under a registered authentication method.
-    //  * @param {string} authMethod - the authentication method of the user 
-    //  * @param {string} userId - the ID of the user
-    //  */
-    // function removeUser(authMethod, userId) {
-    //     removeUser(authMethod, userId, false);
-    // }
-
     /**
      * Removes a user from the database
      * @param {string} authMethod - the authentication method of the user 
