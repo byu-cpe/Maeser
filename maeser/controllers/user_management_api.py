@@ -44,6 +44,9 @@ def controller(user_manager: UserManager) -> list[dict[str, Any]] | dict[str, st
     auth_method = request.json.get('user_auth', '')
     user_ident = request.json.get('user_id', '')
 
+    if command == "check-user-auth":
+        return {'is_auth_registered': user_manager.check_user_auth(auth_method)}
+
     if command == "get-user":
         if not (auth_method):
             return abort(400, "Missing user_auth")
@@ -88,7 +91,8 @@ def controller(user_manager: UserManager) -> list[dict[str, Any]] | dict[str, st
         return {'response': f'Updated {auth_method}.{user_ident} requests'}
 
     elif command == 'remove-user':
-        user_manager.remove_user_from_cache(auth_method, user_ident)
+        force_remove = request.json.get('force_remove', False)
+        user_manager.remove_user_from_cache(auth_method, user_ident, force_remove=force_remove)
         return {'response': f'Removed {auth_method}.{user_ident} from the cache'}
 
     elif command == 'fetch-user':

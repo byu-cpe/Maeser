@@ -101,8 +101,8 @@ class BaseChatLogsManager(ABC):
 
     @abstractmethod
     def get_chat_logs_overview(
-        self, sort_by: str, order: str, branch_filter: str, feedback_filter: str
-    ) -> tuple[list[dict], int, float]:
+        self, sort_by: str, order: str, branch_filter: str, user_filter: str, feedback_filter: str
+    ) -> tuple[list[dict], int, float, set[str]]:
         """
         Abstract method to get an overview of chat logs.
 
@@ -260,8 +260,8 @@ class ChatLogsManager(BaseChatLogsManager):
         return overview
 
     def get_chat_logs_overview(
-        self, sort_by: str, order: str, branch_filter: str, feedback_filter: str
-    ) -> tuple[list[dict], int, float]:
+        self, sort_by: str, order: str, branch_filter: str, user_filter: str, feedback_filter: str
+    ) -> tuple[list[dict], int, float, set[str]]:
         """
         Gets an overview of chat logs.
 
@@ -279,9 +279,17 @@ class ChatLogsManager(BaseChatLogsManager):
         """
         log_files = self._get_file_list()
 
+        # Get set of all users
+        user_set = {f["user"] for f in log_files}
+
         if branch_filter:
             log_files = [
                 f for f in log_files if branch_filter.lower() in f["branch"].lower()
+            ]
+
+        if user_filter:
+            log_files = [
+                f for f in log_files if user_filter == f["user"]
             ]
 
         if feedback_filter:
@@ -315,7 +323,7 @@ class ChatLogsManager(BaseChatLogsManager):
                 else:
                     total_cost += log.get("total_cost", 0.0)
 
-        return log_files, total_tokens, total_cost
+        return log_files, total_tokens, total_cost, user_set
 
     def get_chat_history(self, branch_name: str, session_id: str) -> dict:
         """
