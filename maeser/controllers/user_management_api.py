@@ -92,7 +92,7 @@ def controller(user_manager: UserManager) -> list[dict[str, Any]] | dict[str, st
 
     elif command == 'remove-user':
         force_remove = request.json.get('force_remove', False)
-        user_manager.remove_user_from_cache(auth_method, user_ident, force_remove=True)
+        user_manager.remove_user_from_cache(auth_method, user_ident, force_remove=force_remove)
         return {'response': f'Removed {auth_method}.{user_ident} from the cache'}
 
     elif command == 'fetch-user':
