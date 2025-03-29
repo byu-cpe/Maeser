@@ -31,16 +31,19 @@
 
     <header>
         <div class="header-wrapper">
-            {% if main_logo_chat %}
-                <img src="{{ main_logo_chat }}">
-            {% else %}
-                <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
-            {% endif %}
-            <button id="reset-button-mobile" class="reset-button hide">
-                <i class="bi bi-trash-fill"></i>
-            </button>
+            <div id="logo-tab">
+                <a href="/">
+                    {% if main_logo_chat %}
+                    <img src="{{ main_logo_chat }}" class="logo">
+                    {% else %}
+                    <img src="{{ url_for('maeser.static', filename='maeser-dark-header.png') }}" class="logo">
+                    {% endif %}
+                </a>
+            </div>
+            <h2 style="color: white;">{{ app_name }} — Feedback</h2>
         </div>
     </header>
+
     <main>
         <form action="{{ url_for('maeser.submit_feedback') }}" method="POST" class="standalone-form" id="feedback">
             <label for="name">Name <span id="required">*</span></label>
