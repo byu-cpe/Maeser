@@ -113,7 +113,7 @@ def get_pipeline_rag (
     # Node: initial topic extraction, establish the initial topic for the chat
     @ensure_state_defaults
     def initial_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
-        if not state.get("first_messsage"):
+        if state.get("first_messsage"):
             state["first_messsage"] = False
             formatted_topics = format_topic_keys(vectorstore_config)
             establish_topic = ChatPromptTemplate.from_messages([
