@@ -24,13 +24,16 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
 from langgraph.graph.graph import CompiledGraph
 from typing_extensions import TypedDict
-from typing import List, Dict
+from typing import List, Dict, Annotated
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 
+def add_messages(left: List[str], right: List[str]) -> List[str]:
+    return left + right
+
 class GraphState (TypedDict):
-    messages: List[str]
+    messages: Annotated[list, add_messages]
     current_topic: str | None = None
     retrieved_context: List[Document] | None = None
     first_messsage: bool = True
