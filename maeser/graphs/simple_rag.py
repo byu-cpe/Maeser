@@ -108,7 +108,5 @@ def get_simple_rag(
     graph.set_finish_point('generate')
 
     memory = SqliteSaver.from_conn_string(f'{memory_filepath}')
-
     compiled_graph: CompiledGraph = graph.compile(checkpointer=memory)
-
     return compiled_graph

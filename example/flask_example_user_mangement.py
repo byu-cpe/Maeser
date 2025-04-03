@@ -50,6 +50,14 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
     {context}
     """
 
+pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+    You will answer a question about your own life history or the history of BYU based on 
+    the context provided.
+    Don't answer questions about other things.
+
+    {context}
+"""
+
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
@@ -70,15 +78,9 @@ vectorstore_config = {
 byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
     vectorstore_config=vectorstore_config, 
     memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
-        api_key=OPENAI_API_KEY, 
-        system_prompt_text=(
-            "You are speaking from the perspective of Karl G. Maeser."
-            "Answer questions about your life and BYU's history only. "
-            "Do not answer questions about other things. \n\n"
-            "{context}\n"
-        ),
-        model=LLM_MODEL_NAME
-    )
+    api_key=OPENAI_API_KEY, 
+    system_prompt_text=(pipeline_prompt),
+    model=LLM_MODEL_NAME)
 sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
 
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator

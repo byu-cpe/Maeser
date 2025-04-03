@@ -1,7 +1,7 @@
 """
 Module for creating a simple retrieval-augmented generation (RAG) graph using LangChain.
 
-© 2024 Blaine Freestone, Carson Bush
+© 2024 Gohaun Manley
 
 This file is part of Maeser.
 
@@ -24,35 +24,31 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
 from langgraph.graph.graph import CompiledGraph
 from typing_extensions import TypedDict
-from typing import List, Dict
+from typing import List, Dict, Annotated
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 
+def add_messages(left: List[str], right: List[str]) -> List[str]:
+    return left + right
+
 class GraphState (TypedDict):
-    messages: List[str]
+    messages: Annotated[list, add_messages]
     current_topic: str | None = None
     retrieved_context: List[Document] | None = None
     first_messsage: bool = True
 
-def ensure_state_defaults(func):
-    def wrapper(state, *args, **kwargs):
-        if not state["first_messsage"]:
-            state["first_messsage"] = True
-        return func(state, *args, **kwargs)
-    return wrapper
-
 def normalize_topic(topic: str) -> str:
     """
     Converts the input topic string to lowercase.
-
-    Args:
-        topic (str): The topic string to be normalized.
-
-    Returns:
-        str: The normalized topic string in lowercase.
     """
     return topic.lower()
+
+def remove_context_placeholder(prompt: str) -> str:
+    """
+    Remove the '{context}' placeholder from a prompt string.
+    """
+    return prompt.replace("{context}", "").strip()
 
 def get_pipeline_rag (
     vectorstore_config: Dict[str, str],
@@ -110,53 +106,28 @@ def get_pipeline_rag (
         else:
             return ", ".join(f"'{key}'" for key in keys[:-1]) + f", or '{keys[-1]}'"
 
-    # Node: initial topic extraction, establish the initial topic for the chat
-    @ensure_state_defaults
-    def initial_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
-        if not state.get("first_messsage"):
-            state["first_messsage"] = False
-            formatted_topics = format_topic_keys(vectorstore_config)
-            establish_topic = ChatPromptTemplate.from_messages([
-                ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. "
-                            f"Choose one of these topics (it is vital to match case and letters exactly): {formatted_topics}. If you can't extract a topic default to the first topic."),
-                ("human", "User message: {question}\nExtract the topic:")
-            ])
-            question = state["messages"][-1]
-            formatted_prompt = establish_topic.format(question=question)
-            llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
-            result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
-            topic = normalize_topic(result.content)
-            return {"current_topic": topic}
-        return {"current_topic": state.get("current_topic")}
-    
-    # Node: routing to update or to maintain the current topic
-    def routing_node(state: StateGraph, vectorstore_config: Dict) -> dict:
-        if not state.get("first_messsage"):
-            formatted_topics = format_topic_keys(vectorstore_config)
-            current_topic = state.get("current_topic")
-            # If there's no valid current topic, do nothing (or optionally signal an error)
-            if not current_topic or current_topic not in vectorstore_config:
-                raise ValueError(f"Invalid topic '{current_topic}' encountered in state. Please ensure a valid topic is set.")
-            prompt = ChatPromptTemplate.from_messages([
-                ("system", f"You are monitoring the conversation. The current topic is '{current_topic}'. "
-                        f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates a change, "
-                        f"output the new topic; otherwise, repeat the current topic."),
-                ("human", "User message: {question}\nCurrent topic: {current_topic}\nNew topic:")
-            ])
-            question = state["messages"][-1]
-            formatted = prompt.format(question=question, current_topic=current_topic)
-            llm_route = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
-            result = llm_route.invoke([SystemMessage(content=formatted)])
-            new_topic = normalize_topic(result.content)
-            # If the new topic is invalid, retain the current topic.
-            if new_topic not in vectorstore_config:
-                new_topic = current_topic
-            return {"current_topic": new_topic}
-        else:
-            state["first_messsage"] = False
-            return {"current_topic": state.get("current_topic")}
+    def determine_topic_node (state: GraphState, vectorstore_config: Dict) -> dict:
 
+        # Prepare the list of valid topics plus "off topic"
+        formatted_topics = format_topic_keys(vectorstore_config)
+        current_topic = state.get("current_topic")
 
+        # Build a prompt that includes the current topic (if any) and the user message.
+        clean_system_prompt = remove_context_placeholder(system_prompt_text)
+        prompt_template = ChatPromptTemplate.from_messages([
+            ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. Here is the Current Topic: {current_topic}. If the Current Topic is None, please choose a valid topic"
+                       f"The AI who will answering the users questions and using your topics has been given this prompt {clean_system_prompt}. Please use this as part of your consideration for the topic."
+                       f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates a change, "
+                       f"output the new topic; otherwise, repeat the current topic."),
+            ("human", "User message: {question}\nExtract the topic:")
+        ])
+
+        question = state["messages"][-1]
+        formatted_prompt = prompt_template.format(question=question, current_topic=current_topic if current_topic else "None")
+        llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
+        result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
+        topic = normalize_topic(result.content)
+        return {"current_topic": topic}
     
     # Create a factory for retrieval nodes to return relevant information
     def make_retrieval_node(topic: str):
@@ -186,25 +157,29 @@ def get_pipeline_rag (
     
     # Build the state graph.
     graph = StateGraph(GraphState)
-    graph.add_node("initial_topic", lambda state: initial_topic_node(state, vectorstore_config))
-    graph.add_node("routing", lambda state: routing_node(state, vectorstore_config))
+    graph.add_node("determine_topic", lambda state: determine_topic_node(state, vectorstore_config))    
 
-    # Add retrieval nodes for each topic.
+    # Set up conditional branching based on the determined topic.
+    # Mapping: if "off topic", go to off_topic_response; if valid topic, go to its retrieval node.
+    mapping = {}
+    for topic in vectorstore_config.keys():
+        mapping[topic] = f"retrieve_{topic}"
+    graph.add_conditional_edges("determine_topic", lambda state: state["current_topic"], mapping)
+    
+    # Add retrieval nodes for each valid topic.
     for topic in vectorstore_config.keys():
         node_name = f"retrieve_{topic}"
         graph.add_node(node_name, make_retrieval_node(topic))
-
+        graph.add_edge(node_name, "generate")
+    
+    # Add answer generation node.
     graph.add_node("generate", generate_node)
-
-    # Define the flow: START → initial_topic → routing → conditional retrieval → generate → END.
-    graph.add_edge(START, "initial_topic")
-    graph.add_edge("initial_topic", "routing")
-    graph.add_conditional_edges("routing", lambda state: state["current_topic"], vectorstore_nodes)
-    for node in vectorstore_nodes.values():
-        graph.add_edge(node, "generate")
+    
+    # Define the overall flow.
+    graph.add_edge(START, "determine_topic")
     graph.add_edge("generate", END)
-
+    
     # Set up memory checkpoint using SQLite.
-    memory = SqliteSaver.from_conn_string(f"{memory_filepath}")
+    memory = SqliteSaver.from_conn_string(f'{memory_filepath}')
     compiled_graph: CompiledGraph = graph.compile(checkpointer=memory)
     return compiled_graph
