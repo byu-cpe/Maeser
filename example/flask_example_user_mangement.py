@@ -77,7 +77,7 @@ vectorstore_config = {
 
 byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
     vectorstore_config=vectorstore_config, 
-    memory_filepath=f"{VEC_STORE_PATH}/pipeline_memory.db",
+    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
     api_key=OPENAI_API_KEY, 
     system_prompt_text=(pipeline_prompt),
     model=LLM_MODEL_NAME)
