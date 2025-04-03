@@ -136,4 +136,4 @@ app_manager = App_Manager(
 app: Flask = app_manager.add_flask_blueprint()
 
 if __name__ == "__main__":
-    app.run(port=3002, debug=True)
+    app.run(port=3002)

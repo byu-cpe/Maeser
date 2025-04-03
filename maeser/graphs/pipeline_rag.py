@@ -127,7 +127,6 @@ def get_pipeline_rag (
         llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
         result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
         topic = normalize_topic(result.content)
-        print(f"Current Topic: {topic}")
         return {"current_topic": topic}
     
     # Create a factory for retrieval nodes to return relevant information
