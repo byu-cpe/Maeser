@@ -579,8 +579,10 @@ class UserManager:
         try:
             return sqlite3.connect(self.db_file_path)
         except sqlite3.OperationalError as e:
-            print(f'Unable to open sqlite db, using tempory storage: {e}')
-            return sqlite3.connect(':memory:')
+            print(
+                f"\033[31mUnable to open sqlite db file {self.db_file_path}, using tempory storage: {e}\033[0m"
+            )
+            return sqlite3.connect(":memory:")
 
     def _create_tables(self):
         with self.db_connection as db:
@@ -603,6 +605,9 @@ class UserManager:
                 aka TEXT
             )
         ''')
+
+    def check_user_auth(self, auth_method: str) -> bool:
+        return auth_method in self.authenticators
 
     def get_user(self, auth_method: str, ident: str) -> Union[User, None]:
         """
@@ -882,7 +887,7 @@ class UserManager:
         without modifying their admin or banned status.
 
         Args:
-            auth_method (str): The authentication method ('caedm' or 'github').
+            auth_method (str): The authentication method.
             ident (str): The user's identifier.
 
         Returns:
@@ -897,7 +902,7 @@ class UserManager:
             return True
         return False
         
-    def remove_user_from_cache(self, auth_method: str, ident: str) -> bool:
+    def remove_user_from_cache(self, auth_method: str, ident: str, force_remove: bool = False) -> bool:
         """
         Remove a user from the cache.
 
@@ -911,7 +916,7 @@ class UserManager:
         Raises:
             ValueError: If the provided auth_method is invalid.
         """
-        if auth_method not in self.authenticators:
+        if not force_remove and auth_method not in self.authenticators:
             raise ValueError(f"Invalid authenticator name: {auth_method}")
 
         table_name = f"{auth_method}Users"

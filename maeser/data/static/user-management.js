@@ -77,6 +77,17 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching users:', error));
     }
 
+    function getUser(authMethod, userId) {
+        return fetch(manageUserAPI, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: "get-user", user_auth: authMethod, user_id: userId})
+        })
+        .then(response => {return response.json()})
+        // .then(user => {return user})
+        .catch(error => console.error('Error getting user data:', error));
+    }
+
     function createUserElement(user) {
         console.log(user);
         const userElement = document.createElement('div');
@@ -98,34 +109,77 @@ document.addEventListener('DOMContentLoaded', function() {
     function showUserModal(user) {
         const modal = document.createElement('div');
         modal.classList.add('modal');
-        modal.innerHTML = `
-            <div id="user-modal" class="modal-content">
-                <h2>User Options: ${user.realname}</h2>
-                <p>Identifier: ${user.auth_method}.${user.ident}</p>
-                <button id="toggle-admin" class="${user.admin ? 'active' : ''}">Toggle Admin Status</button>
-                <button id="toggle-ban" class="${!user.is_active ? 'active' : ''}">Toggle Ban Status</button>
-                <div class="request-adjust">
-                    <button id="decrease-requests">-</button>
-                    <span>Requests: ${user.requests_remaining}</span>
-                    <button id="increase-requests">+</button>
-                </div>
-                <button id="remove-user">Remove User</button>
-                <button id="close-modal">Close</button>
-            </div>
-        `;
+        // make sure authenticator is registered
+        registeredAuthMethod(user.auth_method)
+        .then(isAuthRegistered => {
+            if (isAuthRegistered) {
+                modal.innerHTML = `
+                    <div id="user-modal" class="modal-content">
+                        <h2>User Options: ${user.realname}</h2>
+                        <p>Identifier: ${user.auth_method}.${user.ident}</p>
+                        <button id="toggle-admin" class="${user.admin ? 'active' : ''}">Toggle Admin Status</button>
+                        <button id="toggle-ban" class="${!user.is_active ? 'active' : ''}">Toggle Ban Status</button>
+                        <div class="request-adjust">
+                            <button id="decrease-requests">-</button>
+                            <span>Requests: ${user.requests_remaining}</span>
+                            <button id="increase-requests">+</button>
+                        </div>
+                        <button id="remove-user">Remove User</button>
+                        <button id="close-modal">Close</button>
+                    </div>
+                    `;
+    
+                    // modal buttons
+                    modal.querySelector('#toggle-admin').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-admin', !user.admin).then(user => refreshUserModal(modal, user));});
+                    modal.querySelector('#toggle-ban').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-ban', user.is_active).then(user => refreshUserModal(modal, user));});
+                    modal.querySelector('#decrease-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'remove').then(user => refreshUserModal(modal, user));});
+                    modal.querySelector('#increase-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'add').then(user => refreshUserModal(modal, user));});
+                    modal.querySelector('#remove-user').addEventListener('click', () => {removeUser(user.auth_method, user.ident); modal.remove();});
+                    modal.querySelector('#close-modal').addEventListener('click', () => modal.remove());
+            }
+            // if auth method is not registered, make read only
+            else {
+                modal.innerHTML = `
+                    <div id="user-modal" class="modal-content">
+                        <h2>User Options: ${user.realname}</h2>
+                        <p>NOTE: The authentication method for this user is not registered. All user data listed is read-only.</p>
+                        <p>Identifier: ${user.auth_method}.${user.ident}</p>
+                        <p>Admin Status: ${!user.admin ? 'Not' : ''} Admin</p>
+                        <p>Banned Status: ${user.is_active ? 'Not' : ''} Banned</p>
+                        <p>Requests: ${user.requests_remaining}</p>
+                        <button id="remove-user">Remove User</button>
+                        <button id="close-modal">Close</button>
+                    </div>
+                    `;
+    
+                // Remove and Close Buttons
+                modal.querySelector('#remove-user').addEventListener('click', () => {removeUser(user.auth_method, user.ident, true); modal.remove();});
+                modal.querySelector('#close-modal').addEventListener('click', () => modal.remove());
+            }
+        })
 
         document.body.appendChild(modal);
 
-        modal.querySelector('#toggle-admin').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-admin', !user.admin); modal.remove();});
-        modal.querySelector('#toggle-ban').addEventListener('click', () => {updateUserStatus(user.auth_method, user.ident, 'toggle-ban', user.is_active); modal.remove();});
-        modal.querySelector('#decrease-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'remove'); modal.remove();});
-        modal.querySelector('#increase-requests').addEventListener('click', () => {updateUserRequests(user.auth_method, user.ident, 'add'); modal.remove();});
-        modal.querySelector('#remove-user').addEventListener('click', () => {removeUser(user.auth_method, user.ident); modal.remove();});
-        modal.querySelector('#close-modal').addEventListener('click', () => modal.remove());
     }
 
+    function registeredAuthMethod(authMethod) {
+        return fetch(manageUserAPI, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: "check-user-auth", user_auth: authMethod})
+        })
+        .then(response => response.json())
+        .then(result => {return result.is_auth_registered})
+    }
+
+    function refreshUserModal(modal, user) {
+        showUserModal(user);
+        modal.remove();
+    }
+
+
     function updateUserStatus(authMethod, userId, action, new_stat) {
-        fetch(manageUserAPI, {
+        return fetch(manageUserAPI, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ type: action, user_auth: authMethod, user_id: userId, new_status: new_stat })
@@ -134,12 +188,13 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(result => {
             console.log(`User status updated: ${result.response}`);
             fetchAndDisplayUsers();
+            return getUser(authMethod, userId);
         })
         .catch(error => console.error('Error updating user status:', error));
     }
 
     function updateUserRequests(authMethod, userId, action) {
-        fetch(manageUserAPI, {
+        return fetch(manageUserAPI, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ type: 'update-requests', user_auth: authMethod, user_id: userId, action: action })
@@ -148,16 +203,23 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(result => {
             console.log(`User requests updated: ${result.response}`);
             fetchAndDisplayUsers();
+            return getUser(authMethod, userId);
         })
         .catch(error => console.error('Error updating user requests:', error));
     }
 
-    function removeUser(authMethod, userId) {
+    /**
+     * Removes a user from the database
+     * @param {string} authMethod - the authentication method of the user 
+     * @param {string} userId - the ID of the user
+     * @param {Boolean} forceRemove - if true, attempts to remove the user without checking if the auth method is registered
+     */
+    function removeUser(authMethod, userId, forceRemove=false) {
         if (confirm('Are you sure you want to remove this user?')) {
             fetch(manageUserAPI, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'remove-user', user_auth: authMethod, user_id: userId })
+                body: JSON.stringify({ type: 'remove-user', user_auth: authMethod, user_id: userId, force_remove: forceRemove })
             })
             .then(response => response.json())
             .then(result => {

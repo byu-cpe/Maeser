@@ -71,8 +71,8 @@ sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", 
 # One for the history of BYU and one for the life of Karl G. Maeser.
 # Ensure that topics are all lower case and spaces between words
 vectorstore_config = {
-    "byu history": "example/vectorstores/byu",      # Vectorstore for BYU history.
-    "karl g maeser": "example/vectorstores/maeser"  # Vectorstore for Karl G. Maeser.
+    "byu history": f"{VEC_STORE_PATH}/byu",      # Vectorstore for BYU history.
+    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
 }
 
 byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
