@@ -1,51 +1,57 @@
-.. Maeser documentation master file, created by
-   sphinx-quickstart on Wed Jul 17 09:38:14 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Maeser Documentation
+=====================
 
-Welcome to Maeser's documentation!
-==================================
+Welcome to the official documentation for **Maeser**, a versatile Retrieval-Augmented Generation (RAG) framework designed to simplify the creation of interactive AI tutoring systems and educational chatbots. Maeser provides an intuitive, modular platform that leverages modern language models, custom knowledge embedding, and dynamic web interfaces to build intelligent, context-aware applications rapidly.
 
-.. toctree ::
-   :numbered:
-   :maxdepth: 1
-   :caption: Development:
+.. note::
+   This documentation is intended for both users and developers. Users can find guidance on setup and usage, while developers can delve into the architecture and contribute to Maeser's development.
 
-   development/user_setup.md
-   development/development_setup.md
-   development/wsl_development.md
-   development/flask_example.md
-   development/terminal_example.md
-   development/embedding.md
-   development/graphs.md
-
-.. toctree ::
-   :maxdepth: 1
-   :caption: Repository License Info:
-
-   legal/repository_info.md
-   legal/LGPL.md
-   legal/GPL.md
-   legal/CCBYSA4.md
-   legal/MIT.md
-   legal/CC0.md
-   legal/AGPL.md
+Contents
+--------
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Source Reference:
+   :maxdepth: 2
+   :caption: User Guide
 
-   autodoc/maeser/modules.rst
+   introduction
+   usage
+   faq
 
-.. toctree ::
+.. toctree::
+   :maxdepth: 2
+   :caption: Developer Guide
+
+   development/user_setup
+   development/development_setup
+   development/wsl_development
+   development/flask_example
+   development/terminal_example
+   development/embedding
+   development/graphs
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference
+
+   autodoc/maeser/modules
+
+.. toctree::
    :maxdepth: 1
-   :caption: License of this documentation:
+   :caption: Legal
 
-   legal/LICENSE.DOCS.md
+   legal/repository_info
+   legal/LICENSE.DOCS
+   legal/LGPL
+   legal/GPL
+   legal/CCBYSA4
+   legal/MIT
+   legal/CC0
+   legal/AGPL
 
-Indices and tables
+Indices and Tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+

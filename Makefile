@@ -1,5 +1,5 @@
 # Minimal makefile for development setup
-# 2024 Carson Bush
+# 2025 Gohaun Manley
 
 # This file is part of the Maeser unit test suite.
 
@@ -14,27 +14,33 @@
 # You should have received a copy of the GNU Lesser General Public License along with
 # Maeser. If not, see <https://www.gnu.org/licenses/>.
 
-# You can set these variables from the command line, and also
-# from the environment for the first two.
+.PHONY: setup clean test testVerbose
 
-
-.PHONY: setup test
-
-PIP := pip
+PYTHON := python3
+VENV_DIR := .venv
 POETRY := poetry
 
-setup:
-	$(PIP) install -e .
-	$(PIP) install poetry
-	@echo "Updating poetry lock file if necessary..."
+setup: clean
+	@echo "Creating virtual environment..."
+	$(PYTHON) -m venv $(VENV_DIR)
+	@echo "Activating virtual environment and installing dependencies..."
+	$(VENV_DIR)/bin/pip install --upgrade pip
+	$(VENV_DIR)/bin/pip install poetry
 	$(POETRY) lock --no-update
 	$(POETRY) install
-	pytest tests
+	@echo "Installing project in editable mode..."
+	$(VENV_DIR)/bin/pip install -e .
+	@echo "Running initial tests..."
+	tests tests
+
+clean:
+	@echo "Removing existing virtual environment (if any)..."
+	rm -rf $(VENV_DIR)
 
 test:
 	@echo "Running tests..."
-	pytest tests
+	tests tests
 
 testVerbose:
 	@echo "Running tests in verbose mode..."
-	pytest -v tests
+	./tests -v tests
