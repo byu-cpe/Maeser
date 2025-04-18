@@ -1,43 +1,46 @@
-Maeser Documentation
-=====================
+.. Maeser documentation master file, created by sphinx-quickstart on Wed Jul 17 09:38:14 2024.
+   Adapted for the updated documentation structure (docs branch).
 
-Welcome to the official documentation for **Maeser**, a versatile Retrieval-Augmented Generation (RAG) framework designed to simplify the creation of interactive AI tutoring systems and educational chatbots. Maeser provides an intuitive, modular platform that leverages modern language models, custom knowledge embedding, and dynamic web interfaces to build intelligent, context-aware applications rapidly.
+Welcome to Maeser Documentation!
+================================
 
-.. note::
-   This documentation is intended for both users and developers. Users can find guidance on setup and usage, while developers can delve into the architecture and contribute to Maeser's development.
-
-Contents
---------
-
-.. toctree::
-   :maxdepth: 2
-   :caption: User Guide
-
-   introduction
-   usage
-   faq
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Developer Guide
-
-   development/user_setup
-   development/development_setup
-   development/wsl_development
-   development/flask_example
-   development/terminal_example
-   development/embedding
-   development/graphs
-
-.. toctree::
-   :maxdepth: 2
-   :caption: API Reference
-
-   autodoc/maeser/modules
+Maeser is a modular framework for building RAG‑powered tutoring chatbots. This documentation is organized into User Guide, Developer Guide, SysAdmin Guide, and Legal references.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Legal
+
+   user-setup/user_setup
+
+Developer Guide
+---------------
+
+.. toctree::
+   :maxdepth: 1
+
+   development-setup/development_setup
+   development-setup/wsl_development
+   development-setup/embedding
+   development-setup/graphs
+   development-setup/custom_graphs
+   development-setup/architecture
+   development-setup/dev-troubleshooting
+   development-setup/flask_example
+   development-setup/terminal_example
+
+SysAdmin Guide
+--------------
+
+.. toctree::
+   :maxdepth: 1
+
+   sysadmin/deployment
+   sysadmin/sysadmin_troubleshooting
+
+Legal
+-----
+
+.. toctree::
+   :maxdepth: 1
 
    legal/repository_info
    legal/LICENSE.DOCS
