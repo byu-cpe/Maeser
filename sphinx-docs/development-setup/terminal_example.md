@@ -1,181 +1,189 @@
-# Maeser Example (with Terminal Interface)
+# Terminal Example: Interactive CLI with Maeser
 
-This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches in a terminal interface.
+This guide illustrates how to use the official CLI example (`example/terminal_example.py`) to run Maeser in a terminal-based chat interface. You’ll inspect the script, configure settings, launch the example, and learn how to customize your own command‑line tutor.
 
-The `terminal_example.py` file's code is shown below. You can run the example application by running:
+---
 
-```shell
-python terminal_example.py
+## Prerequisites
+
+- **Maeser development environment** set up (see `development_setup.md`).
+- **Python 3.10+** virtual environment activated.
+- **Maeser** installed in editable mode (`pip install -e .` or `make setup`).
+- **Required FAISS vectorstores** built and available (via `embedding.md`).
+- **`config.yaml`** configured with your OpenAI API key and file paths (see below).
+
+---
+
+## Configuring `config.yaml`
+
+Copy the example and set these fields:
+
+```yaml
+# RAG memory storage path (SQLite files)
+LOG_SOURCE_PATH: "path/to/chat_logs"
+# OpenAI API key for LLM calls
+OPENAI_API_KEY: "your-openai-key"
+# Directory with FAISS vectorstores
+VEC_STORE_PATH: "path/to/vectorstores"
+# Path for chat history logs
+CHAT_HISTORY_PATH: "path/to/chat_history"
+# LLM model (e.g., gpt-4o)
+LLM_MODEL_NAME: "gpt-4o"
 ```
 
-but first some overview and setup is needed so read on.
+These settings ensure the script can load your vectorstores, persist logs, and authenticate with OpenAI.
 
-## Overview
+---
 
-The example program sets up a terminal-based application with two different chat branches: one for Karl G. Maeser's history and another for BYU's history. It uses a simple command-line interface for user interaction.
+## 1. Inspect `terminal_example.py`
 
-## Key Components
+Open **`example/terminal_example.py`** and explore its main sections:
 
-### Chat Management
-
+### 1.1 Imports & Environment Setup
 ```python
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
-
-chat_logs_manager = ChatLogsManager("chat_logs")
-sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
+from config_example import (
+    LOG_SOURCE_PATH, OPENAI_API_KEY,
+    VEC_STORE_PATH, CHAT_HISTORY_PATH,
+    LLM_MODEL_NAME
+)
+import os
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 ```
+- **ChatLogsManager** records all messages.  
+- **ChatSessionManager** orchestrates branches and sessions.  
+- **Config imports** supply file paths and keys.
 
-These lines initialize the chat logs and session managers, which handle storing and managing chat conversations.
-
-### Prompt Definition
-
+### 1.2 Prompt Definitions
 ```python
-maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
-    You will answer a question about your own life history based on the context provided.
-    Don't answer questions about other things.
+maeser_prompt: str = """
+You are speaking from the perspective of Karl G. Maeser.
+Answer questions about your life history only. {context}
+"""
 
-    {context}
-    """
-
-byu_prompt: str = """You are speaking about the history of Brigham Young University.
-    You will answer a question about the history of BYU based on the context provided.
-    Don't answer questions about other things.
-
-    {context}
-    """
+byu_prompt: str = """
+You are speaking about the history of BYU.
+Answer questions about BYU history only. {context}
+"""
 ```
+- Defines how the LLM should frame responses.
 
-Here, we define system prompts for two different chat branches. These prompts set the context and behavior for the AI in each branch.
-
-### RAG (Retrieval-Augmented Generation) Setup
-
+### 1.3 Pipeline Registration
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
+from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag("vectorstores/maeser", "index", "chat_logs/maeser.db", system_prompt_text=maeser_prompt)
-sessions_manager.register_branch("maeser", "Karl G. Maeser History", maeser_simple_rag)
+# Simple RAG: Karl G. Maeser
+a_graph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/maeser",
+    memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db",
+    system_prompt_text=maeser_prompt,
+    model=LLM_MODEL_NAME
+)
+sessions_manager.register_branch(
+    branch_name="maeser",
+    branch_label="Karl G. Maeser History",
+    graph=a_graph
+)
 
-byu_simple_rag: CompiledGraph = get_simple_rag("vectorstores/byu", "index", "chat_logs/byu.db", system_prompt_text=byu_prompt)
-sessions_manager.register_branch("byu", "BYU History", byu_simple_rag)
+# Simple RAG: BYU History
+b_graph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/byu",
+    memory_filepath=f"{LOG_SOURCE_PATH}/byu.db",
+    system_prompt_text=byu_prompt,
+    model=LLM_MODEL_NAME
+)
+sessions_manager.register_branch(
+    branch_name="byu",
+    branch_label="BYU History",
+    graph=b_graph
+)
+
+# Pipeline RAG: combine both domains
+pipeline = get_pipeline_rag(
+    vectorstore_config={
+        "byu history": f"{VEC_STORE_PATH}/byu",
+        "karl g maeser": f"{VEC_STORE_PATH}/maeser"
+    },
+    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=(
+        "You are a combined tutor for Maeser & BYU history. Use contexts: {context}"
+    ),
+    model=LLM_MODEL_NAME
+)
+sessions_manager.register_branch(
+    branch_name="pipeline",
+    branch_label="Pipeline",
+    graph=pipeline
+)
 ```
+- **Registers three branches** for selection at runtime.
 
-This section sets up two RAG graphs, one for each chat branch, and registers them with the session manager. RAG enhances the AI's responses by retrieving relevant information from a knowledge base.
-
-> **NOTE:** The `get_simple_rag` function could be replaced with any LangGraph compiled state graph. So, for a custom application, you will likely want to create a custom graph and register it with the sessions manager. For more instructions on creating custom graphs, see [Using Custom Graphs](./graphs.md)
-
-### Terminal Interface Setup
-
+### 1.4 CLI Menu & Session Loop
 ```python
 import pyinputplus as pyip
 
 print("Welcome to the Maeser terminal example!")
-
 while True:
-    # structure branches dictionary for input menu
-    label_to_key = {value['label']: key for key, value in sessions_manager.branches.items()}
-    label_to_key["Exit terminal session"] = "exit"
-
-    # select a branch
-    branch = pyip.inputMenu(
-        list(label_to_key.keys()),
-        prompt="Select a branch: \n",
-        numbered=True
+    # Build menu of branch labels
+    choices = {v['label']: k for k, v in sessions_manager.branches.items()}
+    choices["Exit terminal session"] = "exit"
+    branch_label = pyip.inputMenu(
+        list(choices.keys()), prompt="Select a branch:\n", numbered=True
     )
-
-    # get the key for the selected branch
-    if branch != "Exit terminal session":
-        branch = label_to_key[branch]
-    else:
+    if branch_label == "Exit terminal session":
         print("Exiting terminal session.")
         break
+    branch = choices[branch_label]
 
-    # create a new session
-    session = sessions_manager.get_new_session_id(branch)
-    print(f"\nSession {session} created for branch {branch}.")
-    print("Type 'exit' to end the session.\n")
+    # Start a new conversation session
+    sess = sessions_manager.get_new_session_id(branch)
+    print(f"Session {sess} created for branch '{branch}'.")
+    print("Type 'exit' or 'quit' to end the session.\n")
 
-    # loop for conversation
+    # Converse until exit
     while True:
-        # get user input
-        user_input = input("User:\n> ")
-
-        # check for exit
-        if user_input == "exit" or user_input == 'quit':
+        user_input = input("User > ")
+        if user_input.lower() in ("exit", "quit"):
             print("Session ended.\n")
             break
-
-        # get response
-        response = sessions_manager.ask_question(user_input, branch, session)
-
-        print(f"\nSystem:\n{response['messages'][-1]}\n")
+        response = sessions_manager.ask_question(user_input, branch, sess)
+        print(f"System > {response['messages'][-1]}\n")
 ```
+- **pyinputplus** creates a numbered menu for branch selection.  
+- **get_new_session_id** initializes a fresh context.  
+- **ask_question** sends user input to the chosen graph and returns the answer.
 
-This section sets up the terminal interface using the `pyinputplus` library. It creates a menu for selecting chat branches, manages sessions, and handles user input and system responses.
+---
 
-You could implement whatever logic in this interface you would like, including loading previous chat sessions. In this example, we kept it simple.
+## 2. Run the Terminal Example
 
-## Preparing and Running the Application
-
-Before you can run the application, you will need to install the `pyinputplus` library:
-
-```shell
-pip install pyinputplus
+Activate your venv and run:
+```bash
+python example/terminal_example.py
 ```
+1. **Select** a branch (e.g., "Karl G. Maeser History").  
+2. **Ask** questions and receive AI responses.  
+3. Type **`exit`** or **`quit`** to end the session.
 
-Then, to run the application, you can now run:
+---
 
-```shell
-python terminal_example.py
-```
+## 3. Customization
 
-This will start the terminal interface. You'll be presented with a menu to choose between the Karl G. Maeser history branch, the BYU history branch, or to exit the application. Once you select a branch, you can start asking questions. Type 'exit' or 'quit' to end a session and return to the branch selection menu.
+- **Add Branches:** Register your own `CompiledGraph` before the loop.
+- **Modify Prompts:** Tweak `maeser_prompt` and `byu_prompt` for tone and detail.
+- **Change Menu Behavior:** Use `pyinputplus.inputMenu` parameters (e.g., `limit`, `timeout`).
+- **Logging:** Adjust `ChatLogsManager` settings or paths for audit/analysis.
 
-## Customization
+---
 
-You can customize various aspects of the application, such as:
+## 4. Next Steps
 
-- Adding more chat branches
-- Modifying the prompts for existing branches
-- Changing the user interface (e.g., adding color, improving formatting)
-- Implementing error handling and input validation
+- Explore the **Flask example** (`flask_example_user_mangement.py`) for web UI.
+- Embed new knowledge bases via **`embedding.md`**.
+- Design advanced workflows in **`custom_graphs.md`**.
+- Review Maeser’s system architecture in **`architecture.md`**.
 
-Here, we discuss a few of these.
-
-### Adding a New Chat Branch
-
-To add a new chat branch:
-
-1. Define a new prompt for the branch:
-
-   ```python
-   new_prompt: str = """You are an expert on [topic].
-       You will answer questions about [topic] based on the context provided.
-       Don't answer questions about other things.
-
-       {context}
-       """
-   ```
-
-2. Create and register a new RAG graph:
-
-   ```python
-   new_simple_rag: CompiledGraph = get_simple_rag("path/to/vectorstore", "index", "chat_logs/new_topic.db", system_prompt_text=new_prompt)
-   sessions_manager.register_branch("new_topic", "New Topic Name", new_simple_rag)
-   ```
-
-### Modifying the User Interface
-
-You can enhance the user interface by using libraries like `colorama` for colored output or by adding more formatting to the responses. For example:
-
-```python
-from colorama import Fore, Style
-
-# In the conversation loop:
-print(f"\n{Fore.GREEN}System:{Style.RESET_ALL}\n{response['messages'][-1]}\n")
-```
-
-## Conclusion
-
-This example demonstrates how to use the `maeser` package to create a multi-branch chatbot application with a terminal interface. You can build upon this example to create more complex applications tailored to your specific needs, whether for command-line tools or as a starting point for more advanced interfaces.

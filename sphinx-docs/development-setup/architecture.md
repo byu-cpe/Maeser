@@ -6,11 +6,11 @@ This guide walks you through setting up a Maeser development environment from sc
 
 ## Prerequisites
 
-- **Python 3.10+**
-- **Git**
-- **Make** (on macOS/Linux) or **Make for Windows** (e.g. via Git Bash)
-- **Optional:** [Poetry](https://python-poetry.org/) for dependency management
-- **Optional (WSL):** Windows Subsystem for Linux, if you’re on Windows
+- **Python 3.10+**  
+- **Git**  
+- **Make** (on macOS/Linux) or **Make for Windows** (e.g. via Git Bash)  
+- **Optional:** [Poetry](https://python-poetry.org/) for dependency management  
+- **Optional (WSL):** Windows Subsystem for Linux, if you’re on Windows  
 
 ---
 
@@ -76,10 +76,9 @@ make setup
 ```
 
 This will:
-
-1. Install the editable package (`pip install -e .`)
-2. Install development dependencies (including Sphinx, pytest, etc.)
-3. Run the test suite once to verify everything is working
+1. Install the editable package (`pip install -e .`)  
+2. Install development dependencies (including Sphinx, pytest, etc.)  
+3. Run the test suite once to verify everything is working  
 
 ---
 
@@ -141,22 +140,35 @@ Then open `sphinx-docs/build/html/index.html` in your browser.
 
 If you’re on Windows, we recommend using WSL for a smoother experience:
 
-1. Install WSL following Microsoft’s guide:\
-   [https://learn.microsoft.com/windows/wsl/install](https://learn.microsoft.com/windows/wsl/install)
-2. In your WSL terminal, follow **Steps 1–6** above as if on Linux.
+1. Install WSL following Microsoft’s guide:  
+   https://learn.microsoft.com/windows/wsl/install  
+2. In your WSL terminal, follow **Steps 1–6** above as if on Linux.  
 3. Use your WSL path (e.g., `/mnt/c/Users/you/Maeser`) for the cloned repo.
 
 ---
 
 ## 8. Additional Tips
 
-- **Hot-reload during development**: Run the Flask example in debug mode to auto-restart on code changes.
-- **IDE integration**: Point your IDE’s interpreter to the `.venv` or Poetry venv for linting and Intellisense.
-- **Keep your branches tidy**: Create a feature branch for each change and open a PR against `main`.
+- **Hot-reload during development**: Run the Flask example in debug mode to auto-restart on code changes.  
+- **IDE integration**: Point your IDE’s interpreter to the `.venv` or Poetry venv for linting and Intellisense.  
+- **Keep your branches tidy**: Create a feature branch for each change and open a PR against `main`.  
 - **Update docs as you code**: If you add or modify functionality, update the corresponding `.md` or `.rst` file in `sphinx-docs/source/`.
+
+## 9. Developer Tools & Troubleshooting
+
+- **Linting & Formatting**: Use Black and Flake8 to maintain consistent code style. Install with `pip install black flake8` and consider setting up [pre-commit hooks](https://pre-commit.com/) to run them automatically.
+- **Type Checking**: Integrate Mypy for static type verification by installing `pip install mypy` and running `mypy maeser/` as part of your development cycle.
+- **Pre-commit Hooks**: Add a `.pre-commit-config.yaml` to configure hooks (e.g., black, flake8, isort) and install via `pre-commit install` for automated checks on commits.
+- **Continuous Integration (CI)**: Configure GitHub Actions (or another CI provider) to run tests, linting, type checks, and documentation builds on each pull request to ensure code quality.
+- **Docker Support** (Optional): Create a `Dockerfile` and `docker-compose.yml` to containerize Maeser and its dependencies, enabling reproducible environments and easy on-boarding for developers.
+- **Troubleshooting Common Issues**:
+  - **Missing API Keys**: Ensure `config.yaml` and environment variables (e.g., `OPENAI_API_KEY`) are set correctly.
+  - **FAISS Installation Errors**: On Windows, use the WSL environment or install via `conda install -c conda-forge faiss-cpu` to avoid build issues.
+  - **Permission Errors**: Verify file and directory permissions for log files, vectorstores, and the `config.yaml` file.
+  - **Dependency Conflicts**: If you encounter version mismatches, recreate your virtual environment and pin dependencies in `pyproject.toml` or `requirements.txt`.
 
 ---
 
-You’re all set!
-If you run into any issues, check existing GitHub issues or open a new one.
+You’re all set! 🎉  
+Happy hacking on Maeser. If you run into any issues, check existing GitHub issues or open a new one.
 

@@ -14,33 +14,34 @@
 # You should have received a copy of the GNU Lesser General Public License along with
 # Maeser. If not, see <https://www.gnu.org/licenses/>.
 
-.PHONY: setup clean test testVerbose
+.PHONY: setup test testVerbose clean_venv
 
 PYTHON := python3
-VENV_DIR := .venv
-POETRY := poetry
+PIP := $(VENV)/bin/pip
+VENV := .venv
+POETRY := $(VENV)/bin/poetry
+PYTEST := $(VENV)/bin/pytest
 
-setup: clean
-	@echo "Creating virtual environment..."
-	$(PYTHON) -m venv $(VENV_DIR)
-	@echo "Activating virtual environment and installing dependencies..."
-	$(VENV_DIR)/bin/pip install --upgrade pip
-	$(VENV_DIR)/bin/pip install poetry
+setup:
+	$(PIP) install poetry
+	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock --no-update
 	$(POETRY) install
-	@echo "Installing project in editable mode..."
-	$(VENV_DIR)/bin/pip install -e .
-	@echo "Running initial tests..."
-	tests tests
+	$(PIP) install -e .
+	pytest tests
 
-clean:
-	@echo "Removing existing virtual environment (if any)..."
-	rm -rf $(VENV_DIR)
+clean_venv:
+	@echo "Removing existing virtual environment if it exists..."
+	rm -rf $(VENV)
+
+$(VENV)/bin/activate:
+	@echo "Creating virtual environment in $(VENV)..."
+	$(PYTHON) -m venv $(VENV)
 
 test:
 	@echo "Running tests..."
-	tests tests
+	$(PYTEST) tests
 
 testVerbose:
 	@echo "Running tests in verbose mode..."
-	./tests -v tests
+	$(PYTEST) -v tests

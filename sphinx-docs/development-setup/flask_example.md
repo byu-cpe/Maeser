@@ -1,160 +1,199 @@
-# Maeser Example (with Flask)
+# Maeser Example (with Flask & User Management)
 
-This README explains an example program that demonstrates how to use the `maeser` package to create a simple conversational AI application with multiple chat branches and user authentication that is rendered on a Flask web server. The example program is located in the `example` directory of Maeser.
+This guide demonstrates how to run Maeser as a web-based chatbot **with user authentication** (via GitHub OAuth or LDAP) using the official example script at `example/flask_example_user_mangement.py`. You’ll inspect the script, configure authentication, launch the server, and customize the application for your own RAG workflows.
 
-The program is contained in `flask_example.py` and its code is shown below. You can run the example application by running:
+---
 
-```shell
-python flask_example.py
+## Prerequisites
+
+- **Maeser development environment** set up (see `development_setup.md`).
+- **Python 3.10+** virtual environment activated.
+- **Maeser** installed in editable mode (`pip install -e .` or `make setup`).
+- **Pre-built FAISS vectorstores** at the paths referenced in your config.
+
+---
+
+## Configuring `config.yaml`
+
+Copy the example and update the following fields:
+
+```yaml
+# Path where chat logs and memory DBs are stored
+LOG_SOURCE_PATH: "path/to/chat_logs"
+# Your OpenAI API key for LLM access\ OPENAI_API_KEY: "your-openai-key"
+# SQLite file path to store registered users and quotas
+USERS_DB_PATH: "path/to/users.db"
+# Directory containing FAISS vectorstore folders
+VEC_STORE_PATH: "path/to/vectorstores"
+# Path for chat history JSON or DB
+CHAT_HISTORY_PATH: "path/to/chat_history"
+# LLM model name (e.g., gpt-3.5-turbo)
+LLM_MODEL_NAME: "gpt-3.5-turbo"
+# Maximum requests per user and rate-limit interval (seconds)
+MAX_REQUESTS: 100
+RATE_LIMIT_INTERVAL: 60
+
+# GitHub OAuth Configuration
+GITHUB_CLIENT_ID: "your-client-id"
+GITHUB_CLIENT_SECRET: "your-client-secret"
+GITHUB_AUTH_CALLBACK_URI: "http://hostIP:3002/login/github_callback"
+GITHUB_TIMEOUT: 10
+
+# LDAP3 Authenticator Settings
+LDAP3_NAME: "ldap"
+LDAP_SERVER_URLS:
+  - "ldap://ldap.example.com"
+LDAP_BASE_DN: "dc=example,dc=com"
+LDAP_ATTRIBUTE_NAME: "uid"
+LDAP_SEARCH_FILTER: "(objectClass=person)"
+LDAP_OBJECT_CLASS: "person"
+LDAP_ATTRIBUTES:
+  - "cn"
+  - "mail"
+LDAP_CA_CERT_PATH: "/path/to/ca_cert.pem"
+LDAP_CONNECTION_TIMEOUT: 5
 ```
 
-but first some overview and setup is needed so read on.
+**Field Descriptions**:
+- **LOG_SOURCE_PATH**: Directory/file prefix for RAG memory databases.
+- **OPENAI_API_KEY**: Key to authenticate with OpenAI’s API.
+- **USERS_DB_PATH**: SQLite DB for storing user records and quotas.
+- **VEC_STORE_PATH**: Base path where FAISS indexes are saved.
+- **CHAT_HISTORY_PATH**: Path to persist chat logs via `ChatLogsManager`.
+- **LLM_MODEL_NAME**: Which OpenAI or LLM model to invoke.
+- **MAX_REQUESTS / RATE_LIMIT_INTERVAL**: Controls per-user rate limiting.
+- **GITHUB_** entries: Configure GitHub OAuth flow.
+- **LDAP3_** entries: Configure LDAP authentication parameters.
 
-## Overview
+---
 
-The example program sets up a Flask web application with two different chat branches: one for Karl G. Maeser's history and another for BYU's history.
+## 1. Inspect `flask_example_user_mangement.py`
 
-## Key Components
-
-### `config_example.yaml` Initialization
-
+### 1.1 Configuration Imports & Env Setup
+Imports all config variables and sets the OpenAI API key in the environment.
 ```python
 from config_example import (
-    LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH, 
-    VEC_STORE_PATH, MAX_REQUESTS, RATE_LIMIT_INTERVAL, 
-    GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_AUTH_CALLBACK_URI, 
-    GITHUB_TIMEOUT, CHAT_HISTORY_PATH, LDAP3_NAME, 
-    LDAP_SERVER_URLS, LDAP_BASE_DN, LDAP_ATTRIBUTE_NAME, LDAP_SEARCH_FILTER, 
-    LDAP_OBJECT_CLASS, LDAP_ATTRIBUTES, LDAP_CA_CERT_PATH, LDAP_CONNECTION_TIMEOUT
+    LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH,
+    VEC_STORE_PATH, MAX_REQUESTS, RATE_LIMIT_INTERVAL,
+    GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET,
+    GITHUB_AUTH_CALLBACK_URI, GITHUB_TIMEOUT,
+    CHAT_HISTORY_PATH,
+    LDAP3_NAME, LDAP_SERVER_URLS, LDAP_BASE_DN,
+    LDAP_ATTRIBUTE_NAME, LDAP_SEARCH_FILTER,
+    LDAP_OBJECT_CLASS, LDAP_ATTRIBUTES,
+    LDAP_CA_CERT_PATH, LDAP_CONNECTION_TIMEOUT,
+    LLM_MODEL_NAME
 )
-```
-
-This import retreieves the values from the `config_example.yaml` to be used later in the program.
-
-### OpenAI API Key
-
-```python
 import os
-
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 ```
 
-These lines initialize the OpenAI API key into envioment variables from the `config_example.yaml` file, the OpenAI API key is required for interacting with the API used. Go to [OpenAI](https://www.openai.com/api/) to obtain a key.
-
-### Chat Management
-
+### 1.2 Chat Logs & Session Manager Setup
+Initializes chat logging and session management to track conversations and user queries.
 ```python
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
 
+# Persist chat history
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
+# Manage multiple chat sessions
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
-These lines initialize the chat logs and session managers, which handle storing and managing chat conversations.
-
-### Prompt Definition
-
+### 1.3 Prompt Definitions
+Defines system prompts that inject persona and context into the LLM.
 ```python
-maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
-    You will answer a question about your own life history based on the context provided.
-    Don't answer questions about other things.
-
-    {context}
-    """
-
-byu_prompt: str = """You are speaking about the history of Brigham Young University.
-    You will answer a question about the history of BYU based on the context provided.
-    Don't answer questions about other things.
-
-    {context}
-    """
-```
-
-Here, we define system prompts for two different chat branches. These prompts set the context and behavior for the AI in each branch.
-
-### RAG (Retrieval-Augmented Generation) Setup
-
-```python
-from maeser.graphs.simple_rag import get_simple_rag
-from langgraph.graph.graph import CompiledGraph
-
-maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt)
-sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
-
-byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt)
-sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
-```
-
-This section sets up two RAG graphs, one for each chat branch, and registers them with the session manager. RAG enhances the AI's responses by retrieving relevant information from a knowledge base.
-
-> **NOTE:** The `get_simple_rag` function could be replaced with any LangGraph compiled state graph. So, for a custom application, you will likely want to create a custom graph and register it with the sessions manager. For more instructions on creating custom graphs, see [Using Custom Graphs](./graphs.md)
-
-### Flask Application Setup
-
-```python
-from flask import Flask
-
-base_app = Flask(__name__)
-
-from maeser.blueprints import App_Manager
-
-app_manager = App_Manager(
-    app=base_app,
-    app_name="Maeser Test App -- NO USER MANAGER",
-    flask_secret_key="secret",
-    chat_session_manager=sessions_manager,
-    chat_head="/static/Karl_G_Maeser.png"
-    # Note that you can change other aspects too! Heres some examples below
-    # main_logo_login="/static/main_logo_login.png",
-    # favicon="/static/favicon.png",
-    # login_text="Welcome to Maeser. This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes."
-    # primary_color="#f5f5f5"
+maeser_prompt = (
+    """You are speaking from the perspective of Karl G. Maeser.\n"
+    "You will answer questions about your life history based on provided context.\n"
+    "{context}"""
 )
 
-#initalize the flask blueprint
-app: Flask = app_manager.add_flask_blueprint()
+byu_prompt = (
+    """You are a BYU historian.\n"
+    "You will answer questions about Brigham Young University’s history based on provided context.\n"
+    "{context}"""
+)
+
+pipeline_prompt = (
+    """You are Karl G. Maeser or a BYU historian.\n"
+    "You will answer history questions based on provided context.\n"
+    "{context}"""
+)
 ```
 
-For more detail on configuration options, see the documentation for `App_Manager()` in [maeser.blueprints](../autodoc/maeser/maeser.blueprints.rst).
+### 1.4 RAG Graph Construction
+Creates three RAG pipelines (Karl Maeser, BYU, and combined pipeline) and registers them as named branches.
+```python
+from maeser.graphs.simple_rag import get_simple_rag
+from maeser.graphs.pipeline_rag import get_pipeline_rag
+from langgraph.graph.graph import CompiledGraph
 
-Finally, we create a Flask application and add the Maeser blueprint to it, configuring various options like the app name and chat head image.
+# Simple RAG for Karl G. Maeser
+maeser_graph: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/maeser",
+    vectorstore_index="index",
+    memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db",
+    system_prompt_text=maeser_prompt,
+    model=LLM_MODEL_NAME
+)
+sessions_manager.register_branch(
+    branch_name="maeser",
+    branch_label="Karl G. Maeser History",
+    graph=maeser_graph
+)
 
-> **NOTE:** For a custom application, you may choose to not use the `add_flask_blueprint` function but rather create your own Flask app.
-> The Flask app should call the proper methods in the chat sessions manager.
+# Simple RAG for BYU History
+byu_graph: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/byu",
+    vectorstore_index="index",
+    memory_filepath=f"{LOG_SOURCE_PATH}/byu.db",
+    system_prompt_text=byu_prompt,
+    model=LLM_MODEL_NAME
+)
+sessions_manager.register_branch(
+    branch_name="byu",
+    branch_label="BYU History",
+    graph=byu_graph
+)
 
-## Running the Application
-
-To run the application, you can now run:
-
-```shell
-python flask_example.py
+# Pipeline across both domains
+pipeline_graph: CompiledGraph = get_pipeline_rag(
+    vectorstore_config={
+        "byu history": f"{VEC_STORE_PATH}/byu",
+        "karl g maeser": f"{VEC_STORE_PATH}/maeser"
+    },
+    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=pipeline_prompt,
+    model=LLM_MODEL_NAME
+)
+sessions_manager.register_branch(
+    branch_name="pipeline",
+    branch_label="Pipeline",
+    graph=pipeline_graph
+)
 ```
 
-This should start up a local server. Opening a web browser to the address it tells you to use will bring up the example app.
+---
 
-## User Management and Authentication
+## 2. User Management Setup
 
-A common thing to add to an app like this is user authentication, giving your app some control over who is using the app. Here, we will show how to modify `flask_example.py` to use authentication. We will register a `GithubAuthenticator` with a `UserManager`. This means that our application will use Github OAuth to authenticate users in the application. This will require you to register a GithHub OAuth Application. 
-
-You can also choose to use an LDAP3 method for authentication using `LDAPAuthenticator` with a `UserManager` This would require you to have an LDAP3 server or have access to one.
-
-### Code Changes to `flask_example.py`
-
-First, you need to add the following lines of code to `flask_example.py` (alternatively, these changes have already been made in `flask_example_user_management.py`):
-
+### 2.1 Configure Authenticators
+Defines GitHub and LDAP authenticators for user login and request quotas.
 ```python
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
-# Replace the '...' with a client id and secret from a GitHub OAuth App that you generate in the config_example.yaml
+# GitHub OAuth setup
 github_authenticator = GithubAuthenticator(
-    client_id=GITHUB_CLIENT_ID, 
-    client_secret=GITHUB_CLIENT_SECRET, 
+    client_id=GITHUB_CLIENT_ID,
+    client_secret=GITHUB_CLIENT_SECRET,
     auth_callback_uri=GITHUB_AUTH_CALLBACK_URI,
-    timeout=MAX_REQUESTS,
-    max_requests=GITHUB_MAX_REQUESTS
+    timeout=GITHUB_TIMEOUT,
+    max_requests=MAX_REQUESTS
 )
-# Replace the '...' in the config_example.yaml with all the proper configurations
+
+# LDAP Authenticator setup
 ldap3_authenticator = LDAPAuthenticator(
     name=LDAP3_NAME,
     ldap_server_urls=LDAP_SERVER_URLS,
@@ -166,161 +205,91 @@ ldap3_authenticator = LDAPAuthenticator(
     ca_cert_path=LDAP_CA_CERT_PATH,
     connection_timeout=LDAP_CONNECTION_TIMEOUT
 )
+```
 
-user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
+### 2.2 Initialize User Manager
+Creates a `UserManager` instance and registers the authenticators.
+```python
+# Initialize user management with request limits
+user_manager = UserManager(
+    db_file_path=USERS_DB_PATH,
+    max_requests=MAX_REQUESTS,
+    rate_limit_interval=RATE_LIMIT_INTERVAL
+)
+# Register both authenticators
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
 user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
 ```
 
-Add these before the line that starts with:
+---
 
+## 3. Flask Application Setup
+
+Initializes the Flask app with both chat session and user managers, then registers all routes via blueprints.
 ```python
 from flask import Flask
-```
-
-The second change to make is to add one parameter to the `App_Manager` call in the code. The new call is like this:
-
-```python
 from maeser.blueprints import App_Manager
 
-# Create the App_Manager class
+base_app = Flask(__name__)
 app_manager = App_Manager(
     app=base_app,
-    app_name="Maeser Test App",
+    app_name="Maeser Auth Chat",
     flask_secret_key="secret",
     chat_session_manager=sessions_manager,
     user_manager=user_manager,
     chat_head="/static/Karl_G_Maeser.png"
-    # Note that you can change other aspects too! Heres some examples below
-    # main_logo_login="/static/main_logo_login.png",
-    # favicon="/static/favicon.png",
-    # login_text="Welcome to Maeser. This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes."
-    # primary_color="#f5f5f5"
-    # Please also check the documentation for further customization options!
 )
+# Mount routes and return the full app
+app = app_manager.add_flask_blueprint()
 
-#initalize the flask blueprint
-app: Flask = app_manager.add_flask_blueprint()
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=3002, debug=True)
 ```
 
-As you can see, a `user_manager` parameter has been added to the call.
+---
 
-### Registering Your GitHub OAuth App
+## 4. Run the Application
 
-Before you can run the app you need to register it with GitHub at the GitHub website.
+Activate your virtual environment and execute:
+```bash
+python example/flask_example_user_mangement.py
+```
+Navigate to **http://localhost:3002**, authenticate via GitHub or LDAP, select a branch, and start chatting.
 
-1. Go to GitHub Developer Settings:
+---
 
-   - Navigate to your GitHub account settings.
-   - Click on "Developer settings" in the sidebar.
-   - Choose "OAuth Apps."
-   - Click the "New OAuth App" button.
+## 5. Register Your GitHub OAuth App
 
-2. Fill in App Details:
+1. In GitHub, go to **Settings → Developer Settings → OAuth Apps → New OAuth App**.
+2. Set **Homepage URL** to `http://localhost:3002` and **Authorization callback URL** to `http://localhost:3002/login/github_callback`.
+3. Copy the **Client ID** and **Client Secret** into `config.yaml`.
 
-   - Application name: Choose a descriptive name (e.g., "Maeser Example").
-   - Homepage URL: Enter http://127.0.0.1:3000
-   - Authorization callback URL: Enter http://localhost:3000/login/github_callback
+---
 
-3. Register and Get Credentials:
+## 6. LDAP Authentication (Optional)
 
-   - Click "Register application."
-   - You'll be taken to your new app's page.
-   - Note down the following:
-     - Client ID: A long string of characters.
-     - Client Secret: Click "Generate a new client secret" and save the value.
+Ensure your LDAP server is reachable, and the fields in `config.yaml` match your directory’s schema. The `LDAPAuthenticator` will bind and lookup users based on these settings.
 
-> **NOTE:** Keep your client secret confidential. Never share it publicly.
+---
 
-4. Using the Credentials in the maeser example:
+## 7. Customization & Debugging
 
-   Replace `...` placeholders in the `config_example.yaml` instantiation first with the client ID and then with the client secret. This will be in the lines of code you were instructed to add above.
+- **Prompts & Branches**: Modify prompt strings or register additional graphs via `sessions_manager.register_branch()`.
+- **Templates**: Edit Jinja2 templates in `maeser/controllers/common/templates/` for UI changes.
+- **Static Assets**: Override CSS/JS in `common/static/`.
+- **Debug Mode**: `debug=True` enables auto-reload and detailed tracebacks.
+- **Production**: Run with a WSGI server such as Gunicorn:
+  ```bash
+  gunicorn example.flask_example_user_mangement:app -b 0.0.0.0:3002
+  ```
 
-    ```yaml
-    github:
-        github_client_id: '...'
-        github_callback_uri: '...'
-        timeout: 10
-        max_requests: 10
-   ```
+---
 
-   ```python
-   from maeser.user_manager import UserManager, GithubAuthenticator
+## Next Steps
 
-   github_authenticator = GithubAuthenticator(
-        client_id=GITHUB_CLIENT_ID, 
-        client_secret=GITHUB_CLIENT_SECRET, 
-        auth_callback_uri=GITHUB_AUTH_CALLBACK_URI,
-        timeout=GITHUB_TIMEOUT,
-        max_requests=MAX_REQUESTS
-    )
-    
-   user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
+- Review the **CLI example** (`example/terminal_example.py`) for a terminal interface.
+- Dive into **advanced workflows** in `graphs.md`.
+- Study Maeser’s **architecture** in `architecture.md` before contributing.
 
-        user_manager.register_authenticator(name="github", authenticator=github_authenticator)
-   ```
-   ```
-
-Here, we set up user management with GitHub authentication and implement rate limiting (5 requests updated every 60 seconds).
-
-
-
-
-
-### Registering Your Ldap3 Authenticator
-
-4. Using the Credentials in the maeser example:
-
-   Replace `...` placeholders in the `config_example.yaml` instantiation first with the appropriate LDAP authentication details, then instantiate and register an `LDAPAuthenticator` using the provided configuration as follows:
-
-    ```yaml
-    ldap3:
-        name: '...'
-        ldap_server_urls: ['...', '...']
-        ldap_base_dn: '...'
-        attribute_name: '...'
-        search_filter: '({attribute_name}={...})'
-        object_class: '...'
-        attributes: ['{attribute_name}', '...', '...']
-        ca_cert_path: '...'
-        connection_timeout: 10
-   ```
-
-   ```python
-   from maeser.user_manager import UserManager, GithubAuthenticator
-
-   ldap3_authenticator = LDAPAuthenticator(
-        name=LDAP3_NAME,
-        ldap_server_urls=LDAP_SERVER_URLS,
-        ldap_base_dn=LDAP_BASE_DN,
-        attribute_name=LDAP_ATTRIBUTE_NAME,
-        search_filter=LDAP_SEARCH_FILTER,
-        object_class=LDAP_OBJECT_CLASS,
-        attributes=LDAP_ATTRIBUTES,
-        ca_cert_path=LDAP_CA_CERT_PATH,
-        connection_timeout=LDAP_CONNECTION_TIMEOUT
-    )
-
-   user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
-   
-   user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
-   ```
-
-Here, we set up user management with the appropriate LDAP authentication details by first replacing the ... placeholders in the config_example.yaml file with the correct LDAP server information, attributes, and connection settings. Then, we instantiate an `LDAPAuthenticator` using these values, specifying the LDAP server URLs, base distinguished name (DN), attribute name, search filter, object class, and other required parameters. Finally, we register this authenticator with the UserManager, which will handle authentication requests and enforce rate limits based on the specified configurations.
-
-## Customization
-
-Moving on, you could customize various aspects of the application, such as:
-
-- Changing the port the server runs on
-- Adding more chat branches
-- Modifying the rate limiting parameters
-- Updating the app name, chat head, logo, or favicon
-- Changing color schemes (Work in Progress)
-- Changing the AI's initial responses (Work in Progress)
-- Enabling fancy animations (Work in Progress)
-
-## Conclusion
-
-This example demonstrates how to use the `maeser` package to create a multi-branch chatbot Web application with user authentication and rate limiting. You can build upon this example to create more complex applications tailored to your specific needs.
+Enjoy your authenticated Maeser chatbot! 🚀
 
