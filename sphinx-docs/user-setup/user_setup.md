@@ -1,54 +1,123 @@
-# Setting Up Maeser
+# User Guide: Getting Started with Maeser
 
-There are two possible use models for you as a user. The first is if you simply want to develop your own app that uses Maeser. That is the focus of this document. If, instead, you want to clone and start making changes to the Maeser code base itself, you should instead consult [this documentation](development_setup.md).
+This guide is designed for users who want to **use** Maeser’s chatbot capabilities without diving into development. You will learn how to install Maeser, configure it via a simple YAML file, and run the provided **web** and **terminal** chat interfaces with minimal technical overhead.
 
-## Step 1: Create a Virtual Environment
+---
 
-You will need to use a python virtual environment for your system. This is so that (1) you don't have to install packages system-wide (which you may not have privileges to do on the system you are working with) and (2) so that you have total control over the installed software versions. This includes the version of python you are using - at the current time python >= version 3.0 is required.
+## 1. Prerequisites
 
-We will outline the use of Conda here since it provides the simplest way to get a virtual environment with a specific python version. However, you are free to use your favorite python virtual environment approach instead.
+- **Python 3.10+** installed on your system (download from https://python.org).  
+- Basic command‑line familiarity (opening a terminal or PowerShell window).  
+- Internet access for installing packages and, optionally, for registering an OpenAI API key.  
 
-1. You can install Conda using:
+> **Note:** No programming experience is required—follow the steps below to get started.
 
-```
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-bash ~/miniconda.sh -b -p $HOME/miniconda
-```
+---
 
-Note that for Mac OS X, replacing Linux with MacOSX in the first command above will do the trick. Also, depending on your system you may be able to (or need to) use `curl` instead of `wget` above.
+## 2. Install Maeser
 
-2. Next, make a new virtual environment with a specific version of python with the following:
-
-`conda create --name maeserEnv python=3.10 pip`
-
-3. Finally, you activate the virtual environment with:
-
-`conda activate maeserEnv`
-
-and you deactivate it with:
-
-`conda deactivate`
-
-Anything you "pip install" once the environment has been activated will be installed into the environment rather than system-wide.
-
-## Step 2: Install Maeser Into your Virtual Environment
-
-Next, after activating your virtual environment, install maeser:
+Open a terminal (macOS/Linux) or PowerShell (Windows) and run:
 
 ```bash
-pip install Maeser
+pip install maeser
 ```
 
-That is it - Maeser is now installed in your environment.
+This command downloads the latest Maeser release and its dependencies from PyPI.
 
-## Step 3: Clone Maeser Onto Your Machine (optional)
+---
 
-The Maeser github repo contains an example directory with a collection of sample uses of Maeser. You will likely want use those examples as your starting point. You can either go to github and copy that directory down or you can simply clone the github repo onto your machine.
+## 3. Prepare Configuration
 
-To clone the repo, execute the following shell command:
+Maeser uses a simple **YAML** file (`config.yaml`) to store settings like API keys and file paths. You only need to do this once.
 
-```shell
-git clone https://github.com/byu-cpe/Maeser
+1. **Copy the example file** (in the installation directory) to your working folder:
+   ```bash
+   cp $(python -c "import maeser; print(maeser.__file__)")/../config_example.yaml config.yaml
+   ```
+2. **Open `config.yaml`** in a text editor and update only these fields:
+   ```yaml
+   OPENAI_API_KEY: "<your-openai-key>"
+   VEC_STORE_PATH: "./vectorstores"
+   CHAT_HISTORY_PATH: "./chat_logs"
+   USERS_DB_PATH: "./users.db"
+   LLM_MODEL_NAME: "gpt-4o"
+   ```
+   - If you don’t have an OpenAI key, you can sign up at https://platform.openai.com/signup.  
+   - The default paths (`./vectorstores`, `./chat_logs`, `./users.db`) work in your current folder.
+
+> **Tip:** You can also set `OPENAI_API_KEY` as an environment variable to avoid editing `config.yaml`:
+> ```bash
+> export OPENAI_API_KEY="<your-openai-key>"
+> ```
+
+---
+
+## 4. Download Example Vectorstores
+
+Maeser requires pre-built vectorstores (FAISS indexes) to retrieve knowledge. For simplicity, download the **Maeser** and **BYU** vectorstores from the project’s GitHub releases:
+
+1. Visit: https://github.com/byu-cpe/Maeser/releases/latest
+2. Download `vectorstores-maeser.zip` and `vectorstores-byu.zip`.  
+3. Unzip into your working folder:
+   ```bash
+   unzip vectorstores-maeser.zip -d vectorstores/maeser
+   unzip vectorstores-byu.zip   -d vectorstores/byu
+   ```
+
+Your folder structure should now contain:
+```
+./config.yaml
+./vectorstores/
+    ├─ maeser/
+    └─ byu/
 ```
 
-You are now ready to work through the example apps provided with Maeser. To do so, head over to this page: [Maeser Example (with Flask)](flask_example.md).
+---
+
+## 5. Running the Web Chat Interface
+
+Maeser provides a ready‑to‑use Flask web app with optional user authentication.
+
+1. **Install extra requirements**:
+   ```bash
+   pip install maeser[web]
+   ```
+2. **Run the web app**:
+   ```bash
+   python -m maeser.webapp
+   ```
+3. **Open your browser** and go to:
+   ```
+   http://localhost:3002
+   ```
+4. **Select a knowledge branch** (e.g., "Karl G. Maeser History" or "BYU History") and start chatting!
+
+> **Tip:** If you have a GitHub OAuth key in `config.yaml`, you can log in to manage user quotas.
+
+---
+
+## 6. Running the Terminal Chat Interface
+
+For quick, command‑line access without a web browser:
+
+```bash
+python -m maeser.terminal
+```
+1. Select a branch from the numbered menu.  
+2. Type your question and press **Enter**.  
+3. Type `exit` or `quit` to end the session.
+
+---
+
+## 7. Customizing Your Experience
+
+- **Add Your Own Content:** Follow the easy guide at `maeser.embedding` (no coding required) to embed your own documents.  
+- **Switch Models:** Change `LLM_MODEL_NAME` in `config.yaml` to another model name supported by OpenAI.  
+- **Adjust Quotas:** If you’re an admin, set per‑user request limits in `config.yaml` under `MAX_REQUESTS` and `RATE_LIMIT_INTERVAL`.
+
+---
+
+## 8. Getting Help  
+- **GitHub Issues:** Report bugs or ask questions at https://github.com/byu-cpe/Maeser/issues.  
+
+

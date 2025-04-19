@@ -23,6 +23,7 @@ Developer Guide
    development-setup/graphs
    development-setup/custom_graphs
    development-setup/architecture
+   development-setup/libraries
    development-setup/dev-troubleshooting
    development-setup/flask_example
    development-setup/terminal_example
