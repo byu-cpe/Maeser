@@ -15,6 +15,7 @@ Developer Guide
 ---------------
 
 .. toctree::
+   :numbered:
    :maxdepth: 1
 
    development-setup/development_setup
@@ -32,6 +33,7 @@ SysAdmin Guide
 --------------
 
 .. toctree::
+   :numbered:
    :maxdepth: 1
 
    sysadmin/deployment
@@ -41,6 +43,7 @@ Legal
 -----
 
 .. toctree::
+   :numbered:
    :maxdepth: 1
 
    legal/repository_info

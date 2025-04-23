@@ -166,9 +166,3 @@ If you’re on Windows, we recommend using WSL for a smoother experience:
   - **FAISS Installation Errors**: On Windows, use the WSL environment or install via `conda install -c conda-forge faiss-cpu` to avoid build issues.
   - **Permission Errors**: Verify file and directory permissions for log files, vectorstores, and the `config.yaml` file.
   - **Dependency Conflicts**: If you encounter version mismatches, recreate your virtual environment and pin dependencies in `pyproject.toml` or `requirements.txt`.
-
----
-
-You’re all set! 🎉  
-Happy hacking on Maeser. If you run into any issues, check existing GitHub issues or open a new one.
-
