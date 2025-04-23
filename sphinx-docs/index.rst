@@ -43,7 +43,6 @@ Legal
 -----
 
 .. toctree::
-   :numbered:
    :maxdepth: 1
 
    legal/repository_info
