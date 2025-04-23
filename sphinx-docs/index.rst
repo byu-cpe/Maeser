@@ -1,51 +1,63 @@
-.. Maeser documentation master file, created by
-   sphinx-quickstart on Wed Jul 17 09:38:14 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. Maeser documentation master file, created by sphinx-quickstart on Wed Jul 17 09:38:14 2024.
+   Adapted for the updated documentation structure (docs branch).
 
-Welcome to Maeser's documentation!
-==================================
+Welcome to Maeser Documentation!
+================================
 
-.. toctree ::
-   :numbered:
-   :maxdepth: 1
-   :caption: Development:
-
-   development/user_setup.md
-   development/development_setup.md
-   development/wsl_development.md
-   development/flask_example.md
-   development/terminal_example.md
-   development/embedding.md
-   development/graphs.md
-
-.. toctree ::
-   :maxdepth: 1
-   :caption: Repository License Info:
-
-   legal/repository_info.md
-   legal/LGPL.md
-   legal/GPL.md
-   legal/CCBYSA4.md
-   legal/MIT.md
-   legal/CC0.md
-   legal/AGPL.md
+Maeser is a modular framework for building RAG‑powered tutoring chatbots. This documentation is organized into User Guide, Developer Guide, SysAdmin Guide, and Legal references.
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Source Reference:
-
-   autodoc/maeser/modules.rst
-
-.. toctree ::
    :maxdepth: 1
-   :caption: License of this documentation:
 
-   legal/LICENSE.DOCS.md
+   user-setup/user_setup
 
-Indices and tables
+Developer Guide
+---------------
+
+.. toctree::
+   :numbered:
+   :maxdepth: 1
+
+   development-setup/development_setup
+   development-setup/wsl_development
+   development-setup/embedding
+   development-setup/graphs
+   development-setup/custom_graphs
+   development-setup/architecture
+   development-setup/libraries
+   development-setup/dev-troubleshooting
+   development-setup/flask_example
+   development-setup/terminal_example
+
+SysAdmin Guide
+--------------
+
+.. toctree::
+   :numbered:
+   :maxdepth: 1
+
+   sysadmin/deployment
+   sysadmin/sysadmin_troubleshooting
+
+Legal
+-----
+
+.. toctree::
+   :maxdepth: 1
+
+   legal/repository_info
+   legal/LICENSE.DOCS
+   legal/LGPL
+   legal/GPL
+   legal/CCBYSA4
+   legal/MIT
+   legal/CC0
+   legal/AGPL
+
+Indices and Tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+

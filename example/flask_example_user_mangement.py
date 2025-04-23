@@ -25,7 +25,6 @@ from config_example import (
     LLM_MODEL_NAME
 )
 
-
 import os
 
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
