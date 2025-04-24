@@ -1,52 +1,55 @@
 # Architecture Overview
 
-This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **App_Manager**, which initializes and connects all major modules. Below is a graphical representation, followed by explanations of each component and how they interact.
+This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **App_Manager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy, using **MyST** code fences for Mermaid.
 
-```mermaid
+```{mermaid}
 flowchart LR
-  %% Root Flask application orchestrator
-  A0[Maeser Flask App]
-  A0 --> A1[App_Manager]
+  %% Root Flask orchestrator
+  A0["Maeser Flask App"] --> A1["App_Manager"]
 
-  %% Primary modules managed by App_Manager
-  A1 --> B0[ChatSessionManager]
-  A1 --> C0[UserManager]
-  A1 --> D0[Jinja2 Render Helpers]
-  A1 --> E0[ChatLogsManager]
-
-  %% ChatSessionManager subcomponents and controllers
-  subgraph Chat_Module["ChatSessionManager Module"]
+  %% ChatSessionManager Module
+  subgraph ChatModule["ChatSessionManager Module"]
     direction TB
-    B0 --> B1[Simple RAG]
-    B0 --> B2[Pipeline RAG]
-    B0 --> B3[chat_interface.controller]
-    B0 --> B4[new_session_api.controller]
-    B0 --> B5[chat_api.controller]
-    B0 --> B6[conversation_history_api.controller]
+    B0["ChatSessionManager"]
+    B0 --> B1["Simple RAG"]
+    B0 --> B2["Pipeline RAG"]
+    B0 --> B3["chat_interface"]
+    B0 --> B4["new_session_api"]
+    B0 --> B5["chat_api"]
+    B0 --> B6["conversation_history_api"]
   end
+  A1 --> B0
 
-  %% ChatLogsManager subcomponents and controllers
-  subgraph Chat_Logs_Module["ChatLogsManager Module"]
+  %% ChatLogsManager Module
+  subgraph LogsModule["ChatLogsManager Module"]
     direction TB
-    E0 --> E1[feedback_api.controller]
-    E0 --> E2[feedback_form_get.controller]
-    E0 --> E3[feedback_form_post.controller]
-    E0 --> E4[training.controller]
-    E0 --> E5[training_post.controller]
-    E0 --> E6[chat_logs_overview.controller]
-    E0 --> E7[display_chat_log.controller]
+    E0["ChatLogsManager"]
+    E0 --> E1["feedback_api"]
+    E0 --> E2["feedback_form_get"]
+    E0 --> E3["feedback_form_post"]
+    E0 --> E4["training"]
+    E0 --> E5["training_post"]
+    E0 --> E6["chat_logs_overview"]
+    E0 --> E7["display_chat_log"]
   end
+  A1 --> E0
 
-  %% UserManager subcomponents and controllers
-  subgraph UserMng_Module["UserManager Module"]
+  %% UserManager Module
+  subgraph UserModule["UserManager Module"]
     direction TB
-    C0 --> C1[GithubAuthenticator]
-    C0 --> C2[LDAPAuthenticator]
-    C0 --> C3[login_api.*]
-    C0 --> C4[logout.controller]
-    C0 --> C5[manage_users_view.controller]
-    C0 --> C6[user_management_api.controller]
+    C0["UserManager"]
+    C0 --> C1["GithubAuthenticator"]
+    C0 --> C2["LDAPAuthenticator"]
+    C0 --> C3["login_api.*"]
+    C0 --> C4["logout"]
+    C0 --> C5["manage_users_view"]
+    C0 --> C6["user_management_api"]
   end
+  A1 --> C0
+
+  %% Jinja2 helpers
+  A1 --> D0["Jinja2 Render Helpers"]
+
 ```
 
 ## Core Components

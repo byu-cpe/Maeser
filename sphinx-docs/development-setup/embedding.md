@@ -13,7 +13,7 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 
 ---
 
-## 1. Prepare Your Text Data
+## Prepare Your Text Data
 
 1. Collect all source files you want to embed into a single folder (e.g., `docs/homework`, `docs/labs`, etc.).
 2. If your files are not plain text (e.g., PDF), convert them first. A simple example using `pdftotext`:
@@ -24,7 +24,7 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 
 ---
 
-## 2. Chunk Your Documents
+## Chunk Your Documents
 
 Large documents must be split into smaller, semantically meaningful chunks before embedding:
 
@@ -52,7 +52,7 @@ for doc in docs:
 
 ---
 
-## 3. Create the Vector Store
+## Create the Vector Store
 
 Use FAISS (via LangChain) to embed and store your chunks:
 
@@ -79,7 +79,7 @@ vectorstore.save_local("my_vectorstore")
 
 ---
 
-## 4. Integrate with Maeser
+## Integrate with Maeser
 
 In your Maeser application (e.g., in `flask_example.py` or your custom script):
 
@@ -108,7 +108,7 @@ Now, when you run the Maeser app, your new "My Custom Knowledge" branch will ret
 
 ---
 
-## 5. Additional Tips
+## Additional Tips
 
 - **Rebuilding embeddings:** Whenever you update your source documents, delete `my_vectorstore/` and rerun the vector store creation step.
 - **Batch embeddings:** For large corpora, consider parallelizing embeddings or using `batch` parameter in `OpenAIEmbeddings`.

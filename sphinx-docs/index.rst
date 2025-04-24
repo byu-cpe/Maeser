@@ -4,17 +4,16 @@
 Welcome to Maeser Documentation!
 ================================
 
-Maeser is a modular framework for building RAG‑powered tutoring chatbots. This documentation is organized into User Guide, Developer Guide, SysAdmin Guide, and Legal references.
+Maeser is a modular framework for building RAG-powered tutoring chatbots. This documentation is organized into four main areas.
 
 .. toctree::
+   :caption: User Guide
    :maxdepth: 1
 
    user-setup/user_setup
 
-Developer Guide
----------------
-
 .. toctree::
+   :caption: Developer Guide
    :numbered:
    :maxdepth: 1
 
@@ -29,20 +28,15 @@ Developer Guide
    development-setup/flask_example
    development-setup/terminal_example
 
-SysAdmin Guide
---------------
-
 .. toctree::
-   :numbered:
+   :caption: SysAdmin Guide
    :maxdepth: 1
 
    sysadmin/deployment
-   sysadmin/sysadmin_troubleshooting
-
-Legal
------
+   sysadmin/troubleshooting
 
 .. toctree::
+   :caption: Legal References
    :maxdepth: 1
 
    legal/repository_info
@@ -60,4 +54,3 @@ Indices and Tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

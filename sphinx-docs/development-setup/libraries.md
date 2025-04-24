@@ -18,22 +18,22 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ---
 
-## 1. Retrieval & Embeddings
+## Retrieval & Embeddings
 
-### 1.1 LangChain
+### LangChain
 - **Role:** High-level RAG abstraction layer
 - **Key features used:**
   - **Text splitters:** `RecursiveCharacterTextSplitter`  
   - **Embeddings:** `OpenAIEmbeddings`  
   - **Vector store wrapper:** `FAISS` integration  
 
-### 1.2 FAISS (via LangChain)
+### FAISS (via LangChain)
 - **Role:** High-performance nearest-neighbor search  
 - **Use case:** Index and query embedding vectors for both Simple and Pipeline RAG pipelines.
 
 ---
 
-## 2. Workflow Orchestration
+## Workflow Orchestration
 
 ### LangGraph
 - **Role:** Compose multi-step AI pipelines as directed graphs
@@ -41,7 +41,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ---
 
-## 3. LLM & Embedding APIs
+## LLM & Embedding APIs
 
 ### OpenAI Python SDK
 - **Role:** Official client for chat completions & embeddings
@@ -61,7 +61,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ---
 
-## 5. Configuration & Environment
+## Configuration & Environment
 
 ### PyYAML
 - **Role:** YAML parsing
@@ -73,7 +73,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ---
 
-## 6. Authentication & User Management
+## Authentication & User Management
 
 ### LDAP3
 - **Role:** LDAP directory client
@@ -85,7 +85,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ---
 
-## 7. CLI & Developer Tooling
+## CLI & Developer Tooling
 
 ### pyinputplus
 - **Role:** Enhanced `input()` for CLI menus & validation
@@ -101,7 +101,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ---
 
-## 8. Optional Integrations
+## Optional Integrations
 
 - **Poetry:** Alternative dependency & venv management  
 - **Gunicorn:** Production-ready WSGI server  

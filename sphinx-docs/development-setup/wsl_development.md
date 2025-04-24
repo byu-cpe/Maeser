@@ -17,7 +17,7 @@ The **Windows Subsystem for Linux (WSL)** is a compatibility layer that allows y
 
 ---
 
-## 1. Install & Enable WSL
+## Install & Enable WSL
 
 1. **Open PowerShell as Administrator**.  
 2. Run the following command to install WSL 2 and the default Ubuntu distribution:
@@ -35,7 +35,7 @@ The **Windows Subsystem for Linux (WSL)** is a compatibility layer that allows y
 
 ---
 
-## 2. Update & Upgrade Your Linux Distro
+## Update & Upgrade Your Linux Distro
 
 1. Open **Ubuntu (WSL)** from the Start menu.  
 2. Update package lists and upgrade installed packages:
@@ -49,7 +49,7 @@ The **Windows Subsystem for Linux (WSL)** is a compatibility layer that allows y
 
 ---
 
-## 3. Configure WSL Settings (Optional)
+## Configure WSL Settings (Optional)
 
 Create a **`.wslconfig`** file in your Windows user directory (e.g., `C:\Users\You`) to customize WSL 2 VM resources:
 
@@ -64,7 +64,7 @@ This file is automatically applied on WSL restarts ([fr.wikipedia.org](https://f
 
 ---
 
-## 4. Clone & Set Up Maeser in WSL
+## Clone & Set Up Maeser in WSL
 
 1. **Navigate** to your development folder, for example:
    ```bash
@@ -91,7 +91,7 @@ This file is automatically applied on WSL restarts ([fr.wikipedia.org](https://f
 
 ---
 
-## 5. Build & Preview Documentation
+## Build & Preview Documentation
 
 Within your activated environment:
 
@@ -107,7 +107,7 @@ explorer.exe .\build\html\index.html
 
 ---
 
-## 6. Using VS Code with WSL
+## Using VS Code with WSL
 
 1. Install the **Remote - WSL** extension in VS Code.  
 2. Open your Maeser folder in WSL by clicking **Remote Explorer → WSL Targets → Ubuntu** and selecting your project.  
@@ -115,14 +115,14 @@ explorer.exe .\build\html\index.html
 
 ---
 
-## 7. Accessing Windows Files
+## Accessing Windows Files
 
 - Windows drives are mounted under `/mnt`, e.g., your `C:` drive at `/mnt/c`.  
 - To edit files on Windows from WSL, navigate to `/mnt/c/path/to/file` and open them with Linux editors or VS Code.
 
 ---
 
-## 8. Additional Resources
+## Additional Resources
 
 - **Microsoft’s WSL Install Guide**: Detailed walkthrough for various Windows versions ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/install?utm_source=chatgpt.com)).  
 - **WSL Overview & Tutorials**: In-depth docs on WSL features and GUI support ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/?utm_source=chatgpt.com)).  
