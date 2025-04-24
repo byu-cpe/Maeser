@@ -12,7 +12,7 @@ This guide explores how to extend Maeser’s default pipelines by building **cus
 
 ---
 
-## 1. Why Build Custom Graphs?
+## Why Build Custom Graphs?
 
 While **Pipeline RAG** can query multiple domains, real‑world tutoring often requires:
 
@@ -25,11 +25,11 @@ Custom graphs let you compose these behaviors into a coherent pipeline, giving y
 
 ---
 
-## 2. Building a Custom Graph with LangGraph
+## Building a Custom Graph with LangGraph
 
 LangGraph’s **GraphBuilder** API allows you to define states (nodes) and transitions (edges) for your workflow.
 
-### 2.1 Import & Initialize
+### Import & Initialize
 
 ```python
 from langgraph.graph import GraphBuilder
@@ -39,7 +39,7 @@ sessions = ChatSessionManager()
 builder = GraphBuilder()
 ```
 
-### 2.2 Define Retrieval State(s)
+### Define Retrieval State(s)
 
 Add one or more retrieval states using Maeser’s retriever functions:
 
@@ -72,7 +72,7 @@ builder.add_state(
 )
 ```
 
-### 2.3 Add Tool or Classification States
+### Add Tool or Classification States
 
 Integrate tools or classification chains:
 
@@ -95,7 +95,7 @@ builder.add_state(
 )
 ```
 
-### 2.4 Define Generation State
+### Define Generation State
 
 Use an LLM state to generate the final answer:
 
@@ -112,7 +112,7 @@ builder.add_state(
 )
 ```
 
-### 2.5 Connect States with Edges
+### Connect States with Edges
 
 Map the flow of data between states:
 
@@ -131,7 +131,7 @@ builder.add_edge("classify_domain", "calculate", condition=lambda res: res=='mat
 builder.add_edge("calculate", "generate_answer")
 ```
 
-### 2.6 Compile & Register
+### Compile & Register
 
 Compile your graph and register it with Maeser:
 
@@ -146,7 +146,7 @@ sessions.register_branch(
 
 ---
 
-## 3. Example: Math Tutor with Calculator
+## Example: Math Tutor with Calculator
 
 This example shows a graph that:
 1. Classifies if the question is a math problem.
@@ -171,7 +171,7 @@ sessions.register_branch("math_tutor","Math & Theory Tutor",graph)
 
 ---
 
-## 4. Best Practices & Tips
+## Best Practices & Tips
 
 - **Design for Clarity**: Keep branches simple; avoid excessive states.
 - **Reuse Components**: Leverage `simple_retrieve`, `llm_generate`, and other utility functions.
@@ -180,7 +180,7 @@ sessions.register_branch("math_tutor","Math & Theory Tutor",graph)
 
 ---
 
-## 5. Next Steps
+## Next Steps
 
 - Read **`graphs.md`** for built‑in pipelines.
 - Experiment with external tools (e.g., web search) by adding new states.

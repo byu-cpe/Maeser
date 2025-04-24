@@ -27,8 +27,8 @@ USERS_DB_PATH: "path/to/users.db"
 VEC_STORE_PATH: "path/to/vectorstores"
 # Path for chat history JSON or DB
 CHAT_HISTORY_PATH: "path/to/chat_history"
-# LLM model name (e.g., gpt-3.5-turbo)
-LLM_MODEL_NAME: "gpt-3.5-turbo"
+# LLM model name (e.g., gpt-4o)
+LLM_MODEL_NAME: "gpt-4o"
 # Maximum requests per user and rate-limit interval (seconds)
 MAX_REQUESTS: 100
 RATE_LIMIT_INTERVAL: 60
@@ -67,9 +67,9 @@ LDAP_CONNECTION_TIMEOUT: 5
 
 ---
 
-## 1. Inspect `flask_example_user_mangement.py`
+## Inspect `flask_example_user_mangement.py`
 
-### 1.1 Configuration Imports & Env Setup
+### Configuration Imports & Env Setup
 Imports all config variables and sets the OpenAI API key in the environment.
 ```python
 from config_example import (
@@ -88,7 +88,7 @@ import os
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 ```
 
-### 1.2 Chat Logs & Session Manager Setup
+### Chat Logs & Session Manager Setup
 Initializes chat logging and session management to track conversations and user queries.
 ```python
 from maeser.chat.chat_logs import ChatLogsManager
@@ -100,7 +100,7 @@ chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
-### 1.3 Prompt Definitions
+### Prompt Definitions
 Defines system prompts that inject persona and context into the LLM.
 ```python
 maeser_prompt = (
@@ -122,7 +122,7 @@ pipeline_prompt = (
 )
 ```
 
-### 1.4 RAG Graph Construction
+### RAG Graph Construction
 Creates three RAG pipelines (Karl Maeser, BYU, and combined pipeline) and registers them as named branches.
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
@@ -177,9 +177,9 @@ sessions_manager.register_branch(
 
 ---
 
-## 2. User Management Setup
+## User Management Setup
 
-### 2.1 Configure Authenticators
+### Configure Authenticators
 Defines GitHub and LDAP authenticators for user login and request quotas.
 ```python
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
@@ -207,7 +207,7 @@ ldap3_authenticator = LDAPAuthenticator(
 )
 ```
 
-### 2.2 Initialize User Manager
+### Initialize User Manager
 Creates a `UserManager` instance and registers the authenticators.
 ```python
 # Initialize user management with request limits
@@ -223,7 +223,7 @@ user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authent
 
 ---
 
-## 3. Flask Application Setup
+## Flask Application Setup
 
 Initializes the Flask app with both chat session and user managers, then registers all routes via blueprints.
 ```python
@@ -248,7 +248,7 @@ if __name__ == "__main__":
 
 ---
 
-## 4. Run the Application
+## Run the Application
 
 Activate your virtual environment and execute:
 ```bash
@@ -258,7 +258,7 @@ Navigate to **http://localhost:3002**, authenticate via GitHub or LDAP, select a
 
 ---
 
-## 5. Register Your GitHub OAuth App
+## Register Your GitHub OAuth App
 
 1. In GitHub, go to **Settings → Developer Settings → OAuth Apps → New OAuth App**.
 2. Set **Homepage URL** to `http://localhost:3002` and **Authorization callback URL** to `http://localhost:3002/login/github_callback`.
@@ -266,13 +266,13 @@ Navigate to **http://localhost:3002**, authenticate via GitHub or LDAP, select a
 
 ---
 
-## 6. LDAP Authentication (Optional)
+## LDAP Authentication (Optional)
 
 Ensure your LDAP server is reachable, and the fields in `config.yaml` match your directory’s schema. The `LDAPAuthenticator` will bind and lookup users based on these settings.
 
 ---
 
-## 7. Customization & Debugging
+## Customization & Debugging
 
 - **Prompts & Branches**: Modify prompt strings or register additional graphs via `sessions_manager.register_branch()`.
 - **Templates**: Edit Jinja2 templates in `maeser/controllers/common/templates/` for UI changes.

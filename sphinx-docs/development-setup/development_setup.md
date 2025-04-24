@@ -14,7 +14,7 @@ This guide walks you through setting up a Maeser development environment from sc
 
 ---
 
-## 1. Clone the Repository
+## Clone the Repository
 
 ```bash
 git clone https://github.com/byu-cpe/Maeser.git
@@ -25,11 +25,11 @@ This gives you the latest `main` branch of the Maeser source code and examples.
 
 ---
 
-## 2. Create & Activate a Virtual Environment
+## Create & Activate a Virtual Environment
 
 You have two options: use plain `venv` / `pip`, or Poetry.
 
-### 2.1. Using `venv` + `pip`
+### Using `venv` + `pip`
 
 ```bash
 # Create the virtual environment
@@ -42,7 +42,7 @@ source .venv/bin/activate
 .venv\Scripts\Activate.ps1
 ```
 
-### 2.2. Using Poetry
+### Using Poetry
 
 ```bash
 # Install Poetry if you haven't already
@@ -55,11 +55,11 @@ poetry shell
 
 ---
 
-## 3. Install Maeser & Dependencies
+## Install Maeser & Dependencies
 
 Once your virtual environment is active:
 
-### 3.1. Editable Install (for development)
+### Editable Install (for development)
 
 ```bash
 pip install -e .
@@ -67,7 +67,7 @@ pip install -e .
 
 This installs Maeser in “editable” mode so that changes you make locally take effect immediately.
 
-### 3.2. Install All Requirements via Make
+### Install All Requirements via Make
 
 A convenient shortcut:
 
@@ -83,7 +83,7 @@ This will:
 
 ---
 
-## 4. Environment Configuration
+## Environment Configuration
 
 Maeser uses a small configuration file for API keys, file paths, and settings.
 
@@ -106,7 +106,7 @@ Maeser uses a small configuration file for API keys, file paths, and settings.
 
 ---
 
-## 5. Running Tests
+## Running Tests
 
 Validate your setup by running:
 
@@ -124,7 +124,7 @@ All tests should pass before you start making changes.
 
 ---
 
-## 6. Building the Documentation
+## Building the Documentation
 
 Maeser’s docs use Sphinx (with MyST for Markdown support). To build the HTML site locally:
 
@@ -137,7 +137,7 @@ Then open `sphinx-docs/build/html/index.html` in your browser.
 
 ---
 
-## 7. Windows Setup (WSL)
+## Windows Setup (WSL)
 
 If you’re on Windows, we recommend using WSL for a smoother experience:
 
@@ -148,7 +148,7 @@ If you’re on Windows, we recommend using WSL for a smoother experience:
 
 ---
 
-## 8. Additional Tips
+## Additional Tips
 
 - **Hot-reload during development**: Run the Flask example in debug mode to auto-restart on code changes.
 - **IDE integration**: Point your IDE’s interpreter to the `.venv` or Poetry venv for linting and Intellisense.

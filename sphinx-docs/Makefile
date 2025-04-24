@@ -44,7 +44,7 @@ clean: tidy
 	rm -rf $(PACKAGE_DOC_DIR)
 
 deps:
-	$(PIP) install sphinx sphinx_rtd_theme myst_parser sphinx-book-theme
+	$(PIP) install sphinx sphinx_rtd_theme myst_parser sphinx-book-theme sphinxcontrib-mermaid
 
 .PHONY: help apidoc tidy clean Makefile $(SPHINX_TARGETS)
 

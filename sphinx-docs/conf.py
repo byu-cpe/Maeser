@@ -61,8 +61,8 @@ autodoc_mock_imports = [
 # -- Project information -----------------------------------------------------
 
 project = 'Maeser'
-copyright = '2024, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, contributors'
-author = 'Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, contributors'
+copyright = '2024, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales contributors'
+author = 'Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales contributors'
 
 # The full version, including alpha/beta/rc tags
 release = 'alpha'
@@ -72,7 +72,7 @@ release = 'alpha'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode']
+extensions = ['myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode', 'sphinxcontrib.mermaid']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -82,6 +82,13 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.sphinx-venv']
 
+# Enable MyST extensions
+myst_enable_extensions = [
+    "colon_fence"
+]
+
+# Treat the `mermaid` fence as a Sphinx directive
+myst_fence_as_directive = ["mermaid"]
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -101,7 +108,9 @@ html_theme_options = {
         "image_dark": "_static/maeser-dark.png",
         "link": "https://github.com/byu-cpe/Maeser",
         "alt_text": html_title
-    }
+    },
+    "collapse_navigation": True,
+    "show_nav_level": 0       
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

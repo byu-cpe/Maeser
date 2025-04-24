@@ -14,23 +14,23 @@ Before you begin, ensure you have:
 
 ---
 
-## 1. Simple RAG (`get_simple_rag`)
+## Simple RAG (`get_simple_rag`)
 
 Imagine you’re a university professor specializing in a single course—say, **Medieval Literature**—and students ask you questions only about topics you’ve covered exclusively in that domain. **Simple RAG** is your go‑to approach.
 
-### 1.1 Conceptual Overview
+### Conceptual Overview
 
 1. **Single‑Domain Focus**: You have one set of lecture notes, articles, and readings.
 2. **Retrieve & Answer**: Upon a student’s question, you quickly flip through your notes, pick the most relevant passages, and craft an answer.
 3. **Optional Memory**: If the student follows up, you recall the earlier parts of the conversation (if configured).
 
-### 1.2 Workflow Details
+### Workflow Details
 
 - **Retrieval**: Queries the designated FAISS index to fetch top‑k document chunks. Think of it as scanning your annotated textbook for the best quotes.
 - **Prompt Construction**: Embeds those chunks into a system prompt template, framing the AI as an expert lecturer.
 - **Generation**: Invokes the LLM (e.g., GPT-3.5) with the composed prompt, yielding a focused response.
 
-### 1.3 Code Example
+### Code Example
 
 > *“Alright class, let’s see how we can answer a question on medieval chivalry.”*
 
@@ -64,17 +64,17 @@ sessions.register_branch(
 
 ---
 
-## 2. Pipeline RAG (`get_pipeline_rag`)
+## Pipeline RAG (`get_pipeline_rag`)
 
 Now picture a professor teaching a comprehensive curriculum with **homework**, **lab assignments**, and **class discussions**—each requiring domain‑specific expertise. **Pipeline RAG** lets you orchestrate multiple RAG pipelines, routing questions appropriately or combining insights across domains.
 
-### 2.1 Conceptual Overview
+### Conceptual Overview
 
 1. **Multi‑Domain Expertise**: Separate vectorstores for Homework, Labs, and Lecture Notes.
 2. **Routing & Aggregation**: Determine which domain(s) to tap or merge contexts.
 3. **Unified Answer**: Synthesize information into a coherent response, akin to a professor referencing lectures, lab manuals, and homework guidelines.
 
-### 2.2 Workflow Details
+### Workflow Details
 
 - **Optional Routing**: Classify the student’s question (e.g., “Is this a lab or homework question?”) to decide which vectorstores to query.
 - **Retrieval**: Fetch top‑k chunks from each relevant domain’s index.
@@ -82,7 +82,7 @@ Now picture a professor teaching a comprehensive curriculum with **homework**, *
 - **Generation**: Call the LLM with the unified prompt containing all contexts.
 - **Memory**: Persist conversation threads across all involved domains for follow‑ups.
 
-### 2.3 Code Example
+### Code Example
 
 > *“Consider this scenario: a student asks about troubleshooting a lab experiment while also relating to a homework theory. Let’s handle both.”*
 
@@ -124,7 +124,7 @@ sessions.register_branch(
 
 ---
 
-## 3. Detailed Comparison
+## Detailed Comparison
 
 | Feature            | Simple RAG                      | Pipeline RAG                        |
 | ------------------ | ------------------------------- | ----------------------------------- |
@@ -138,7 +138,7 @@ sessions.register_branch(
 
 ---
 
-## 4. Tips & Best Practices
+## Tips & Best Practices
 
 - **Tune chunking: In `simple_rag` and `pipeline_rag`, adjust the number of retrieved chunks for precision vs. breadth.
 - **Optimize Prompts**: Tailor the system prompt to clearly define the professor’s persona and expected depth.
@@ -147,7 +147,7 @@ sessions.register_branch(
 
 ---
 
-## 5. Next Steps
+## Next Steps
 
 - Explore **Custom Graphs** for tool integration (e.g., calculators) in `custom_graphs.md`.
 - Review Maeser’s **architecture** in `architecture.md` for internals.

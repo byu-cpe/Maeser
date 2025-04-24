@@ -1,168 +1,108 @@
-# Development Setup
+# Architecture Overview
 
-This guide walks you through setting up a Maeser development environment from scratch. You’ll learn how to clone the repository, configure your Python environment, install dependencies, run tests, build the docs, and (optionally) set up on Windows via WSL.
+This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **App_Manager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy, using **MyST** code fences for Mermaid.
 
----
+```{mermaid}
+flowchart LR
+  %% Root Flask orchestrator
+  A0["Maeser Flask App"] --> A1["App_Manager"]
 
-## Prerequisites
+  %% ChatSessionManager Module
+  subgraph ChatModule["ChatSessionManager Module"]
+    direction TB
+    B0["ChatSessionManager"]
+    B0 --> B1["Simple RAG"]
+    B0 --> B2["Pipeline RAG"]
+    B0 --> B3["chat_interface"]
+    B0 --> B4["new_session_api"]
+    B0 --> B5["chat_api"]
+    B0 --> B6["conversation_history_api"]
+  end
+  A1 --> B0
 
-- **Python 3.10+**  
-- **Git**  
-- **Make** (on macOS/Linux) or **Make for Windows** (e.g. via Git Bash)  
-- **Optional:** [Poetry](https://python-poetry.org/) for dependency management  
-- **Optional (WSL):** Windows Subsystem for Linux, if you’re on Windows  
+  %% ChatLogsManager Module
+  subgraph LogsModule["ChatLogsManager Module"]
+    direction TB
+    E0["ChatLogsManager"]
+    E0 --> E1["feedback_api"]
+    E0 --> E2["feedback_form_get"]
+    E0 --> E3["feedback_form_post"]
+    E0 --> E4["training"]
+    E0 --> E5["training_post"]
+    E0 --> E6["chat_logs_overview"]
+    E0 --> E7["display_chat_log"]
+  end
+  A1 --> E0
 
----
+  %% UserManager Module
+  subgraph UserModule["UserManager Module"]
+    direction TB
+    C0["UserManager"]
+    C0 --> C1["GithubAuthenticator"]
+    C0 --> C2["LDAPAuthenticator"]
+    C0 --> C3["login_api.*"]
+    C0 --> C4["logout"]
+    C0 --> C5["manage_users_view"]
+    C0 --> C6["user_management_api"]
+  end
+  A1 --> C0
 
-## 1. Clone the Repository
+  %% Jinja2 helpers
+  A1 --> D0["Jinja2 Render Helpers"]
 
-```bash
-git clone https://github.com/byu-cpe/Maeser.git
-cd Maeser
 ```
 
-This gives you the latest `main` branch of the Maeser source code and examples.
+## Core Components
 
----
+### App_Manager
+- **File:** `maeser/blueprints.py`  
+- **Role:** Bootstraps and configures the Flask app, registers routes via blueprints, applies theming, and initializes background tasks (e.g., quota refresh). Everything flows through this central orchestrator.
 
-## 2. Create & Activate a Virtual Environment
+### ChatSessionManager Module
+- **Class:** `ChatSessionManager` (`maeser/chat/chat_session_manager.py`)  
+- **Responsibilities:** Manages conversation sessions, routes messages to the appropriate RAG graph, and tracks session metadata.
+- **Subcomponents:**
+  - **Simple RAG** (`get_simple_rag`): Single-domain retrieval and generation pipeline.
+  - **Pipeline RAG** (`get_pipeline_rag`): Multi-domain or routed retrieval pipeline.
+- **Controllers:**
+  - `chat_interface.controller` (renders UI)
+  - `new_session_api.controller` (creates sessions)
+  - `chat_api.controller` (handles messages)
+  - `conversation_history_api.controller` (fetches past messages)
 
-You have two options: use plain `venv` / `pip`, or Poetry.
+### ChatLogsManager Module
+- **Class:** `ChatLogsManager` (`maeser/chat/chat_logs.py`)  
+- **Responsibilities:** Persists all chat logs, including messages, responses, tokens, and cost metrics.
+- **Controllers:**
+  - `feedback_api.controller` (submit feedback)
+  - `feedback_form_get.controller` / `feedback_form_post.controller` (render and process feedback forms)
+  - `training.controller` / `training_post.controller` (render and process training data)
+  - `chat_logs_overview.controller` (overview of logs)
+  - `display_chat_log.controller` (stream a specific log)
 
-### 2.1. Using `venv` + `pip`
+### UserManager Module
+- **Class:** `UserManager` (`maeser/user_manager.py`)  
+- **Responsibilities:** Handles authentication (OAuth, LDAP), user registration, admin/ban status, and rate limiting.
+- **Authenticators:**
+  - `GithubAuthenticator`
+  - `LDAPAuthenticator`
+- **Controllers:**
+  - `login_api.*` (login/logout routes)
+  - `logout.controller`
+  - `manage_users_view.controller` (admin UI)
+  - `user_management_api.controller` (user CRUD API)
 
-```bash
-# Create the virtual environment
-python3 -m venv .venv
+### Jinja2 Render Helpers
+- **File:** `maeser/render.py`  
+- **Role:** Provides helper functions for Jinja2 templates to render CSS, HTML snippets, and inject dynamic theming variables.
 
-# Activate (macOS/Linux)
-source .venv/bin/activate
+## Request Flow Summary
+1. **HTTP Request** arrives at the Flask app.  
+2. **App_Manager** routes the request to the proper controller.  
+3. **Controllers** interact with **ChatSessionManager** or **UserManager** depending on the endpoint.  
+4. **ChatSessionManager** invokes RAG graphs or logs via **ChatLogsManager** for chat operations.  
+5. **UserManager** authenticates and manages user data for secure endpoints.  
+6. **Render Helpers** generate final HTML/CSS for web responses.
 
-# Activate (Windows PowerShell)
-.venv\Scripts\Activate.ps1
-```
+This architecture ensures clear separation of concerns, scalability of RAG pipelines, and maintainable code structure.
 
-### 2.2. Using Poetry
-
-```bash
-# Install Poetry if you haven't already
-pip install poetry
-
-# Let Poetry install dependencies and activate venv
-poetry install
-poetry shell
-```
-
----
-
-## 3. Install Maeser & Dependencies
-
-Once your virtual environment is active:
-
-### 3.1. Editable Install (for development)
-
-```bash
-pip install -e .
-```
-
-This installs Maeser in “editable” mode so that changes you make locally take effect immediately.
-
-### 3.2. Install All Requirements via Make
-
-A convenient shortcut:
-
-```bash
-make setup
-```
-
-This will:
-1. Install the editable package (`pip install -e .`)  
-2. Install development dependencies (including Sphinx, pytest, etc.)  
-3. Run the test suite once to verify everything is working  
-
----
-
-## 4. Environment Configuration
-
-Maeser uses a small configuration file for API keys, file paths, and settings.
-
-1. Copy the example:
-   ```bash
-   cp config_example.yaml config.yaml
-   ```
-2. Open `config.yaml` and set:
-   ```yaml
-   OPENAI_API_KEY: "your-openai-key-here"
-   # (Optional) GitHub OAuth Client ID/Secret if you plan to enable login
-   GITHUB_CLIENT_ID: ""
-   GITHUB_CLIENT_SECRET: ""
-   # (Optional) Other settings (e.g., vectorstore paths, LDAP server details, etc.)
-   ```
-3. **Environment variables** are also supported:
-   ```bash
-   export OPENAI_API_KEY="your-openai-key-here"
-   ```
-
----
-
-## 5. Running Tests
-
-Validate your setup by running:
-
-```bash
-pytest tests
-```
-
-Or simply:
-
-```bash
-make test
-```
-
-All tests should pass before you start making changes.
-
----
-
-## 6. Building the Documentation
-
-Maeser’s docs use Sphinx (with MyST for Markdown support). To build the HTML site locally:
-
-```bash
-cd sphinx-docs
-make html
-```
-
-Then open `sphinx-docs/build/html/index.html` in your browser.
-
----
-
-## 7. Windows Setup (WSL)
-
-If you’re on Windows, we recommend using WSL for a smoother experience:
-
-1. Install WSL following Microsoft’s guide:  
-   https://learn.microsoft.com/windows/wsl/install  
-2. In your WSL terminal, follow **Steps 1–6** above as if on Linux.  
-3. Use your WSL path (e.g., `/mnt/c/Users/you/Maeser`) for the cloned repo.
-
----
-
-## 8. Additional Tips
-
-- **Hot-reload during development**: Run the Flask example in debug mode to auto-restart on code changes.  
-- **IDE integration**: Point your IDE’s interpreter to the `.venv` or Poetry venv for linting and Intellisense.  
-- **Keep your branches tidy**: Create a feature branch for each change and open a PR against `main`.  
-- **Update docs as you code**: If you add or modify functionality, update the corresponding `.md` or `.rst` file in `sphinx-docs/source/`.
-
-## 9. Developer Tools & Troubleshooting
-
-- **Linting & Formatting**: Use Black and Flake8 to maintain consistent code style. Install with `pip install black flake8` and consider setting up [pre-commit hooks](https://pre-commit.com/) to run them automatically.
-- **Type Checking**: Integrate Mypy for static type verification by installing `pip install mypy` and running `mypy maeser/` as part of your development cycle.
-- **Pre-commit Hooks**: Add a `.pre-commit-config.yaml` to configure hooks (e.g., black, flake8, isort) and install via `pre-commit install` for automated checks on commits.
-- **Continuous Integration (CI)**: Configure GitHub Actions (or another CI provider) to run tests, linting, type checks, and documentation builds on each pull request to ensure code quality.
-- **Docker Support** (Optional): Create a `Dockerfile` and `docker-compose.yml` to containerize Maeser and its dependencies, enabling reproducible environments and easy on-boarding for developers.
-- **Troubleshooting Common Issues**:
-  - **Missing API Keys**: Ensure `config.yaml` and environment variables (e.g., `OPENAI_API_KEY`) are set correctly.
-  - **FAISS Installation Errors**: On Windows, use the WSL environment or install via `conda install -c conda-forge faiss-cpu` to avoid build issues.
-  - **Permission Errors**: Verify file and directory permissions for log files, vectorstores, and the `config.yaml` file.
-  - **Dependency Conflicts**: If you encounter version mismatches, recreate your virtual environment and pin dependencies in `pyproject.toml` or `requirements.txt`.

@@ -35,11 +35,11 @@ These settings ensure the script can load your vectorstores, persist logs, and a
 
 ---
 
-## 1. Inspect `terminal_example.py`
+## Inspect `terminal_example.py`
 
 Open **`example/terminal_example.py`** and explore its main sections:
 
-### 1.1 Imports & Environment Setup
+### Imports & Environment Setup
 ```python
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
@@ -55,7 +55,7 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 - **ChatSessionManager** orchestrates branches and sessions.  
 - **Config imports** supply file paths and keys.
 
-### 1.2 Prompt Definitions
+### Prompt Definitions
 ```python
 maeser_prompt: str = """
 You are speaking from the perspective of Karl G. Maeser.
@@ -69,7 +69,7 @@ Answer questions about BYU history only. {context}
 ```
 - Defines how the LLM should frame responses.
 
-### 1.3 Pipeline Registration
+### Pipeline Registration
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
@@ -122,7 +122,7 @@ sessions_manager.register_branch(
 ```
 - **Registers three branches** for selection at runtime.
 
-### 1.4 CLI Menu & Session Loop
+### CLI Menu & Session Loop
 ```python
 import pyinputplus as pyip
 
@@ -159,7 +159,7 @@ while True:
 
 ---
 
-## 2. Run the Terminal Example
+## Run the Terminal Example
 
 Activate your venv and run:
 ```bash
@@ -171,7 +171,7 @@ python example/terminal_example.py
 
 ---
 
-## 3. Customization
+## Customization
 
 - **Add Branches:** Register your own `CompiledGraph` before the loop.
 - **Modify Prompts:** Tweak `maeser_prompt` and `byu_prompt` for tone and detail.
@@ -180,7 +180,7 @@ python example/terminal_example.py
 
 ---
 
-## 4. Next Steps
+## Next Steps
 
 - Explore the **Flask example** (`flask_example_user_mangement.py`) for web UI.
 - Embed new knowledge bases via **`embedding.md`**.
