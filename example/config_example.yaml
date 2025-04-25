@@ -15,6 +15,9 @@
 
 ### API keys are required for OpenAI and GitHub integrations ###
 
+# NOTE: If you haven't already, please make a copy of this file and name it 'config.yaml'.
+# Don't make changes to 'config_example.py' directly.
+
 api_keys:
   openai_api_key: '...'
   github_client_secret: '...'
