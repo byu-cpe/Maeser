@@ -17,7 +17,7 @@ Maeser. If not, see <https://www.gnu.org/licenses/>.
 
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
-from config_example import (
+from config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 import os
