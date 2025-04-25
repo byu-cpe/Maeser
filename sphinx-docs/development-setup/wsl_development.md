@@ -60,7 +60,7 @@ memory=4GB   # Limits VM to 4 GB RAM
 swap=0       # Disable swap (optional)
 ```
 
-This file is automatically applied on WSL restarts ([fr.wikipedia.org](https://fr.wikipedia.org/wiki/Windows_Subsystem_for_Linux)).
+This file is automatically applied on WSL restarts ([en.wikipedia.org](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)).
 
 ---
 
