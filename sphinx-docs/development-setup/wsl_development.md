@@ -83,7 +83,6 @@ This file is automatically applied on WSL restarts ([en.wikipedia.org](https://e
    ```
 4. **Install** Maeser and development dependencies:
    ```bash
-   pip install -e .
    make setup
    ```
 
