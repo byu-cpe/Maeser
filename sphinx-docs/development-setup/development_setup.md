@@ -9,8 +9,8 @@ This guide walks you through setting up a Maeser development environment from sc
 - **Python 3.10+**
 - **Git**
 - **Make** (on macOS/Linux) or **Make for Windows** (e.g. via Git Bash)
-- **Optional:** [Poetry](https://python-poetry.org/) for dependency management
-- **Optional (WSL):** Windows Subsystem for Linux, if you’re on Windows
+- **[Poetry](https://python-poetry.org/) (Optional):** for dependency management
+- **WSL (Recommended for Windows):** Windows Subsystem for Linux. See [Windows Setup (WSL)](#windows-setup-wsl) below.
 
 ---
 

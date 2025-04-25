@@ -82,6 +82,7 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.sphinx-venv']
 
+# -- Options for MyST --------------------------------------------------------
 # Enable MyST extensions
 myst_enable_extensions = [
     "colon_fence"
@@ -89,6 +90,9 @@ myst_enable_extensions = [
 
 # Treat the `mermaid` fence as a Sphinx directive
 myst_fence_as_directive = ["mermaid"]
+
+# generate HTML anchors for headings up to level 3 (to enable linking to section headings)
+myst_heading_anchors = 3
 
 # -- Options for HTML output -------------------------------------------------
 
