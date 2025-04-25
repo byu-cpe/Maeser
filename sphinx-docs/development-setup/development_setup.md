@@ -27,9 +27,9 @@ This gives you the latest `main` branch of the Maeser source code and examples.
 
 ## Create & Activate a Virtual Environment
 
-You have two options: use plain `venv` / `pip`, or Poetry.
+You have two options: use plain `venv`, or Poetry.
 
-### Using `venv` + `pip`
+### Using `venv`
 
 ```bash
 # Create the virtual environment
@@ -37,7 +37,9 @@ python3 -m venv .venv
 
 # Activate (macOS/Linux)
 source .venv/bin/activate
+```
 
+```powershell
 # Activate (Windows PowerShell)
 .venv\Scripts\Activate.ps1
 ```
