@@ -99,9 +99,9 @@ cd sphinx-docs
 make html
 ```
 
-Open the generated site in your Windows browser:
+To view the documentation, look for the file named `index.html` in the `_build\html\` directory, and open the file in your Windows browser. If you have the `wslu` library installed, you can do this directly from the WSL terminal:
 ```bash
-explorer.exe .\build\html\index.html
+wslview _build/html/index.html
 ```
 
 ---
