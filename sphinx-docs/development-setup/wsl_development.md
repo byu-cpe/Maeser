@@ -108,7 +108,7 @@ wslview _build/html/index.html
 
 ## Using VS Code with WSL
 
-1. Install the **Remote - WSL** extension in VS Code.  
+1. Install the **[Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)** extension in VS Code.  
 2. Open your Maeser folder in WSL by clicking **Remote Explorer → WSL Targets → Ubuntu** and selecting your project.  
 3. VS Code now uses the Linux toolchain inside WSL for linting, debugging, and terminal commands.
 

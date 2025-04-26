@@ -10,7 +10,7 @@ This guide walks you through setting up a Maeser development environment from sc
 - **Git**
 - **Make** (on macOS/Linux) or **Make for Windows** (e.g. via Git Bash)
 - **[Poetry](https://python-poetry.org/) (Optional):** for dependency management
-- **WSL (Recommended for Windows):** Windows Subsystem for Linux. See [Windows Setup (WSL)](#windows-setup-wsl) below.
+- **WSL (Recommended for Windows):** Windows Subsystem for Linux. See **[Windows Setup (WSL)](#windows-setup-wsl)** below.
 
 ---
 
@@ -141,12 +141,7 @@ Then open `sphinx-docs/build/html/index.html` in your browser.
 
 ## Windows Setup (WSL)
 
-If you’re on Windows, we recommend using WSL for a smoother experience:
-
-1. Install WSL following Microsoft’s guide:\
-   [https://learn.microsoft.com/windows/wsl/install](https://learn.microsoft.com/windows/wsl/install)
-2. In your WSL terminal, follow **Steps 1–6** above as if on Linux.
-3. Use your WSL path (e.g., `/mnt/c/Users/you/Maeser`) for the cloned repo.
+If you’re on Windows, we recommend using **[WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install)** for a smoother experience. WSL enables you to run the Maeser project in a Linux-powered shell, ensuring the best compatibility with the project's makefiles and dependencies. For instructions on how to set up Maeser in WSL, read **[Development Setup with WSL (Windows Subsystem for Linux)](wsl_development)** in the documentation.
 
 ---
 
