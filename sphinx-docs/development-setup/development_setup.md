@@ -89,22 +89,37 @@ This will:
 
 Maeser uses a small configuration file for API keys, file paths, and settings.
 
-1. Copy the example:
-   ```bash
-   cp config_example.yaml config.yaml
-   ```
-2. Open `config.yaml` and set:
-   ```yaml
-   OPENAI_API_KEY: "your-openai-key-here"
-   # (Optional) GitHub OAuth Client ID/Secret if you plan to enable login
-   GITHUB_CLIENT_ID: ""
-   GITHUB_CLIENT_SECRET: ""
-   # (Optional) Other settings (e.g., vectorstore paths, LDAP server details, etc.)
-   ```
-3. **Environment variables** are also supported:
-   ```bash
-   export OPENAI_API_KEY="your-openai-key-here"
-   ```
+Open `config_example.yaml` and set:
+```yaml
+OPENAI_API_KEY: "your-openai-key-here"
+# (Optional) GitHub OAuth Client ID/Secret if you plan to enable login
+GITHUB_CLIENT_ID: ""
+GITHUB_CLIENT_SECRET: ""
+# (Optional) Other settings (e.g., vectorstore paths, LDAP server details, etc.)
+```
+**Environment variables** are also supported:
+```bash
+export OPENAI_API_KEY="your-openai-key-here"
+```
+
+> **Note:**  
+> For deployment, it is recommended, although not required, that you copy the provided files in the `/example/` directory as opposed to modifying them directly. Make a copy of `config_example.py` and rename it to `config.yaml`:
+>    ```bash
+>    cp config_example.yaml config.yaml
+>    # Edit config.yaml with production API keys, paths, and DB credentials
+>    ```
+>
+> Then in "config_example.py", be sure to update the config paths:
+> ```python
+>     config_paths = [
+>         'config.yaml',
+>         './config.yaml',
+>         'example/config.yaml'
+>         # Or anywhere else you plan on storing config.yaml
+>     ]
+> ```
+> 
+> Be sure to rename the other example files and update their references accordingly.
 
 ---
 

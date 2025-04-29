@@ -28,11 +28,30 @@ This guide covers best practices for deploying Maeser into production environmen
    pip install -e .
    pip install gunicorn
    ```
-3. **Configuration**: Copy and edit your production `config.yaml` (or set environment variables):
+3. **Configuration**: Edit your production `config.yaml` with production API keys, paths, and DB credentials (or set environment variables).
    ```bash
    cp config_example.yaml config.yaml
    # Edit config.yaml with production API keys, paths, and DB credentials
    ```
+
+> **Note:**  
+> For deployment, it is recommended, although not required, that you copy the provided files in the `/example/` directory as opposed to modifying them directly. Make a copy of `config_example.py` and rename it to `config.yaml`:
+>    ```bash
+>    cp config_example.yaml config.yaml
+>    # Edit config.yaml with production API keys, paths, and DB credentials
+>    ```
+>
+> Then in "config_example.py", be sure to update the config paths:
+> ```python
+>     config_paths = [
+>         'config.yaml',
+>         './config.yaml',
+>         'example/config.yaml'
+>         # Or anywhere else you plan on storing config.yaml
+>     ]
+> ```
+> 
+> Be sure to rename the other example files and update their references accordingly.
 
 ---
 
