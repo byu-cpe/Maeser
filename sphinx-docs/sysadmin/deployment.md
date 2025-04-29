@@ -35,7 +35,7 @@ This guide covers best practices for deploying Maeser into production environmen
    ```
 
 > **Note:**  
-> For deployment, it is recommended, although not required, that you copy the provided files in the `/example/` directory as opposed to modifying them directly. Make a copy of `config_example.py` and rename it to `config.yaml`:
+> For deployment, it is recommended, although not required, that you copy the provided files in the `example/` directory as opposed to modifying them directly. Make a copy of `config_example.py` and rename it to `config.yaml`:
 >    ```bash
 >    cp config_example.yaml config.yaml
 >    # Edit config.yaml with production API keys, paths, and DB credentials
