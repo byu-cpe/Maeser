@@ -25,7 +25,7 @@ PYTEST := $(VENV)/bin/pytest
 setup:
 	$(PIP) install poetry
 	@echo "Updating poetry lock file if necessary..."
-	$(POETRY) lock --no-update
+	$(POETRY) lock
 	$(POETRY) install
 	$(PIP) install -e .
 	pytest tests
