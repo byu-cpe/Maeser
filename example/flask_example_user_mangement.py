@@ -15,7 +15,7 @@ You should have received a copy of the GNU Lesser General Public License along w
 Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
 
-from config import (
+from config_example import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH, 
     VEC_STORE_PATH, MAX_REQUESTS, RATE_LIMIT_INTERVAL, 
     GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_AUTH_CALLBACK_URI, 

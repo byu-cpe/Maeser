@@ -14,7 +14,7 @@ PURPOSE. See the GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License along with
 Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
-from config import (
+from config_example import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 
