@@ -17,8 +17,8 @@
 .PHONY: setup test testVerbose clean_venv
 
 PYTHON := python3
-PIP := $(VENV)/bin/pip
 VENV := .venv
+PIP := $(VENV)/bin/pip
 POETRY := $(VENV)/bin/poetry
 PYTEST := $(VENV)/bin/pytest
 
