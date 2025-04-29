@@ -6,12 +6,12 @@ This guide details how to leverage **Windows Subsystem for Linux (WSL 2)** to cr
 
 ## Introduction to WSL
 
-The **Windows Subsystem for Linux (WSL)** is a compatibility layer that allows you to run a GNU/Linux environment natively on Windows without the overhead of a virtual machine or dual-boot setup. WSL 2 uses a real Linux kernel via a lightweight VM, offering near-native performance and full system-call compatibility ([en.wikipedia.org](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux?utm_source=chatgpt.com)).
+The **Windows Subsystem for Linux (WSL)** is a compatibility layer that allows you to run a GNU/Linux environment natively on Windows without the overhead of a virtual machine or dual-boot setup. WSL 2 uses a real Linux kernel via a lightweight VM, offering near-native performance and full system-call compatibility ([en.wikipedia.org](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)).
 
 **Why use WSL for Maeser development?**
 
 - **Unified Environment**: Use Linux-based tooling (bash, Python, make) directly on Windows.  
-- **Performance**: WSL 2 delivers faster file system I/O and process performance compared to WSL 1 ([learn.microsoft.com](https://learn.microsoft.com/cs-cz/windows/wsl/install-on-server?utm_source=chatgpt.com)).  
+- **Performance**: WSL 2 delivers faster file system I/O and process performance compared to WSL 1 ([learn.microsoft.com](https://learn.microsoft.com/cs-cz/windows/wsl/install-on-server)).  
 - **Consistency**: Mirror Linux production setups, reducing “works on my machine” issues.  
 - **Integration**: Access Windows files from Linux and vice versa, and use VS Code’s Remote - WSL extension for a seamless IDE experience.
 
@@ -24,7 +24,7 @@ The **Windows Subsystem for Linux (WSL)** is a compatibility layer that allows y
    ```powershell
    wsl --install
    ```
-   This single command enables required features, downloads the Linux kernel, sets WSL 2 as default, and installs Ubuntu ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/install?utm_source=chatgpt.com)).
+   This single command enables required features, downloads the Linux kernel, sets WSL 2 as default, and installs Ubuntu ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/install)).
 3. **Restart** your machine when prompted.
 4. On reboot, **complete the Ubuntu setup** by creating your Linux user account and password.
 
@@ -60,7 +60,7 @@ memory=4GB   # Limits VM to 4 GB RAM
 swap=0       # Disable swap (optional)
 ```
 
-This file is automatically applied on WSL restarts ([fr.wikipedia.org](https://fr.wikipedia.org/wiki/Windows_Subsystem_for_Linux?utm_source=chatgpt.com)).
+This file is automatically applied on WSL restarts ([en.wikipedia.org](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)).
 
 ---
 
@@ -83,7 +83,6 @@ This file is automatically applied on WSL restarts ([fr.wikipedia.org](https://f
    ```
 4. **Install** Maeser and development dependencies:
    ```bash
-   pip install -e .
    make setup
    ```
 
@@ -100,16 +99,16 @@ cd sphinx-docs
 make html
 ```
 
-Open the generated site in your Windows browser:
+To view the documentation, look for the file named `index.html` in the `_build\html\` directory, and open the file in your Windows browser. If you have the `wslu` library installed, you can do this directly from the WSL terminal:
 ```bash
-explorer.exe .\build\html\index.html
+wslview _build/html/index.html
 ```
 
 ---
 
 ## Using VS Code with WSL
 
-1. Install the **Remote - WSL** extension in VS Code.  
+1. Install the **[Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)** extension in VS Code.  
 2. Open your Maeser folder in WSL by clicking **Remote Explorer → WSL Targets → Ubuntu** and selecting your project.  
 3. VS Code now uses the Linux toolchain inside WSL for linting, debugging, and terminal commands.
 
@@ -124,8 +123,8 @@ explorer.exe .\build\html\index.html
 
 ## Additional Resources
 
-- **Microsoft’s WSL Install Guide**: Detailed walkthrough for various Windows versions ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/install?utm_source=chatgpt.com)).  
-- **WSL Overview & Tutorials**: In-depth docs on WSL features and GUI support ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/?utm_source=chatgpt.com)).  
-- **WSL FAQ**: Answers to common questions about WSL usage ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/faq?utm_source=chatgpt.com)).
+- **Microsoft’s WSL Install Guide**: Detailed walkthrough for various Windows versions ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/install)).  
+- **WSL Overview & Tutorials**: In-depth docs on WSL features and GUI support ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/)).  
+- **WSL FAQ**: Answers to common questions about WSL usage ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/faq)).
 
 

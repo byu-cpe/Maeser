@@ -9,8 +9,8 @@ This guide walks you through setting up a Maeser development environment from sc
 - **Python 3.10+**
 - **Git**
 - **Make** (on macOS/Linux) or **Make for Windows** (e.g. via Git Bash)
-- **Optional:** [Poetry](https://python-poetry.org/) for dependency management
-- **Optional (WSL):** Windows Subsystem for Linux, if you’re on Windows
+- **[Poetry](https://python-poetry.org/) (Optional):** for dependency management
+- **WSL (Recommended for Windows):** Windows Subsystem for Linux. See **[Windows Setup (WSL)](#windows-setup-wsl)** below.
 
 ---
 
@@ -27,9 +27,9 @@ This gives you the latest `main` branch of the Maeser source code and examples.
 
 ## Create & Activate a Virtual Environment
 
-You have two options: use plain `venv` / `pip`, or Poetry.
+You have two options: use plain `venv`, or Poetry.
 
-### Using `venv` + `pip`
+### Using `venv`
 
 ```bash
 # Create the virtual environment
@@ -37,7 +37,9 @@ python3 -m venv .venv
 
 # Activate (macOS/Linux)
 source .venv/bin/activate
+```
 
+```powershell
 # Activate (Windows PowerShell)
 .venv\Scripts\Activate.ps1
 ```
@@ -87,22 +89,37 @@ This will:
 
 Maeser uses a small configuration file for API keys, file paths, and settings.
 
-1. Copy the example:
-   ```bash
-   cp config_example.yaml config.yaml
-   ```
-2. Open `config.yaml` and set:
-   ```yaml
-   OPENAI_API_KEY: "your-openai-key-here"
-   # (Optional) GitHub OAuth Client ID/Secret if you plan to enable login
-   GITHUB_CLIENT_ID: ""
-   GITHUB_CLIENT_SECRET: ""
-   # (Optional) Other settings (e.g., vectorstore paths, LDAP server details, etc.)
-   ```
-3. **Environment variables** are also supported:
-   ```bash
-   export OPENAI_API_KEY="your-openai-key-here"
-   ```
+Open `config_example.yaml` and set:
+```yaml
+OPENAI_API_KEY: "your-openai-key-here"
+# (Optional) GitHub OAuth Client ID/Secret if you plan to enable login
+GITHUB_CLIENT_ID: ""
+GITHUB_CLIENT_SECRET: ""
+# (Optional) Other settings (e.g., vectorstore paths, LDAP server details, etc.)
+```
+**Environment variables** are also supported:
+```bash
+export OPENAI_API_KEY="your-openai-key-here"
+```
+
+> **Note:**  
+> For deployment, it is recommended, although not required, that you copy the provided files in the `/example/` directory as opposed to modifying them directly. Make a copy of `config_example.py` and rename it to `config.yaml`:
+>    ```bash
+>    cp config_example.yaml config.yaml
+>    # Edit config.yaml with production API keys, paths, and DB credentials
+>    ```
+>
+> Then in "config_example.py", be sure to update the config paths:
+> ```python
+>     config_paths = [
+>         'config.yaml',
+>         './config.yaml',
+>         'example/config.yaml'
+>         # Or anywhere else you plan on storing config.yaml
+>     ]
+> ```
+> 
+> Be sure to rename the other example files and update their references accordingly.
 
 ---
 
@@ -139,12 +156,7 @@ Then open `sphinx-docs/build/html/index.html` in your browser.
 
 ## Windows Setup (WSL)
 
-If you’re on Windows, we recommend using WSL for a smoother experience:
-
-1. Install WSL following Microsoft’s guide:\
-   [https://learn.microsoft.com/windows/wsl/install](https://learn.microsoft.com/windows/wsl/install)
-2. In your WSL terminal, follow **Steps 1–6** above as if on Linux.
-3. Use your WSL path (e.g., `/mnt/c/Users/you/Maeser`) for the cloned repo.
+If you’re on Windows, we recommend using **[WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install)** for a smoother experience. WSL enables you to run the Maeser project in a Linux-powered shell, ensuring the best compatibility with the project's makefiles and dependencies. For instructions on how to set up Maeser in WSL, read **[Development Setup with WSL (Windows Subsystem for Linux)](wsl_development)** in the documentation.
 
 ---
 
