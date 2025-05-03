@@ -132,8 +132,7 @@ Now, when you run the Maeser app, your new "My Custom Knowledge" branch will ret
 
 ## Next Steps
 
-- Explore **custom graph workflows** for advanced RAG pipelines (`graphs.md`).
-- Learn to **fine‑tune system prompts** and session behavior in Maeser’s architecture overview (`architecture.md`).
-- Contribute improvements or report issues on the Maeser GitHub repository.
+- Explore **custom graph workflows** for advanced RAG pipelines in [Graphs: Simple RAG vs. Pipeline RAG](graphs).
+- Review the **example flask scripts** in [Maeser Example (with Flask & User Management)](flask_example).
 
 
