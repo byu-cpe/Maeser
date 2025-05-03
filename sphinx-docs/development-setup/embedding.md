@@ -32,20 +32,21 @@ Large documents must be split into smaller, semantically meaningful chunks befor
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from pathlib import Path
 
-# Read all text files
-folder = Path("docs/my_knowledge")
-docs = [f.read_text(encoding="utf8") for f in folder.glob("*.txt")]
-
-# Configure splitter
+# Configure text splitter
 splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000,
     chunk_overlap=200,
 )
 
-# Generate chunks
-texts = []
-for doc in docs:
-    texts.extend(splitter.split_text(doc))
+# Read all text files and generate chunks
+texts = [] # this is where the text chunks will be stored
+metadatas = [] # this will keep track of which text chunks belong to which text file
+folder = Path("path/to/txts")
+for f in folder.glob("*.txt"):
+    doc = f.read_text(encoding="utf8")
+    chunks = splitter.split_text(doc)
+    texts.extend(chunks) # store text chunks in texts
+    metadatas.extend([{"source": f.name}] * len(chunks)) # store file name in metadatas
 ```
 
 > **Tip:** Adjust `chunk_size` and `chunk_overlap` based on your document structure. Smaller chunks improve retrieval precision but increase vector store size.
@@ -57,8 +58,8 @@ for doc in docs:
 Use FAISS (via LangChain) to embed and store your chunks:
 
 ```python
-from langchain.vectorstores import FAISS
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
 
 # Initialize OpenAI embeddings
 embeddings = OpenAIEmbeddings()
@@ -67,7 +68,7 @@ embeddings = OpenAIEmbeddings()
 vectorstore = FAISS.from_texts(
     texts,
     embeddings,
-    meta_data=[{"source": f.name} for f in folder.glob("*.txt")]
+    metadatas
 )
 
 # Persist to disk
@@ -75,32 +76,45 @@ vectorstore.save_local("my_vectorstore")
 ```
 
 - `my_vectorstore/` will contain index files you can reuse in Maeser.
-- Metadata (`source` field) helps trace which document each vector originated from.
+- Metadatas (`source` field) helps trace which document each vector originated from.
+
+> **Tip:** The code above assumes the OPENAI_API_KEY environment variable is defined. If you want to pass your api key into the script without using the environment variable, assign it when initializing your embeddings:
+> ```
+> embeddings = OpenAIEmbeddings(api_key=<your_api_key_here>)
+> ```
 
 ---
 
 ## Integrate with Maeser
 
-In your Maeser application (e.g., in `flask_example.py` or your custom script):
+The following code snippet assumes that you have a registered `ChatSessionManager` called `sessions_manager` and that you have imported config variables from `config_example.py`. In your Maeser application (e.g., in `flask_example.py` or your custom script):
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.chat.chat_session_manager import ChatSessionManager
 
-# Instantiate session manager and logs
-sessions = ChatSessionManager()
+# Create a system prompt for your chatbot with the appended {context}. Example prompt:
+my_prompt: str = """
+    You are a helpful teacher helping a student with course material.
+    You will answer a question based on the context provided.
+    Don't answer questions about other things.
+
+    {context}
+"""
 
 # Create a RAG graph pointing to your vector store
-my_rag_graph = get_simple_rag(
-    vectorstore_path="my_vectorstore",
-    system_prompt_text="You are an expert on my documents.",
+my_simple_rag: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/my_vectorstore",
+    vectorstore_index="index", # the name of the .faiss and .pkl files your vectorstore
+    memory_filepath=f"{LOG_SOURCE_PATH}/my_branch.db",
+    system_prompt_text=my_prompt,
+    model=LLM_MODEL_NAME
 )
-
 # Register it as a new branch
-sessions.register_branch(
-    name="custom",
-    label="My Custom Knowledge",
-    graph=my_rag_graph
+sessions_manager.register_branch(
+    branch_name="my_branch",
+    branch_label="My Custom Knowledge",
+    graph=my_simple_rag,    
 )
 ```
 
