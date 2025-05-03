@@ -87,13 +87,13 @@ vectorstore.save_local("my_vectorstore")
 
 ## Integrate with Maeser
 
-The following code snippet assumes that you have a registered `ChatSessionManager` called `sessions_manager` and that you have imported config variables from `config_example.py`. In your Maeser application (e.g., in `flask_example.py` or your custom script):
+The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and that you have imported config variables from `config_example.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
-from maeser.chat.chat_session_manager import ChatSessionManager
+from langgraph.graph.graph import CompiledGraph
 
-# Create a system prompt for your chatbot with the appended {context}. Example prompt:
+# Create a system prompt for your chatbot with appended context. Example prompt:
 my_prompt: str = """
     You are a helpful teacher helping a student with course material.
     You will answer a question based on the context provided.
@@ -105,7 +105,7 @@ my_prompt: str = """
 # Create a RAG graph pointing to your vector store
 my_simple_rag: CompiledGraph = get_simple_rag(
     vectorstore_path=f"{VEC_STORE_PATH}/my_vectorstore",
-    vectorstore_index="index", # the name of the .faiss and .pkl files your vectorstore
+    vectorstore_index="index", # the name of the .faiss and .pkl files in your vectorstore
     memory_filepath=f"{LOG_SOURCE_PATH}/my_branch.db",
     system_prompt_text=my_prompt,
     model=LLM_MODEL_NAME
