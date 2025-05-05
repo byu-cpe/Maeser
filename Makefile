@@ -16,20 +16,19 @@
 
 .PHONY: setup test testVerbose clean_venv
 
-PYTHON := python3
 VENV := .venv
+PYTHON := python3
 PIP := $(VENV)/bin/pip
 POETRY := $(VENV)/bin/poetry
 PYTEST := $(VENV)/bin/pytest
 
-setup: $(VENV)/bin/activate
+setup:
 	$(PIP) install poetry
 	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock
 	$(POETRY) install
 	$(PIP) install -e .
-	@echo "Maeser setup complete. Running pytests..."
-	. $(VENV)/bin/activate && pytest tests
+	pytest tests
 
 clean_venv:
 	@echo "Removing existing virtual environment if it exists..."
