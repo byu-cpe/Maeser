@@ -32,31 +32,34 @@ Imagine you’re a university professor specializing in a single course—say, *
 
 ### Code Example
 
-
+The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and a `medieval_lit` vectorstore with names `index.faiss` and `index.pkl`. The code also assumes that you have imported config variables from `config_example.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
-from maeser.chat.chat_session_manager import ChatSessionManager
+from langgraph.graph.graph import CompiledGraph
 
-# Professor sets up the session manager
-sessions = ChatSessionManager()
+# Create a system prompt for your medieval literature chatbot with appended context. Example prompt:
+medieval_prompt: str = """
+    You are Professor A. Scholar of Medieval Literature.
+    You will answer a student's question about Medieval Literature based on the context provided.
+    Don't answer questions about other things.
+
+    {context}
+"""
 
 # Build a Simple RAG graph for Medieval Literature
-medieval_professor = get_simple_rag(
-    vectorstore_path="vectorstores/medieval_lit",
-    memory_filepath="logs/medieval_memory.db",
-    system_prompt_text=(
-        "You are Professor A. Scholar of Medieval Literature. "
-        "Use the following context to answer the student: {context}"
-    ),
-    model="gpt-4o"
+medieval_professor: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/medieval_lit",
+    vectorstore_index="index", # the name of the .faiss and .pkl files in your vectorstore
+    memory_filepath=f"{LOG_SOURCE_PATH}/medieval_memory.db",
+    system_prompt_text=medieval_prompt,
+    model=LLM_MODEL_NAME
 )
-
 # Register this graph as the 'medieval' branch
-sessions.register_branch(
+sessions_manager.register_branch(
     branch_name="medieval",
     branch_label="Medieval Literature Q&A",
-    graph=medieval_professor
+    graph=medieval_professor,    
 )
 ```
 
