@@ -1,6 +1,6 @@
 # Graphs: Simple RAG vs. Pipeline RAG
 
-This guide provides a deep dive into Maeser’s two primary Retrieval‑Augmented Generation (RAG) pipelines—**Simple RAG** and **Pipeline RAG**—with detailed explanations, professor‑style guidance, and practical code examples. By the end, you’ll know when and how to choose each approach, tailored to real‑world scenarios like single‑topic tutoring or multi‑domain curricula.
+This guide provides a deep dive into Maeser’s two primary Retrieval‑Augmented Generation (RAG) pipelines—**Simple RAG** and **Pipeline RAG**—with detailed explanations, professor‑style guidance, and practical code examples. By the end, you’ll know when and how to choose each approach.
 
 ---
 
