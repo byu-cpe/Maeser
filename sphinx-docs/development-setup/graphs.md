@@ -32,7 +32,7 @@ Imagine you’re a university professor specializing in a single course—say, *
 
 ### Code Example
 
-> *“Alright class, let’s see how we can answer a question on medieval chivalry.”*
+
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
