@@ -18,6 +18,12 @@ Before you begin, ensure you have:
 
 Imagine you’re a university professor specializing in a single course—say, **Medieval Literature**—and students ask you questions only about topics you’ve covered exclusively in that domain. **Simple RAG** is your go‑to approach.
 
+### When to Use Simple Rag
+
+Simple Rag is the best choice when:
+- Your application or tutoring session centers around one domain or subject.
+- You want minimal complexity and fast responses.
+
 ### Conceptual Overview
 
 1. **Single‑Domain Focus**: You have one set of lecture notes, articles, and readings.
@@ -62,8 +68,6 @@ sessions_manager.register_branch(
     graph=medieval_professor,    
 )
 ```
-
-> **When to use Simple RAG?** When your application or tutoring session centers around one domain, and you want minimal complexity and fast responses.
 
 ---
 
