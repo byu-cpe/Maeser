@@ -73,21 +73,25 @@ sessions_manager.register_branch(
 
 ## Pipeline RAG (`get_pipeline_rag`)
 
-Now picture a professor teaching a comprehensive curriculum with **homework**, **lab assignments**, and **class discussions**—each requiring domain‑specific expertise. **Pipeline RAG** lets you orchestrate multiple RAG pipelines, routing questions appropriately or combining insights across domains.
+Now picture a professor teaching a comprehensive curriculum with **homework**, **lab assignments**, and **class discussions**—each requiring domain‑specific expertise. **Pipeline RAG** lets you orchestrate multiple RAG pipelines, routing questions to the most relevant domain.
+
+### When to use Pipeline RAG
+Pipline RAG is the best choice when:
+- Your application spans multiple knowledge bases—such as data from homework, labs, and textbooks.
+- Your chatbot needs to dynamically switch between knowledge bases depending on the question it is asked.
+
 
 ### Conceptual Overview
 
-1. **Multi‑Domain Expertise**: Separate vectorstores for Homework, Labs, and Lecture Notes.
-2. **Routing & Aggregation**: Determine which domain(s) to tap or merge contexts.
-3. **Unified Answer**: Synthesize information into a coherent response, akin to a professor referencing lectures, lab manuals, and homework guidelines.
+1. **Multi‑Domain**: Separate vectorstores for Homework, Labs, and Lecture Notes.
+2. **Routing & Aggregation**: Determine which domain to pull context from.
+3. **Relevant Answer**: Synthesize information from relevant domain into a coherent response.
 
 ### Workflow Details
 
-- **Optional Routing**: Classify the student’s question (e.g., “Is this a lab or homework question?”) to decide which vectorstores to query.
-- **Retrieval**: Fetch top‑k chunks from each relevant domain’s index.
-- **Combine Contexts**: Concatenate or intelligently merge the retrieved chunks.
-- **Generation**: Call the LLM with the unified prompt containing all contexts.
-- **Memory**: Persist conversation threads across all involved domains for follow‑ups.
+- **Domain Routing**: Classify the student’s question (e.g., “Is this a lab or homework question?”) to decide which vectorstore to query.
+- **Retrieval**: Fetch top‑k chunks from the relevant domain’s index.
+- **Generation**: Call the LLM with the user's prompt with the retrieved context and generate a focused response.
 
 ### Code Example
 
