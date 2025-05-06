@@ -6,10 +6,11 @@ DELETION_LOG := $(OUTPUT_DIR)/files_converted.log
 PDF_FILES := $(wildcard $(SOURCE_DIR)/*.pdf)
 TXT_FILES := $(patsubst $(SOURCE_DIR)/%.pdf, $(OUTPUT_DIR)/%.txt, $(PDF_FILES))
 
-all: vector_store
-
+all: 
+	python3 rename_files.py
+	$(MAKE) vector_store
 # Convert PDF to text and remove original PDF
-$(OUTPUT_DIR)/%.txt: $(SOURCE_DIR)/%.pdf | $(OUTPUT_DIR)
+$(OUTPgit UT_DIR)/%.txt: $(SOURCE_DIR)/%.pdf | $(OUTPUT_DIR)
 	pdftotext "$<" "$@"
 	rm "$<"
 

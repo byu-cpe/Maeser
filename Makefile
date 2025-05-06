@@ -24,6 +24,7 @@ PYTEST := $(VENV)/bin/pytest
 
 setup:
 	$(PIP) install poetry
+	$(PIP) install langchain
 	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock
 	$(POETRY) install
