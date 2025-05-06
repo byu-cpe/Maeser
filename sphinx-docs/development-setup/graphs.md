@@ -139,21 +139,19 @@ sessions.register_branch(
 
 ## Detailed Comparison
 
-| Feature            | Simple RAG                      | Pipeline RAG                        |
-| ------------------ | ------------------------------- | ----------------------------------- |
-| Domains            | Single                          | Multiple (Homework, Labs, Lectures) |
-| Routing            | N/A                             | Classify & route or query all       |
-| Retrieval Steps    | 1                               | 1+ per domain                       |
-| Prompt Complexity  | Low                             | Medium to High                      |
-| Response Synthesis | One context                     | Aggregated contexts                 |
-| Multi‑turn Memory  | Optional single memory file     | Shared memory across domains        |
-| Use Case Examples  | Q&A on a specific course module | Comprehensive curricular support    |
+| Feature            | Simple RAG                      | Pipeline RAG                             |
+| ------------------ | ------------------------------- | ---------------------------------------- |
+| Domains            | Single                          | Multiple (Homework, Labs, Lectures)      |
+| Routing            | N/A                             | Classify & route to most relevant domain |
+| Retrieval Steps    | 1                               | 1+ per domain                            |
+| Response Synthesis | One context                     | One context (chosen by relevance)        |
+| Use Case Examples  | Q&A on a specific course module | Comprehensive curricular support         |
 
 ---
 
 ## Tips & Best Practices
 
-- **Tune chunking: In `simple_rag` and `pipeline_rag`, adjust the number of retrieved chunks for precision vs. breadth.
+- **Tune chunking**: In `simple_rag` and `pipeline_rag`, adjust the number of retrieved chunks for precision vs. breadth.
 - **Optimize Prompts**: Tailor the system prompt to clearly define the professor’s persona and expected depth.
 - **Memory Management**: Use separate memory files for each branch if you want isolated threads.
 - **Combine vs. Route**: If domains rarely overlap, route to a single vectorstore; if they often overlap, merge contexts for richer answers.
