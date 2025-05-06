@@ -95,33 +95,35 @@ Pipline RAG is the best choice when:
 
 ### Code Example
 
-> *“Consider this scenario: a student asks about troubleshooting a lab experiment while also relating to a homework theory. Let’s handle both.”*
+The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and vectorstores `homework`, `lab_manuals`, and `lectures` with file names `index.faiss` and `index.pkl`. The code also assumes that you have imported config variables from `config_example.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
 
 ```python
-from maeser.graphs.pipeline_rag import get_pipeline_rag
-from maeser.chat.chat_session_manager import ChatSessionManager
-
-# Initialize session manager
-sessions = ChatSessionManager()
+from maeser.graphs.simple_rag import get_simple_rag
+from langgraph.graph.graph import CompiledGraph
 
 # Define vectorstore paths for each domain
-domains = {
-    "homework": "vectorstores/homework",
-    "lab":      "vectorstores/lab_manuals",
-    "lecture":  "vectorstores/lectures"
+vectorstore_config = {
+    "homework": f"{VEC_STORE_PATH}/homework",
+    "lab":      f"{VEC_STORE_PATH}/lab_manuals",
+    "lecture":  f"{VEC_STORE_PATH}/lectures"
 }
 
+# Create a system prompt for your pipeline rag chatbot with appended context. Example prompt:
+multi_domain_prompt: str = """
+    You are Professor B, adept at lectures, labs, and homework.
+    You will answer a student's question based on the context provided.
+    Don't answer questions about other things.
+
+    {context}
+"""
+
 # Create a Pipeline RAG graph
-multi_domain_professor = get_pipeline_rag(
-    vectorstore_config=domains,
-    memory_filepath="logs/pipeline_memory.db",
-    api_key="<OPENAI_API_KEY>",
-    system_prompt_text=(
-        "You are Professor B, adept at lectures, labs, and homework. "
-        "Use these contexts to guide your answer: {context}"
-    ),
-    model="gpt-4o"
-)
+multi_domain_professor: CompiledGraph = get_pipeline_rag(
+    vectorstore_config=vectorstore_config,
+    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=pipeline_prompt,
+    model=LLM_MODEL_NAME)
 
 # Register the pipeline branch
 sessions.register_branch(
@@ -131,7 +133,7 @@ sessions.register_branch(
 )
 ```
 
-> **When to use Pipeline RAG?** When your application spans multiple knowledge bases—like combining theoretical concepts from homework, practical steps from labs, and overarching lectures in one response.
+> Note: Make sure the .faiss and .pkl files for the vectorstores in your pipeline RAG are all named `index.faiss` and `index.pkl`. This is required for pipeline RAG to retrieve the vectorstores properly.
 
 ---
 
