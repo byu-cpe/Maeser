@@ -151,16 +151,14 @@ sessions.register_branch(
 
 ## Tips & Best Practices
 
-- **Tune chunking**: In `simple_rag` and `pipeline_rag`, adjust the number of retrieved chunks for precision vs. breadth.
 - **Optimize Prompts**: Tailor the system prompt to clearly define the professor’s persona and expected depth.
 - **Memory Management**: Use separate memory files for each branch if you want isolated threads.
-- **Combine vs. Route**: If domains rarely overlap, route to a single vectorstore; if they often overlap, merge contexts for richer answers.
 
 ---
 
 ## Next Steps
 
-- Explore **Custom Graphs** for tool integration (e.g., calculators) in `custom_graphs.md`.
-- Review Maeser’s **architecture** in `architecture.md` for internals.
+- Explore **Custom Graphs** for tool integration (e.g., calculators) in [Custom Graphs: Advanced RAG Workflows](custom_graphs).
+- Review Maeser’s **architecture** in [Architecture Overview](architecture) for internals.
 - Contribute your own pipelines and share use cases on GitHub.
 
