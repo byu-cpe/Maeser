@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>9. Maeser Example (with Flask &amp; User Management) &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'development-setup/flask_example';</script>
+    <link rel="icon" href="../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. Terminal Example: Interactive CLI with Maeser" href="terminal_example.html" />
+    <link rel="prev" title="8. Dev Troubleshooting Guide" href="dev-troubleshooting.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/user_setup.html">User Guide: Getting Started with Maeser</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding.html">3. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">4. Graphs: Simple RAG vs. Pipeline RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_graphs.html">5. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">6. Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">7. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-troubleshooting.html">8. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminal_example.html">10. Terminal Example: Interactive CLI with Maeser</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/troubleshooting.html">SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.blueprints.html">maeser.blueprints module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/development-setup/flask_example.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Maeser Example (with Flask & User Management)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">9.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-config-yaml">9.2. Configuring <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-flask-example-user-mangement-py">9.3. Inspect <code class="docutils literal notranslate"><span class="pre">flask_example_user_mangement.py</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-imports-env-setup">9.3.1. Configuration Imports &amp; Env Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-logs-session-manager-setup">9.3.2. Chat Logs &amp; Session Manager Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-definitions">9.3.3. Prompt Definitions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-graph-construction">9.3.4. RAG Graph Construction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-management-setup">9.4. User Management Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-authenticators">9.4.1. Configure Authenticators</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-user-manager">9.4.2. Initialize User Manager</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flask-application-setup">9.5. Flask Application Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-application">9.6. Run the Application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#register-your-github-oauth-app">9.7. Register Your GitHub OAuth App</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ldap-authentication-optional">9.8. LDAP Authentication (Optional)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customization-debugging">9.9. Customization &amp; Debugging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">9.10. Next Steps</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="maeser-example-with-flask-user-management">
+<h1><span class="section-number">9. </span>Maeser Example (with Flask &amp; User Management)<a class="headerlink" href="#maeser-example-with-flask-user-management" title="Link to this heading">#</a></h1>
+<p>This guide demonstrates how to run Maeser as a web-based chatbot <strong>with user authentication</strong> (via GitHub OAuth or LDAP) using the official example script at <code class="docutils literal notranslate"><span class="pre">example/flask_example_user_mangement.py</span></code>. You’ll inspect the script, configure authentication, launch the server, and customize the application for your own RAG workflows.</p>
+<hr class="docutils" />
+<section id="prerequisites">
+<h2><span class="section-number">9.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Maeser development environment</strong> set up (see <code class="docutils literal notranslate"><span class="pre">development_setup.md</span></code>).</p></li>
+<li><p><strong>Python 3.10+</strong> virtual environment activated.</p></li>
+<li><p><strong>Maeser</strong> installed in editable mode (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">setup</span></code>).</p></li>
+<li><p><strong>Pre-built FAISS vectorstores</strong> at the paths referenced in your config.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="configuring-config-yaml">
+<h2><span class="section-number">9.2. </span>Configuring <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code><a class="headerlink" href="#configuring-config-yaml" title="Link to this heading">#</a></h2>
+<p>Copy the example and update the following fields:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path where chat logs and memory DBs are stored</span>
+<span class="nt">LOG_SOURCE_PATH</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path/to/chat_logs&quot;</span>
+<span class="c1"># Your OpenAI API key for LLM access\ OPENAI_API_KEY: &quot;your-openai-key&quot;</span>
+<span class="c1"># SQLite file path to store registered users and quotas</span>
+<span class="nt">USERS_DB_PATH</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path/to/users.db&quot;</span>
+<span class="c1"># Directory containing FAISS vectorstore folders</span>
+<span class="nt">VEC_STORE_PATH</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path/to/vectorstores&quot;</span>
+<span class="c1"># Path for chat history JSON or DB</span>
+<span class="nt">CHAT_HISTORY_PATH</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;path/to/chat_history&quot;</span>
+<span class="c1"># LLM model name (e.g., gpt-4o)</span>
+<span class="nt">LLM_MODEL_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gpt-4o&quot;</span>
+<span class="c1"># Maximum requests per user and rate-limit interval (seconds)</span>
+<span class="nt">MAX_REQUESTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="nt">RATE_LIMIT_INTERVAL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
+
+<span class="c1"># GitHub OAuth Configuration</span>
+<span class="nt">GITHUB_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-client-id&quot;</span>
+<span class="nt">GITHUB_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-client-secret&quot;</span>
+<span class="nt">GITHUB_AUTH_CALLBACK_URI</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://hostIP:3002/login/github_callback&quot;</span>
+<span class="nt">GITHUB_TIMEOUT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+
+<span class="c1"># LDAP3 Authenticator Settings</span>
+<span class="nt">LDAP3_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ldap&quot;</span>
+<span class="nt">LDAP_SERVER_URLS</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ldap://ldap.example.com&quot;</span>
+<span class="nt">LDAP_BASE_DN</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dc=example,dc=com&quot;</span>
+<span class="nt">LDAP_ATTRIBUTE_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;uid&quot;</span>
+<span class="nt">LDAP_SEARCH_FILTER</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;(objectClass=person)&quot;</span>
+<span class="nt">LDAP_OBJECT_CLASS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;person&quot;</span>
+<span class="nt">LDAP_ATTRIBUTES</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;cn&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;mail&quot;</span>
+<span class="nt">LDAP_CA_CERT_PATH</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/ca_cert.pem&quot;</span>
+<span class="nt">LDAP_CONNECTION_TIMEOUT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+<p><strong>Field Descriptions</strong>:</p>
+<ul class="simple">
+<li><p><strong>LOG_SOURCE_PATH</strong>: Directory/file prefix for RAG memory databases.</p></li>
+<li><p><strong>OPENAI_API_KEY</strong>: Key to authenticate with OpenAI’s API.</p></li>
+<li><p><strong>USERS_DB_PATH</strong>: SQLite DB for storing user records and quotas.</p></li>
+<li><p><strong>VEC_STORE_PATH</strong>: Base path where FAISS indexes are saved.</p></li>
+<li><p><strong>CHAT_HISTORY_PATH</strong>: Path to persist chat logs via <code class="docutils literal notranslate"><span class="pre">ChatLogsManager</span></code>.</p></li>
+<li><p><strong>LLM_MODEL_NAME</strong>: Which OpenAI or LLM model to invoke.</p></li>
+<li><p><strong>MAX_REQUESTS / RATE_LIMIT_INTERVAL</strong>: Controls per-user rate limiting.</p></li>
+<li><p><strong>GITHUB_</strong> entries: Configure GitHub OAuth flow.</p></li>
+<li><p><strong>LDAP3_</strong> entries: Configure LDAP authentication parameters.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="inspect-flask-example-user-mangement-py">
+<h2><span class="section-number">9.3. </span>Inspect <code class="docutils literal notranslate"><span class="pre">flask_example_user_mangement.py</span></code><a class="headerlink" href="#inspect-flask-example-user-mangement-py" title="Link to this heading">#</a></h2>
+<section id="configuration-imports-env-setup">
+<h3><span class="section-number">9.3.1. </span>Configuration Imports &amp; Env Setup<a class="headerlink" href="#configuration-imports-env-setup" title="Link to this heading">#</a></h3>
+<p>Imports all config variables and sets the OpenAI API key in the environment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">config_example</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LOG_SOURCE_PATH</span><span class="p">,</span> <span class="n">OPENAI_API_KEY</span><span class="p">,</span> <span class="n">USERS_DB_PATH</span><span class="p">,</span>
+    <span class="n">VEC_STORE_PATH</span><span class="p">,</span> <span class="n">MAX_REQUESTS</span><span class="p">,</span> <span class="n">RATE_LIMIT_INTERVAL</span><span class="p">,</span>
+    <span class="n">GITHUB_CLIENT_ID</span><span class="p">,</span> <span class="n">GITHUB_CLIENT_SECRET</span><span class="p">,</span>
+    <span class="n">GITHUB_AUTH_CALLBACK_URI</span><span class="p">,</span> <span class="n">GITHUB_TIMEOUT</span><span class="p">,</span>
+    <span class="n">CHAT_HISTORY_PATH</span><span class="p">,</span>
+    <span class="n">LDAP3_NAME</span><span class="p">,</span> <span class="n">LDAP_SERVER_URLS</span><span class="p">,</span> <span class="n">LDAP_BASE_DN</span><span class="p">,</span>
+    <span class="n">LDAP_ATTRIBUTE_NAME</span><span class="p">,</span> <span class="n">LDAP_SEARCH_FILTER</span><span class="p">,</span>
+    <span class="n">LDAP_OBJECT_CLASS</span><span class="p">,</span> <span class="n">LDAP_ATTRIBUTES</span><span class="p">,</span>
+    <span class="n">LDAP_CA_CERT_PATH</span><span class="p">,</span> <span class="n">LDAP_CONNECTION_TIMEOUT</span><span class="p">,</span>
+    <span class="n">LLM_MODEL_NAME</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OPENAI_API_KEY</span>
+</pre></div>
+</div>
+</section>
+<section id="chat-logs-session-manager-setup">
+<h3><span class="section-number">9.3.2. </span>Chat Logs &amp; Session Manager Setup<a class="headerlink" href="#chat-logs-session-manager-setup" title="Link to this heading">#</a></h3>
+<p>Initializes chat logging and session management to track conversations and user queries.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">maeser.chat.chat_logs</span> <span class="kn">import</span> <span class="n">ChatLogsManager</span>
+<span class="kn">from</span> <span class="nn">maeser.chat.chat_session_manager</span> <span class="kn">import</span> <span class="n">ChatSessionManager</span>
+
+<span class="c1"># Persist chat history</span>
+<span class="n">chat_logs_manager</span> <span class="o">=</span> <span class="n">ChatLogsManager</span><span class="p">(</span><span class="n">CHAT_HISTORY_PATH</span><span class="p">)</span>
+<span class="c1"># Manage multiple chat sessions</span>
+<span class="n">sessions_manager</span> <span class="o">=</span> <span class="n">ChatSessionManager</span><span class="p">(</span><span class="n">chat_logs_manager</span><span class="o">=</span><span class="n">chat_logs_manager</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="prompt-definitions">
+<h3><span class="section-number">9.3.3. </span>Prompt Definitions<a class="headerlink" href="#prompt-definitions" title="Link to this heading">#</a></h3>
+<p>Defines system prompts that inject persona and context into the LLM.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">maeser_prompt</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;You are speaking from the perspective of Karl G. Maeser.\n&quot;</span>
+<span class="sd">    &quot;You will answer questions about your life history based on provided context.\n&quot;</span>
+<span class="sd">    &quot;{context}&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">byu_prompt</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;You are a BYU historian.\n&quot;</span>
+<span class="sd">    &quot;You will answer questions about Brigham Young University’s history based on provided context.\n&quot;</span>
+<span class="sd">    &quot;{context}&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">pipeline_prompt</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;You are Karl G. Maeser or a BYU historian.\n&quot;</span>
+<span class="sd">    &quot;You will answer history questions based on provided context.\n&quot;</span>
+<span class="sd">    &quot;{context}&quot;&quot;&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="rag-graph-construction">
+<h3><span class="section-number">9.3.4. </span>RAG Graph Construction<a class="headerlink" href="#rag-graph-construction" title="Link to this heading">#</a></h3>
+<p>Creates three RAG pipelines (Karl Maeser, BYU, and combined pipeline) and registers them as named branches.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">maeser.graphs.simple_rag</span> <span class="kn">import</span> <span class="n">get_simple_rag</span>
+<span class="kn">from</span> <span class="nn">maeser.graphs.pipeline_rag</span> <span class="kn">import</span> <span class="n">get_pipeline_rag</span>
+<span class="kn">from</span> <span class="nn">langgraph.graph.graph</span> <span class="kn">import</span> <span class="n">CompiledGraph</span>
+
+<span class="c1"># Simple RAG for Karl G. Maeser</span>
+<span class="n">maeser_graph</span><span class="p">:</span> <span class="n">CompiledGraph</span> <span class="o">=</span> <span class="n">get_simple_rag</span><span class="p">(</span>
+    <span class="n">vectorstore_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VEC_STORE_PATH</span><span class="si">}</span><span class="s2">/maeser&quot;</span><span class="p">,</span>
+    <span class="n">vectorstore_index</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span>
+    <span class="n">memory_filepath</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LOG_SOURCE_PATH</span><span class="si">}</span><span class="s2">/maeser.db&quot;</span><span class="p">,</span>
+    <span class="n">system_prompt_text</span><span class="o">=</span><span class="n">maeser_prompt</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL_NAME</span>
+<span class="p">)</span>
+<span class="n">sessions_manager</span><span class="o">.</span><span class="n">register_branch</span><span class="p">(</span>
+    <span class="n">branch_name</span><span class="o">=</span><span class="s2">&quot;maeser&quot;</span><span class="p">,</span>
+    <span class="n">branch_label</span><span class="o">=</span><span class="s2">&quot;Karl G. Maeser History&quot;</span><span class="p">,</span>
+    <span class="n">graph</span><span class="o">=</span><span class="n">maeser_graph</span>
+<span class="p">)</span>
+
+<span class="c1"># Simple RAG for BYU History</span>
+<span class="n">byu_graph</span><span class="p">:</span> <span class="n">CompiledGraph</span> <span class="o">=</span> <span class="n">get_simple_rag</span><span class="p">(</span>
+    <span class="n">vectorstore_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VEC_STORE_PATH</span><span class="si">}</span><span class="s2">/byu&quot;</span><span class="p">,</span>
+    <span class="n">vectorstore_index</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span>
+    <span class="n">memory_filepath</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LOG_SOURCE_PATH</span><span class="si">}</span><span class="s2">/byu.db&quot;</span><span class="p">,</span>
+    <span class="n">system_prompt_text</span><span class="o">=</span><span class="n">byu_prompt</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL_NAME</span>
+<span class="p">)</span>
+<span class="n">sessions_manager</span><span class="o">.</span><span class="n">register_branch</span><span class="p">(</span>
+    <span class="n">branch_name</span><span class="o">=</span><span class="s2">&quot;byu&quot;</span><span class="p">,</span>
+    <span class="n">branch_label</span><span class="o">=</span><span class="s2">&quot;BYU History&quot;</span><span class="p">,</span>
+    <span class="n">graph</span><span class="o">=</span><span class="n">byu_graph</span>
+<span class="p">)</span>
+
+<span class="c1"># Pipeline across both domains</span>
+<span class="n">pipeline_graph</span><span class="p">:</span> <span class="n">CompiledGraph</span> <span class="o">=</span> <span class="n">get_pipeline_rag</span><span class="p">(</span>
+    <span class="n">vectorstore_config</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;byu history&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VEC_STORE_PATH</span><span class="si">}</span><span class="s2">/byu&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;karl g maeser&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VEC_STORE_PATH</span><span class="si">}</span><span class="s2">/maeser&quot;</span>
+    <span class="p">},</span>
+    <span class="n">memory_filepath</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LOG_SOURCE_PATH</span><span class="si">}</span><span class="s2">/pipeline_memory.db&quot;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="n">OPENAI_API_KEY</span><span class="p">,</span>
+    <span class="n">system_prompt_text</span><span class="o">=</span><span class="n">pipeline_prompt</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL_NAME</span>
+<span class="p">)</span>
+<span class="n">sessions_manager</span><span class="o">.</span><span class="n">register_branch</span><span class="p">(</span>
+    <span class="n">branch_name</span><span class="o">=</span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span>
+    <span class="n">branch_label</span><span class="o">=</span><span class="s2">&quot;Pipeline&quot;</span><span class="p">,</span>
+    <span class="n">graph</span><span class="o">=</span><span class="n">pipeline_graph</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="user-management-setup">
+<h2><span class="section-number">9.4. </span>User Management Setup<a class="headerlink" href="#user-management-setup" title="Link to this heading">#</a></h2>
+<section id="configure-authenticators">
+<h3><span class="section-number">9.4.1. </span>Configure Authenticators<a class="headerlink" href="#configure-authenticators" title="Link to this heading">#</a></h3>
+<p>Defines GitHub and LDAP authenticators for user login and request quotas.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">maeser.user_manager</span> <span class="kn">import</span> <span class="n">UserManager</span><span class="p">,</span> <span class="n">GithubAuthenticator</span><span class="p">,</span> <span class="n">LDAPAuthenticator</span>
+
+<span class="c1"># GitHub OAuth setup</span>
+<span class="n">github_authenticator</span> <span class="o">=</span> <span class="n">GithubAuthenticator</span><span class="p">(</span>
+    <span class="n">client_id</span><span class="o">=</span><span class="n">GITHUB_CLIENT_ID</span><span class="p">,</span>
+    <span class="n">client_secret</span><span class="o">=</span><span class="n">GITHUB_CLIENT_SECRET</span><span class="p">,</span>
+    <span class="n">auth_callback_uri</span><span class="o">=</span><span class="n">GITHUB_AUTH_CALLBACK_URI</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="n">GITHUB_TIMEOUT</span><span class="p">,</span>
+    <span class="n">max_requests</span><span class="o">=</span><span class="n">MAX_REQUESTS</span>
+<span class="p">)</span>
+
+<span class="c1"># LDAP Authenticator setup</span>
+<span class="n">ldap3_authenticator</span> <span class="o">=</span> <span class="n">LDAPAuthenticator</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">LDAP3_NAME</span><span class="p">,</span>
+    <span class="n">ldap_server_urls</span><span class="o">=</span><span class="n">LDAP_SERVER_URLS</span><span class="p">,</span>
+    <span class="n">ldap_base_dn</span><span class="o">=</span><span class="n">LDAP_BASE_DN</span><span class="p">,</span>
+    <span class="n">attribute_name</span><span class="o">=</span><span class="n">LDAP_ATTRIBUTE_NAME</span><span class="p">,</span>
+    <span class="n">search_filter</span><span class="o">=</span><span class="n">LDAP_SEARCH_FILTER</span><span class="p">,</span>
+    <span class="n">object_class</span><span class="o">=</span><span class="n">LDAP_OBJECT_CLASS</span><span class="p">,</span>
+    <span class="n">attributes</span><span class="o">=</span><span class="n">LDAP_ATTRIBUTES</span><span class="p">,</span>
+    <span class="n">ca_cert_path</span><span class="o">=</span><span class="n">LDAP_CA_CERT_PATH</span><span class="p">,</span>
+    <span class="n">connection_timeout</span><span class="o">=</span><span class="n">LDAP_CONNECTION_TIMEOUT</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="initialize-user-manager">
+<h3><span class="section-number">9.4.2. </span>Initialize User Manager<a class="headerlink" href="#initialize-user-manager" title="Link to this heading">#</a></h3>
+<p>Creates a <code class="docutils literal notranslate"><span class="pre">UserManager</span></code> instance and registers the authenticators.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize user management with request limits</span>
+<span class="n">user_manager</span> <span class="o">=</span> <span class="n">UserManager</span><span class="p">(</span>
+    <span class="n">db_file_path</span><span class="o">=</span><span class="n">USERS_DB_PATH</span><span class="p">,</span>
+    <span class="n">max_requests</span><span class="o">=</span><span class="n">MAX_REQUESTS</span><span class="p">,</span>
+    <span class="n">rate_limit_interval</span><span class="o">=</span><span class="n">RATE_LIMIT_INTERVAL</span>
+<span class="p">)</span>
+<span class="c1"># Register both authenticators</span>
+<span class="n">user_manager</span><span class="o">.</span><span class="n">register_authenticator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;github&quot;</span><span class="p">,</span> <span class="n">authenticator</span><span class="o">=</span><span class="n">github_authenticator</span><span class="p">)</span>
+<span class="n">user_manager</span><span class="o">.</span><span class="n">register_authenticator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">LDAP3_NAME</span><span class="p">,</span> <span class="n">authenticator</span><span class="o">=</span><span class="n">ldap3_authenticator</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="flask-application-setup">
+<h2><span class="section-number">9.5. </span>Flask Application Setup<a class="headerlink" href="#flask-application-setup" title="Link to this heading">#</a></h2>
+<p>Initializes the Flask app with both chat session and user managers, then registers all routes via blueprints.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">maeser.blueprints</span> <span class="kn">import</span> <span class="n">App_Manager</span>
+
+<span class="n">base_app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app_manager</span> <span class="o">=</span> <span class="n">App_Manager</span><span class="p">(</span>
+    <span class="n">app</span><span class="o">=</span><span class="n">base_app</span><span class="p">,</span>
+    <span class="n">app_name</span><span class="o">=</span><span class="s2">&quot;Maeser Auth Chat&quot;</span><span class="p">,</span>
+    <span class="n">flask_secret_key</span><span class="o">=</span><span class="s2">&quot;secret&quot;</span><span class="p">,</span>
+    <span class="n">chat_session_manager</span><span class="o">=</span><span class="n">sessions_manager</span><span class="p">,</span>
+    <span class="n">user_manager</span><span class="o">=</span><span class="n">user_manager</span><span class="p">,</span>
+    <span class="n">chat_head</span><span class="o">=</span><span class="s2">&quot;/static/Karl_G_Maeser.png&quot;</span>
+<span class="p">)</span>
+<span class="c1"># Mount routes and return the full app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">app_manager</span><span class="o">.</span><span class="n">add_flask_blueprint</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3002</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="run-the-application">
+<h2><span class="section-number">9.6. </span>Run the Application<a class="headerlink" href="#run-the-application" title="Link to this heading">#</a></h2>
+<p>Activate your virtual environment and execute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>example/flask_example_user_mangement.py
+</pre></div>
+</div>
+<p>Navigate to <strong>http://localhost:3002</strong>, authenticate via GitHub or LDAP, select a branch, and start chatting.</p>
+</section>
+<hr class="docutils" />
+<section id="register-your-github-oauth-app">
+<h2><span class="section-number">9.7. </span>Register Your GitHub OAuth App<a class="headerlink" href="#register-your-github-oauth-app" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>In GitHub, go to <strong>Settings → Developer Settings → OAuth Apps → New OAuth App</strong>.</p></li>
+<li><p>Set <strong>Homepage URL</strong> to <code class="docutils literal notranslate"><span class="pre">http://localhost:3002</span></code> and <strong>Authorization callback URL</strong> to <code class="docutils literal notranslate"><span class="pre">http://localhost:3002/login/github_callback</span></code>.</p></li>
+<li><p>Copy the <strong>Client ID</strong> and <strong>Client Secret</strong> into <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="ldap-authentication-optional">
+<h2><span class="section-number">9.8. </span>LDAP Authentication (Optional)<a class="headerlink" href="#ldap-authentication-optional" title="Link to this heading">#</a></h2>
+<p>Ensure your LDAP server is reachable, and the fields in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> match your directory’s schema. The <code class="docutils literal notranslate"><span class="pre">LDAPAuthenticator</span></code> will bind and lookup users based on these settings.</p>
+</section>
+<hr class="docutils" />
+<section id="customization-debugging">
+<h2><span class="section-number">9.9. </span>Customization &amp; Debugging<a class="headerlink" href="#customization-debugging" title="Link to this heading">#</a></h2>
+<ul>
+<li><p><strong>Prompts &amp; Branches</strong>: Modify prompt strings or register additional graphs via <code class="docutils literal notranslate"><span class="pre">sessions_manager.register_branch()</span></code>.</p></li>
+<li><p><strong>Templates</strong>: Edit Jinja2 templates in <code class="docutils literal notranslate"><span class="pre">maeser/controllers/common/templates/</span></code> for UI changes.</p></li>
+<li><p><strong>Static Assets</strong>: Override CSS/JS in <code class="docutils literal notranslate"><span class="pre">common/static/</span></code>.</p></li>
+<li><p><strong>Debug Mode</strong>: <code class="docutils literal notranslate"><span class="pre">debug=True</span></code> enables auto-reload and detailed tracebacks.</p></li>
+<li><p><strong>Production</strong>: Run with a WSGI server such as Gunicorn:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gunicorn<span class="w"> </span>example.flask_example_user_mangement:app<span class="w"> </span>-b<span class="w"> </span><span class="m">0</span>.0.0.0:3002
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="next-steps">
+<h2><span class="section-number">9.10. </span>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Review the <strong>CLI example</strong> (<code class="docutils literal notranslate"><span class="pre">example/terminal_example.py</span></code>) for a terminal interface.</p></li>
+<li><p>Dive into <strong>advanced workflows</strong> in <code class="docutils literal notranslate"><span class="pre">graphs.md</span></code>.</p></li>
+<li><p>Study Maeser’s <strong>architecture</strong> in <code class="docutils literal notranslate"><span class="pre">architecture.md</span></code> before contributing.</p></li>
+</ul>
+<p>Enjoy your authenticated Maeser chatbot! 🚀</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="dev-troubleshooting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Dev Troubleshooting Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="terminal_example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>Terminal Example: Interactive CLI with Maeser</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">9.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-config-yaml">9.2. Configuring <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-flask-example-user-mangement-py">9.3. Inspect <code class="docutils literal notranslate"><span class="pre">flask_example_user_mangement.py</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-imports-env-setup">9.3.1. Configuration Imports &amp; Env Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-logs-session-manager-setup">9.3.2. Chat Logs &amp; Session Manager Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-definitions">9.3.3. Prompt Definitions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-graph-construction">9.3.4. RAG Graph Construction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-management-setup">9.4. User Management Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-authenticators">9.4.1. Configure Authenticators</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-user-manager">9.4.2. Initialize User Manager</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flask-application-setup">9.5. Flask Application Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-application">9.6. Run the Application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#register-your-github-oauth-app">9.7. Register Your GitHub OAuth App</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ldap-authentication-optional">9.8. LDAP Authentication (Optional)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customization-debugging">9.9. Customization &amp; Debugging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">9.10. Next Steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
