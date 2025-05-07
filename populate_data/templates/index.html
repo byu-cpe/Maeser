@@ -2,14 +2,69 @@
 <html>
 <head>
     <title>Upload and Submit PDFs</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        #response-message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload PDF Files</h1>
-    <form action="/upload_and_submit" method="post" enctype="multipart/form-data">
-        <input type="file" name="files" accept=".pdf" multiple required>
-        <p>Name for Dataset?</p>
-        <input type="name" name="dataset_name">
-        <button type="submit">Upload and Submit</button>
-    </form>
+    <div class="container">
+        <h1>Upload PDF Files</h1>
+        <form id="upload-form" enctype="multipart/form-data">
+            <input type="file" name="files" accept=".pdf" multiple required>
+            <p>Name for Dataset?</p>
+            <input type="text" name="dataset_name">
+            <br><br>
+            <button type="submit">Upload and Submit</button>
+        </form>
+        <div id="response-message"></div>
+    </div>
+
+    <script>
+        const responseMessage = document.getElementById('response-message');
+        const fileInput = document.querySelector('input[type="file"]');
+    
+        // Clear message when file input changes
+        fileInput.addEventListener('change', () => {
+            responseMessage.textContent = '';
+        });
+    
+        document.getElementById('upload-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+    
+            responseMessage.textContent = 'Uploading...';
+            responseMessage.style.color = 'orange';
+    
+            const form = event.target;
+            const formData = new FormData(form);
+    
+            try {
+                const response = await fetch('/upload_and_submit', {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                const message = await response.text();
+                responseMessage.textContent = message;
+                responseMessage.style.color = response.ok ? 'green' : 'red';
+            } catch (err) {
+                responseMessage.textContent = 'An error occurred while submitting.';
+                responseMessage.style.color = 'red';
+            }
+        });
+    </script>
+    
 </body>
 </html>

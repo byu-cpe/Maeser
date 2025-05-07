@@ -10,7 +10,7 @@ all:
 	python3 rename_files.py
 	$(MAKE) vector_store
 # Convert PDF to text and remove original PDF
-$(OUTPgit UT_DIR)/%.txt: $(SOURCE_DIR)/%.pdf | $(OUTPUT_DIR)
+$(OUTPUT_DIR)/%.txt: $(SOURCE_DIR)/%.pdf | $(OUTPUT_DIR)
 	pdftotext "$<" "$@"
 	rm "$<"
 
