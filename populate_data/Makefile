@@ -1,7 +1,7 @@
 SOURCE_DIR := source
 OUTPUT_DIR := output
 DATA_STORE_DIR := data_stores
-DELETION_LOG := $(OUTPUT_DIR)/files_converted.log
+DELETION_LOG := logs/files_converted.log
 
 PDF_FILES := $(wildcard $(SOURCE_DIR)/*.pdf)
 TXT_FILES := $(patsubst $(SOURCE_DIR)/%.pdf, $(OUTPUT_DIR)/%.txt, $(PDF_FILES))

@@ -1,7 +1,10 @@
 # Ignore virtual environment
 .venv*
+# Ignore Keys
+Keys.txt
 # Ignore config files
 config.yaml
+config_example.yaml
 # Ignore IDE specific configuration
 .vscode
 # Ignore Python cache
@@ -23,3 +26,8 @@ poetry.lock
 #Ignore 
 *.faiss
 *.pkl
+#Ignore all generated files
+output/*.txt
+source/*.pdf
+data_stores/*.faiss
+data_stores/*.pkl
