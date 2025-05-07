@@ -14,15 +14,16 @@ PURPOSE. See the GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License along with
 Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
-
-from maeser.chat.chat_logs import ChatLogsManager
-from maeser.chat.chat_session_manager import ChatSessionManager
 from config_example import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
+
 import os
 
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+from maeser.chat.chat_logs import ChatLogsManager
+from maeser.chat.chat_session_manager import ChatSessionManager
 
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
@@ -40,7 +41,13 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
 
     {context}
     """
+pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+    You will answer a question about your own life history or the history of BYU based on 
+    the context provided.
+    Don't answer questions about other things.
 
+    {context}
+"""
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
@@ -61,15 +68,10 @@ vectorstore_config = {
 byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
     vectorstore_config=vectorstore_config, 
     memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
-        api_key=OPENAI_API_KEY, 
-        system_prompt_text=(
-            "You are speaking from the perspective of Karl G. Maeser."
-            "Answer questions about your life and BYU's history only. "
-            "Do not answer questions about other things. \n\n"
-            "{context}\n"
-        ),
-        model=LLM_MODEL_NAME
-    )
+    api_key=OPENAI_API_KEY, 
+    system_prompt_text=pipeline_prompt,
+    model=LLM_MODEL_NAME)
+  
 sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
 
 import pyinputplus as pyip
