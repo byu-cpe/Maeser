@@ -1,6 +1,6 @@
 # Architecture Overview
 
-This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **App_Manager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy, using **MyST** code fences for Mermaid.
+This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **App_Manager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy:
 
 ```{mermaid}
 flowchart LR
