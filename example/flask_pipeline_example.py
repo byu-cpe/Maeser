@@ -28,19 +28,8 @@ from maeser.chat.chat_session_manager import ChatSessionManager
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
-maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
-    You will answer a question about your own life history based on the context provided.
-    Don't answer questions about other things.
-
-    {context}
-    """
-
-byu_prompt: str = """You are speaking about the history of Brigham Young University.
-    You will answer a question about the history of BYU based on the context provided.
-    Don't answer questions about other things.
-
-    {context}
-    """
+# A pipeline is a generalized prompt, often for providing answers across larger datasets,
+# but still specific to relevant course information.
 pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history or the history of BYU based on 
     the context provided.
@@ -51,12 +40,6 @@ pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maese
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
-
-maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt, model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
-
-byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
 # One for the history of BYU and one for the life of Karl G. Maeser.
 # Ensure that topics are all lower case and spaces between words

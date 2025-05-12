@@ -53,24 +53,11 @@ sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", 
 
 # One for the history of BYU and one for the life of Karl G. Maeser.
 # Ensure that topics are all lower case and spaces between words
+# These are specific prompts engineered for certain contexts.
 vectorstore_config = {
     "byu history": f"{VEC_STORE_PATH}/byu",      # Vectorstore for BYU history.
     "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
 }
-
-byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
-    vectorstore_config=vectorstore_config, 
-    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
-        api_key=OPENAI_API_KEY, 
-        system_prompt_text=(
-            "You are speaking from the perspective of Karl G. Maeser."
-            "Answer questions about your life and BYU's history only. "
-            "Do not answer questions about other things. \n\n"
-            "{context}\n"
-        ),
-        model=LLM_MODEL_NAME
-    )
-sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
 
 import pyinputplus as pyip
 
