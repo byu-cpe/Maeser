@@ -4,8 +4,15 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 
+<<<<<<< HEAD
 
 os.environ["OPENAI_API_KEY"] = ""
+=======
+# For my sanity's sake, I am having my key be read in from a local, unsunc file.
+# This is also to make it easier and more secure to run from inside a container, by getting the key
+# external to the container but encrypted, when implemented.
+os.environ["OPENAI_API_KEY"] = str(open("Keys.txt").readline().strip())
+>>>>>>> Local_Adam_Sandland
 
 # Load and combine all text from .txt files in the "output" directory
 # This will provide one unified file per upload for training data, try to make it separate data for separate sources later on?

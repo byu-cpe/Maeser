@@ -1,13 +1,23 @@
 SOURCE_DIR := source
 OUTPUT_DIR := output
 DATA_STORE_DIR := data_stores
+<<<<<<< HEAD
 DELETION_LOG := $(OUTPUT_DIR)/files_converted.log
+=======
+DELETION_LOG := logs/files_converted.log
+>>>>>>> Local_Adam_Sandland
 
 PDF_FILES := $(wildcard $(SOURCE_DIR)/*.pdf)
 TXT_FILES := $(patsubst $(SOURCE_DIR)/%.pdf, $(OUTPUT_DIR)/%.txt, $(PDF_FILES))
 
+<<<<<<< HEAD
 all: vector_store
 
+=======
+all: 
+	python3 rename_files.py
+	$(MAKE) vector_store
+>>>>>>> Local_Adam_Sandland
 # Convert PDF to text and remove original PDF
 $(OUTPUT_DIR)/%.txt: $(SOURCE_DIR)/%.pdf | $(OUTPUT_DIR)
 	pdftotext "$<" "$@"
