@@ -111,7 +111,7 @@ python -m maeser.terminal
 
 ## 7. Customizing Your Experience
 
-- **Add Your Own Content:** Follow the easy guide at `maeser.embedding` (no coding required) to embed your own documents.  
+- **Add Your Own Content:** Follow the easy guide at [Embedding New Content](../development-setup/embedding.md) (no coding required) to embed your own documents.  
 - **Switch Models:** Change `LLM_MODEL_NAME` in `config.yaml` to another model name supported by OpenAI.  
 - **Adjust Quotas:** If you’re an admin, set per‑user request limits in `config.yaml` under `MAX_REQUESTS` and `RATE_LIMIT_INTERVAL`.
 
