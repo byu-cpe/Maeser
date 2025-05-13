@@ -64,7 +64,7 @@ flowchart LR
 - **Responsibilities:** Manages conversation sessions, routes messages to the appropriate RAG graph, and tracks session metadata.
 - **Subcomponents:**
   - **Simple RAG** (`get_simple_rag`): Single-domain retrieval and generation pipeline.
-  - **Pipeline RAG** (`get_pipeline_rag`): Multi-domain or routed retrieval pipeline.
+  - **Pipeline RAG** (`get_pipeline_rag`): Dynamically routed retrieval pipeline.
 - **Controllers:**
   - `chat_interface.controller` (renders UI)
   - `new_session_api.controller` (creates sessions)
@@ -88,7 +88,7 @@ flowchart LR
   - `GithubAuthenticator`
   - `LDAPAuthenticator`
 - **Controllers:**
-  - `login_api.*` (login/logout routes)
+  - `login_api.*_controller` (login/logout routes)
   - `logout.controller`
   - `manage_users_view.controller` (admin UI)
   - `user_management_api.controller` (user CRUD API)
