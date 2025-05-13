@@ -104,12 +104,3 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 - **[Docker:](https://docs.docker.com/)** Containerization for reproducible deployments
 
 ---
-
-## Best Practices & Tips
-
-- Keep **LangChain** and **OpenAI SDK** versions up-to-date.  
-- Swap FAISS for another vector store (e.g., Chroma) by updating only pipeline construction.  
-- Use **python-dotenv** in dev to keep secrets out of YAML/source.  
-- Configure **pre-commit hooks** (Black, Flake8, isort) for consistent code style.
-
-With this guide, you’ll quickly grasp each library’s purpose and role within Maeser’s architecture, making your customization and troubleshooting even easier.
