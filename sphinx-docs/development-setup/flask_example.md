@@ -1,6 +1,6 @@
 # Maeser Example (with Flask & User Management)
 
-This guide demonstrates how to run Maeser as a web-based chatbot **with user authentication** (via GitHub OAuth or LDAP) using the official example script at `example/flask_example_user_mangement.py`. You’ll inspect the script, configure authentication, launch the server, and customize the application for your own RAG workflows.
+This guide demonstrates how to run Maeser as a web-based chatbot **with user authentication** (via GitHub OAuth or LDAP) using two example scripts--"flask_multigroup_example_user_management.py" and "flask_pipeline_example_user_management.py". You’ll inspect the script, configure authentication, launch the server, and customize the application for your own RAG workflows.
 
 ---
 
@@ -67,7 +67,7 @@ LDAP_CONNECTION_TIMEOUT: 5
 
 ---
 
-## Inspect `flask_example_user_mangement.py`
+## Inspect `flask_multigroup_user_mangement_example.py` and `flask_pipeline_user_mangement_example.py`
 
 ### Configuration Imports & Env Setup
 Imports all config variables and sets the OpenAI API key in the environment.
@@ -101,8 +101,9 @@ sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
 ### Prompt Definitions
-Defines system prompts that inject persona and context into the LLM.
+Defines system prompts that inject persona and context into the LLM. These differ between the pipeline and multigroup RAGs. multigroup has promptsper group, while pipeline has one prompt designed for all data.
 ```python
+#located in the "multigroup" example
 maeser_prompt = (
     """You are speaking from the perspective of Karl G. Maeser.\n"
     "You will answer questions about your life history based on provided context.\n"
@@ -115,64 +116,69 @@ byu_prompt = (
     "{context}"""
 )
 
-pipeline_prompt = (
-    """You are Karl G. Maeser or a BYU historian.\n"
-    "You will answer history questions based on provided context.\n"
-    "{context}"""
-)
+```
+
+```python
+# located in the "pipeline" example
+pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+    You will answer a question about your own life history or the history of BYU based on 
+    the context provided.
+    Don't answer questions about other things.
+
+    {context}
+"""
 ```
 
 ### RAG Graph Construction
-Creates three RAG pipelines (Karl Maeser, BYU, and combined pipeline) and registers them as named branches.
+Here we are creating RAG pipelines (Karl Maeser, BYU, and combined pipeline) and register them as named branches.
 ```python
+# Multigroup
+from maeser.graphs.simple_rag import get_simple_rag
+from langgraph.graph.graph import CompiledGraph
+
+maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser",
+vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt, model=LLM_MODEL_NAME)
+sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
+
+byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
+sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
+
+```
+
+
+```python
+# located in the "pipeline" example
+pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+    You will answer a question about your own life history or the history of BYU based on 
+    the context provided.
+    Don't answer questions about other things.
+
+    {context}
+"""
+```
+
+### RAG Graph Construction
+Here we are creating RAG pipelines (Karl Maeser, BYU, and combined pipeline) and register them as named branches.
+```python
+# Pipeline
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
-# Simple RAG for Karl G. Maeser
-maeser_graph: CompiledGraph = get_simple_rag(
-    vectorstore_path=f"{VEC_STORE_PATH}/maeser",
-    vectorstore_index="index",
-    memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db",
-    system_prompt_text=maeser_prompt,
-    model=LLM_MODEL_NAME
-)
-sessions_manager.register_branch(
-    branch_name="maeser",
-    branch_label="Karl G. Maeser History",
-    graph=maeser_graph
-)
+vectorstore_config = {
+    "byu history": f"{VEC_STORE_PATH}/byu",      # Vectorstore for BYU history.
+    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
+}
 
-# Simple RAG for BYU History
-byu_graph: CompiledGraph = get_simple_rag(
-    vectorstore_path=f"{VEC_STORE_PATH}/byu",
-    vectorstore_index="index",
-    memory_filepath=f"{LOG_SOURCE_PATH}/byu.db",
-    system_prompt_text=byu_prompt,
-    model=LLM_MODEL_NAME
-)
-sessions_manager.register_branch(
-    branch_name="byu",
-    branch_label="BYU History",
-    graph=byu_graph
-)
-
-# Pipeline across both domains
-pipeline_graph: CompiledGraph = get_pipeline_rag(
-    vectorstore_config={
-        "byu history": f"{VEC_STORE_PATH}/byu",
-        "karl g maeser": f"{VEC_STORE_PATH}/maeser"
-    },
+byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
+    vectorstore_config=vectorstore_config, 
     memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
-    api_key=OPENAI_API_KEY,
-    system_prompt_text=pipeline_prompt,
-    model=LLM_MODEL_NAME
-)
-sessions_manager.register_branch(
-    branch_name="pipeline",
-    branch_label="Pipeline",
-    graph=pipeline_graph
-)
+    api_key=OPENAI_API_KEY, 
+    system_prompt_text=(pipeline_prompt),
+    model=LLM_MODEL_NAME)
+sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
+
+
 ```
 
 ---
@@ -180,7 +186,7 @@ sessions_manager.register_branch(
 ## User Management Setup
 
 ### Configure Authenticators
-Defines GitHub and LDAP authenticators for user login and request quotas.
+Defines GitHub and LDAP authenticators for user login and request quotas. This is consistent across both examples.
 ```python
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
@@ -250,9 +256,10 @@ if __name__ == "__main__":
 
 ## Run the Application
 
-Activate your virtual environment and execute:
+Activate your virtual environment and execute one of the following commands:
 ```bash
-python example/flask_example_user_mangement.py
+python example/flask_multigroup_user_mangement_example.py
+python example/flask_pipeline_user_mangement_example.py
 ```
 Navigate to **http://localhost:3002**, authenticate via GitHub or LDAP, select a branch, and start chatting.
 

@@ -4,7 +4,6 @@
 Keys.txt
 # Ignore config files
 config.yaml
-config_example.yaml
 # Ignore IDE specific configuration
 .vscode
 # Ignore Python cache

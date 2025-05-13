@@ -91,7 +91,7 @@ from flask import Flask
 
 base_app = Flask(__name__)
 
-from maeser.blueprints import App_Man
+from maeser.blueprints import App_Manager
 # These are specific prompts engineered for certain contexts.ager
 
 # Create the App_Manager class

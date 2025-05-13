@@ -16,7 +16,7 @@
 ### API keys are required for OpenAI and GitHub integrations ###
 
 api_keys:
-  openai_api_key: ''
+  openai_api_key: '...'
   github_client_secret: '...'
 
 

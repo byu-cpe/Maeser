@@ -51,14 +51,6 @@ sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Mae
 byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
 sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
-# One for the history of BYU and one for the life of Karl G. Maeser.
-# Ensure that topics are all lower case and spaces between words
-# These are specific prompts engineered for certain contexts.
-vectorstore_config = {
-    "byu history": f"{VEC_STORE_PATH}/byu",      # Vectorstore for BYU history.
-    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
-}
-  
 from flask import Flask
 
 base_app = Flask(__name__)

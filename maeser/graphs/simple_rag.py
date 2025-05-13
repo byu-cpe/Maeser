@@ -37,7 +37,8 @@ def get_simple_rag(
     api_key: str | None = None,
     system_prompt_text: str = (
         'You are a helpful teacher helping a student with course material.\n'
-        'Answer the question based on the provided course content:\n\n'
+        'You will answer a question based on the context provided:\n'
+        'Don\'t answer questions about other things.\n\n'
         '{context}\n'
     ),
     model: str = 'gpt-4o-mini'
