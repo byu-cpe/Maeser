@@ -1,5 +1,5 @@
-# 11. Resources
-## 11.1 General Resources
+# Resources
+## General Resources
 * [Prompt Engineering Guide](https://www.promptingguide.ai/)
    * This guide contains useful things like prompting techniques for LLMs.
 * [Flask Documentation](https://flask.palletsprojects.com/en/stable/quickstart/)
