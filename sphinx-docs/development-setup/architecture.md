@@ -51,6 +51,7 @@ flowchart LR
   A1 --> D0["Jinja2 Render Helpers"]
 
 ```
+> **Note:** If the diagram above is not rendering properly, try switching the page theme from dark to light.
 
 ## Core Components
 
