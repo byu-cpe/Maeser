@@ -67,7 +67,7 @@ sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline"
 
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
-# Replace the '...' with a client id and secret from a GitHub OAuth App that you generate in the config_example.yaml
+# Replace the '...' in the config_example.yaml with a client id and secret from a GitHub OAuth App that you generate
 github_authenticator = GithubAuthenticator(
     client_id=GITHUB_CLIENT_ID, 
     client_secret=GITHUB_CLIENT_SECRET, 
