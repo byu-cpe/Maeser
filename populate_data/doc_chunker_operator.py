@@ -1,9 +1,5 @@
 # doc_chunker_operator.py
-<<<<<<< HEAD
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-=======
 from langchain_text_splitters import RecursiveCharacterTextSplitter
->>>>>>> Local_Adam_Sandland
 from pathlib import Path
 
 # Read all text files
