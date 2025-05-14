@@ -6,8 +6,11 @@ print("Current working directory:", os.getcwd())
 
 app = Flask(__name__)
 dataset_name = ""
+<<<<<<< HEAD
+=======
 datasets = os.listdir('data_stores')
 
+>>>>>>> Local_Adam_Sandland
 
 # Change this to your desired path
 UPLOAD_FOLDER = 'source'
@@ -31,12 +34,22 @@ def upload_and_submit():
     for file in files:
         if file and allowed_file(file.filename):
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+<<<<<<< HEAD
+            file.save(filepath)
+    #dataset_name=request.name
+
+    # Run the makefile target
+    try:
+        subprocess.run(['make'], check=True)
+        return 'Files uploaded and Makefile executed successfully.'
+=======
             file.save(filepath)  
     # Run the makefile target
     try:
         os.environ['dataset_name']=request.form.get("dataset_name") 
         subprocess.run(['make'], check=True)
         return 'Files uploaded'
+>>>>>>> Local_Adam_Sandland
     except subprocess.CalledProcessError as e:
         return f'File upload succeeded but Makefile failed: {e}', 500
 
