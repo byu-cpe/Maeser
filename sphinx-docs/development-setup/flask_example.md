@@ -101,7 +101,7 @@ sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
 ### Prompt Definitions
-Defines system prompts that inject persona and context into the LLM. These differ between the pipeline and multigroup RAGs. multigroup has promptsper group, while pipeline has one prompt designed for all data.
+Defines system prompts that inject persona and context into the LLM. These differ between the pipeline and multigroup RAGs. Multigroup has prompts for each group, while pipeline has one prompt designed for the sum total of vector data.
 ```python
 #located in the "multigroup" example
 maeser_prompt = (
@@ -130,7 +130,7 @@ pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maese
 ```
 
 ### RAG Graph Construction
-Here we are creating RAG pipelines (Karl Maeser, BYU, and combined pipeline) and register them as named branches.
+Here we are creating RAG pipelines (Karl G. Maeser, BYU, and combined pipeline) and register them as named branches.
 ```python
 # Multigroup
 from maeser.graphs.simple_rag import get_simple_rag
