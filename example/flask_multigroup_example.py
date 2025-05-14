@@ -1,5 +1,5 @@
 """
-© 2024 Blaine Freestone, Brent Nelson, Gohaun Manley
+© 2024 Blaine Freestone, Carson Bush, Brent Nelson, Gohaun Manley
 
 This file is part of the Maeser usage example.
 
@@ -41,15 +41,8 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
 
     {context}
     """
-pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
-    You will answer a question about your own life history or the history of BYU based on 
-    the context provided.
-    Don't answer questions about other things.
 
-    {context}
-"""
 from maeser.graphs.simple_rag import get_simple_rag
-from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
 maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt, model=LLM_MODEL_NAME)
@@ -58,6 +51,7 @@ sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Mae
 byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
 sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
+<<<<<<< HEAD:example/flask_example.py
 # One for the history of BYU and one for the life of Karl G. Maeser.
 # Ensure that topics are all lower case and spaces between words
 vectorstore_config = {
@@ -74,45 +68,29 @@ byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
   
 sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
 
-import pyinputplus as pyip
+=======
+>>>>>>> Local_Adam_Sandland:example/flask_multigroup_example.py
+from flask import Flask
 
-print("Welcome to the Maeser terminal example!")
+base_app = Flask(__name__)
 
-while True:
-    # structure branches dictionary for input menu
-    label_to_key = {value['label']: key for key, value in sessions_manager.branches.items()}
-    label_to_key["Exit terminal session"] = "exit"
+from maeser.blueprints import App_Manager
 
-    # select a branch
-    branch = pyip.inputMenu(
-        list(label_to_key.keys()),
-        prompt="Select a branch: \n",
-        numbered=True
-    )
+app_manager = App_Manager(
+    app=base_app,
+    app_name="Maeser Test App -- NO USER MANAGER",
+    flask_secret_key="secret",
+    chat_session_manager=sessions_manager,
+    chat_head="/static/Karl_G_Maeser.png"
+    # Note that you can change other aspects too! Heres some examples below
+    # main_logo_login="/static/main_logo_login.png",
+    # favicon="/static/favicon.png",
+    # login_text="Welcome to Maeser. This package is designed to facilitate the creation of Retrieval-Augmented Generation (RAG) chatbot applications, specifically tailored for educational purposes."
+    # primary_color="#f5f5f5"
+)
 
-    # get the key for the selected branch
-    if branch != "Exit terminal session":
-        branch = label_to_key[branch]
-    else:
-        print("Exiting terminal session.")
-        break
+#initalize the flask blueprint
+app: Flask = app_manager.add_flask_blueprint()
 
-    # create a new session
-    session = sessions_manager.get_new_session_id(branch)
-    print(f"\nSession {session} created for branch {branch}.")
-    print("Type 'exit' to end the session.\n")
-
-    # loop for conversation
-    while True:
-        # get user input
-        user_input = input("User:\n> ")
-
-        # check for exit
-        if user_input == "exit" or user_input == 'quit':
-            print("Session ended.\n")
-            break
-
-        # get response
-        response = sessions_manager.ask_question(user_input, branch, session)
-
-        print(f"\nSystem:\n{response['messages'][-1]}\n")
+if __name__ == "__main__":
+    app.run(port=3002)
