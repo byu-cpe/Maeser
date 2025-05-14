@@ -24,7 +24,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
      source .venv/bin/activate
      pip install -e .
      ```
-  2. If using Poetry, run `poetry lock --no-update` then `poetry install`.
+  2. If using Poetry, run `poetry lock` then `poetry install`.
 
 ### FAISS Installation Errors
 - **Symptom:** Errors compiling FAISS on Windows or macOS.
