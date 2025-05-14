@@ -48,13 +48,13 @@ This page helps you diagnose and resolve common issues encountered during Maeser
     ```
   - Confirm with `echo $OPENAI_API_KEY` (Unix) or `echo %OPENAI_API_KEY%` (Windows).
 
-### Incorrect Paths in `config.yaml`
+### Incorrect Paths in `config_example.yaml`
 - **Symptom:** FileNotFoundError for vectorstores or log directories.
 - **Solution:** Verify the following fields point to existing locations:
-  - `VEC_STORE_PATH`
-  - `LOG_SOURCE_PATH`
-  - `CHAT_HISTORY_PATH`
-  - `USERS_DB_PATH`
+  - `vec_store_path`
+  - `log_source_path`
+  - `chat_history_path`
+  - `accounts_db_path`
 
 ---
 
@@ -64,10 +64,10 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 - **Symptom:** RAG returns unrelated or blank responses.
 - **Solution:**
   1. Confirm your FAISS index directories are correct and contain `.index` files.
-  2. Check your embedding step:
+  2. Check your embedding step (e.g. in your script for [embedding new content](embedding)):
      ```python
      from langchain.embeddings.openai import OpenAIEmbeddings
-     emb = OpenAIEmbeddings()
+     embeddings = OpenAIEmbeddings()
      ```
      Ensure embeddings have completed without errors.
   3. Experiment with `chunk_size` / `chunk_overlap` in `RecursiveCharacterTextSplitter`.
@@ -75,7 +75,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 ### Index Load Failures
 - **Symptom:** Errors loading FAISS index (`IOError`, `faiss` exceptions).
 - **Solution:**
-  - Use absolute paths in `get_simple_rag` or `get_pipeline_rag`.
+  - Ensure that your rag graphs (`get_simple_rag` or `get_pipeline_rag`) are configured with the correct paths to your FAISS vectorstores.
   - Confirm directory permissions: `chmod -R u+rw <vectorstore_folder>`.
 
 ---
@@ -91,8 +91,14 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 ### Sphinx Build Errors
 - **Symptom:** `make html` errors on missing references or invalid syntax.
 - **Solution:**
-  1. Install docs extras: `pip install -e .[docs]` or `pip install myst-parser`
-  2. Fix broken cross-references or Markdown syntax in `.md` / `.rst` files.
+  1. Confirm that your [virtual environment](#virtual-environment-activation) is activated.
+  2. Install docs extras: `pip install -e .[docs]` or `pip install myst-parser`
+  3. Ensure that all cross-references in your `.md` / `.rst` files are correct.
+
+### Sphinx TOCTree Warnings
+- **Symptom:** Building the documentation yields one or more warnings that say, `WARNING: document isn't included in any toctree`.
+- **Solution:**
+  - Check `index.rst` and make sure that the file has been included in the table of contents.
 
 ---
 
@@ -142,10 +148,5 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 ## Getting Help
 
 - **GitHub Issues:** Check for existing issues or open a new one: https://github.com/byu-cpe/Maeser/issues
-- **Discussion Forum:** Join the Maeser Slack or mailing list (link TBD).
-- **Community Contributions:** Submit documentation fixes or feature requests via PRs.
-
----
-
-Any other issues? Feel free to reach out in the project’s GitHub discussions or create a new issue!
+- **Community Contributions:** Submit documentation fixes or feature requests via a Pull Request.
 
