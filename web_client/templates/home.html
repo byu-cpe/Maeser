@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+    <div class="header">
+        <div class="user-welcome">Welcome, {{ username }}!</div>
+        {% if is_admin %}
+            <a href="{{ url_for('admin_portal') }}" class="admin-button">Admin Portal</a>
+        {% endif %}
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h3>Navigation</h3>
+            <ul>
+                <li><a href="#">Course Search</a></li>
+                <li><a href="#">Add Courses</a></li>
+                <li><a href="#">Manage Courses</a></li>
+            </ul>
+            <h4>Select Course:</h4>
+            <select>
+                <option>Math 310</option>
+                <option>History 420</option>
+                <option>Physics 101</option>
+                <option>Chemistry 205</option>
+            </select>
+        </div>
+
+        <div class="content">
+            <p>This is the main content area.</p>
+        </div>
+    </div>
+</body>
+</html>
