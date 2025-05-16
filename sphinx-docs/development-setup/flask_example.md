@@ -6,7 +6,7 @@ This guide demonstrates how to run Maeser as a web-based chatbot **with user aut
 
 ## Prerequisites
 
-- **Maeser development environment** set up (see `development_setup.md`).
+- **Maeser development environment** set up (see [Develpoment Setup](development_setup)).
 - **Python 3.10+** virtual environment activated.
 - **Maeser** installed in editable mode (`pip install -e .` or `make setup`).
 - **Pre-built FAISS vectorstores** at the paths referenced in `config_example.yaml`.
@@ -295,8 +295,8 @@ Ensure your LDAP server is reachable, and the fields in `config.yaml` match your
 ## Next Steps
 
 - Review the **CLI example** (`example/terminal_example.py`) for a terminal interface.
-- Dive into **advanced workflows** in `graphs.md`.
-- Study Maeser’s **architecture** in `architecture.md` before contributing.
+- Dive into **advanced workflows** in [Graphs: Simple RAG vs. Pipeline RAG](graphs).
+- Study Maeser’s **architecture** in [Architecutre Overview](architecture) before contributing.
 
 Enjoy your authenticated Maeser chatbot! 🚀
 

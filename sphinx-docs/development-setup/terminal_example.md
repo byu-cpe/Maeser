@@ -6,10 +6,10 @@ This guide illustrates how to use the official CLI example (`example/terminal_ex
 
 ## Prerequisites
 
-- **Maeser development environment** set up (see `development_setup.md`).
+- **Maeser development environment** set up (see [Development Setup](development_setup)).
 - **Python 3.10+** virtual environment activated.
 - **Maeser** installed in editable mode (`pip install -e .` or `make setup`).
-- **Required FAISS vectorstores** built and available (via `embedding.md`).
+- **Required FAISS vectorstores** built and available (via [Embedding New Content](embedding)).
 - **`config.yaml`** configured with your OpenAI API key and file paths (see below).
 
 ---
@@ -183,7 +183,7 @@ python example/terminal_example.py
 ## Next Steps
 
 - Explore the **Flask example** (`flask_example_user_mangement.py`) for web UI.
-- Embed new knowledge bases via **`embedding.md`**.
-- Design advanced workflows in **`custom_graphs.md`**.
-- Review Maeser’s system architecture in **`architecture.md`**.
+- Embed new knowledge bases via [Embedding New Content](embedding).
+- Design advanced workflows in [Custom Graphs: Advanced RAG Workflows](custom_graphs).
+- Review Maeser’s system architecture in [Architecture Overview](architecture).
 

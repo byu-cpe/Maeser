@@ -6,9 +6,9 @@ This guide explores how to extend Maeser’s default pipelines by building **cus
 
 ## Prerequisites
 
-- A Maeser development environment set up (`development_setup.md`).
+- A Maeser development environment set up ([Development Setup](development_setup)).
 - Python 3.10+ with Maeser and LangGraph installed (`pip install -e .` includes LangGraph).
-- Familiarity with Simple RAG (`simple_rag`) and Pipeline RAG (`pipeline_rag`) workflows.
+- Familiarity with Simple RAG (`simple_rag`) and Pipeline RAG (`pipeline_rag`) workflows. (Return to [Section 4](graphs) if you aren't familiar)
 
 ---
 
@@ -182,6 +182,6 @@ sessions.register_branch("math_tutor","Math & Theory Tutor",graph)
 
 ## Next Steps
 
-- Read **`graphs.md`** for built‑in pipelines.
+- Read [Graphs: Simple RAG vs. Pipline RAG](graphs) for built‑in pipelines.
 - Experiment with external tools (e.g., web search) by adding new states.
 - Share your custom graphs with the Maeser community via GitHub.
