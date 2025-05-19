@@ -21,16 +21,38 @@
                 <li><a href="#">Manage Courses</a></li>
             </ul>
             <h4>Select Course:</h4>
-            <select>
-                <option>Math 310</option>
-                <option>History 420</option>
-                <option>Physics 101</option>
-                <option>Chemistry 205</option>
-            </select>
+            <form method="get" action="/">
+                <select name="selected_folder" onchange="this.form.submit()">
+                    {% for folder in folders %}
+                        <option value="{{ folder }}" {% if folder == selected_folder %}selected{% endif %}>{{ folder }}</option>
+                    {% endfor %}
+                </select>
+            </form>            
         </div>
-
-        <div class="content">
-            <p>This is the main content area.</p>
+            <div class="content">
+                {% if selected_folder %}
+                    <h2>Chatbot for {{ selected_folder }}</h2>
+                    {% if bot_info %}
+                        <div class="bot-info">
+                            <h4>Bot Context & Rules:</h4>
+                            <pre>{{ bot_info }}</pre>
+                        </div>
+                        <div class="chat-container">
+                            <!-- Placeholder for your actual chatbot -->
+                            <div id="chat-window">
+                                <div id="chat-log"></div>
+                                <form id="chat-form">
+                                    <input type="text" id="chat-input" placeholder="Ask the bot..." autocomplete="off" />
+                                    <button type="submit">Send</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p><em>No bot.txt found in this folder.</em></p>
+                    {% endif %}
+                {% else %}
+                    <p>Please select a folder to load a chatbot.</p>
+                {% endif %}         
         </div>
     </div>
 </body>
