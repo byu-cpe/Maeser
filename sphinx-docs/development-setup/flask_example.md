@@ -1,15 +1,27 @@
 # Maeser Example (with Flask & User Management)
 
-This guide demonstrates how to run Maeser as a web-based chatbot **with user authentication** (via GitHub OAuth or LDAP) using two example scripts--"flask_multigroup_example_user_management.py" and "flask_pipeline_example_user_management.py". You’ll inspect the script, configure authentication, launch the server, and customize the application for your own RAG workflows.
+This guide demonstrates how to run Maeser as a web-based chatbot **with user authentication** (via GitHub OAuth or LDAP) using two example scripts--`flask_multigroup_example_user_management.py` and `flask_pipeline_example_user_management.py`. You’ll inspect the script, configure authentication, launch the server, and customize the application for your own RAG workflows.
+
+> Note: If you want to get the example running without user authentication, follow this guide with `flask_multigroup_example.py` or `flask_pipeline_example.py` instead, skipping the User Manager setup.
 
 ---
 
 ## Prerequisites
 
-- **Maeser development environment** set up (see [Develpoment Setup](development_setup)).
+- **Maeser development environment** set up (see [Development Setup](development_setup)).
 - **Python 3.10+** virtual environment activated.
 - **Maeser** installed in editable mode (`pip install -e .` or `make setup`).
-- **Pre-built FAISS vectorstores** at the paths referenced in `config_example.yaml`.
+- **Pre-built FAISS vectorstores** at the paths referenced in `config_example.yaml`. The example scripts use the pre-built `byu` and `maeser` vectorstores found in `example/vectorstores`. See [Embedding New Content](embedding) for instructions on how to build and add your own vectorstores.
+
+---
+
+## Choosing Between Multigroup or Pipeline
+`flask_multigroup_example_user_management.py` and `flask_pipeline_example_user_management.py` are very similar in their implementation but have a few key differences:
+
+- **Multigroup** creates separate "branches" for each vectorstore, which configures the chatbot to use only one vectorstore per conversation.
+- **Pipeline** adds all vectorstores to a single branch, which configures the chatbot to dynamically pull from any of the vectorstores based on the user's query.
+
+Choose whichever example is more applicable to your needs. If you prefer each conversation thread to be focused on only one topic/vectorstore, use the **Multigroup** example. Otherwise, consider using the **Pipeline** example.
 
 ---
 
@@ -50,12 +62,18 @@ ldap3:
     - '<email_attribute>'
   ca_cert_path: '<ca_certificate_path>'
   connection_timeout: 10
+
+### Configure the LLM and text embedding models ###
+
+llm:
+  llm_model_name: gpt-4o-mini
+  llm_provider: openai
+  token_limit: 400
 ```
 
 **Field Descriptions**:
-- **log_source_path**: Directory/file prefix for RAG memory databases.  
 - **openai_api_key**: Key to authenticate with OpenAI’s API.  
-- **llm_model_name**: Which OpenAI or other LLM model to invoke.  
+- **llm_** entries: Configuration for your LLM.  
 - **github_** entries: Configure GitHub OAuth flow.
 - **ldap3_** entries: Configure LDAP authentication parameters.
 
@@ -63,7 +81,8 @@ ldap3:
 
 ---
 
-## Inspect `flask_multigroup_user_mangement_example.py` and `flask_pipeline_user_mangement_example.py`
+## Inspect the Example Scripts
+The following sections will go through `flask_multigroup_user_mangement_example.py` and `flask_pipeline_user_mangement_example.py` section by section and explain how the code works. Most of the code can be left unchanged and should work as-is assuming that `config_example.yaml` is configured correctly.
 
 ### Configuration Imports & Env Setup
 Imports all config variables and sets the OpenAI API key in the environment.
@@ -98,7 +117,7 @@ sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
 ### Prompt Definitions
-Defines system prompts that inject persona and context into the LLM. These differ between the pipeline and multigroup RAGs. Multigroup has prompts for each group, while pipeline has one prompt designed for the sum total of vector data.
+Defines system prompts that inject persona and context into the LLM. These differ between the pipeline and multigroup examples. Multigroup has prompts for each group, while pipeline has one prompt designed for the sum total of vector data.
 ```python
 # Located in the "multigroup" example
 maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
@@ -294,6 +313,7 @@ Ensure your LDAP server is reachable, and the fields in `config.yaml` match your
 
 ## Next Steps
 
+- Follow the instruction in [Embedding New Content](embedding) to create your own vectorstores and add them to the example.
 - Review the **CLI example** (`example/terminal_example.py`) for a terminal interface.
 - Dive into **advanced workflows** in [Graphs: Simple RAG vs. Pipeline RAG](graphs).
 - Study Maeser’s **architecture** in [Architecutre Overview](architecture) before contributing.
