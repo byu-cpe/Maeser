@@ -43,10 +43,14 @@ def home():
     bot_info = ""
     if selected_folder and selected_folder in folder_names:
         bot_txt_path = os.path.join(uploads_path, selected_folder, 'bot.txt')
-        if os.path.isfile(bot_txt_path):
-            with open(bot_txt_path, 'r') as f:
-                bot_info = f.read()
-                parse_bot_file(bot_info)
+        print(bot_txt_path)
+        #if os.path.isfile(bot_txt_path):
+        with open(bot_txt_path, 'r') as f:
+            bot_info = f.read()
+            parse_bot_file(bot_info)
+
+        print(model_name)
+        print(rules)
 
     return render_template(
         'home.html',
@@ -58,6 +62,7 @@ def home():
 
 def parse_bot_file(bot_txt):
     content = bot_txt
+    print(bot_txt)
     # Define regex patterns for sections
     pattern = r'# (\w+)\s+```.*?```\s+((?:.|\n)*?)(?=\n#|\Z)'
     matches = re.findall(pattern, content)
@@ -65,12 +70,16 @@ def parse_bot_file(bot_txt):
     for section, data in matches:
         lines = [line.strip() for line in data.strip().splitlines() if line.strip()]
         if section == "ModelName" and lines:
+            global model_name
             model_name = lines[0]
         elif section == "HostAddress" and lines:
+            global host_address
             host_address = lines[0]
         elif section == "Rules":
+            global rules
             rules = lines
         elif section == "Contexts":
+            global contexts
             contexts = lines
 
 
