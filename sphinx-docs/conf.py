@@ -61,8 +61,8 @@ autodoc_mock_imports = [
 # -- Project information -----------------------------------------------------
 
 project = 'Maeser'
-copyright = '2024, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales contributors'
-author = 'Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales contributors'
+copyright = '2025, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors'
+author = 'Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors'
 
 # The full version, including alpha/beta/rc tags
 release = 'alpha'

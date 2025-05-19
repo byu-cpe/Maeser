@@ -24,6 +24,7 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 
 ---
 
+**Your script for storing data will consist of two parts--chunking, and storing.**
 ## Chunk Your Documents
 
 Large documents must be split into smaller, semantically meaningful chunks before embedding:
@@ -119,6 +120,17 @@ sessions_manager.register_branch(
 ```
 
 Now, when you run the Maeser app, your new "My Custom Knowledge" branch will retrieve answers from your embedded content.
+
+---
+
+## Automated VectorStore Building tool
+In the maeser folder, there is a folder titled `populate_data`. Inside is a tool to very quickly and efficiently build vector stores to use for your model.
+* Make sure to run `source .venv/bin/activate` to open in a virtual environment.
+* cd into the `populate_data` folder
+* run `make` to install all the required dependencies
+* To run the applet, execute the command `python WebClient.py`.
+   * You may upload any number of pdfs and name the dataset in the applet. The resulting vectorstore will show up in `populate_data/data_stores`
+   * Each time will overwrite the previous data, so move out the data to the desired location before generating a new set.
 
 ---
 
