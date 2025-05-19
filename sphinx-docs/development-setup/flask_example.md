@@ -10,7 +10,7 @@ This guide demonstrates how to run Maeser as a web-based chatbot **with user aut
 
 - **Maeser development environment** set up (see [Development Setup](development_setup)).
 - **Python 3.10+** virtual environment activated.
-- **Maeser** installed in editable mode (`pip install -e .` or `make setup`).
+- **Configured Authentication** for your [GitHub app](#register-your-github-oauth-app), [LDAP server](#ldap-authentication-optional), or both. 
 - **Pre-built FAISS vectorstores** at the paths referenced in `config_example.yaml`. The example scripts use the pre-built `byu` and `maeser` vectorstores found in `example/vectorstores`. See [Embedding New Content](embedding) for instructions on how to build and add your own vectorstores.
 
 ---
@@ -72,8 +72,8 @@ llm:
 ```
 
 **Field Descriptions**:
-- **openai_api_key**: Key to authenticate with OpenAI’s API.  
-- **llm_** entries: Configuration for your LLM.  
+- **openai_api_key**: Key to authenticate with OpenAI’s API.
+- **llm_** entries: Configuration for your LLM.
 - **github_** entries: Configure GitHub OAuth flow.
 - **ldap3_** entries: Configure LDAP authentication parameters.
 
@@ -147,7 +147,7 @@ pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maese
 ```
 
 ### RAG Graph Construction
-Here we are creating RAG pipelines (Karl G. Maeser, BYU, and combined pipeline) and register them as named branches.
+Here we are creating RAG pipelines (Karl G. Maeser, BYU, and combined pipeline). These will be registered as separate chat branches in the web interface.
 ```python
 # Multigroup
 from maeser.graphs.simple_rag import get_simple_rag
@@ -200,7 +200,7 @@ sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline"
 ## User Management Setup
 
 ### Configure Authenticators
-Defines GitHub and LDAP authenticators for user login and request quotas. This is consistent across both examples.
+Defines GitHub and LDAP authenticators for user login and request quotas. This is consistent across both examples. The code blocks for either LDAP or GitHub can be commented out if you are not planning to use its authentication.
 ```python
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
@@ -228,7 +228,7 @@ ldap3_authenticator = LDAPAuthenticator(
 ```
 
 ### Initialize User Manager
-Creates a `UserManager` instance and registers the authenticators.
+Creates a `UserManager` instance and registers the authenticators. Only register both LDAP and GitHub if you are planning on integrating both authentication methods into your project.
 ```python
 # Initialize user management with request limits
 user_manager = UserManager(
@@ -245,7 +245,7 @@ user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authent
 
 ## Flask Application Setup
 
-Initializes the Flask app with both chat session and user managers, then registers all routes via blueprints.
+Initializes the Flask app with both chat session and user managers, then registers all routes via [blueprints](../autodoc/maeser/maeser.blueprints).
 ```python
 from flask import Flask
 
@@ -286,28 +286,15 @@ Navigate to **http://localhost:3002**, authenticate via GitHub or LDAP, select a
 
 ## Register Your GitHub OAuth App
 
-1. In GitHub, go to **Settings → Developer Settings → OAuth Apps → New OAuth App**.
+1. In GitHub, click on your user profile and go to **Settings → Developer Settings → OAuth Apps → New OAuth App**.
 2. Set **Homepage URL** to `http://localhost:3002` and **Authorization callback URL** to `http://localhost:3002/login/github_callback`.
-3. Copy the **Client ID** and **Client Secret** into `config.yaml`.
+3. Copy the **Client ID** and **Client Secret** into `config_example.yaml`.
 
 ---
 
 ## LDAP Authentication (Optional)
 
-Ensure your LDAP server is reachable, and the fields in `config.yaml` match your directory’s schema. The `LDAPAuthenticator` will bind and lookup users based on these settings.
-
----
-
-## Customization & Debugging
-
-- **Prompts & Branches**: Modify prompt strings or register additional graphs via `sessions_manager.register_branch()`.
-- **Templates**: Edit Jinja2 templates in `maeser/controllers/common/templates/` for UI changes.
-- **Static Assets**: Override CSS/JS in `common/static/`.
-- **Debug Mode**: `debug=True` enables auto-reload and detailed tracebacks.
-- **Production**: Run with a WSGI server such as Gunicorn:
-  ```bash
-  gunicorn example.flask_example_user_mangement:app -b 0.0.0.0:3002
-  ```
+Ensure your LDAP server is reachable, and the fields in `config_example.yaml` match your directory’s schema. The `LDAPAuthenticator` will bind and lookup users based on these settings.
 
 ---
 
@@ -316,7 +303,5 @@ Ensure your LDAP server is reachable, and the fields in `config.yaml` match your
 - Follow the instruction in [Embedding New Content](embedding) to create your own vectorstores and add them to the example.
 - Review the **CLI example** (`example/terminal_example.py`) for a terminal interface.
 - Dive into **advanced workflows** in [Graphs: Simple RAG vs. Pipeline RAG](graphs).
-- Study Maeser’s **architecture** in [Architecutre Overview](architecture) before contributing.
-
-Enjoy your authenticated Maeser chatbot! 🚀
+- Study Maeser’s **architecture** in [Architecture Overview](architecture).
 
