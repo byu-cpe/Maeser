@@ -56,7 +56,7 @@ Maeser uses a simple **YAML** file (`config.yaml`) to store settings like API ke
 
 Maeser requires pre-built vectorstores (FAISS indexes) to retrieve knowledge. For simplicity, download the **Maeser** and **BYU** vectorstores from the project’s GitHub releases:
 
-1. Visit: https://github.com/byu-cpe/Maeser/releases/latest
+1. Visit: [https://github.com/byu-cpe/Maeser/releases/latest](https://github.com/byu-cpe/Maeser/releases/latest)
 2. Download `vectorstores-maeser.zip` and `vectorstores-byu.zip`.  
 3. Unzip into your working folder:
    ```bash
