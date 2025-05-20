@@ -27,146 +27,97 @@ Custom graphs let you compose these behaviors into a coherent pipeline, giving y
 
 ## Building a Custom Graph with LangGraph
 
-LangGraph’s **GraphBuilder** API allows you to define states (nodes) and transitions (edges) for your workflow.
+The easiest way to build a **custom graph** is to use the web tool: [LangGraph Builder](https://build.langchain.com/). We will try to explain a langgraph here:
 
-### Import & Initialize
+## Nodes
+In LangGraph, a node is like a building block — it’s one step in your program’s flow.
 
+More technically:
+* A node is a function or a tool that takes some input, does something (like calling a model, running code, or checking a condition), and then returns an output.
+* You connect nodes together to form a graph — kind of like a flowchart — where each node passes its result to the next one.
+
+Let’s say you're building a chatbot that answers questions. You could make a LangGraph with nodes like this:
+
+* Start Node – receives the user’s question.
+* LLM Node – uses GPT to come up with an answer.
+* Output Node – sends the answer back to the user.
+
+Each of those steps is a node.
+
+This is an example of a node in python:
 ```python
-from langgraph.graph import GraphBuilder
-from maeser.chat.chat_session_manager import ChatSessionManager
+def ask_question_node(input):
+    return {"question": input["user_input"]}
 
-sessions = ChatSessionManager()
-builder = GraphBuilder()
+def llm_response_node(input):
+    # pretend this calls GPT
+    return {"answer": "This is a response to: " + input["question"]}
 ```
 
-### Define Retrieval State(s)
+## Edges
+An edge is the connection between two nodes.
 
-Add one or more retrieval states using Maeser’s retriever functions:
+Think of it like a wire or a path that tells LangGraph:
+"After this node finishes, go to that one."
 
+When a node finishes its job and returns some output, the edge decides what node to run next.
+
+There are two main types of edges:
+* Static Edges – Always go to the same next node, no matter the result.
+* Conditional Edges – Choose the next node based on some value in the output.
+
+Let’s say you’re building a flow like this:
+* User types a message → (Start node)
+* Classify message as 'question' or 'command' → (Classifier node)
+* If it's a question, go to AnswerQuestion node
+* If it's a command, go to RunCommand node
+
+Here’s what’s happening:
+* Each node does some work.
+* Each edge tells the system where to go next.
+* The edge from Classifier is a conditional edge — it chooses the next node based on the output.
+
+## Conditional Edges
+A conditional edge chooses which node to run next based on the output of the current node.
+
+It’s like saying:
+
+* "If the result is X, go this way.
+* If the result is Y, go that way."
+
+They let your graph make decisions.
+
+This is useful when:
+* You want to branch the logic based on input.
+* You’re handling different types of tasks (e.g. questions vs commands).
+* You want to loop or exit based on a condition.
+
+For example, you may want to classify an input. You can do so in something like this:
 ```python
-# Single‑domain retrieval
-builder.add_state(
-    name="retrieve_notes",
-    function=lambda inputs: simple_retrieve(
-        vectorstore_path="vectorstores/notes",
-        query=inputs["question"], top_k=5
-    )
-)
+def classify_node(state):
+    text = state["user_input"]
+    if "?" in text:
+        return {"type": "question"}
+    else:
+        return {"type": "command"}
+
 ```
+## Cycles
+A cycle in LangGraph is when a node can eventually lead back to itself or to an earlier node in the graph.
+In simple terms, A cycle lets your program loop or repeat steps.
 
-Or for multiple domains:
-```python
-builder.add_state(
-    name="retrieve_homework",
-    function=lambda inputs: simple_retrieve(
-        vectorstore_path="vectorstores/homework",
-        query=inputs['question'], top_k=3
-    )
-)
-builder.add_state(
-    name="retrieve_lecture",
-    function=lambda inputs: simple_retrieve(
-        vectorstore_path="vectorstores/lectures",
-        query=inputs['question'], top_k=3
-    )
-)
-```
+You use cycles when:
+* You want to retry something.
+* You want to keep asking the user for more input.
+* You need a multi-step process where results feed back into earlier logic.
 
-### Add Tool or Classification States
-
-Integrate tools or classification chains:
-
-```python
-# Classification: decide domain
-builder.add_state(
-    name="classify_domain",
-    function=lambda inputs: llm_classify(
-        prompt="Classify the question as 'homework' or 'lecture': {question}",
-        inputs={"question": inputs['question']}
-    )
-)
-
-# Calculator tool
-builder.add_state(
-    name="calculate",
-    function=lambda inputs: external_calculator(
-        expression=inputs['question']
-    )
-)
-```
-
-### Define Generation State
-
-Use an LLM state to generate the final answer:
-
-```python
-builder.add_state(
-    name="generate_answer",
-    function=lambda inputs: llm_generate(
-        prompt=(
-            "You are an expert tutor. Use contexts: {contexts}\n"
-            "Provide a clear, step‑by‑step answer."
-        ),
-        inputs={"contexts": inputs['contexts']}
-    )
-)
-```
-
-### Connect States with Edges
-
-Map the flow of data between states:
-
-```python
-# Simple chain: retrieve -> generate
-builder.add_edge("retrieve_notes", "generate_answer")
-
-# Multi‑domain: classify -> respective retrieves -> merge -> generate
-builder.add_edge("classify_domain", "retrieve_homework", condition=lambda res: res=='homework')
-builder.add_edge("classify_domain", "retrieve_lecture", condition=lambda res: res=='lecture')
-builder.add_edge("retrieve_homework", "generate_answer")
-builder.add_edge("retrieve_lecture", "generate_answer")
-
-# Calculator branch
-builder.add_edge("classify_domain", "calculate", condition=lambda res: res=='math')
-builder.add_edge("calculate", "generate_answer")
-```
-
-### Compile & Register
-
-Compile your graph and register it with Maeser:
-
-```python
-custom_graph = builder.compile()
-sessions.register_branch(
-    branch_name="custom_tutor",
-    branch_label="Advanced Tutor",
-    graph=custom_graph
-)
-```
-
----
-
-## Example: Math Tutor with Calculator
-
-This example shows a graph that:
-1. Classifies if the question is a math problem.
-2. If math, sends it to a calculator tool.
-3. Otherwise, retrieves from lecture notes.
-4. Generates a final, explanatory answer.
-
-```python
-builder = GraphBuilder()
-builder.add_state("classify", classify_math_or_topic)
-builder.add_state("calc", external_calculator)
-builder.add_state("retrieve_notes", notes_retriever)
-builder.add_state("answer", llm_generate)
-builder.add_edge("classify", "calc", condition=lambda x: x=='math')
-builder.add_edge("classify", "retrieve_notes", condition=lambda x: x!='math')
-builder.add_edge("calc", "answer")
-builder.add_edge("retrieve_notes", "answer")
-
-graph = builder.compile()
-sessions.register_branch("math_tutor","Math & Theory Tutor",graph)
+Logic for this would look something like this:
+```csharp
+[get_input] → [check_done]
+     ↑             ↓
+[process_input] ← "not done"
+           ↓
+         "done" → [end]
 ```
 
 ---
@@ -185,3 +136,4 @@ sessions.register_branch("math_tutor","Math & Theory Tutor",graph)
 - Read **`graphs.md`** for built‑in pipelines.
 - Experiment with external tools (e.g., web search) by adding new states.
 - Share your custom graphs with the Maeser community via GitHub.
+- For more information on langgraphs, you can find documentation [here](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.#)
