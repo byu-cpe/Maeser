@@ -20,14 +20,14 @@ Detailed documentation can be found [here](https://byu-cpe.github.io/Maeser/).
 
 ## Getting Started
 ### Development Setup
-To begin using the Maeser Chatbot, follow the [development setup instructions](https://byu-cpe.github.io/Maeser/development/development_setup.html).
+To begin using the Maeser Chatbot, follow the [development setup instructions](https://byu-cpe.github.io/Maeser/development-setup/development_setup.html).
 This page includes instructions for cloning the repository and running the app.
 
-> **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byu-cpe.github.io/Maeser/development/wsl_development.html).
+> **NOTE:** This application is intended to run on Unix-based systems. For help running Maeser on Windows, follow the [development setup using Windows Subsystem Linux instructions](https://byu-cpe.github.io/Maeser/development-setup/wsl_development.html).
 ### Example
-For a fully working example application, follow the documentation for the [example application](https://byu-cpe.github.io/Maeser/development/flask_example.html).
+For a fully working example application, follow the documentation for the [example application](https://byu-cpe.github.io/Maeser/development-setup/flask_example.html).
 ### Embedding Context
-Follow the documentation for embedding custom content [here](https://byu-cpe.github.io/Maeser/development/embedding.html).
+Follow the documentation for embedding custom content [here](https://byu-cpe.github.io/Maeser/development-setup/embedding.html).
 ### Graphs
 An understanding of langchain and langgraph is necessary for customizing the application for any use case. Follow documentation and tutorials [here](https://langchain-ai.github.io/langgraph/).
 
@@ -42,4 +42,4 @@ An understanding of langchain and langgraph is necessary for customizing the app
 This package is licensed on the LGPL version 3 or later.
 See [COPYING.LESSER.md](COPYING.LESSER.md) and [COPYING.md](COPYING.md) for details.
 
-Other resourced may be licensed under different compatible licenses, such as the [MIT License](https://opensource.org/license/mit) (Bootstrap Icons), [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) (normalize.css), or [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) (images and vector stores).
+Other resources may be licensed under different compatible licenses, such as the [MIT License](https://opensource.org/license/mit) (Bootstrap Icons), [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) (normalize.css), or [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) (images and vector stores).
