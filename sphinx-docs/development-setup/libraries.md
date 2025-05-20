@@ -20,14 +20,14 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Retrieval & Embeddings
 
-### LangChain
+### [LangChain](https://python.langchain.com/docs/introduction/)
 - **Role:** High-level RAG abstraction layer
 - **Key features used:**
   - **Text splitters:** `RecursiveCharacterTextSplitter`  
   - **Embeddings:** `OpenAIEmbeddings`  
   - **Vector store wrapper:** `FAISS` integration  
 
-### FAISS (via LangChain)
+### [FAISS (via LangChain)](https://python.langchain.com/docs/integrations/vectorstores/faiss/)
 - **Role:** High-performance nearest-neighbor search  
 - **Use case:** Index and query embedding vectors for both Simple and Pipeline RAG pipelines.
 
@@ -35,7 +35,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Workflow Orchestration
 
-### LangGraph
+### [LangGraph](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.)
 - **Role:** Compose multi-step AI pipelines as directed graphs
 - **Use case:** Underpins `get_simple_rag` and `get_pipeline_rag`; foundation for advanced custom graphs.
 
@@ -43,7 +43,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## LLM & Embedding APIs
 
-### OpenAI Python SDK
+### [OpenAI Python SDK](https://platform.openai.com/docs/api-reference/introduction)
 - **Role:** Official client for chat completions & embeddings
 - **Use case:** Send prompts to GPT models (e.g., `gpt-3.5-turbo`, `gpt-4`) and retrieve embeddings when needed.
 
@@ -51,11 +51,11 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## 4. Web Framework & Templating
 
-### Flask
+### [Flask](https://flask.palletsprojects.com/en/stable/quickstart/)
 - **Role:** Lightweight WSGI framework for web endpoints
 - **Use case:** Hosts chat UI, auth flows, admin dashboards—bootstrapped by `App_Manager`.
 
-### Jinja2
+### [Jinja2](https://jinja.palletsprojects.com/en/stable/)
 - **Role:** HTML templating engine
 - **Use case:** Renders dynamic templates (chat interface, login, logs) with theming support.
 
@@ -63,11 +63,11 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Configuration & Environment
 
-### PyYAML
+### [PyYAML](https://pyyaml.org/wiki/PyYAMLDocumentation)
 - **Role:** YAML parsing
 - **Use case:** Load `config.yaml` (API keys, paths, rate limits, auth settings).
 
-### python-dotenv *(optional)*
+### [python-dotenv *(optional)*](https://www.dotenv.org/docs/)
 - **Role:** `.env` support for environment variables
 - **Use case:** Override sensitive settings outside of YAML or source control.
 
@@ -75,11 +75,11 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Authentication & User Management
 
-### LDAP3
+### [LDAP3](https://ldap3.readthedocs.io/en/latest/)
 - **Role:** LDAP directory client
 - **Use case:** `LDAPAuthenticator` for enterprise user login.
 
-### PyJWT
+### [PyJWT](https://pyjwt.readthedocs.io/en/stable/)
 - **Role:** JSON Web Token handling
 - **Use case:** Sign and verify tokens for session security and rate limiting.
 
@@ -87,15 +87,15 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## CLI & Developer Tooling
 
-### pyinputplus
+### [pyinputplus](https://pyinputplus.readthedocs.io/en/latest/)
 - **Role:** Enhanced `input()` for CLI menus & validation
 - **Use case:** Powers the interactive terminal example.
 
-### pytest
+### [pytest](https://docs.pytest.org/en/stable/contents.html)
 - **Role:** Testing framework
 - **Use case:** Runs unit tests under `tests/` to validate functionality.
 
-### Sphinx & MyST Parser
+### [Sphinx](https://www.sphinx-doc.org/en/master/) & [MyST Parser](https://myst-parser.readthedocs.io/en/latest/)
 - **Role:** Documentation generator for RST & Markdown  
 - **Use case:** Builds the Maeser docs site (`sphinx-docs/`) with mixed-format support.
 
@@ -103,9 +103,9 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Optional Integrations
 
-- **Poetry:** Alternative dependency & venv management  
-- **Gunicorn:** Production-ready WSGI server  
-- **Docker:** Containerization for reproducible deployments
+- **[Poetry](https://python-poetry.org/docs/):** Alternative dependency & venv management  
+- **[Gunicorn](https://docs.gunicorn.org/en/stable/):** Production-ready WSGI server  
+- **[Docker](https://docs.docker.com/get-started/):** Containerization for reproducible deployments
 
 ---
 
