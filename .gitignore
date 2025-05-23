@@ -27,3 +27,5 @@ poetry.lock
 *.pkl
 *.txt
 *.pdf
+# Ignore pipeline memory
+example/vectorstores/pipeline_memory.db
