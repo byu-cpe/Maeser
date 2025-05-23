@@ -29,3 +29,5 @@ poetry.lock
 *.pdf
 # Ignore pipeline memory
 example/vectorstores/pipeline_memory.db
+# Ignore MAC .DS_Store
+.DS_Store
