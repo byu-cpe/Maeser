@@ -1,6 +1,6 @@
 # Library Dependencies & Their Roles in Maeser
 
-*An at-a-glance guide to every major third-party library in Maeser: what it does, why it’s here, and how we leverage it.*
+An at-a-glance guide to every major third-party library in Maeser: what it does, why it’s here, and how we leverage it.
 
 ---
 
@@ -23,8 +23,8 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 ### [LangChain](https://python.langchain.com/docs/introduction/)
 - **Role:** High-level RAG abstraction layer
 - **Key features used:**
-  - **Text splitters:** `RecursiveCharacterTextSplitter`  
-  - **Embeddings:** `OpenAIEmbeddings`  
+  - **Text splitters:** [`RecursiveCharacterTextSplitter`](https://python.langchain.com/api_reference/text_splitters/character/langchain_text_splitters.character.RecursiveCharacterTextSplitter.html#langchain_text_splitters.character.RecursiveCharacterTextSplitter)  
+  - **Embeddings:** [`OpenAIEmbeddings`](https://python.langchain.com/api_reference/openai/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html)  
   - **Vector store wrapper:** `FAISS` integration  
 
 ### [FAISS (via LangChain)](https://python.langchain.com/docs/integrations/vectorstores/faiss/)
@@ -35,7 +35,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Workflow Orchestration
 
-### [LangGraph](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.)
+### [LangGraph](https://langchain-ai.github.io/langgraph/)
 - **Role:** Compose multi-step AI pipelines as directed graphs
 - **Use case:** Underpins `get_simple_rag` and `get_pipeline_rag`; foundation for advanced custom graphs.
 
@@ -75,13 +75,13 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Authentication & User Management
 
-### [LDAP3](https://ldap3.readthedocs.io/en/latest/)
+### Github OAth (Handled in [`user_manager`](../autodoc/maeser/maeser.user_manager))
+- **Role:** Support for Github login.
+- **Use case:** Provide users with the option to sign into the web application with github.
+
+### [LDAP3](https://ldap3.readthedocs.io/en/latest/) (Handled in [`user_manager`](../autodoc/maeser/maeser.user_manager))
 - **Role:** LDAP directory client
 - **Use case:** `LDAPAuthenticator` for enterprise user login.
-
-### [PyJWT](https://pyjwt.readthedocs.io/en/stable/)
-- **Role:** JSON Web Token handling
-- **Use case:** Sign and verify tokens for session security and rate limiting.
 
 ---
 
@@ -104,7 +104,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 ## Optional Integrations
 
 - **[Poetry](https://python-poetry.org/docs/):** Alternative dependency & venv management  
-- **[Gunicorn](https://docs.gunicorn.org/en/stable/):** Production-ready WSGI server  
+- **[Gunicorn](https://docs.gunicorn.org/en/stable/):** Production-ready WSGI server that [integrates well with Flask.](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/)
 - **[Docker](https://docs.docker.com/get-started/):** Containerization for reproducible deployments
 
 ---
@@ -116,4 +116,3 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 - Use **python-dotenv** in dev to keep secrets out of YAML/source.  
 - Configure **pre-commit hooks** (Black, Flake8, isort) for consistent code style.
 
-With this guide, you’ll quickly grasp each library’s purpose and role within Maeser’s architecture, making your customization and troubleshooting even easier.

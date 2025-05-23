@@ -14,6 +14,8 @@ This guide covers best practices for deploying Maeser into production environmen
 
 ---
 
+<!-- It might be worth putting an overview here to outline the major deployment steps -->
+
 ## 2. Virtual Environment & Dependencies
 
 1. **Clone the repository** and enter the directory:
@@ -58,6 +60,8 @@ This guide covers best practices for deploying Maeser into production environmen
 ## 3. Using Gunicorn as WSGI Server
 
 Gunicorn provides a robust, multi‑worker Python WSGI server for Flask apps.
+<!-- Consider explaining what WSGI is -->
+<!-- Let the user know that they need to reconfigure their github app both online and in config_example.yaml -->
 
 1. **Start Gunicorn** with multiple workers:
    ```bash
@@ -70,6 +74,9 @@ Gunicorn provides a robust, multi‑worker Python WSGI server for Flask apps.
 2. **Background Process**: Use a process manager (systemd, Supervisor) to keep Gunicorn running.
 
 ### 3.1 systemd Service Example
+
+<!-- Explain what a service file is and what this configuration does -->
+<!-- Explain what a .sock is and why we're using it here instead of 0.0.0.0:8000 -->
 
 Create `/etc/systemd/system/maeser.service`:
 ```ini
@@ -101,6 +108,8 @@ sudo systemctl start maeser
 ---
 
 ## 4. Reverse Proxy with NGINX & TLS
+
+<!-- Explain what these things are -->
 
 Use NGINX to terminate TLS and proxy requests to Gunicorn.
 
@@ -153,6 +162,8 @@ Use NGINX to terminate TLS and proxy requests to Gunicorn.
 ---
 
 ## 5. Containerization with Docker & Docker Compose
+
+<!-- Explain the purpose of Docker briefly -->
 
 ### 5.1 Dockerfile Example
 

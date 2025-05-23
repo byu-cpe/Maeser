@@ -6,7 +6,7 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 
 ## Prerequisites
 
-- A **Maeser development** or **user** environment set up (see `development_setup.md`).
+- A **Maeser development** or **user** environment set up (see [Development Setup](development_setup)).
 - **Python 3.10+** virtual environment activated.
 - **Maeser** and its dependencies installed (`pip install -e .` or `make setup`).
 - Your documents in **plain text** format (e.g., `.txt`, Markdown `.md`, or PDF converted to text).
