@@ -8,3 +8,5 @@
    * Docker is a very great basis for building a secure web application.
 * [How to Add Flask Authentication](https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login)
    * How-to guide to add authentication to your flask app.
+* [Langchain Graph Builder](https://build.langchain.com/)
+   * This tool helps build custom graphs for langchain logic.

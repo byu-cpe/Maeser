@@ -1,5 +1,5 @@
 # Minimal makefile for development setup
-# 2025 Gohaun Manley
+# 2025 Gohaun Manley, Ayden Bales
 
 # This file is part of the Maeser unit test suite.
 
@@ -16,20 +16,20 @@
 
 .PHONY: setup test testVerbose clean_venv
 
-VENV := .venv
 PYTHON := python3
+VENV := .venv
 PIP := $(VENV)/bin/pip
 POETRY := $(VENV)/bin/poetry
 PYTEST := $(VENV)/bin/pytest
 
-setup:
+setup: $(VENV)/bin/activate
 	$(PIP) install poetry
-	$(PIP) install langchain
 	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock
 	$(POETRY) install
 	$(PIP) install -e .
-	pytest tests
+	@echo "Maeser setup complete. Running pytests..."
+	. $(VENV)/bin/activate && pytest tests
 
 clean_venv:
 	@echo "Removing existing virtual environment if it exists..."

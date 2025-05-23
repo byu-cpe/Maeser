@@ -8,9 +8,9 @@ This guide provides a deep dive into Maeser’s two primary Retrieval‑Augmente
 
 Before you begin, ensure you have:
 
-- A Maeser development environment configured (see `development_setup.md`).
+- A Maeser development environment configured (see [Development Setup](development_setup)).
 - Python 3.10+ and the Maeser package installed in editable mode.
-- At least one FAISS vectorstore (for Simple RAG) and multiple vectorstores (for Pipeline RAG) created via `embedding.md`.
+- At least one FAISS vectorstore (for Simple RAG) and multiple vectorstores (for Pipeline RAG) created via [Embedding New Content](embedding).
 
 ---
 
@@ -99,6 +99,7 @@ The following code snippet assumes that you have an initialized `ChatSessionMana
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
+from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
 # Define vectorstore paths for each domain
@@ -107,6 +108,8 @@ vectorstore_config = {
     "lab":      f"{VEC_STORE_PATH}/lab_manuals",
     "lecture":  f"{VEC_STORE_PATH}/lectures"
 }
+# Note: the name you choose in place of "homework", "lab", etc must
+# be both one word, and all lower case or it will not work at run time.
 
 # Create a system prompt for your pipeline rag chatbot with appended context. Example prompt:
 multi_domain_prompt: str = """
