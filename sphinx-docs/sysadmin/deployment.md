@@ -1,3 +1,5 @@
+<!-- Ayden here - I have left some comments here on areas where this documentation page can be improved. -->
+
 # Deployment Guide
 
 This guide covers best practices for deploying Maeser into production environments, including containerization, process management, reverse proxy configuration, and scaling considerations.
@@ -88,10 +90,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/path/to/Maeser
-ExecStart=/path/to/Maeser/.venv/bin/gunicorn \
-    --workers 4 \
-    --bind unix:/path/to/Maeser/maeser.sock \
-    example.flask_example_user_mangement:app
+ExecStart=/path/to/Maeser/.venv/bin/gunicorn --workers 4 --bind unix:/path/to/Maeser/maeser.sock example.flask_example_user_mangement:app
 Restart=always
 
 [Install]
@@ -110,6 +109,7 @@ sudo systemctl start maeser
 ## 4. Reverse Proxy with NGINX & TLS
 
 <!-- Explain what these things are -->
+<!-- Note: I ran into a plethora of issues trying to get this to work with nginx using a web socket. This section needs to be looked at in further detail.-->
 
 Use NGINX to terminate TLS and proxy requests to Gunicorn.
 

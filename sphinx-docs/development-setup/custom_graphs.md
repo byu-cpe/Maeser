@@ -112,12 +112,21 @@ You use cycles when:
 * You need a multi-step process where results feed back into earlier logic.
 
 Logic for this would look something like this:
-```csharp
-[get_input] → [check_done]
-     ↑             ↓
-[process_input] ← "not done"
-           ↓
-         "done" → [end]
+```mermaid
+flowchart TB
+    %% Nodes
+    start_node(["\_\_start\_\_"])
+    get_input["get_input"]
+    check_done["check_done"]
+    process_input["process_input"]
+    end_node(["\_\_end\_\_"])
+
+    %% Main Flow
+    start_node --> get_input
+    get_input --> check_done
+    check_done -->|"not done"| process_input
+    check_done -->|"done"| end_node
+    process_input --> get_input
 ```
 
 ---
