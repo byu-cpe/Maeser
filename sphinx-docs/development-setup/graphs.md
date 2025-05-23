@@ -99,6 +99,7 @@ The following code snippet assumes that you have an initialized `ChatSessionMana
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
+from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
 # Define vectorstore paths for each domain
@@ -107,6 +108,8 @@ vectorstore_config = {
     "lab":      f"{VEC_STORE_PATH}/lab_manuals",
     "lecture":  f"{VEC_STORE_PATH}/lectures"
 }
+# Note: the name you choose in place of "homework", "lab", etc must
+# be both one word, and all lower case or it will not work at run time.
 
 # Create a system prompt for your pipeline rag chatbot with appended context. Example prompt:
 multi_domain_prompt: str = """
