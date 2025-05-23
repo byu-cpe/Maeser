@@ -1,0 +1,773 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SysAdmin Troubleshooting Guide &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'sysadmin/troubleshooting';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../_static/mermaid-theme-switch.js?v=b4085c12"></script>
+    <link rel="icon" href="../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="maeser" href="../autodoc/maeser/modules.html" />
+    <link rel="prev" title="Managing Users" href="managing_users.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/user_setup.html">User Guide: Getting Started with Maeser</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/embedding.html">3. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/graphs.html">4. Graphs: Simple RAG vs. Pipeline RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/custom_graphs.html">5. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/architecture.html">6. Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/libraries.html">7. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/dev-troubleshooting.html">8. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/flask_example.html">9. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/terminal_example.html">10. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-setup/resources.html">11. Resources</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_users.html">Managing Users</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.blueprints.html">maeser.blueprints module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/sysadmin/troubleshooting.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SysAdmin Troubleshooting Guide</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gunicorn-wsgi-server-issues">1. Gunicorn (WSGI Server) Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failing-to-start">1.1 Failing to Start</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#worker-timeouts-hangs">1.2 Worker Timeouts &amp; Hangs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#port-binding-conflicts">1.3 Port Binding Conflicts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nginx-reverse-proxy-issues">2. NGINX (Reverse Proxy) Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bad-gateway">2.1 502 Bad Gateway</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ssl-tls-certificate-errors">2.2 SSL/TLS Certificate Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#static-assets-not-loading">2.3 Static Assets Not Loading</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-container-issues">3. Docker &amp; Container Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-failures">3.1 Build Failures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#networking-problems">3.2 Networking Problems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volume-permission-errors">3.3 Volume &amp; Permission Errors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-performance">4. Resource &amp; Performance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-cpu-memory-usage">4.1 High CPU / Memory Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disk-space-issues">4.2 Disk Space Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#database-persistence">5. Database &amp; Persistence</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlite-corruption">5.1 SQLite Corruption</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faiss-index-errors">5.2 FAISS Index Errors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-alerts">6. Monitoring &amp; Alerts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-debugging">7. Logging &amp; Debugging</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="sysadmin-troubleshooting-guide">
+<h1>SysAdmin Troubleshooting Guide<a class="headerlink" href="#sysadmin-troubleshooting-guide" title="Link to this heading">#</a></h1>
+<p><em>Quick reference for resolving common issues in Maeser production deployments.</em></p>
+<hr class="docutils" />
+<section id="gunicorn-wsgi-server-issues">
+<h2>1. Gunicorn (WSGI Server) Issues<a class="headerlink" href="#gunicorn-wsgi-server-issues" title="Link to this heading">#</a></h2>
+<section id="failing-to-start">
+<h3>1.1 Failing to Start<a class="headerlink" href="#failing-to-start" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> <code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError</span></code> or <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code> referencing your app.</p></li>
+<li><p><strong>Checks &amp; Fixes:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Module path:</strong> Ensure you launch Gunicorn with the correct module notation (e.g., <code class="docutils literal notranslate"><span class="pre">example.flask_example_user_mangement:app</span></code>).</p></li>
+<li><p><strong>Virtual environment:</strong> Activate the same <code class="docutils literal notranslate"><span class="pre">.venv</span></code> where Maeser and Gunicorn are installed.</p></li>
+<li><p><strong>Installation:</strong> Verify Gunicorn is present (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">show</span> <span class="pre">gunicorn</span></code>). Install if missing: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">gunicorn</span></code>.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="worker-timeouts-hangs">
+<h3>1.2 Worker Timeouts &amp; Hangs<a class="headerlink" href="#worker-timeouts-hangs" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> Requests hang or time out after 30 seconds (default).</p></li>
+<li><p><strong>Solutions:</strong></p>
+<ul>
+<li><p><strong>Increase timeout:</strong> <code class="docutils literal notranslate"><span class="pre">--timeout</span> <span class="pre">120</span></code> or higher.</p></li>
+<li><p><strong>Preload app:</strong> Add <code class="docutils literal notranslate"><span class="pre">--preload</span></code> to reduce per-worker startup cost.</p></li>
+<li><p><strong>Error logs:</strong> Specify <code class="docutils literal notranslate"><span class="pre">--error-logfile</span> <span class="pre">/path/to/error.log</span></code> and inspect stack traces.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="port-binding-conflicts">
+<h3>1.3 Port Binding Conflicts<a class="headerlink" href="#port-binding-conflicts" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> <code class="docutils literal notranslate"><span class="pre">OSError:</span> <span class="pre">[Errno</span> <span class="pre">98]</span> <span class="pre">Address</span> <span class="pre">already</span> <span class="pre">in</span> <span class="pre">use</span></code>.</p></li>
+<li><p><strong>Solutions:</strong></p>
+<ul>
+<li><p><strong>Identify process:</strong> <code class="docutils literal notranslate"><span class="pre">lsof</span> <span class="pre">-i</span> <span class="pre">:8000</span></code> or <code class="docutils literal notranslate"><span class="pre">netstat</span> <span class="pre">-tnlp</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">8000</span></code>.</p></li>
+<li><p><strong>Free port:</strong> Stop the conflicting service or choose a different port.</p></li>
+<li><p><strong>Socket binding:</strong> Use Unix socket for NGINX proxy: <code class="docutils literal notranslate"><span class="pre">--bind</span> <span class="pre">unix:/path/to/maeser.sock</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="nginx-reverse-proxy-issues">
+<h2>2. NGINX (Reverse Proxy) Issues<a class="headerlink" href="#nginx-reverse-proxy-issues" title="Link to this heading">#</a></h2>
+<section id="bad-gateway">
+<h3>2.1 502 Bad Gateway<a class="headerlink" href="#bad-gateway" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> NGINX returns a 502 error when proxying.</p></li>
+<li><p><strong>Checks &amp; Fixes:</strong></p>
+<ul>
+<li><p><strong>Backend status:</strong> Confirm Gunicorn is running and listening on the expected socket/port.</p></li>
+<li><p><strong>Proxy settings:</strong> Match <code class="docutils literal notranslate"><span class="pre">proxy_pass</span></code> URL to Gunicorn bind (e.g., <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000</span></code> or <code class="docutils literal notranslate"><span class="pre">unix:/…</span></code>).</p></li>
+<li><p><strong>Socket permissions:</strong> <code class="docutils literal notranslate"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">maeser.sock</span> <span class="pre">&amp;&amp;</span> <span class="pre">chmod</span> <span class="pre">660</span> <span class="pre">maeser.sock</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="ssl-tls-certificate-errors">
+<h3>2.2 SSL/TLS Certificate Errors<a class="headerlink" href="#ssl-tls-certificate-errors" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> Browser warnings about invalid or expired certificate.</p></li>
+<li><p><strong>Solutions:</strong></p>
+<ul>
+<li><p><strong>Test renewal:</strong> <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">certbot</span> <span class="pre">renew</span> <span class="pre">--dry-run</span></code>.</p></li>
+<li><p><strong>Verify paths:</strong> Ensure NGINX <code class="docutils literal notranslate"><span class="pre">ssl_certificate</span></code> and <code class="docutils literal notranslate"><span class="pre">ssl_certificate_key</span></code> point to the correct files under <code class="docutils literal notranslate"><span class="pre">/etc/letsencrypt/live/yourdomain.com/</span></code>.</p></li>
+<li><p><strong>Reload NGINX:</strong> After renewal, run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">reload</span> <span class="pre">nginx</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="static-assets-not-loading">
+<h3>2.3 Static Assets Not Loading<a class="headerlink" href="#static-assets-not-loading" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> CSS/JS requests return 404.</p></li>
+<li><p><strong>Checks &amp; Fixes:</strong></p>
+<ul>
+<li><p><strong>Alias config:</strong> Confirm <code class="docutils literal notranslate"><span class="pre">location</span> <span class="pre">/static/</span> <span class="pre">{</span> <span class="pre">alias</span> <span class="pre">/path/to/maeser/controllers/common/static/;</span> <span class="pre">}</span></code> matches your file structure.</p></li>
+<li><p><strong>File permissions:</strong> Ensure the NGINX user (<code class="docutils literal notranslate"><span class="pre">www-data</span></code>) can read static files (<code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">-R</span> <span class="pre">u+r</span> <span class="pre">/path/to/static</span></code>).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="docker-container-issues">
+<h2>3. Docker &amp; Container Issues<a class="headerlink" href="#docker-container-issues" title="Link to this heading">#</a></h2>
+<section id="build-failures">
+<h3>3.1 Build Failures<a class="headerlink" href="#build-failures" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span></code> errors due to missing files or dependencies.</p></li>
+<li><p><strong>Fixes:</strong></p>
+<ul>
+<li><p><strong>Verify COPY:</strong> Check your <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> and <code class="docutils literal notranslate"><span class="pre">.dockerignore</span></code> to include required files.</p></li>
+<li><p><strong>Base image:</strong> Use <code class="docutils literal notranslate"><span class="pre">python:3.10-slim</span></code> or similar with necessary build tools.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="networking-problems">
+<h3>3.2 Networking Problems<a class="headerlink" href="#networking-problems" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> Cannot access service on mapped ports.</p></li>
+<li><p><strong>Solutions:</strong></p>
+<ul>
+<li><p><strong>Port mapping:</strong> Ensure <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> or <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-p</span> <span class="pre">8000:8000</span></code> is correct.</p></li>
+<li><p><strong>Network mode:</strong> For advanced setups, consider <code class="docutils literal notranslate"><span class="pre">network_mode:</span> <span class="pre">host</span></code> (Linux only).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="volume-permission-errors">
+<h3>3.3 Volume &amp; Permission Errors<a class="headerlink" href="#volume-permission-errors" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> Containers cannot read/write volume-mounted directories.</p></li>
+<li><p><strong>Fixes:</strong></p>
+<ul>
+<li><p><strong>UID/GID alignment:</strong> Run container as your host user: <code class="docutils literal notranslate"><span class="pre">user:</span> <span class="pre">&quot;$(id</span> <span class="pre">-u):$(id</span> <span class="pre">-g)&quot;</span></code> in Compose.</p></li>
+<li><p><strong>Host permissions:</strong> <code class="docutils literal notranslate"><span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">1000:1000</span> <span class="pre">./data</span></code> or appropriate user/group.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="resource-performance">
+<h2>4. Resource &amp; Performance<a class="headerlink" href="#resource-performance" title="Link to this heading">#</a></h2>
+<section id="high-cpu-memory-usage">
+<h3>4.1 High CPU / Memory Usage<a class="headerlink" href="#high-cpu-memory-usage" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> Gunicorn workers or containers consume excessive resources.</p></li>
+<li><p><strong>Investigate:</strong> Profile endpoints with APM (New Relic, Datadog) or <code class="docutils literal notranslate"><span class="pre">top</span></code>/<code class="docutils literal notranslate"><span class="pre">htop</span></code>.</p></li>
+<li><p><strong>Mitigate:</strong></p>
+<ul>
+<li><p><strong>Horizontal scaling:</strong> Increase replicas behind a load balancer.</p></li>
+<li><p><strong>Worker recycling:</strong> <code class="docutils literal notranslate"><span class="pre">--max-requests</span> <span class="pre">1000</span> <span class="pre">--max-requests-jitter</span> <span class="pre">50</span></code> to avoid memory bloat.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="disk-space-issues">
+<h3>4.2 Disk Space Issues<a class="headerlink" href="#disk-space-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> Deployment fails or disk fills up quickly.</p></li>
+<li><p><strong>Solutions:</strong></p>
+<ul>
+<li><p><strong>Log rotation:</strong> Configure <code class="docutils literal notranslate"><span class="pre">logrotate</span></code> for NGINX, Gunicorn, and chat logs.</p></li>
+<li><p><strong>Docker cleanup:</strong> <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">system</span> <span class="pre">prune</span> <span class="pre">-a</span></code> (use with caution).</p></li>
+<li><p><strong>Archive data:</strong> Periodically snapshot or purge old FAISS indexes and logs.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="database-persistence">
+<h2>5. Database &amp; Persistence<a class="headerlink" href="#database-persistence" title="Link to this heading">#</a></h2>
+<section id="sqlite-corruption">
+<h3>5.1 SQLite Corruption<a class="headerlink" href="#sqlite-corruption" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> <code class="docutils literal notranslate"><span class="pre">sqlite3</span></code> errors reading/writing to <code class="docutils literal notranslate"><span class="pre">users.db</span></code> or memory DBs.</p></li>
+<li><p><strong>Fixes:</strong></p>
+<ul>
+<li><p><strong>Concurrency:</strong> Avoid simultaneous writes; consider moving to PostgreSQL/MySQL for production.</p></li>
+<li><p><strong>Repair:</strong> <code class="docutils literal notranslate"><span class="pre">sqlite3</span> <span class="pre">users.db</span> <span class="pre">&quot;REINDEX;&quot;</span></code> or restore from backups.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="faiss-index-errors">
+<h3>5.2 FAISS Index Errors<a class="headerlink" href="#faiss-index-errors" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Symptoms:</strong> FAISS load failures on network-mounted volumes.</p></li>
+<li><p><strong>Solutions:</strong></p>
+<ul>
+<li><p><strong>Local storage:</strong> Place vectorstores on local SSD for performance and reliability.</p></li>
+<li><p><strong>Avoid NFS:</strong> Network filesystems can cause locking and latency issues.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="monitoring-alerts">
+<h2>6. Monitoring &amp; Alerts<a class="headerlink" href="#monitoring-alerts" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Gunicorn exporter:</strong> Use a Prometheus exporter for Gunicorn metrics.</p></li>
+<li><p><strong>NGINX stub_status:</strong> Enable basic metrics endpoint.</p></li>
+<li><p><strong>Docker HEALTHCHECK:</strong> Define health checks in your <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>.</p></li>
+<li><p><strong>Alerts:</strong> Configure thresholds for error rates, CPU usage, and latency in your monitoring system.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="logging-debugging">
+<h2>7. Logging &amp; Debugging<a class="headerlink" href="#logging-debugging" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Central logging:</strong> Aggregate Gunicorn, NGINX, and app logs to ELK/EFK or cloud logging.</p></li>
+<li><p><strong>Debug mode:</strong> Never use <code class="docutils literal notranslate"><span class="pre">debug=True</span></code> in production—only in local development.</p></li>
+<li><p><strong>Verbose logs:</strong> Temporarily increase log level: <code class="docutils literal notranslate"><span class="pre">--log-level</span> <span class="pre">debug</span></code> in Gunicorn or Flask for deeper insights.</p></li>
+</ul>
+<hr class="docutils" />
+<p>With these pointers, your Maeser deployment should run smoothly. If you encounter other issues, check the GitHub Issues board or open a topic for community support.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="managing_users.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Managing Users</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../autodoc/maeser/modules.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">maeser</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gunicorn-wsgi-server-issues">1. Gunicorn (WSGI Server) Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failing-to-start">1.1 Failing to Start</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#worker-timeouts-hangs">1.2 Worker Timeouts &amp; Hangs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#port-binding-conflicts">1.3 Port Binding Conflicts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nginx-reverse-proxy-issues">2. NGINX (Reverse Proxy) Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bad-gateway">2.1 502 Bad Gateway</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ssl-tls-certificate-errors">2.2 SSL/TLS Certificate Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#static-assets-not-loading">2.3 Static Assets Not Loading</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-container-issues">3. Docker &amp; Container Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-failures">3.1 Build Failures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#networking-problems">3.2 Networking Problems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volume-permission-errors">3.3 Volume &amp; Permission Errors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-performance">4. Resource &amp; Performance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-cpu-memory-usage">4.1 High CPU / Memory Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disk-space-issues">4.2 Disk Space Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#database-persistence">5. Database &amp; Persistence</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlite-corruption">5.1 SQLite Corruption</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faiss-index-errors">5.2 FAISS Index Errors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-alerts">6. Monitoring &amp; Alerts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-debugging">7. Logging &amp; Debugging</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

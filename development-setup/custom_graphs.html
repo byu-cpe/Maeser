@@ -1,0 +1,684 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5. Custom Graphs: Advanced RAG Workflows &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'development-setup/custom_graphs';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../_static/mermaid-theme-switch.js?v=b4085c12"></script>
+    <link rel="icon" href="../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. Architecture Overview" href="architecture.html" />
+    <link rel="prev" title="4. Graphs: Simple RAG vs. Pipeline RAG" href="graphs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/user_setup.html">User Guide: Getting Started with Maeser</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding.html">3. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">4. Graphs: Simple RAG vs. Pipeline RAG</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">6. Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">7. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-troubleshooting.html">8. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flask_example.html">9. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminal_example.html">10. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">11. Resources</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/managing_users.html">Managing Users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/troubleshooting.html">SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.blueprints.html">maeser.blueprints module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/development-setup/custom_graphs.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Custom Graphs: Advanced RAG Workflows</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">5.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-build-custom-graphs">5.2. Why Build Custom Graphs?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-custom-graph-with-langgraph">5.3. Building a Custom Graph with LangGraph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nodes">5.4. Nodes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edges">5.5. Edges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-edges">5.6. Conditional Edges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cycles">5.7. Cycles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-tips">5.8. Best Practices &amp; Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">5.9. Next Steps</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="custom-graphs-advanced-rag-workflows">
+<h1><span class="section-number">5. </span>Custom Graphs: Advanced RAG Workflows<a class="headerlink" href="#custom-graphs-advanced-rag-workflows" title="Link to this heading">#</a></h1>
+<p>This guide explores how to extend Maeser’s default pipelines by building <strong>custom LangGraph graphs</strong>. Beyond the built‑in Simple and Pipeline RAG, you can create multi‑step workflows, integrate external tools, and implement conditional logic to tailor AI tutoring experiences to your needs.</p>
+<hr class="docutils" />
+<section id="prerequisites">
+<h2><span class="section-number">5.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A Maeser development environment set up (<a class="reference internal" href="development_setup.html"><span class="doc std std-doc">Development Setup</span></a>).</p></li>
+<li><p>Python 3.10+ with Maeser and LangGraph installed (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code> includes LangGraph).</p></li>
+<li><p>Familiarity with Simple RAG (<code class="docutils literal notranslate"><span class="pre">simple_rag</span></code>) and Pipeline RAG (<code class="docutils literal notranslate"><span class="pre">pipeline_rag</span></code>) workflows. (Return to <a class="reference internal" href="graphs.html"><span class="doc std std-doc">Section 4</span></a> if you aren’t familiar)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="why-build-custom-graphs">
+<h2><span class="section-number">5.2. </span>Why Build Custom Graphs?<a class="headerlink" href="#why-build-custom-graphs" title="Link to this heading">#</a></h2>
+<p>While <strong>Pipeline RAG</strong> can query multiple domains, real‑world tutoring often requires:</p>
+<ul class="simple">
+<li><p><strong>Multi‑step Reasoning</strong>: Break complex queries into sub‑questions or tool calls (e.g., math calculations).</p></li>
+<li><p><strong>Conditional Branching</strong>: Route a question based on classification or user input before retrieval.</p></li>
+<li><p><strong>Tool Integration</strong>: Connect calculators, external APIs, or verification checks mid‑workflow.</p></li>
+<li><p><strong>Dynamic Prompts</strong>: Adapt system messages based on intermediate results or user feedback.</p></li>
+</ul>
+<p>Custom graphs let you compose these behaviors into a coherent pipeline, giving you full control over your tutoring logic.</p>
+</section>
+<hr class="docutils" />
+<section id="building-a-custom-graph-with-langgraph">
+<h2><span class="section-number">5.3. </span>Building a Custom Graph with LangGraph<a class="headerlink" href="#building-a-custom-graph-with-langgraph" title="Link to this heading">#</a></h2>
+<p>The easiest way to build a <strong>custom graph</strong> is to use the web tool: <a class="reference external" href="https://build.langchain.com/">LangGraph Builder</a>. We will try to explain a langgraph here:</p>
+</section>
+<section id="nodes">
+<h2><span class="section-number">5.4. </span>Nodes<a class="headerlink" href="#nodes" title="Link to this heading">#</a></h2>
+<p>In LangGraph, a node is like a building block — it’s one step in your program’s flow.</p>
+<p>More technically:</p>
+<ul class="simple">
+<li><p>A node is a function or a tool that takes some input, does something (like calling a model, running code, or checking a condition), and then returns an output.</p></li>
+<li><p>You connect nodes together to form a graph — kind of like a flowchart — where each node passes its result to the next one.</p></li>
+</ul>
+<p>Let’s say you’re building a chatbot that answers questions. You could make a LangGraph with nodes like this:</p>
+<ul class="simple">
+<li><p>Start Node – receives the user’s question.</p></li>
+<li><p>LLM Node – uses GPT to come up with an answer.</p></li>
+<li><p>Output Node – sends the answer back to the user.</p></li>
+</ul>
+<p>Each of those steps is a node.</p>
+<p>This is an example of a node in python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ask_question_node</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="nb">input</span><span class="p">[</span><span class="s2">&quot;user_input&quot;</span><span class="p">]}</span>
+
+<span class="k">def</span> <span class="nf">llm_response_node</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="c1"># pretend this calls GPT</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="s2">&quot;This is a response to: &quot;</span> <span class="o">+</span> <span class="nb">input</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]}</span>
+</pre></div>
+</div>
+</section>
+<section id="edges">
+<h2><span class="section-number">5.5. </span>Edges<a class="headerlink" href="#edges" title="Link to this heading">#</a></h2>
+<p>An edge is the connection between two nodes.</p>
+<p>Think of it like a wire or a path that tells LangGraph:
+“After this node finishes, go to that one.”</p>
+<p>When a node finishes its job and returns some output, the edge decides what node to run next.</p>
+<p>There are two main types of edges:</p>
+<ul class="simple">
+<li><p>Static Edges – Always go to the same next node, no matter the result.</p></li>
+<li><p>Conditional Edges – Choose the next node based on some value in the output.</p></li>
+</ul>
+<p>Let’s say you’re building a flow like this:</p>
+<ul class="simple">
+<li><p>User types a message → (Start node)</p></li>
+<li><p>Classify message as ‘question’ or ‘command’ → (Classifier node)</p></li>
+<li><p>If it’s a question, go to AnswerQuestion node</p></li>
+<li><p>If it’s a command, go to RunCommand node</p></li>
+</ul>
+<p>Here’s what’s happening:</p>
+<ul class="simple">
+<li><p>Each node does some work.</p></li>
+<li><p>Each edge tells the system where to go next.</p></li>
+<li><p>The edge from Classifier is a conditional edge — it chooses the next node based on the output.</p></li>
+</ul>
+</section>
+<section id="conditional-edges">
+<h2><span class="section-number">5.6. </span>Conditional Edges<a class="headerlink" href="#conditional-edges" title="Link to this heading">#</a></h2>
+<p>A conditional edge chooses which node to run next based on the output of the current node.</p>
+<p>It’s like saying:</p>
+<ul class="simple">
+<li><p>“If the result is X, go this way.</p></li>
+<li><p>If the result is Y, go that way.”</p></li>
+</ul>
+<p>They let your graph make decisions.</p>
+<p>This is useful when:</p>
+<ul class="simple">
+<li><p>You want to branch the logic based on input.</p></li>
+<li><p>You’re handling different types of tasks (e.g. questions vs commands).</p></li>
+<li><p>You want to loop or exit based on a condition.</p></li>
+</ul>
+<p>For example, you may want to classify an input. You can do so in something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify_node</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;user_input&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;?&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;question&quot;</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;command&quot;</span><span class="p">}</span>
+
+</pre></div>
+</div>
+</section>
+<section id="cycles">
+<h2><span class="section-number">5.7. </span>Cycles<a class="headerlink" href="#cycles" title="Link to this heading">#</a></h2>
+<p>A cycle in LangGraph is when a node can eventually lead back to itself or to an earlier node in the graph.
+In simple terms, A cycle lets your program loop or repeat steps.</p>
+<p>You use cycles when:</p>
+<ul class="simple">
+<li><p>You want to retry something.</p></li>
+<li><p>You want to keep asking the user for more input.</p></li>
+<li><p>You need a multi-step process where results feed back into earlier logic.</p></li>
+</ul>
+<p>Logic for this would look something like this:</p>
+<pre  class="mermaid">
+        flowchart TB
+    %% Nodes
+    start_node([&quot;\_\_start\_\_&quot;])
+    get_input[&quot;get_input&quot;]
+    check_done[&quot;check_done&quot;]
+    process_input[&quot;process_input&quot;]
+    end_node([&quot;\_\_end\_\_&quot;])
+
+    %% Main Flow
+    start_node --&gt; get_input
+    get_input --&gt; check_done
+    check_done --&gt;|&quot;not done&quot;| process_input
+    check_done --&gt;|&quot;done&quot;| end_node
+    process_input --&gt; get_input
+    </pre></section>
+<hr class="docutils" />
+<section id="best-practices-tips">
+<h2><span class="section-number">5.8. </span>Best Practices &amp; Tips<a class="headerlink" href="#best-practices-tips" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Design for Clarity</strong>: Keep branches simple; avoid excessive states.</p></li>
+<li><p><strong>Reuse Components</strong>: Leverage <code class="docutils literal notranslate"><span class="pre">simple_retrieve</span></code>, <code class="docutils literal notranslate"><span class="pre">llm_generate</span></code>, and other utility functions.</p></li>
+<li><p><strong>Manage Memory</strong>: Pass <code class="docutils literal notranslate"><span class="pre">memory_filepath</span></code> to <code class="docutils literal notranslate"><span class="pre">sessions_manager</span></code> if you need state across turns.</p></li>
+<li><p><strong>Test Iteratively</strong>: Build and test each branch separately before combining.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="next-steps">
+<h2><span class="section-number">5.9. </span>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Read <a class="reference internal" href="graphs.html"><span class="doc std std-doc">Graphs: Simple RAG vs. Pipline RAG</span></a> for built‑in pipelines.</p></li>
+<li><p>Experiment with external tools (e.g., web search) by adding new states.</p></li>
+<li><p>Share your custom graphs with the Maeser community via GitHub.</p></li>
+<li><p>For more information on langgraphs, you can find documentation <a class="reference external" href="https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.#">here</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="graphs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Graphs: Simple RAG vs. Pipeline RAG</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="architecture.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Architecture Overview</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">5.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-build-custom-graphs">5.2. Why Build Custom Graphs?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-custom-graph-with-langgraph">5.3. Building a Custom Graph with LangGraph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nodes">5.4. Nodes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edges">5.5. Edges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-edges">5.6. Conditional Edges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cycles">5.7. Cycles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-tips">5.8. Best Practices &amp; Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">5.9. Next Steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
