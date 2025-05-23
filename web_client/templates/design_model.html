@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
+</head>
+<body>
+    <div class="header">
+        <div class="user-welcome">Admin Portal - Welcome, {{ username }}!</div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h3>Admin Navigation</h3>
+            <ul>
+                <li><a href="#">Design New Model</a></li>
+                <li><a href="#">Manage Models</a></li>
+                <li><a href="#">Manage Users</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="/">Return Home</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <form id="model-form" method="POST" enctype="multipart/form-data">
+                <h2>Create New Model</h2>
+            
+                <!-- Model name -->
+                <label for="class_code">Class Code:</label><br>
+                <input type="text" id="class_code" name="class_code" required><br><br>
+            
+                <!-- File upload -->
+                <!-- File Groups Section -->
+                <label>PDF File Groups:</label>
+                <div id="file-groups-container"></div>
+                <button type="button" onclick="addFileGroup()">Add File Group</button><br><br>
+
+            
+                <!-- Host address -->
+                <label for="host-address">Define Host Address:</label><br>
+                <input type="text" id="host-address" name="host_address"><br><br>
+            
+                <!-- Rules section -->
+                <label>Rules:</label>
+                <div id="rules-container"></div>
+                <button type="button" onclick="addRule()">Add Rule</button><br><br>
+            
+                <input type="submit" value="Submit Model">
+            </form>
+            <script>
+                let fileGroupCount = 0;
+                
+                function addFileGroup() {
+                    const container = document.getElementById('file-groups-container');
+                
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'file-group';
+                    groupDiv.dataset.groupId = fileGroupCount;
+                
+                    // Inner content wrapper
+                    const innerDiv = document.createElement('div');
+                    innerDiv.className = 'file-group-content';
+                
+                    // Group name
+                    const nameLabel = document.createElement('label');
+                    nameLabel.textContent = 'File Group Name:';
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.name = `file_groups[${fileGroupCount}][name]`;
+                    nameInput.required = true;
+                
+                    // File input
+                    const fileLabel = document.createElement('label');
+                    fileLabel.textContent = 'Upload PDF Files:';
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.name = `file_groups[${fileGroupCount}][files]`;
+                    fileInput.accept = '.pdf';
+                    fileInput.multiple = true;
+                    fileInput.required = true;
+                
+                    // Delete button
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.className = 'remove-button';
+                    removeButton.textContent = 'X';
+                    removeButton.onclick = () => container.removeChild(groupDiv);
+                
+                    // Assemble
+                    innerDiv.appendChild(nameLabel);
+                    innerDiv.appendChild(document.createElement('br'));
+                    innerDiv.appendChild(nameInput);
+                    innerDiv.appendChild(document.createElement('br'));
+                    innerDiv.appendChild(document.createElement('br'));
+                    innerDiv.appendChild(fileLabel);
+                    innerDiv.appendChild(document.createElement('br'));
+                    innerDiv.appendChild(fileInput);
+                
+                    groupDiv.appendChild(innerDiv);
+                    groupDiv.appendChild(removeButton);
+                    container.appendChild(groupDiv);
+                
+                    fileGroupCount++;
+                }
+            </script>             
+            <script>
+                function addRule() {
+                    const container = document.getElementById('rules-container');
+            
+                    // Create wrapper div for rule input and delete button
+                    const ruleDiv = document.createElement('div');
+                    ruleDiv.style.marginBottom = '8px';
+                    ruleDiv.style.display = 'flex';
+                    ruleDiv.style.alignItems = 'center';
+            
+                    // Create input
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = 'rules[]';
+                    input.placeholder = 'Enter rule';
+                    input.style.flex = '1';
+            
+                    // Create delete button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.textContent = 'X';
+                    deleteButton.style.marginLeft = '8px';
+                    deleteButton.style.backgroundColor = '#ff4d4d';
+                    deleteButton.style.color = 'white';
+                    deleteButton.onclick = () => container.removeChild(ruleDiv);
+            
+                    ruleDiv.appendChild(input);
+                    ruleDiv.appendChild(deleteButton);
+                    container.appendChild(ruleDiv);
+                }
+            </script>            
+        </div>
+    </div>
+</body>
+</html>

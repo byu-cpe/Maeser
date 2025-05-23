@@ -27,7 +27,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
   - **Embeddings:** [`OpenAIEmbeddings`](https://python.langchain.com/api_reference/openai/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html)  
   - **Vector store wrapper:** `FAISS` integration  
 
-### [FAISS (via LangChain)](https://python.langchain.com/api_reference/community/vectorstores/langchain_community.vectorstores.faiss.FAISS.html)
+### [FAISS (via LangChain)](https://python.langchain.com/docs/integrations/vectorstores/faiss/)
 - **Role:** High-performance nearest-neighbor search  
 - **Use case:** Index and query embedding vectors for both Simple and Pipeline RAG pipelines.
 
@@ -43,7 +43,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## LLM & Embedding APIs
 
-### [OpenAI Python SDK](https://github.com/openai/openai-python)
+### [OpenAI Python SDK](https://platform.openai.com/docs/api-reference/introduction)
 - **Role:** Official client for chat completions & embeddings
 - **Use case:** Send prompts to GPT models (e.g., `gpt-3.5-turbo`, `gpt-4`) and retrieve embeddings when needed.
 
@@ -51,7 +51,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## 4. Web Framework & Templating
 
-### [Flask](https://flask.palletsprojects.com/en/stable/)
+### [Flask](https://flask.palletsprojects.com/en/stable/quickstart/)
 - **Role:** Lightweight WSGI framework for web endpoints
 - **Use case:** Hosts chat UI, auth flows, admin dashboards—bootstrapped by `App_Manager`.
 
@@ -63,9 +63,13 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Configuration & Environment
 
-### [PyYAML](https://pypi.org/project/PyYAML/)
+### [PyYAML](https://pyyaml.org/wiki/PyYAMLDocumentation)
 - **Role:** YAML parsing
-- **Use case:** Load `config_example.yaml` (API keys, paths, rate limits, auth settings).
+- **Use case:** Load `config.yaml` (API keys, paths, rate limits, auth settings).
+
+### [python-dotenv *(optional)*](https://www.dotenv.org/docs/)
+- **Role:** `.env` support for environment variables
+- **Use case:** Override sensitive settings outside of YAML or source control.
 
 ---
 
@@ -83,15 +87,15 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## CLI & Developer Tooling
 
-### [pyinputplus](https://pypi.org/project/PyInputPlus/)
-- **Role:** Enhanced input for CLI menus & validation
+### [pyinputplus](https://pyinputplus.readthedocs.io/en/latest/)
+- **Role:** Enhanced `input()` for CLI menus & validation
 - **Use case:** Powers the interactive terminal example.
 
-### [pytest](https://docs.pytest.org/en/stable/)
+### [pytest](https://docs.pytest.org/en/stable/contents.html)
 - **Role:** Testing framework
 - **Use case:** Runs unit tests under `tests/` to validate functionality.
 
-### [Sphinx](https://www.sphinx-doc.org/en/master/) & [MyST Parser](https://myst-parser.readthedocs.io/en/v0.16.1/sphinx/intro.html)
+### [Sphinx](https://www.sphinx-doc.org/en/master/) & [MyST Parser](https://myst-parser.readthedocs.io/en/latest/)
 - **Role:** Documentation generator for RST & Markdown  
 - **Use case:** Builds the Maeser docs site (`sphinx-docs/`) with mixed-format support.
 
@@ -99,7 +103,16 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ## Optional Integrations
 
-- **[Poetry:](https://python-poetry.org/)** Alternative dependency & venv management
-- **[Gunicorn:](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/)** Production-ready WSGI server
-- **[Docker:](https://docs.docker.com/)** Containerization for reproducible deployments
+- **[Poetry](https://python-poetry.org/docs/):** Alternative dependency & venv management  
+- **[Gunicorn](https://docs.gunicorn.org/en/stable/):** Production-ready WSGI server that [integrates well with Flask.](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/)
+- **[Docker](https://docs.docker.com/get-started/):** Containerization for reproducible deployments
+
+---
+
+## Best Practices & Tips
+
+- Keep **LangChain** and **OpenAI SDK** versions up-to-date.  
+- Swap FAISS for another vector store (e.g., Chroma) by updating only pipeline construction.  
+- Use **python-dotenv** in dev to keep secrets out of YAML/source.  
+- Configure **pre-commit hooks** (Black, Flake8, isort) for consistent code style.
 
