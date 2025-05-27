@@ -55,7 +55,8 @@ autodoc_mock_imports = [
     'flask',
     'flask-login',
     'flask_login',
-    'pytest'
+    'pytest',
+    'ldap3'
 ]
 
 # -- Project information -----------------------------------------------------
