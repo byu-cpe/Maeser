@@ -1,0 +1,741 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7. Library Dependencies &amp; Their Roles in Maeser &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'development-setup/libraries';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../_static/mermaid-theme-switch.js?v=b4085c12"></script>
+    <link rel="icon" href="../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Dev Troubleshooting Guide" href="dev-troubleshooting.html" />
+    <link rel="prev" title="6. Architecture Overview" href="architecture.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/user_setup.html">User Guide: Getting Started with Maeser</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding.html">3. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">4. Graphs: Simple RAG vs. Pipeline RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_graphs.html">5. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">6. Architecture Overview</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-troubleshooting.html">8. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flask_example.html">9. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminal_example.html">10. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">11. Resources</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/managing_users.html">Managing Users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/troubleshooting.html">SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.blueprints.html">maeser.blueprints module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/development-setup/libraries.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Library Dependencies & Their Roles in Maeser</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">7.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-embeddings">7.2. Retrieval &amp; Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain">7.2.1. LangChain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faiss-via-langchain">7.2.2. FAISS (via LangChain)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-orchestration">7.3. Workflow Orchestration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langgraph">7.3.1. LangGraph</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-apis">7.4. LLM &amp; Embedding APIs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-python-sdk">7.4.1. OpenAI Python SDK</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-framework-templating">7.5. 4. Web Framework &amp; Templating</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flask">7.5.1. Flask</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jinja2">7.5.2. Jinja2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-environment">7.6. Configuration &amp; Environment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyyaml">7.6.1. PyYAML</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-dotenv-optional">7.6.2. python-dotenv <em>(optional)</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authentication-user-management">7.7. Authentication &amp; User Management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-oath-handled-in-user-manager">7.7.1. Github OAth (Handled in <span class="xref myst"><code class="docutils literal notranslate"><span class="pre">user_manager</span></code></span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ldap3-handled-in-user-manager">7.7.2. LDAP3 (Handled in <span class="xref myst"><code class="docutils literal notranslate"><span class="pre">user_manager</span></code></span>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-developer-tooling">7.8. CLI &amp; Developer Tooling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyinputplus">7.8.1. pyinputplus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest">7.8.2. pytest</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sphinx-myst-parser">7.8.3. Sphinx &amp; MyST Parser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-integrations">7.9. Optional Integrations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-tips">7.10. Best Practices &amp; Tips</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="library-dependencies-their-roles-in-maeser">
+<h1><span class="section-number">7. </span>Library Dependencies &amp; Their Roles in Maeser<a class="headerlink" href="#library-dependencies-their-roles-in-maeser" title="Link to this heading">#</a></h1>
+<p>An at-a-glance guide to every major third-party library in Maeser: what it does, why it’s here, and how we leverage it.</p>
+<hr class="docutils" />
+<section id="overview">
+<h2><span class="section-number">7.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>Maeser weaves together best-in-class Python libraries to handle:</p>
+<ul class="simple">
+<li><p><strong>Vector search &amp; embeddings</strong></p></li>
+<li><p><strong>Workflow orchestration</strong></p></li>
+<li><p><strong>LLM API access</strong></p></li>
+<li><p><strong>Web serving &amp; templating</strong></p></li>
+<li><p><strong>Authentication &amp; configuration</strong></p></li>
+<li><p><strong>CLI &amp; developer tooling</strong></p></li>
+</ul>
+<p>Understanding these dependencies empowers you to extend Maeser, debug quickly, and swap components as needed.</p>
+</section>
+<hr class="docutils" />
+<section id="retrieval-embeddings">
+<h2><span class="section-number">7.2. </span>Retrieval &amp; Embeddings<a class="headerlink" href="#retrieval-embeddings" title="Link to this heading">#</a></h2>
+<section id="langchain">
+<h3><span class="section-number">7.2.1. </span><a class="reference external" href="https://python.langchain.com/docs/introduction/">LangChain</a><a class="headerlink" href="#langchain" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> High-level RAG abstraction layer</p></li>
+<li><p><strong>Key features used:</strong></p>
+<ul>
+<li><p><strong>Text splitters:</strong> <a class="reference external" href="https://python.langchain.com/api_reference/text_splitters/character/langchain_text_splitters.character.RecursiveCharacterTextSplitter.html#langchain_text_splitters.character.RecursiveCharacterTextSplitter"><code class="docutils literal notranslate"><span class="pre">RecursiveCharacterTextSplitter</span></code></a></p></li>
+<li><p><strong>Embeddings:</strong> <a class="reference external" href="https://python.langchain.com/api_reference/openai/embeddings/langchain_openai.embeddings.base.OpenAIEmbeddings.html"><code class="docutils literal notranslate"><span class="pre">OpenAIEmbeddings</span></code></a></p></li>
+<li><p><strong>Vector store wrapper:</strong> <code class="docutils literal notranslate"><span class="pre">FAISS</span></code> integration</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="faiss-via-langchain">
+<h3><span class="section-number">7.2.2. </span><a class="reference external" href="https://python.langchain.com/docs/integrations/vectorstores/faiss/">FAISS (via LangChain)</a><a class="headerlink" href="#faiss-via-langchain" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> High-performance nearest-neighbor search</p></li>
+<li><p><strong>Use case:</strong> Index and query embedding vectors for both Simple and Pipeline RAG pipelines.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="workflow-orchestration">
+<h2><span class="section-number">7.3. </span>Workflow Orchestration<a class="headerlink" href="#workflow-orchestration" title="Link to this heading">#</a></h2>
+<section id="langgraph">
+<h3><span class="section-number">7.3.1. </span><a class="reference external" href="https://langchain-ai.github.io/langgraph/">LangGraph</a><a class="headerlink" href="#langgraph" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> Compose multi-step AI pipelines as directed graphs</p></li>
+<li><p><strong>Use case:</strong> Underpins <code class="docutils literal notranslate"><span class="pre">get_simple_rag</span></code> and <code class="docutils literal notranslate"><span class="pre">get_pipeline_rag</span></code>; foundation for advanced custom graphs.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="llm-embedding-apis">
+<h2><span class="section-number">7.4. </span>LLM &amp; Embedding APIs<a class="headerlink" href="#llm-embedding-apis" title="Link to this heading">#</a></h2>
+<section id="openai-python-sdk">
+<h3><span class="section-number">7.4.1. </span><a class="reference external" href="https://platform.openai.com/docs/api-reference/introduction">OpenAI Python SDK</a><a class="headerlink" href="#openai-python-sdk" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> Official client for chat completions &amp; embeddings</p></li>
+<li><p><strong>Use case:</strong> Send prompts to GPT models (e.g., <code class="docutils literal notranslate"><span class="pre">gpt-3.5-turbo</span></code>, <code class="docutils literal notranslate"><span class="pre">gpt-4</span></code>) and retrieve embeddings when needed.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="web-framework-templating">
+<h2><span class="section-number">7.5. </span>4. Web Framework &amp; Templating<a class="headerlink" href="#web-framework-templating" title="Link to this heading">#</a></h2>
+<section id="flask">
+<h3><span class="section-number">7.5.1. </span><a class="reference external" href="https://flask.palletsprojects.com/en/stable/quickstart/">Flask</a><a class="headerlink" href="#flask" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> Lightweight WSGI framework for web endpoints</p></li>
+<li><p><strong>Use case:</strong> Hosts chat UI, auth flows, admin dashboards—bootstrapped by <code class="docutils literal notranslate"><span class="pre">App_Manager</span></code>.</p></li>
+</ul>
+</section>
+<section id="jinja2">
+<h3><span class="section-number">7.5.2. </span><a class="reference external" href="https://jinja.palletsprojects.com/en/stable/">Jinja2</a><a class="headerlink" href="#jinja2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> HTML templating engine</p></li>
+<li><p><strong>Use case:</strong> Renders dynamic templates (chat interface, login, logs) with theming support.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="configuration-environment">
+<h2><span class="section-number">7.6. </span>Configuration &amp; Environment<a class="headerlink" href="#configuration-environment" title="Link to this heading">#</a></h2>
+<section id="pyyaml">
+<h3><span class="section-number">7.6.1. </span><a class="reference external" href="https://pyyaml.org/wiki/PyYAMLDocumentation">PyYAML</a><a class="headerlink" href="#pyyaml" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> YAML parsing</p></li>
+<li><p><strong>Use case:</strong> Load <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> (API keys, paths, rate limits, auth settings).</p></li>
+</ul>
+</section>
+<section id="python-dotenv-optional">
+<h3><span class="section-number">7.6.2. </span><a class="reference external" href="https://www.dotenv.org/docs/">python-dotenv <em>(optional)</em></a><a class="headerlink" href="#python-dotenv-optional" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> <code class="docutils literal notranslate"><span class="pre">.env</span></code> support for environment variables</p></li>
+<li><p><strong>Use case:</strong> Override sensitive settings outside of YAML or source control.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="authentication-user-management">
+<h2><span class="section-number">7.7. </span>Authentication &amp; User Management<a class="headerlink" href="#authentication-user-management" title="Link to this heading">#</a></h2>
+<section id="github-oath-handled-in-user-manager">
+<h3><span class="section-number">7.7.1. </span>Github OAth (Handled in <a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html"><span class="doc std std-doc"><code class="docutils literal notranslate"><span class="pre">user_manager</span></code></span></a>)<a class="headerlink" href="#github-oath-handled-in-user-manager" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> Support for Github login.</p></li>
+<li><p><strong>Use case:</strong> Provide users with the option to sign into the web application with github.</p></li>
+</ul>
+</section>
+<section id="ldap3-handled-in-user-manager">
+<h3><span class="section-number">7.7.2. </span><a class="reference external" href="https://ldap3.readthedocs.io/en/latest/">LDAP3</a> (Handled in <a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html"><span class="doc std std-doc"><code class="docutils literal notranslate"><span class="pre">user_manager</span></code></span></a>)<a class="headerlink" href="#ldap3-handled-in-user-manager" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> LDAP directory client</p></li>
+<li><p><strong>Use case:</strong> <code class="docutils literal notranslate"><span class="pre">LDAPAuthenticator</span></code> for enterprise user login.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="cli-developer-tooling">
+<h2><span class="section-number">7.8. </span>CLI &amp; Developer Tooling<a class="headerlink" href="#cli-developer-tooling" title="Link to this heading">#</a></h2>
+<section id="pyinputplus">
+<h3><span class="section-number">7.8.1. </span><a class="reference external" href="https://pyinputplus.readthedocs.io/en/latest/">pyinputplus</a><a class="headerlink" href="#pyinputplus" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> Enhanced <code class="docutils literal notranslate"><span class="pre">input()</span></code> for CLI menus &amp; validation</p></li>
+<li><p><strong>Use case:</strong> Powers the interactive terminal example.</p></li>
+</ul>
+</section>
+<section id="pytest">
+<h3><span class="section-number">7.8.2. </span><a class="reference external" href="https://docs.pytest.org/en/stable/contents.html">pytest</a><a class="headerlink" href="#pytest" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> Testing framework</p></li>
+<li><p><strong>Use case:</strong> Runs unit tests under <code class="docutils literal notranslate"><span class="pre">tests/</span></code> to validate functionality.</p></li>
+</ul>
+</section>
+<section id="sphinx-myst-parser">
+<h3><span class="section-number">7.8.3. </span><a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> &amp; <a class="reference external" href="https://myst-parser.readthedocs.io/en/latest/">MyST Parser</a><a class="headerlink" href="#sphinx-myst-parser" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Role:</strong> Documentation generator for RST &amp; Markdown</p></li>
+<li><p><strong>Use case:</strong> Builds the Maeser docs site (<code class="docutils literal notranslate"><span class="pre">sphinx-docs/</span></code>) with mixed-format support.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="optional-integrations">
+<h2><span class="section-number">7.9. </span>Optional Integrations<a class="headerlink" href="#optional-integrations" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong><a class="reference external" href="https://python-poetry.org/docs/">Poetry</a>:</strong> Alternative dependency &amp; venv management</p></li>
+<li><p><strong><a class="reference external" href="https://docs.gunicorn.org/en/stable/">Gunicorn</a>:</strong> Production-ready WSGI server that <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/gunicorn/">integrates well with Flask.</a></p></li>
+<li><p><strong><a class="reference external" href="https://docs.docker.com/get-started/">Docker</a>:</strong> Containerization for reproducible deployments</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="best-practices-tips">
+<h2><span class="section-number">7.10. </span>Best Practices &amp; Tips<a class="headerlink" href="#best-practices-tips" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Keep <strong>LangChain</strong> and <strong>OpenAI SDK</strong> versions up-to-date.</p></li>
+<li><p>Swap FAISS for another vector store (e.g., Chroma) by updating only pipeline construction.</p></li>
+<li><p>Use <strong>python-dotenv</strong> in dev to keep secrets out of YAML/source.</p></li>
+<li><p>Configure <strong>pre-commit hooks</strong> (Black, Flake8, isort) for consistent code style.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="architecture.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Architecture Overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dev-troubleshooting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Dev Troubleshooting Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">7.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieval-embeddings">7.2. Retrieval &amp; Embeddings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain">7.2.1. LangChain</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faiss-via-langchain">7.2.2. FAISS (via LangChain)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-orchestration">7.3. Workflow Orchestration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langgraph">7.3.1. LangGraph</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-embedding-apis">7.4. LLM &amp; Embedding APIs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#openai-python-sdk">7.4.1. OpenAI Python SDK</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-framework-templating">7.5. 4. Web Framework &amp; Templating</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flask">7.5.1. Flask</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jinja2">7.5.2. Jinja2</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-environment">7.6. Configuration &amp; Environment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyyaml">7.6.1. PyYAML</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-dotenv-optional">7.6.2. python-dotenv <em>(optional)</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authentication-user-management">7.7. Authentication &amp; User Management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-oath-handled-in-user-manager">7.7.1. Github OAth (Handled in <span class="xref myst"><code class="docutils literal notranslate"><span class="pre">user_manager</span></code></span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ldap3-handled-in-user-manager">7.7.2. LDAP3 (Handled in <span class="xref myst"><code class="docutils literal notranslate"><span class="pre">user_manager</span></code></span>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cli-developer-tooling">7.8. CLI &amp; Developer Tooling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyinputplus">7.8.1. pyinputplus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest">7.8.2. pytest</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sphinx-myst-parser">7.8.3. Sphinx &amp; MyST Parser</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-integrations">7.9. Optional Integrations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-tips">7.10. Best Practices &amp; Tips</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

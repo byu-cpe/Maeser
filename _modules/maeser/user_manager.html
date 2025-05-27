@@ -1,0 +1,1467 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>maeser.user_manager &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/maeser/user_manager';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../../_static/mermaid-theme-switch.js?v=b4085c12"></script>
+    <link rel="icon" href="../../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../user-setup/user_setup.html">User Guide: Getting Started with Maeser</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/embedding.html">3. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/graphs.html">4. Graphs: Simple RAG vs. Pipeline RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/custom_graphs.html">5. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/architecture.html">6. Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/libraries.html">7. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/dev-troubleshooting.html">8. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/flask_example.html">9. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/terminal_example.html">10. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development-setup/resources.html">11. Resources</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../sysadmin/deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sysadmin/managing_users.html">Managing Users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sysadmin/troubleshooting.html">SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autodoc/maeser/maeser.blueprints.html">maeser.blueprints module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for maeser.user_manager</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">User management module for authentication and authorization.</span>
+
+<span class="sd">This module provides classes and utilities for managing users,</span>
+<span class="sd">including authentication methods, database operations, and request tracking.</span>
+
+<span class="sd">© 2024 Carson Bush, Blaine Freestone</span>
+
+<span class="sd">This file is part of Maeser.</span>
+
+<span class="sd">Maeser is free software: you can redistribute it and/or modify it under the terms of</span>
+<span class="sd">the GNU Lesser General Public License as published by the Free Software Foundation,</span>
+<span class="sd">either version 3 of the License, or (at your option) any later version.</span>
+
+<span class="sd">Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;</span>
+<span class="sd">without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR</span>
+<span class="sd">PURPOSE. See the GNU Lesser General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU Lesser General Public License along with</span>
+<span class="sd">Maeser. If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">secrets</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlencode</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">ssl</span>
+<span class="kn">from</span> <span class="nn">ldap3</span> <span class="kn">import</span> <span class="n">Server</span><span class="p">,</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">ALL</span><span class="p">,</span> <span class="n">SUBTREE</span><span class="p">,</span> <span class="n">Tls</span>
+<span class="kn">from</span> <span class="nn">ldap3.core.exceptions</span> <span class="kn">import</span> <span class="n">LDAPException</span><span class="p">,</span> <span class="n">LDAPAttributeError</span><span class="p">,</span> <span class="n">LDAPBindError</span><span class="p">,</span> <span class="n">LDAPSocketReceiveError</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+
+
+<div class="viewcode-block" id="User">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.User">[docs]</a>
+<span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides default implementations for the methods that Flask-Login expects user objects to have.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Python 3 implicitly sets __hash__ to None if we override __eq__</span>
+    <span class="c1"># We set it back to its default implementation</span>
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__hash__</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">blacklisted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">admin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">realname</span><span class="o">=</span><span class="s1">&#39;Student&#39;</span><span class="p">,</span> <span class="n">usergroup</span><span class="o">=</span><span class="s1">&#39;b</span><span class="se">\&#39;</span><span class="s1">guest</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">authmethod</span><span class="o">=</span><span class="s1">&#39;invalid&#39;</span><span class="p">,</span> <span class="n">requests_left</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">aka</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a User object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ident (str): The user&#39;s identifier.</span>
+<span class="sd">            blacklisted (bool, optional): Whether the user is blacklisted. Defaults to False.</span>
+<span class="sd">            admin (bool, optional): Whether the user is an admin. Defaults to False.</span>
+<span class="sd">            realname (str, optional): The user&#39;s real name. Defaults to &#39;Student&#39;.</span>
+<span class="sd">            usergroup (str, optional): The user&#39;s group. Defaults to &#39;b\&#39;guest\&#39;&#39;.</span>
+<span class="sd">            authmethod (str, optional): The authentication method. Defaults to &#39;invalid&#39;.</span>
+<span class="sd">            requests_left (int, optional): The number of requests left. Defaults to 10.</span>
+<span class="sd">            max_requests (int, optional): The maximum number of requests. Defaults to 10.</span>
+<span class="sd">            aka (list, optional): A list of alternate names. Defaults to an empty list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ident</span> <span class="o">=</span> <span class="n">ident</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">blacklisted</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">admin</span> <span class="o">=</span> <span class="n">admin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">realname</span> <span class="o">=</span> <span class="n">realname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usergroup</span> <span class="o">=</span> <span class="n">usergroup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_method</span> <span class="o">=</span> <span class="n">authmethod</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_requests_remaining</span> <span class="o">=</span> <span class="n">requests_left</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_requests</span> <span class="o">=</span> <span class="n">max_requests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aka</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">aka</span>
+    
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;User Information for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ident</span><span class="si">}</span><span class="s2">:</span>
+<span class="s2">        Authentication Method: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">auth_method</span><span class="si">}</span>
+<span class="s2">        Real Name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">realname</span><span class="si">}</span>
+<span class="s2">        Admin: </span><span class="si">{</span><span class="s1">&#39;Yes&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">admin</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;No&#39;</span><span class="si">}</span>
+<span class="s2">        Banned: </span><span class="si">{</span><span class="s1">&#39;Yes&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;No&#39;</span><span class="si">}</span>
+<span class="s2">        User Group: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">usergroup</span><span class="si">}</span>
+<span class="s2">        Requests Remaining: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">requests_remaining</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_requests</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;ident&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ident</span><span class="p">,</span>
+            <span class="s1">&#39;is_active&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">,</span>
+            <span class="s1">&#39;admin&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">admin</span><span class="p">,</span>
+            <span class="s1">&#39;realname&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">realname</span><span class="p">,</span>
+            <span class="s1">&#39;usergroup&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">usergroup</span><span class="p">,</span>
+            <span class="s1">&#39;auth_method&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_method</span><span class="p">,</span>
+            <span class="s1">&#39;requests_remaining&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">requests_remaining</span><span class="p">,</span>
+            <span class="s1">&#39;max_requests&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_requests</span><span class="p">,</span>
+            <span class="s1">&#39;aka&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">aka</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_authenticated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return True if the user is authenticated.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_anonymous</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return False, as anonymous users are not supported.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="User.get_id">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.User.get_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the user&#39;s full identifier name including authentication method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_id_name</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">full_id_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the user&#39;s full identifier name including authentication method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">auth_method</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ident</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">requests_remaining</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of requests remaining for the user.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_requests_remaining</span>
+
+    <span class="nd">@requests_remaining</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">requests_remaining</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the number of requests remaining for the user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num (int): The new number of requests remaining.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_requests</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_requests_remaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_requests</span>
+        <span class="k">elif</span> <span class="n">num</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_requests_remaining</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_requests_remaining</span> <span class="o">=</span> <span class="n">num</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the equality of two User objects using get_id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (User): The other user to compare.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the users are equal, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">User</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the inequality of two User objects using get_id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (User): The other user to compare.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the users are not equal, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">equal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">equal</span></div>
+
+
+
+<div class="viewcode-block" id="LoginStyle">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.LoginStyle">[docs]</a>
+<span class="k">class</span> <span class="nc">LoginStyle</span><span class="p">:</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">login_submit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">direct_submit</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># Not a url, but a controller name for url_for. i.e. &#39;maeser.github_authorize&#39; or &#39;localauth&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login_submit</span> <span class="o">=</span> <span class="n">login_submit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direct_submit</span> <span class="o">=</span> <span class="n">direct_submit</span>
+        <span class="c1"># HTML for a custom form (labels and inputs only)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_custom_form</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&lt;label for=&quot;username&quot; class=&quot;form-label&quot;&gt;Username&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; class=&quot;form-input&quot; required&gt;&lt;label for=&quot;password&quot; class=&quot;form-label&quot;&gt;Password&lt;/label&gt;&lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; class=&quot;form-input&quot; required&gt;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">icon_html</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;i class=&quot;bi bi-</span><span class="si">{</span><span class="n">icon</span><span class="si">}</span><span class="s1">&quot;&gt;&lt;/i&gt;&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">form_html</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct_submit</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot use form_html with direct_submit=True&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_form</span>
+    
+    <span class="nd">@form_html</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">form_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">html</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_custom_form</span> <span class="o">=</span> <span class="n">html</span></div>
+
+
+
+<div class="viewcode-block" id="BaseAuthenticator">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.BaseAuthenticator">[docs]</a>
+<span class="k">class</span> <span class="nc">BaseAuthenticator</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for authenticators.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the authenticator with any required arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the string representation of the authenticator.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="BaseAuthenticator.authenticate">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.BaseAuthenticator.authenticate">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Authenticate a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Positional arguments for authentication.</span>
+<span class="sd">            **kwargs: Keyword arguments for authentication.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple or None: A tuple containing the user&#39;s username, real name, and user group if authentication is successful, otherwise None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseAuthenticator.fetch_user">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.BaseAuthenticator.fetch_user">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch a user from the authenticator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ident (str): The identifier of the user to fetch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            User or None: The fetched user object or None if not found.</span>
+<span class="sd">                ENSURE THAT YOU SET max_requests TO THE CORRECT VALUE FOR THE USER!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">style</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LoginStyle</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the login style for the authenticator.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LoginStyle: The login style object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="GithubAuthenticator">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.GithubAuthenticator">[docs]</a>
+<span class="k">class</span> <span class="nc">GithubAuthenticator</span><span class="p">(</span><span class="n">BaseAuthenticator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handles authentication with GitHub OAuth.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">client_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">auth_callback_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">max_requests</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the GitHub authenticator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            client_id (str): The GitHub client ID.</span>
+<span class="sd">            client_secret (str): The GitHub client secret.</span>
+<span class="sd">            auth_callback_uri (str): The callback URI for GitHub authentication.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">client_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client_secret</span> <span class="o">=</span> <span class="n">client_secret</span>
+        <span class="c1"># Generally this should be set from your Flask app as this will differ between applications</span>
+        <span class="c1"># url_for(&#39;github_auth_callback&#39;, _external=True)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_requests</span> <span class="o">=</span> <span class="n">max_requests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_callback_uri</span> <span class="o">=</span> <span class="n">auth_callback_uri</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_login_style</span> <span class="o">=</span> <span class="n">LoginStyle</span><span class="p">(</span><span class="s1">&#39;github&#39;</span><span class="p">,</span> <span class="s1">&#39;maeser.github_authorize&#39;</span><span class="p">,</span> <span class="n">direct_submit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;GitHub&#39;</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">style</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LoginStyle</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_login_style</span>
+
+<div class="viewcode-block" id="GithubAuthenticator.authenticate">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.GithubAuthenticator.authenticate">[docs]</a>
+    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">oauth_state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Authenticate a user with GitHub OAuth.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request_args (dict): The request arguments containing the authorization code and state.</span>
+<span class="sd">            oauth_state (str): The state value used to prevent CSRF attacks.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple or None: A tuple containing the user&#39;s username, real name, and user group if authentication is successful, otherwise None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">request_args</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">oauth_state</span> <span class="ow">or</span> <span class="s1">&#39;code&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request_args</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">request_args</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">],</span> <span class="n">oauth_state</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">)</span> 
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">token_url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/login/oauth/access_token&#39;</span>
+        <span class="n">user_info_url</span> <span class="o">=</span> <span class="s1">&#39;https://api.github.com/user&#39;</span>
+
+        <span class="c1"># exchange the authorization code for an access token</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">token_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;client_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_id</span><span class="p">,</span>
+            <span class="s1">&#39;client_secret&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_secret</span><span class="p">,</span>
+            <span class="s1">&#39;code&#39;</span><span class="p">:</span> <span class="n">request_args</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;grant_type&#39;</span><span class="p">:</span> <span class="s1">&#39;authorization_code&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;redirect_uri&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_callback_uri</span>
+        <span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">},</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GitHub authentication failed during token exchange: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">oauth2_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;access_token&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">oauth2_token</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;GitHub authentication failed: No access token received&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_info_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">oauth2_token</span><span class="p">,</span>
+            <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+        <span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GitHub authentication failed when fetching user info: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">json_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json_response</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">json_response</span><span class="p">[</span><span class="s1">&#39;login&#39;</span><span class="p">],</span> <span class="n">json_response</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="s1">&#39;b</span><span class="se">\&#39;</span><span class="s1">guest</span><span class="se">\&#39;</span><span class="s1">&#39;</span></div>
+
+
+<div class="viewcode-block" id="GithubAuthenticator.fetch_user">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.GithubAuthenticator.fetch_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch a user from the GitHub API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ident (str): The username of the user to fetch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            User or None: The fetched user object or None if the user is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_info_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://api.github.com/users/</span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_info_url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">json_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="n">json_response</span><span class="p">[</span><span class="s1">&#39;login&#39;</span><span class="p">],</span> <span class="n">realname</span><span class="o">=</span><span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="n">usergroup</span><span class="o">=</span><span class="s1">&#39;b</span><span class="se">\&#39;</span><span class="s1">guest</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">authmethod</span><span class="o">=</span><span class="s1">&#39;github&#39;</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_requests</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;WARNING: No GitHub user &quot;</span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1">&quot; found&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="GithubAuthenticator.get_auth_info">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.GithubAuthenticator.get_auth_info">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_auth_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the GitHub authorization information.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple containing the OAuth state and provider URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">authorize_url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/login/oauth/authorize&#39;</span>
+        <span class="n">scopes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user:email&#39;</span><span class="p">]</span>
+
+        <span class="c1"># generate a random string for the state parameter</span>
+        <span class="n">oauth_state</span> <span class="o">=</span> <span class="n">secrets</span><span class="o">.</span><span class="n">token_urlsafe</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+
+        <span class="n">query_string</span> <span class="o">=</span> <span class="n">urlencode</span><span class="p">({</span>
+            <span class="s1">&#39;client_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_id</span><span class="p">,</span>
+            <span class="s1">&#39;redirect_uri&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_callback_uri</span><span class="p">,</span>
+            <span class="s1">&#39;response_type&#39;</span><span class="p">:</span> <span class="s1">&#39;code&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;scope&#39;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scopes</span><span class="p">),</span>
+            <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">oauth_state</span><span class="p">,</span>
+        <span class="p">})</span>
+
+        <span class="n">provider_url</span> <span class="o">=</span> <span class="n">authorize_url</span> <span class="o">+</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">query_string</span>
+
+        <span class="k">return</span> <span class="n">oauth_state</span><span class="p">,</span> <span class="n">provider_url</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="LDAPAuthenticator">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.LDAPAuthenticator">[docs]</a>
+<span class="k">class</span> <span class="nc">LDAPAuthenticator</span><span class="p">(</span><span class="n">BaseAuthenticator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">ldap_server_urls</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> 
+                 <span class="n">ldap_base_dn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                 <span class="n">attribute_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                 <span class="n">search_filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                 <span class="n">object_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                 <span class="n">attributes</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> 
+                 <span class="n">ca_cert_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;/etc/ssl/certs&#39;</span><span class="p">,</span> 
+                 <span class="n">connection_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ldap_server_urls</span> <span class="o">=</span> <span class="n">ldap_server_urls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ldap_base_dn</span> <span class="o">=</span> <span class="n">ldap_base_dn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribute_name</span> <span class="o">=</span> <span class="n">attribute_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_filter</span> <span class="o">=</span> <span class="n">search_filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_class</span> <span class="o">=</span> <span class="n">object_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ca_cert_path</span> <span class="o">=</span> <span class="n">ca_cert_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection_timeout</span> <span class="o">=</span> <span class="n">connection_timeout</span>
+
+        <span class="c1"># Ensure certificate directory exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ca_cert_path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;Path to CA Certificates directory does not exist&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize LDAP server instances</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ldap_servers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_ldap_servers</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ldap_usable_servers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_ldap_anonymous_bind</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_server_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_login_style</span> <span class="o">=</span> <span class="n">LoginStyle</span><span class="p">(</span><span class="s1">&#39;envelope-fill&#39;</span><span class="p">,</span> <span class="s1">&#39;maeser.login&#39;</span><span class="p">,</span> <span class="n">direct_submit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">style</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_login_style</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">next_ldap_server</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Server</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the next available LDAP server in a round-robin fashion.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ldap_usable_servers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NO REACHABLE LDAP SERVER!&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">server_to_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ldap_usable_servers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_server_index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_server_index</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_server_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ldap_usable_servers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">server_to_use</span>
+
+    <span class="k">def</span> <span class="nf">_initialize_ldap_servers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Server</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize LDAP server instances with retrieved certificates.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of initialized LDAP Server objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">servers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Server</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">server_url</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ldap_server_urls</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">servers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Server</span><span class="p">(</span>
+                    <span class="n">server_url</span><span class="p">,</span>
+                    <span class="n">use_ssl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">get_info</span><span class="o">=</span><span class="n">ALL</span><span class="p">,</span>
+                    <span class="n">connect_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_timeout</span><span class="p">,</span>
+                    <span class="n">tls</span><span class="o">=</span><span class="n">Tls</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="n">ssl</span><span class="o">.</span><span class="n">CERT_REQUIRED</span><span class="p">,</span> <span class="n">ca_certs_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ca_cert_path</span><span class="p">)</span>
+                <span class="p">))</span>
+            <span class="k">except</span> <span class="n">LDAPException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to initialize LDAP server </span><span class="si">{</span><span class="n">server_url</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">servers</span>
+
+    <span class="k">def</span> <span class="nf">_test_ldap_anonymous_bind</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test anonymous bind to each LDAP server and blacklist bad servers.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of LDAP servers that are usable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">usable_servers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ldap_server</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ldap_servers</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">test_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="n">ldap_server</span><span class="p">,</span> <span class="n">receive_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_timeout</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">test_connection</span><span class="o">.</span><span class="n">bind</span><span class="p">():</span>
+                    <span class="n">usable_servers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ldap_server</span><span class="p">)</span>
+                <span class="n">test_connection</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">LDAPException</span><span class="p">,</span> <span class="n">LDAPAttributeError</span><span class="p">,</span> <span class="n">LDAPBindError</span><span class="p">,</span> <span class="n">LDAPSocketReceiveError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to bind to LDAP server </span><span class="si">{</span><span class="n">ldap_server</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">usable_servers</span>
+
+<div class="viewcode-block" id="LDAPAuthenticator.authenticate">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.LDAPAuthenticator.authenticate">[docs]</a>
+    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_ldap_server</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">next_ldap_server</span><span class="p">,</span>
+                <span class="n">user</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">attribute_name</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ldap_base_dn</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+                <span class="n">auto_bind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">receive_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_timeout</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">LDAPException</span><span class="p">,</span> <span class="n">LDAPAttributeError</span><span class="p">,</span> <span class="n">LDAPBindError</span><span class="p">,</span> <span class="n">LDAPSocketReceiveError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> user </span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1"> failed to authenticate: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ldap_base_dn</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">search_filter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ident</span><span class="o">=</span><span class="n">ident</span><span class="p">),</span>
+                <span class="n">SUBTREE</span><span class="p">,</span>
+                <span class="n">attributes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+                <span class="n">time_limit</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_timeout</span><span class="p">)</span>
+            <span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">conn</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+                <span class="n">display_name</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">displayName</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">user_group</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">memberOf</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="s1">&#39;memberOf&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="k">return</span> <span class="n">ident</span><span class="p">,</span> <span class="n">display_name</span><span class="p">,</span> <span class="n">user_group</span>
+            
+        <span class="k">except</span> <span class="n">LDAPSocketReceiveError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;LDAP search timed out for user </span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="LDAPAuthenticator.fetch_user">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.LDAPAuthenticator.fetch_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch user information from LDAP and return a User object.</span>
+<span class="sd">        This method performs an anonymous bind and searches for the user.</span>
+<span class="sd">        No authentication is preformed using this method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ident (str): The user&#39;s identifier.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[User, None]: The User object if found, None otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_ldap_server</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_ldap_server</span><span class="p">,</span> <span class="n">auto_bind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">receive_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_timeout</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">LDAPException</span><span class="p">,</span> <span class="n">LDAPAttributeError</span><span class="p">,</span> <span class="n">LDAPBindError</span><span class="p">,</span> <span class="n">LDAPSocketReceiveError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;LDAP fetch for user </span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1"> failed: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">search_filter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_filter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ident</span><span class="o">=</span><span class="n">ident</span><span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ldap_base_dn</span><span class="p">,</span> 
+                <span class="n">search_filter</span><span class="p">,</span> 
+                <span class="n">SUBTREE</span><span class="p">,</span> 
+                <span class="n">attributes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+                <span class="n">time_limit</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection_timeout</span><span class="p">)</span>
+            <span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">conn</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+                <span class="n">display_name</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">displayName</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">user_group</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">memberOf</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="s1">&#39;memberOf&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="n">ident</span><span class="p">,</span> <span class="n">realname</span><span class="o">=</span><span class="n">display_name</span><span class="p">,</span> <span class="n">usergroup</span><span class="o">=</span><span class="n">user_group</span><span class="p">,</span> <span class="n">authmethod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">LDAPSocketReceiveError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;LDAP search timed out for user </span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> user &quot;</span><span class="si">{</span><span class="n">ident</span><span class="si">}</span><span class="s1">&quot; found&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="UserManager">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager">[docs]</a>
+<span class="k">class</span> <span class="nc">UserManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages user operations including authentication, database interactions, and request tracking.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_requests</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">rate_limit_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">180</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the UserManager.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            db_file_path (str): The file path to the SQLite database.</span>
+<span class="sd">            max_requests (int, optional): The maximum number of requests a user can have. Defaults to 10.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span> <span class="o">=</span> <span class="n">db_file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseAuthenticator</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span> <span class="o">=</span> <span class="n">max_requests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_limit_interval</span> <span class="o">=</span> <span class="n">rate_limit_interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_tables</span><span class="p">()</span>
+
+<div class="viewcode-block" id="UserManager.register_authenticator">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.register_authenticator">[docs]</a>
+    <span class="k">def</span> <span class="nf">register_authenticator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">authenticator</span><span class="p">:</span> <span class="n">BaseAuthenticator</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register a new authentication method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The shorthand name of the authentication method. Must only contain letters.</span>
+<span class="sd">            authenticator (BaseAuthenticator): The authenticator object.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided name is invalid or the authenticator is already registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">, must only contain letters!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">authenticator</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_table</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">db_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open a connection to the SQLite database.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            sqlite3.Connection: The database connection.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            sqlite3.OperationalError: If the database cannot be opened.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[31mUnable to open sqlite db file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="si">}</span><span class="s2">, using tempory storage: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">auth_method</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_create_table</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">auth_method</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            CREATE TABLE IF NOT EXISTS &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; (</span>
+<span class="s1">                user_id TEXT PRIMARY KEY,</span>
+<span class="s1">                blacklisted BOOL,</span>
+<span class="s1">                admin BOOL,</span>
+<span class="s1">                realname TEXT,</span>
+<span class="s1">                usertype TEXT,</span>
+<span class="s1">                requests_left INT,</span>
+<span class="s1">                aka TEXT</span>
+<span class="s1">            )</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UserManager.check_user_auth">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.check_user_auth">[docs]</a>
+    <span class="k">def</span> <span class="nf">check_user_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">auth_method</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span></div>
+
+
+<div class="viewcode-block" id="UserManager.get_user">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.get_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve a user from the database.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method used.</span>
+<span class="sd">            ident (str): The unique identifier of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            User: The user object, or None if not found.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">auth_method</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; WHERE user_id=?&#39;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">ident</span><span class="p">,)</span>
+            <span class="p">)</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">bool</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">bool</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">realname</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">usergroup</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="n">requests_left</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">authmethod</span><span class="o">=</span><span class="n">auth_method</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="UserManager.list_users">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.list_users">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">admin_filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">banned_filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">User</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List all users in the database, optionally filtered by authentication method, admin status, and banned status.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_filter (str, optional): The authentication method to list users for. If None or &#39;all&#39;, list users from all authentication methods.</span>
+<span class="sd">            admin_filter (str, optional): Filter users by admin status. Can be &#39;all&#39;, &#39;admin&#39;, or &#39;non-admin&#39;.</span>
+<span class="sd">            banned_filter (str, optional): Filter users by banned status. Can be &#39;all&#39;, &#39;banned&#39;, or &#39;non-banned&#39;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[User]: A list of user objects.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid or if admin_filter or banned_filter have invalid values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">auth_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">auth_filter</span> <span class="o">!=</span> <span class="s1">&#39;all&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">auth_filter</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_filter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">admin_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">admin_filter</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;non-admin&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid admin_filter value: </span><span class="si">{</span><span class="n">admin_filter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">banned_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">banned_filter</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;banned&#39;</span><span class="p">,</span> <span class="s1">&#39;non-banned&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid banned_filter value: </span><span class="si">{</span><span class="n">banned_filter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">users</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">User</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">auth_filter</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">auth_filter</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+                <span class="n">cursor</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT name FROM sqlite_master WHERE type=&#39;table&#39; AND name LIKE &#39;%Users&#39;&quot;</span><span class="p">)</span>
+                <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="n">table_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_filter</span><span class="si">}</span><span class="s2">Users&quot;</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="n">conditions</span> <span class="o">=</span> <span class="p">[]</span>
+                
+                <span class="k">if</span> <span class="n">admin_filter</span> <span class="o">==</span> <span class="s1">&#39;admin&#39;</span><span class="p">:</span>
+                    <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;admin = 1&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">admin_filter</span> <span class="o">==</span> <span class="s1">&#39;non-admin&#39;</span><span class="p">:</span>
+                    <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;admin = 0&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">banned_filter</span> <span class="o">==</span> <span class="s1">&#39;banned&#39;</span><span class="p">:</span>
+                    <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;blacklisted = 1&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">banned_filter</span> <span class="o">==</span> <span class="s1">&#39;non-banned&#39;</span><span class="p">:</span>
+                    <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;blacklisted = 0&quot;</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">conditions</span><span class="p">:</span>
+                    <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; WHERE &quot;</span> <span class="o">+</span> <span class="s2">&quot; AND &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conditions</span><span class="p">)</span>
+
+                <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+                    <span class="n">auth_method_from_table</span> <span class="o">=</span> <span class="n">table_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Users&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">users</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">User</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">bool</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">bool</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">realname</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">usergroup</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="n">requests_left</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">authmethod</span><span class="o">=</span><span class="n">auth_method_from_table</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">users</span></div>
+
+
+<div class="viewcode-block" id="UserManager.authenticate">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.authenticate">[docs]</a>
+    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Authenticate a user using the specified authentication method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method to use.</span>
+<span class="sd">            *args: Positional arguments for the authentication method.</span>
+<span class="sd">            **kwargs: Keyword arguments for the authentication method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            User: The authenticated user object, or None if authentication fails.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">authenticator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">auth_method</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">authenticator</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported authentication method: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">auth_result</span> <span class="o">=</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">auth_result</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">auth_result</span><span class="p">:</span>
+            <span class="n">user_id</span><span class="p">,</span> <span class="n">display_name</span><span class="p">,</span> <span class="n">user_group</span> <span class="o">=</span> <span class="n">auth_result</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_or_update_user</span><span class="p">(</span><span class="n">auth_method</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">display_name</span><span class="p">,</span> <span class="n">user_group</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_create_or_update_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">display_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_group</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create or update a user in the database.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method used.</span>
+<span class="sd">            user_id (str): The unique identifier of the user.</span>
+<span class="sd">            display_name (str): The display name of the user.</span>
+<span class="sd">            user_group (str): The group the user belongs to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            User: The user object.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">auth_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported authentication method: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; WHERE user_id=?&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,))</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">bool</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">bool</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">realname</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">requests_left</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">authmethod</span><span class="o">=</span><span class="n">auth_method</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;INSERT INTO &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; (user_id, blacklisted, admin, realname, usertype, requests_left) VALUES (?, ?, ?, ?, ?, ?)&#39;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">user_id</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">display_name</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">user_group</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">))</span>
+                <span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">realname</span><span class="o">=</span><span class="n">display_name</span><span class="p">,</span> <span class="n">usergroup</span><span class="o">=</span><span class="n">user_group</span><span class="p">,</span> <span class="n">authmethod</span><span class="o">=</span><span class="n">auth_method</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">user</span>
+
+<div class="viewcode-block" id="UserManager.update_admin_status">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.update_admin_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_admin_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_admin</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the admin status of a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method used.</span>
+<span class="sd">            ident (str): The identifier of the user.</span>
+<span class="sd">            is_admin (bool): Whether the user should be an admin or not.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">auth_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;UPDATE &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; SET admin=? WHERE user_id=?&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">is_admin</span><span class="p">,</span> <span class="n">ident</span><span class="p">))</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="UserManager.update_banned_status">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.update_banned_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_banned_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_banned</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the banned status of a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method used.</span>
+<span class="sd">            ident (str): The identifier of the user.</span>
+<span class="sd">            is_banned (bool): Whether the user should be banned or not.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">auth_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;UPDATE &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; SET blacklisted=? WHERE user_id=?&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">is_banned</span><span class="p">,</span> <span class="n">ident</span><span class="p">))</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="UserManager.refresh_requests">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.refresh_requests">[docs]</a>
+    <span class="k">def</span> <span class="nf">refresh_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inc_by</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Refresh the number of requests for all users by the given amount.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            inc_by (int, optional): The amount to increase the requests by. Defaults to 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">auth_method</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+                <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                    UPDATE &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">                    SET requests_left = MIN(?, MAX(0, requests_left + ?))</span>
+<span class="s1">                &#39;&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">,</span> <span class="n">inc_by</span><span class="p">))</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="UserManager.decrease_requests">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.decrease_requests">[docs]</a>
+    <span class="k">def</span> <span class="nf">decrease_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dec_by</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decrease the number of requests remaining for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method used.</span>
+<span class="sd">            user_id (str): The identifier of the user.</span>
+<span class="sd">            dec_by (int, optional): The amount to decrease the requests by. Defaults to 1.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">auth_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">dec_by</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dec_by</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">)</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                UPDATE &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">                SET requests_left = MAX(0, requests_left - ?)</span>
+<span class="s1">                WHERE user_id = ?</span>
+<span class="s1">            &#39;&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">dec_by</span><span class="p">,</span> <span class="n">user_id</span><span class="p">))</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="UserManager.increase_requests">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.increase_requests">[docs]</a>
+    <span class="k">def</span> <span class="nf">increase_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">inc_by</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Increase the number of requests remaining for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method used.</span>
+<span class="sd">            user_id (str): The identifier of the user.</span>
+<span class="sd">            inc_by (int, optional): The amount to increase the requests by. Defaults to 1.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">auth_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">inc_by</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">inc_by</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">)</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                UPDATE &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">                SET requests_left = MIN(?, MAX(0, requests_left + ?))</span>
+<span class="s1">                WHERE user_id = ?</span>
+<span class="s1">            &#39;&#39;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">,</span> <span class="n">inc_by</span><span class="p">,</span> <span class="n">user_id</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserManager.get_requests_remaining">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.get_requests_remaining">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_requests_remaining</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of requests remaining for a user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method used.</span>
+<span class="sd">            user_id (str): The identifier of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[int, None]: The number of requests remaining, or None if the user is not found.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">auth_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">auth_method</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">user</span><span class="o">.</span><span class="n">requests_remaining</span> <span class="k">if</span> <span class="n">user</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="UserManager.fetch_user">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.fetch_user">[docs]</a>
+    <span class="k">def</span> <span class="nf">fetch_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetch a user from the authentication source and add them to the cache</span>
+<span class="sd">        without modifying their admin or banned status.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method.</span>
+<span class="sd">            ident (str): The user&#39;s identifier.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the user was successfully fetched and cached, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">auth_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">[</span><span class="n">auth_method</span><span class="p">]</span><span class="o">.</span><span class="n">fetch_user</span><span class="p">(</span><span class="n">ident</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_or_update_user</span><span class="p">(</span><span class="n">auth_method</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">ident</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">realname</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">usergroup</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+        
+<div class="viewcode-block" id="UserManager.remove_user_from_cache">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.remove_user_from_cache">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_user_from_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ident</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force_remove</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a user from the cache.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auth_method (str): The authentication method used.</span>
+<span class="sd">            ident (str): The identifier of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the user was removed, False otherwise.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided auth_method is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">force_remove</span> <span class="ow">and</span> <span class="n">auth_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid authenticator name: </span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;DELETE FROM &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; WHERE user_id=?&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">ident</span><span class="p">,</span> <span class="p">))</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="UserManager.list_cleanables">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.list_cleanables">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_cleanables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List non-banned and non-admin users in the cache/database.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list[str]: A list of user identifiers in the format &quot;auth_method:user_id&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cleanables</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">auth_method</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+                <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+                <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SELECT user_id FROM &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; WHERE blacklisted=0 AND admin=0&#39;</span><span class="p">)</span>
+                <span class="n">cleanables</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()])</span>
+        <span class="k">return</span> <span class="n">cleanables</span></div>
+
+
+<div class="viewcode-block" id="UserManager.clean_cache">
+<a class="viewcode-back" href="../../autodoc/maeser/maeser.user_manager.html#maeser.user_manager.UserManager.clean_cache">[docs]</a>
+    <span class="k">def</span> <span class="nf">clean_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clean the cache by removing non-banned and non-admin users.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The number of users removed from the cache.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">removed_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_connection</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">auth_method</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticators</span><span class="p">:</span>
+                <span class="n">table_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auth_method</span><span class="si">}</span><span class="s2">Users&quot;</span>
+                <span class="n">removed</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;DELETE FROM &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; WHERE blacklisted=0 AND admin=0&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rowcount</span>
+                <span class="n">removed_count</span> <span class="o">+=</span> <span class="n">removed</span>
+        <span class="k">return</span> <span class="n">removed_count</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

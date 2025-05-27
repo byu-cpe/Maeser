@@ -1,0 +1,1121 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>maeser.chat.chat_logs &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/maeser/chat/chat_logs';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../../../_static/mermaid-theme-switch.js?v=b4085c12"></script>
+    <link rel="icon" href="../../../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../../../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user-setup/user_setup.html">User Guide: Getting Started with Maeser</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/embedding.html">3. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/graphs.html">4. Graphs: Simple RAG vs. Pipeline RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/custom_graphs.html">5. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/architecture.html">6. Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/libraries.html">7. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/dev-troubleshooting.html">8. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/flask_example.html">9. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/terminal_example.html">10. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development-setup/resources.html">11. Resources</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/managing_users.html">Managing Users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/troubleshooting.html">SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.blueprints.html">maeser.blueprints module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for maeser.chat.chat_logs</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for managing chat logs, including logging and retrieving chat history,</span>
+<span class="sd">feedback, and training data.</span>
+
+<span class="sd">© 2024 Blaine Freestone, Carson Bush</span>
+
+<span class="sd">This file is part of Maeser.</span>
+
+<span class="sd">Maeser is free software: you can redistribute it and/or modify it under the terms of</span>
+<span class="sd">the GNU Lesser General Public License as published by the Free Software Foundation,</span>
+<span class="sd">either version 3 of the License, or (at your option) any later version.</span>
+
+<span class="sd">Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;</span>
+<span class="sd">without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR</span>
+<span class="sd">PURPOSE. See the GNU Lesser General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU Lesser General Public License along with</span>
+<span class="sd">Maeser. If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">maeser.user_manager</span> <span class="kn">import</span> <span class="n">UserManager</span><span class="p">,</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">maeser.render</span> <span class="kn">import</span> <span class="n">get_response_html</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">stat</span><span class="p">,</span> <span class="n">walk</span><span class="p">,</span> <span class="n">mkdir</span><span class="p">,</span> <span class="n">makedirs</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">abort</span><span class="p">,</span> <span class="n">render_template</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+
+
+<div class="viewcode-block" id="BaseChatLogsManager">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager">[docs]</a>
+<span class="k">class</span> <span class="nc">BaseChatLogsManager</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">chat_log_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_manager</span><span class="p">:</span> <span class="n">UserManager</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the BaseChatLogsManager.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            chat_log_path (str): Path to the chat log directory.</span>
+<span class="sd">            user_manager (UserManager | None): Optional user manager instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">chat_log_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_manager</span><span class="p">:</span> <span class="n">UserManager</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">user_manager</span>
+
+        <span class="c1"># create log directory if it does not exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="p">):</span>
+            <span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseChatLogsManager.log">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager.log">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">log_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to log chat data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            branch_name (str): The name of the branch.</span>
+<span class="sd">            session_id (str): The session ID for the conversation.</span>
+<span class="sd">            log_data (dict): The data to be logged.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseChatLogsManager.log_feedback">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager.log_feedback">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">log_feedback</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">feedback</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to log feedback for a message.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            branch_name (str): The name of the branch.</span>
+<span class="sd">            session_id (str): The session ID for the conversation.</span>
+<span class="sd">            message_index (int): The index of the message to add feedback to.</span>
+<span class="sd">            feedback (str): The feedback to add to the message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseChatLogsManager.get_chat_history_overview">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager.get_chat_history_overview">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_chat_history_overview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">User</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to get an overview of chat history.</span>
+<span class="sd">        This is used to display a list of overviews of previous chat conversations.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (User | None): The user to get chat history for.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[dict]: A list of dictionaries containing information about previous chat conversations. Each should have the following keys:</span>
+<span class="sd">                - &#39;branch&#39;: The name of the branch.</span>
+<span class="sd">                - &#39;session&#39;: The session ID for the conversation.</span>
+<span class="sd">                - &#39;modified&#39;: The timestamp of when the chat conversation was last modified.</span>
+<span class="sd">                - &#39;header&#39;: The text that will be used as the link text. Usually the first message in the conversation. Could also be a conversation title.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseChatLogsManager.get_chat_logs_overview">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager.get_chat_logs_overview">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_chat_logs_overview</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sort_by</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">branch_filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">feedback_filter</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to get an overview of chat logs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sort_by (str): The field to sort by.</span>
+<span class="sd">            order (str): The order to sort by. Either &#39;asc&#39; or &#39;desc&#39;.</span>
+<span class="sd">            branch_filter (str): The branch to filter by.</span>
+<span class="sd">            feedback_filter (str): The feedback to filter by.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple containing:</span>
+<span class="sd">                - list[dict]: A list of dictionaries containing information about chat logs.</span>
+<span class="sd">                - int: The total number of tokens used.</span>
+<span class="sd">                - float: The total cost of the chat logs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseChatLogsManager.get_chat_history">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager.get_chat_history">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_chat_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to get chat history for a session.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            branch_name (str): The name of the branch.</span>
+<span class="sd">            session_id (str): The session ID for the conversation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: The chat history for the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseChatLogsManager.get_log_file_template">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager.get_log_file_template">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_log_file_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to get the jinja template for a log file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): The name of the log file.</span>
+<span class="sd">            branch (str): The branch the log file is in.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The rendered template for the log file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseChatLogsManager.save_feedback">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager.save_feedback">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">save_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to save feedback input to a file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            feedback (dict): The feedback to save.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseChatLogsManager.save_training_data">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.BaseChatLogsManager.save_training_data">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">save_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abstract method to save training data to a file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            training_data (dict): The training data to save.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ChatLogsManager">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager">[docs]</a>
+<span class="k">class</span> <span class="nc">ChatLogsManager</span><span class="p">(</span><span class="n">BaseChatLogsManager</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chat_log_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ChatLogsManager.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            chat_log_path (str): Path to the chat log directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">chat_log_path</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ChatLogsManager.log">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager.log">[docs]</a>
+    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">log_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logs chat data to a YAML file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            branch_name (str): The name of the branch.</span>
+<span class="sd">            session_id (str): The session ID for the conversation.</span>
+<span class="sd">            log_data (dict): The data to be logged. Should contain the following keys: &#39;user&#39;, &#39;cost&#39;, &#39;tokens&#39;, and &#39;message&#39;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_does_log_exist</span><span class="p">(</span><span class="n">branch_name</span><span class="p">,</span> <span class="n">session_id</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_log_file</span><span class="p">(</span><span class="n">branch_name</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">log_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_log_file</span><span class="p">(</span><span class="n">branch_name</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">log_data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChatLogsManager.log_feedback">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager.log_feedback">[docs]</a>
+    <span class="k">def</span> <span class="nf">log_feedback</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">feedback</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds feedback to the log for a specific response in a specific session.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            branch_name (str): The name of the branch.</span>
+<span class="sd">            session_id (str): The session ID for the conversation.</span>
+<span class="sd">            message_index (int): The index of the message to add feedback to.</span>
+<span class="sd">            feedback (str): The feedback to add to the message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">session_id</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">log</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">][</span><span class="n">message_index</span><span class="p">][</span><span class="s2">&quot;liked&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feedback</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">session_id</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChatLogsManager.get_chat_history_overview">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager.get_chat_history_overview">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_chat_history_overview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">User</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets an overview of chat history.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (User | None): The user to get chat history for.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[dict]: A list of dictionaries containing information about previous chat conversations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">overview</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">conversations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">conversation</span> <span class="ow">in</span> <span class="n">conversations</span><span class="p">:</span>
+            <span class="n">current_user_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;anon&quot;</span> <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">user</span><span class="o">.</span><span class="n">full_id_name</span>
+            <span class="k">if</span> <span class="n">current_user_name</span> <span class="o">==</span> <span class="n">conversation</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]:</span>
+                <span class="n">overview</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">conversation</span><span class="p">[</span><span class="s2">&quot;branch&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="n">conversation</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.log&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;modified&quot;</span><span class="p">:</span> <span class="n">conversation</span><span class="p">[</span><span class="s2">&quot;modified&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="n">conversation</span><span class="p">[</span><span class="s2">&quot;first_message&quot;</span><span class="p">],</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+        <span class="c1"># Sort conversations by date modified</span>
+        <span class="n">overview</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;modified&quot;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Remove conversations with no first message</span>
+        <span class="n">overview</span> <span class="o">=</span> <span class="p">[</span><span class="n">link</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">overview</span> <span class="k">if</span> <span class="n">link</span><span class="p">[</span><span class="s2">&quot;header&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">overview</span></div>
+
+
+<div class="viewcode-block" id="ChatLogsManager.get_chat_logs_overview">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager.get_chat_logs_overview">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_chat_logs_overview</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sort_by</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">branch_filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">feedback_filter</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets an overview of chat logs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sort_by (str): The field to sort by.</span>
+<span class="sd">            order (str): The order to sort by. Either &#39;asc&#39; or &#39;desc&#39;.</span>
+<span class="sd">            branch_filter (str): The branch to filter by.</span>
+<span class="sd">            feedback_filter (str): The feedback to filter by.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple containing:</span>
+<span class="sd">                - list[dict]: A list of dictionaries containing information about chat logs.</span>
+<span class="sd">                - int: The total number of tokens used.</span>
+<span class="sd">                - float: The total cost of the chat logs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_list</span><span class="p">()</span>
+
+        <span class="c1"># Get set of all users</span>
+        <span class="n">user_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">log_files</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">branch_filter</span><span class="p">:</span>
+            <span class="n">log_files</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">log_files</span> <span class="k">if</span> <span class="n">branch_filter</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;branch&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">user_filter</span><span class="p">:</span>
+            <span class="n">log_files</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">log_files</span> <span class="k">if</span> <span class="n">user_filter</span> <span class="o">==</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
+            <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">feedback_filter</span><span class="p">:</span>
+            <span class="n">feedback_filter_bool</span> <span class="o">=</span> <span class="n">feedback_filter</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+            <span class="n">log_files</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">log_files</span> <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;has_feedback&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">feedback_filter_bool</span>
+            <span class="p">]</span>
+
+        <span class="n">reverse</span> <span class="o">=</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;desc&quot;</span>
+        <span class="n">log_files</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="n">sort_by</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="n">reverse</span><span class="p">)</span>
+
+        <span class="c1"># Calculate aggregate number of tokens and cost</span>
+        <span class="n">total_tokens</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_cost</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">log_files</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s1">/chat_history/</span><span class="si">{</span><span class="n">file</span><span class="p">[</span><span class="s2">&quot;branch&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">file</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;r&quot;</span><span class="p">,</span>
+            <span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">log</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;total_tokens&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\x1b</span><span class="s2">[33mWarning: </span><span class="se">\&quot;</span><span class="s2">total_tokens</span><span class="se">\&quot;</span><span class="s2"> key is missing from log for file </span><span class="si">{</span><span class="n">file</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, defaulting value to 0.</span><span class="se">\x1b</span><span class="s2">[0m&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">total_tokens</span> <span class="o">+=</span> <span class="n">log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;total_tokens&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;total_cost&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\x1b</span><span class="s2">[33mWarning: </span><span class="se">\&quot;</span><span class="s2">total_cost</span><span class="se">\&quot;</span><span class="s2"> key is missing from log for file </span><span class="si">{</span><span class="n">file</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, defaulting value to 0.</span><span class="se">\x1b</span><span class="s2">[0m&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;total_cost&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">log_files</span><span class="p">,</span> <span class="n">total_tokens</span><span class="p">,</span> <span class="n">total_cost</span><span class="p">,</span> <span class="n">user_set</span></div>
+
+
+<div class="viewcode-block" id="ChatLogsManager.get_chat_history">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager.get_chat_history">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_chat_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves chat history for a specific session.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            branch_name (str): The name of the branch.</span>
+<span class="sd">            session_id (str): The session ID for the conversation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: The chat history for the session.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">session_id</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">chat_history</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">chat_history</span></div>
+
+
+<div class="viewcode-block" id="ChatLogsManager.get_log_file_template">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager.get_log_file_template">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_log_file_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the Jinja template for a log file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): The name of the log file.</span>
+<span class="sd">            branch (str): The branch the log file is in.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The rendered template for the log file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">process_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Process each system response in the conversation and convert it to HTML.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                filename (str): The name of the log file.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                dict: The processed messages in HTML format.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+                <span class="n">message</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_response_html</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">messages</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span>
+            <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+            <span class="n">user_name</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
+            <span class="n">real_name</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;real_name&quot;</span><span class="p">]</span>
+            <span class="n">branch</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;branch&quot;</span><span class="p">]</span>
+            <span class="n">time</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
+            <span class="n">total_cost</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s2">&quot;total_cost&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">total_tokens</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="s2">&quot;total_tokens&quot;</span><span class="p">]</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">messages</span> <span class="o">=</span> <span class="n">process_messages</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">messages</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+                <span class="s2">&quot;display_chat_log.html&quot;</span><span class="p">,</span>
+                <span class="n">user_name</span><span class="o">=</span><span class="n">user_name</span><span class="p">,</span>
+                <span class="n">real_name</span><span class="o">=</span><span class="n">real_name</span><span class="p">,</span>
+                <span class="n">branch</span><span class="o">=</span><span class="n">branch</span><span class="p">,</span>
+                <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span>
+                <span class="n">total_cost</span><span class="o">=</span><span class="n">total_cost</span><span class="p">,</span>
+                <span class="n">total_tokens</span><span class="o">=</span><span class="n">total_tokens</span><span class="p">,</span>
+                <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+                <span class="n">app_name</span><span class="o">=</span><span class="n">branch</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Log file not found&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">abort</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Error parsing log file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChatLogsManager.save_feedback">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager.save_feedback">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feedback</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves feedback input to a YAML file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            feedback (dict): The feedback to save.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Make directory if it doesn&#39;t exist</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mkdir</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/feedback&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">-%H-%M-%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">now</span><span class="p">))</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/feedback/</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">.log&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">feedback</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Feedback saved to </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChatLogsManager.save_training_data">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.chat.chat_logs.html#maeser.chat.chat_logs.ChatLogsManager.save_training_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves training data to a YAML file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            training_data (dict): The training data to save.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Make directory if it doesn&#39;t exist</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mkdir</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/training_data&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">-%H-%M-%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">now</span><span class="p">))</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/training_data/</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">.log&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training data saved to </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_get_file_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the list of chat history files with metadata.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the log file exists, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">get_creation_time</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">:</span>  <span class="c1"># macOS</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s2">&quot;stat&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;%B&quot;</span><span class="p">,</span> <span class="n">file_path</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error getting creation time: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Linux&quot;</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s2">&quot;stat&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;%W&quot;</span><span class="p">,</span> <span class="n">file_path</span><span class="p">],</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error getting creation time: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Fallback for other operating systems</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">getctime</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">get_file_info</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Get detailed information from a file and return it as a dictionary.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                file_path (str): The path to the file.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                dict: A dictionary containing detailed information about the file.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">def</span> <span class="nf">has_feedback</span><span class="p">(</span><span class="n">msgs</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;liked&quot;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="n">file_info</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                    <span class="n">chat_log</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                    <span class="n">file_info</span><span class="p">[</span><span class="s2">&quot;has_feedback&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">has_feedback</span><span class="p">(</span>
+                        <span class="n">chat_log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="p">)</span>
+                    <span class="n">file_info</span><span class="p">[</span><span class="s2">&quot;first_message&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">chat_log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">,</span> <span class="p">[{}])[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chat_log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">,</span> <span class="p">[]))</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                        <span class="k">else</span> <span class="kc">None</span>
+                    <span class="p">)</span>
+                    <span class="n">file_info</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chat_log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown user&quot;</span><span class="p">)</span>
+                    <span class="n">file_info</span><span class="p">[</span><span class="s2">&quot;real_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chat_log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;real_name&quot;</span><span class="p">,</span> <span class="s2">&quot;Student&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Cannot read file </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">file_info</span>
+
+        <span class="n">file_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span> <span class="o">+</span> <span class="s2">&quot;/chat_history&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>  <span class="c1"># Check if the path is a file</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">created_time</span> <span class="o">=</span> <span class="n">get_creation_time</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                        <span class="c1"># Fallback if stat doesn&#39;t work at all (may show modified time)</span>
+                        <span class="n">created_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">getctime</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+
+                    <span class="n">file_stat</span> <span class="o">=</span> <span class="n">stat</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                    <span class="n">file_info</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">file_name</span><span class="p">,</span>
+                        <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">created_time</span><span class="p">,</span>
+                        <span class="s2">&quot;modified&quot;</span><span class="p">:</span> <span class="n">file_stat</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">,</span>
+                        <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span>
+                            <span class="n">root</span>
+                        <span class="p">),</span>  <span class="c1"># Get the branch name from the directory</span>
+                    <span class="p">}</span>
+                    <span class="c1"># Update file_info with additional details from get_file_info</span>
+                    <span class="n">file_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_file_info</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+                    <span class="n">file_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_info</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file_list</span>
+
+    <span class="k">def</span> <span class="nf">_create_log_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">User</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new log file for a chat session.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            branch_name (str): The name of the branch.</span>
+<span class="sd">            session_id (str): The session ID for the conversation.</span>
+<span class="sd">            user (User | None): Optional User to obtain information from to include in the log.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># compile log information</span>
+        <span class="n">log_info</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;session_id&quot;</span><span class="p">:</span> <span class="n">session_id</span><span class="p">,</span>
+            <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">full_id_name</span> <span class="k">if</span> <span class="n">user</span> <span class="k">else</span> <span class="s2">&quot;anon&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;real_name&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">realname</span> <span class="k">if</span> <span class="n">user</span> <span class="k">else</span> <span class="s2">&quot;anon&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">branch_name</span><span class="p">,</span>
+            <span class="s2">&quot;total_cost&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;total_tokens&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="p">}</span>
+
+        <span class="c1"># ensure log directory exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="n">makedirs</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># create log file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">session_id</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">log_info</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_log_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">log_data</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the log file with the new log data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            branch_name (str): The name of the branch.</span>
+<span class="sd">            session_id (str): The session ID for the conversation.</span>
+<span class="sd">            log_data (dict): The data to be logged. Should contain the following keys: &quot;user_info&quot;, &quot;cost&quot;, &quot;tokens_used&quot;, and &quot;message&quot;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">session_id</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">log</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+            <span class="n">log</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+            <span class="c1"># Add user message</span>
+            <span class="n">log</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">log_data</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Add chatbot message and execution stats</span>
+            <span class="n">log</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">log_data</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="n">context</span><span class="o">.</span><span class="n">page_content</span>
+                        <span class="k">for</span> <span class="n">context</span> <span class="ow">in</span> <span class="n">log_data</span><span class="p">[</span><span class="s2">&quot;retrieved_context&quot;</span><span class="p">]</span>
+                    <span class="p">],</span>
+                    <span class="s2">&quot;execution_time&quot;</span><span class="p">:</span> <span class="n">log_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;execution_time&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="s2">&quot;tokens_used&quot;</span><span class="p">:</span> <span class="n">log_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tokens_used&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="s2">&quot;cost&quot;</span><span class="p">:</span> <span class="n">log_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+            <span class="n">log</span><span class="p">[</span><span class="s2">&quot;total_cost&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">log_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">[</span><span class="s2">&quot;total_tokens&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">log_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tokens_used&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">session_id</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_does_log_exist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a log file exists for the given session ID.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            session_id (str): The session ID to check for.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the log file exists, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chat_log_path</span><span class="si">}</span><span class="s2">/chat_history/</span><span class="si">{</span><span class="n">branch_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">session_id</span><span class="si">}</span><span class="s2">.log&quot;</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
