@@ -14,11 +14,11 @@ jobs:
       - name: Install dependencies
         run: |
           cd sphinx-docs
-          SPHINXOPTS="-W" make deps
+          make deps
       - name: Sphinx build
         run: |
           cd sphinx-docs
-          make html
+          SPHINXOPTS="-W" make html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
