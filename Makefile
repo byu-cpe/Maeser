@@ -24,12 +24,14 @@ PYTEST := $(VENV)/bin/pytest
 
 setup: $(VENV)/bin/activate
 	$(PIP) install poetry
+	$(PIP) install pyinputplus
 	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock
 	$(POETRY) install
 	$(PIP) install -e .
 	@echo "Maeser setup complete. Running pytests..."
 	. $(VENV)/bin/activate && pytest tests
+	@echo "Installing pyinput..."
 
 clean_venv:
 	@echo "Removing existing virtual environment if it exists..."
