@@ -1,6 +1,6 @@
 # Architecture Overview
 
-This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **App_Manager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy, using **MyST** code fences for Mermaid.
+This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **App_Manager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy:
 
 ```{mermaid}
 flowchart LR
@@ -51,6 +51,7 @@ flowchart LR
   A1 --> D0["Jinja2 Render Helpers"]
 
 ```
+> **Note:** If the diagram above is not rendering properly, try switching the page theme from dark to light.
 
 ## Core Components
 
@@ -63,7 +64,7 @@ flowchart LR
 - **Responsibilities:** Manages conversation sessions, routes messages to the appropriate RAG graph, and tracks session metadata.
 - **Subcomponents:**
   - **Simple RAG** (`get_simple_rag`): Single-domain retrieval and generation pipeline.
-  - **Pipeline RAG** (`get_pipeline_rag`): Multi-domain or routed retrieval pipeline.
+  - **Pipeline RAG** (`get_pipeline_rag`): Dynamically routed retrieval pipeline.
 - **Controllers:**
   - `chat_interface.controller` (renders UI)
   - `new_session_api.controller` (creates sessions)
@@ -87,7 +88,7 @@ flowchart LR
   - `GithubAuthenticator`
   - `LDAPAuthenticator`
 - **Controllers:**
-  - `login_api.*` (login/logout routes)
+  - `login_api.*_controller` (login/logout routes)
   - `logout.controller`
   - `manage_users_view.controller` (admin UI)
   - `user_management_api.controller` (user CRUD API)

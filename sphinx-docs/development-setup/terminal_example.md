@@ -56,7 +56,9 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 - **Config imports** supply file paths and keys.
 
 ### Prompt Definitions
+* These are useful definitions for the bot to work off as a prompt. The code splits this into two examples--multigroup and pipeline.
 ```python
+# This is a Multigroup Example
 maeser_prompt: str = """
 You are speaking from the perspective of Karl G. Maeser.
 Answer questions about your life history only. {context}
@@ -67,9 +69,21 @@ You are speaking about the history of BYU.
 Answer questions about BYU history only. {context}
 """
 ```
-- Defines how the LLM should frame responses.
+
+```python
+# This is a pipeline example
+pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+    You will answer a question about your own life history or the history of BYU based on 
+    the context provided.
+    Don't answer questions about other things.
+
+    {context}
+"""
+```
+This Defines how the LLM should frame responses.
 
 ### Pipeline Registration
+Pipelines are comprised of multiple RAGs. You may read up on Pipeline RAGs in [Graphs: Simple RAG vs Pipeline RAG](graphs)
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
@@ -123,6 +137,7 @@ sessions_manager.register_branch(
 - **Registers three branches** for selection at runtime.
 
 ### CLI Menu & Session Loop
+This is your way of interfacing with the model, in the absence of a more standard GUI.
 ```python
 import pyinputplus as pyip
 
