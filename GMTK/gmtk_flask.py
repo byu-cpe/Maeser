@@ -134,5 +134,12 @@ app_manager = App_Manager(
 #initalize the flask blueprint
 app: Flask = app_manager.add_flask_blueprint()
 
+# Tell Flask it is Behind a Proxy since we are using nginx to reverse-proxy with the WSGI
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
+
 if __name__ == "__main__":
     app.run(port=3002)
