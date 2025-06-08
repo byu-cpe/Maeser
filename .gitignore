@@ -30,3 +30,7 @@ output/*.txt
 source/*.pdf
 data_stores/*.faiss
 data_stores/*.pkl
+# Ignore GMTK generated files
+GMTK/tools/get_transcripts/playlist.html
+GMTK/tools/transcripts/
+GMTK/tools/make_gmtk_vectorstore/transcripts/
