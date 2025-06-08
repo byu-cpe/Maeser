@@ -4,6 +4,14 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from pathlib import Path
 
 def format_name(filename:str):
+    """Formats document names nicely.
+
+    Args:
+        filename (str): The name of the file. Assumed to be of the format "1_Name_of_Video.txt"
+
+    Returns:
+        str: Formatted document name
+    """
     doc_name:str = filename.strip(".txt") # remove file extension
     doc_words:list = doc_name.split("_")[1:] # Gets words, removing document number before the first underscore
     doc_name = " ".join(doc_words) # Updates doc_name with the words in the title, separating them with spaces
