@@ -24,7 +24,7 @@ import time # For ngrok delay and main thread loop
 # Import Maeser components
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
-from maeser.graphs.pipeline_rag import get_pipeline_rag
+from maeser.graphs.universal_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
 # Import configuration
@@ -105,7 +105,7 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
         datasets = parsed_data["datasets"]
 
         vectorstore_config = {
-            dataset: f"{VEC_STORE_PATH}/{dataset}" for dataset in datasets
+            dataset: os.path.join(VEC_STORE_PATH, course_id, dataset) for dataset in datasets
         }
 
         ruleset = "\n".join(rules) + "\n{context}\n"
@@ -120,7 +120,7 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
 
         sessions_manager.register_branch(
             branch_name=branch_name,
-            branch_label=f"Pipeline-{course_id}",
+            branch_label=f"Universal-{course_id}",
             graph=pipeline_rag
         )
         print(f"Registered Maeser bot branch for course: {course_id}")
