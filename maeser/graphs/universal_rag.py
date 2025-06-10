@@ -3,7 +3,6 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import StateGraph, START, END
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph.graph import CompiledGraph
 from typing_extensions import TypedDict
 from typing import List, Dict, Annotated, Any
