@@ -1,7 +1,7 @@
 # This script will download all transcripts from the Game Maker's Toolkit YouTube series.
 # For this script to work, you must have the list of all GMTK videos downloaded as `playlist.html`
-# To do this simply navigate to the GMTK playlist (https://www.youtube.com/playlist?list=PLc38fcMFcV_s7Lf6xbeRfWYRt7-Vmi_X9),
-#   scroll down until all the videos have loaded, and save the page to your computer.
+# To do this, simply navigate to the GMTK playlist (https://www.youtube.com/playlist?list=PLc38fcMFcV_s7Lf6xbeRfWYRt7-Vmi_X9),
+#   scroll down until all the videos have loaded, and save the page to this directory as `playlist.html`.
 
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
