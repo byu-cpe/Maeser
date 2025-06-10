@@ -30,6 +30,7 @@ for playlist_video in html.find_all("ytd-playlist-video-renderer"):
     video_data = {
         "title" : title,
         "id" : video_id,
+        # "link" : link,
     }
     videos.append(video_data)
 
@@ -46,7 +47,9 @@ for i in range(len(videos)):
         failed_videos.append(failed_video)
     else:
         filename = f"{len(videos) - i}_{video["title"].replace(" ", "_")}.txt"
+        # link = video["link"]
         with open(f"{FILE_OUT_DIR}/{filename}", "w") as f:
+            # f.write(link + "\n")
             f.write(transcript)
 
 print(f"Transcript process completed with {len(failed_videos)} failures:")
