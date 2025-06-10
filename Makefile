@@ -25,6 +25,10 @@ PYTEST := $(VENV)/bin/pytest
 setup:
 	$(PIP) install poetry
 	$(PIP) install langchain
+	$(PIP) install tiktoken
+	$(PIP) install PyMuPDF
+	$(PIP) install fitz
+	$(PIP) install Pillow
 	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock
 	$(POETRY) install

@@ -87,7 +87,7 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
     Manages bot registration and session creation for Maeser.
     """
     # Verify bot config exists for the given course ID
-    bot_config_path = f"v2/bot_data/{course_id}/bot1.txt"
+    bot_config_path = f"v2/bot_data/{course_id}/bot.txt"
     if not os.path.exists(bot_config_path):
         return f"Bot config for course '{course_id}' not found. Please ensure the course ID is valid and configured."
     
@@ -99,15 +99,16 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
         
         # Ensure required keys exist in parsed data
         if "rules" not in parsed_data or "datasets" not in parsed_data:
-            return f"Error: 'rules' or 'datasets' section missing in bot1.txt for course '{course_id}'."
+            return f"Error: 'rules' or 'datasets' section missing in bot.txt for course '{course_id}'."
 
         rules = parsed_data["rules"]
         datasets = parsed_data["datasets"]
+        if isinstance(datasets, str):
+            datasets = [datasets]
 
         vectorstore_config = {
             dataset: os.path.join(VEC_STORE_PATH, course_id, dataset) for dataset in datasets
         }
-
         ruleset = "\n".join(rules) + "\n{context}\n"
 
         pipeline_rag: CompiledGraph = get_pipeline_rag(

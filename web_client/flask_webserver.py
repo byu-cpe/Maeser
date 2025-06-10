@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 import re
 
 
+
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
 
@@ -28,37 +29,10 @@ contexts = []
 
 @app.route('/')
 def home():
+    if 'user' in session:
+        return render_template('admin_portal.html', username=session['user'])
+    return redirect(url_for('login'))
 
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
-    uploads_path = os.path.join(os.getcwd(), 'uploads')
-    folder_names = sorted([name for name in os.listdir(uploads_path) if os.path.isdir(os.path.join(uploads_path, name))])
-
-    # Load the first folder by default if none is selected
-    selected_folder = request.args.get('selected_folder')
-    if not selected_folder and folder_names:
-        selected_folder = folder_names[0]
-
-    bot_info = ""
-    if selected_folder and selected_folder in folder_names:
-        bot_txt_path = os.path.join(uploads_path, selected_folder, 'bot.txt')
-        print(bot_txt_path)
-        #if os.path.isfile(bot_txt_path):
-        with open(bot_txt_path, 'r') as f:
-            bot_info = f.read()
-            parse_bot_file(bot_info)
-
-        print(model_name)
-        print(rules)
-
-    return render_template(
-        'home.html',
-        username=session['user'],
-        is_admin=USER['is_admin'],
-        folders=folder_names,
-        selected_folder=selected_folder
-    )
 
 def parse_bot_file(bot_txt):
     content = bot_txt
@@ -96,22 +70,15 @@ def login():
             error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
 
-@app.route('/admin_portal', methods=['GET','POST'])
-def admin_portal():
-    if 'user' in session and USER['is_admin']:
-        return render_template('admin_portal.html', username=session['user'])
-    return redirect(url_for('home'))
-
-UPLOAD_ROOT = 'uploads'  # base folder to save everything
+UPLOAD_ROOT = '../v2/bot_data'  # base folder to save everything
 
 @app.route('/design_model', methods=['GET', 'POST'])
 def design_model():
-    if 'user' not in session or not USER['is_admin']:
-        return redirect(url_for('home'))
+    if 'user' not in session:
+        return redirect(url_for('login'))
 
     if request.method == 'POST':
         rules = request.form.getlist('rules[]')
-        host_address = request.form.get('host_address', '').strip()
         class_code = request.form.get('class_code', '').strip()
 
         if not class_code:
@@ -144,24 +111,17 @@ def design_model():
         # Write bot.txt with all required sections
         bot_file_path = os.path.join(base_path, 'bot.txt')
         with open(bot_file_path, 'w', encoding='utf-8') as bot_file:
-            bot_file.write("# ModelName\n")
-            bot_file.write("```This section holds the user-defined name for the chat bot.```\n")
-            bot_file.write(f"{class_code}\n\n")
+            bot_file.write("#NAME\n")
+            bot_file.write(f"{class_code}\n")
 
-            bot_file.write("# HostAddress\n")
-            bot_file.write("```This should contain the address for the server to forward the flask app to.```\n")
-            bot_file.write(f"{host_address}\n\n")
-
-            bot_file.write("# Rules\n")
-            bot_file.write("```This section holds the user-defined rules for tailoring the chat bot.```\n")
+            bot_file.write("#RULES\n")
             for rule in rules:
                 bot_file.write(f"{rule}\n")
-            bot_file.write("\n")
 
-            bot_file.write("# Contexts\n")
-            bot_file.write("```This section holds the user-defined contexts or vetorstores for the bot to use. The bot should be able to think \"what resources do I need for this task?\" and operate accordingly.```\n")
+
+            bot_file.write("#DATASETS\n")
             for context in context_names:
-                bot_file.write(f"{context}\n")
+                bot_file.write(f"{context.lower()}\n")
 
         # Run Makefile - pass only CLASS_DIR
         try:
@@ -173,10 +133,13 @@ def design_model():
         except subprocess.CalledProcessError as e:
             flash(f"Makefile failed: {e}", "error")
 
-        return redirect(url_for('admin_portal'))
+        return redirect(url_for('home'))
 
     return render_template('design_model.html', username=session['user'])
 
+@app.route('/manage_model', methods=['GET', 'POST'])
+def find_models():
+    print("")
 
 @app.route('/logout')
 def logout():

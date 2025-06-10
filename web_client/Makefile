@@ -5,6 +5,7 @@ SUBDIRS ?= $(CLASS_DIR)/GroupOne,$(CLASS_DIR)/GroupTwo
 # Python scripts
 RENAME_SCRIPT = rename_files.py
 VECTOR_SCRIPT = vector_store_operator.py
+FIGURE_SCRIPT = extract_figures.py
 
 # Main rule
 all:
@@ -19,7 +20,7 @@ process:
 		echo "---- Processing $$dir ----"; \
 		\
 		echo "1. Renaming PDF files..."; \
-		python rename_files.py "$$dir"; \
+		python $(RENAME_SCRIPT) "$$dir"; \
 		\
 		echo "2. Converting PDFs to text..."; \
 		for pdf in $$dir/*.pdf; do \
@@ -27,13 +28,15 @@ process:
 			pdftotext "$$pdf" "$$dir/$$filename.txt"; \
 		done; \
 		\
-		echo "3. Running vector store operator..."; \
-		python vector_store_operator.py "$$dir"; \
+		echo "3. Extracting figures from PDFs..."; \
+		python $(FIGURE_SCRIPT) "$$dir"; \
 		\
-		echo "4. Deleting .txt and .pdf files..."; \
+		echo "4. Running vector store operator..."; \
+		python $(VECTOR_SCRIPT) "$$dir"; \
+		\
+		echo "5. Deleting .txt and .pdf files..."; \
 		find "$$dir" -maxdepth 1 -type f \( -name '*.txt' -o -name '*.pdf' \) -delete; \
 		\
 		echo "✔ Completed $$dir"; \
 		echo ""; \
 	done
-
