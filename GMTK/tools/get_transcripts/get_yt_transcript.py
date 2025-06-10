@@ -11,3 +11,12 @@ def get_transcript_text(video_id: str) -> str:
         transcript += snippet.text + " "
 
     return transcript
+
+if __name__ == "__main__":
+    """
+    For testing
+    """
+    test_id = ""
+    transcript = get_transcript_text(test_id)
+    # transcript = ytt_api.fetch(test_id)
+    print(transcript)
