@@ -32,5 +32,6 @@ data_stores/*.faiss
 data_stores/*.pkl
 # Ignore GMTK generated files
 GMTK/tools/get_transcripts/playlist.html
+GMTK/tools/get_transcripts/transcripts/
 GMTK/tools/transcripts/
 GMTK/tools/make_gmtk_vectorstore/transcripts/
