@@ -84,6 +84,8 @@ vectorstore.save_local("my_vectorstore")
 > embeddings = OpenAIEmbeddings(api_key=<your_api_key_here>)
 > ```
 
+**Make sure to run your python script** in order to make the vector stores for your bot.
+
 ---
 
 ## Integrate with Maeser
