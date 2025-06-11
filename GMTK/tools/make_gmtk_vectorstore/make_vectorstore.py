@@ -28,12 +28,17 @@ texts = [] # this is where the text chunks will be stored
 metadatas = [] # this will keep track of which text chunks belong to which text file
 folder = Path("transcripts")
 for f in folder.glob("*.txt"):
-    doc = f.read_text(encoding="utf8")
+    doc_raw = f.read_text(encoding="utf8")
+    url, doc = doc_raw.split('\n', 1)
     chunks = splitter.split_text(doc)
     texts.extend(chunks) # store text chunks in texts
     doc_name:str = format_name(f.name) # Formats doc name nicely
     # print(doc_name)
-    metadatas.extend([{"source": doc_name}] * len(chunks)) # store file name in metadatas
+    metadata = {
+        "source_title": doc_name, # store video title in metadata
+        "source_url": url, # store video url in metadata
+    }
+    metadatas.extend([metadata] * len(chunks)) # duplicate metadata so it corresponds with each text chunk
 
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
@@ -48,8 +53,8 @@ vectorstore = FAISS.from_texts(
     metadatas
 )
 
-print(texts)
-print(metadatas)
+# print(texts)
+# print(metadatas)
 
 # Persist to disk
 vectorstore.save_local("gmtk")
