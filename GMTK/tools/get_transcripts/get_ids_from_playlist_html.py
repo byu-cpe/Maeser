@@ -56,8 +56,8 @@ for i in range(len(videos)):
         filename = f"{len(videos) - i}_{video["title"].replace(" ", "_")}.txt"
         url = video["link"]
         with open(f"{FILE_OUT_DIR}/{filename}", "w") as f:
-            f.write(url + "\n")
-            f.write(transcript)
+            f.write(url + "\n") # Write url to top of file
+            f.write(transcript) # Write transcript
 
 print(f"Transcript process completed with {len(failed_videos)} failures:")
 print("\n".join(failed_videos))
