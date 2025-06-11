@@ -79,5 +79,4 @@ if __name__ == "__main__":
     """
     test_id = "" # eg: e4vsgC41bYg
     transcript = get_transcript_text(test_id)
-    # transcript = ytt_api.fetch(test_id)
     print(transcript)
