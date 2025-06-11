@@ -9,6 +9,7 @@ def get_transcript_text(video_id: str) -> str:
 
     for snippet in fetched_transcript:
         transcript += snippet.text + " "
+    transcript = transcript.strip()
 
     return transcript
 
