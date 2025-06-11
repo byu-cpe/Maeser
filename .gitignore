@@ -31,3 +31,7 @@ poetry.lock
 example/vectorstores/pipeline_memory.db
 # Ignore MAC .DS_Store
 .DS_Store
+# Ignore web_client
+web_client
+# Ignore bot_data
+v2/bot_data/*
