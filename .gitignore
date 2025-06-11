@@ -33,3 +33,5 @@ example/vectorstores/pipeline_memory.db
 .DS_Store
 # Ignore web_client
 web_client
+# Ignore bot_data
+v2/bot_data/*
