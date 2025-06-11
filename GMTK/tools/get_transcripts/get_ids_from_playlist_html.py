@@ -18,7 +18,7 @@ with open("playlist.html", "r") as f:
     html_text = "".join(f.readlines())
     html = BeautifulSoup(html_text, "html.parser")
 
-# Get each video link and extract name and id
+# Get each video link and extract Title, ID, and Absolute Link
 videos = []
 for playlist_video in html.find_all("ytd-playlist-video-renderer"):
     # Title
@@ -31,10 +31,13 @@ for playlist_video in html.find_all("ytd-playlist-video-renderer"):
     qs = parse_qs(parsed.query)
     video_id = qs["v"][0]
 
+    # Absolute Link
+    link_absolute = f"https://www.youtube.com{link}"
+
     video_data = {
         "title" : title,
         "id" : video_id,
-        # "link" : link,
+        "link" : link_absolute,
     }
     videos.append(video_data)
 
@@ -51,9 +54,9 @@ for i in range(len(videos)):
         failed_videos.append(failed_video)
     else:
         filename = f"{len(videos) - i}_{video["title"].replace(" ", "_")}.txt"
-        # link = video["link"]
+        url = video["link"]
         with open(f"{FILE_OUT_DIR}/{filename}", "w") as f:
-            # f.write(link + "\n")
+            f.write(url + "\n")
             f.write(transcript)
 
 print(f"Transcript process completed with {len(failed_videos)} failures:")
