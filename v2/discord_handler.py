@@ -27,6 +27,27 @@ def extract_figures_from_text(text):
     pattern = r'Figure (\d+\.\d+)'
     return re.findall(pattern, text)
 
+def split_string(text, max_length=1999):
+    chunks = []
+    while len(text) > max_length:
+        # Try to split at the last newline before max_length
+        split_index = text.rfind('\n', 0, max_length)
+        if split_index == -1:
+            # Try to split at the last space before max_length
+            split_index = text.rfind(' ', 0, max_length)
+        if split_index == -1:
+            # No good split point; force split
+            split_index = max_length
+
+        chunks.append(text[:split_index].strip())
+        text = text[split_index:].strip()
+
+    if text:
+        chunks.append(text)
+
+    return chunks
+
+
 @client.event
 async def on_ready():
     print(f"✅ Discord Bot connected as {client.user}")
@@ -81,10 +102,16 @@ async def on_message(message):
         try:
             reply = handle_message(user_id, course_id, msg_text)
             # Send text reply
-            await message.channel.send(f"🤖 {reply}")
+            if(len(reply)>1999):
+                chunks = split_string(reply)
+                for i in chunks:
+                    await message.channel.send(f"🤖 {i}")
+            else:   
+                await message.channel.send(f"🤖 {reply}")
 
             try:
                 # Extract and send figures if referenced
+
                 FIGURE_DIR = f"v2/bot_data/{course_id}/{RAG_VARS.recommended_topics[0]}"
                 figure_names = extract_figures_from_text(reply)
                 files = []
@@ -98,7 +125,6 @@ async def on_message(message):
                 if files:
                     await message.channel.send(files=files)
             except Exception:
-                await message.channel.send(f"❌ There was an issue sending figures.")
                 print("❌ There was an issue sending figures.")
 
         except Exception as e:
