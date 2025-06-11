@@ -6,9 +6,9 @@ This guide explores how to extend Maeser’s default pipelines by building **cus
 
 ## Prerequisites
 
-- A Maeser development environment set up (`development_setup.md`).
+- A Maeser development environment set up ([Development Setup](development_setup)).
 - Python 3.10+ with Maeser and LangGraph installed (`pip install -e .` includes LangGraph).
-- Familiarity with Simple RAG (`simple_rag`) and Pipeline RAG (`pipeline_rag`) workflows.
+- Familiarity with Simple RAG (`simple_rag`) and Pipeline RAG (`pipeline_rag`) workflows. (Return to [Section 4](graphs) if you aren't familiar)
 
 ---
 
@@ -112,12 +112,21 @@ You use cycles when:
 * You need a multi-step process where results feed back into earlier logic.
 
 Logic for this would look something like this:
-```csharp
-[get_input] → [check_done]
-     ↑             ↓
-[process_input] ← "not done"
-           ↓
-         "done" → [end]
+```mermaid
+flowchart TB
+    %% Nodes
+    start_node(["\_\_start\_\_"])
+    get_input["get_input"]
+    check_done["check_done"]
+    process_input["process_input"]
+    end_node(["\_\_end\_\_"])
+
+    %% Main Flow
+    start_node --> get_input
+    get_input --> check_done
+    check_done -->|"not done"| process_input
+    check_done -->|"done"| end_node
+    process_input --> get_input
 ```
 
 ---
@@ -133,7 +142,7 @@ Logic for this would look something like this:
 
 ## Next Steps
 
-- Read **`graphs.md`** for built‑in pipelines.
+- Read [Graphs: Simple RAG vs. Pipline RAG](graphs) for built‑in pipelines.
 - Experiment with external tools (e.g., web search) by adding new states.
 - Share your custom graphs with the Maeser community via GitHub.
 - For more information on langgraphs, you can find documentation [here](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.#)
