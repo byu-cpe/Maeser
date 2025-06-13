@@ -1,7 +1,6 @@
-# IMPORTANT: As of June 8, 2025, the youtube-transcript-api is not functional as the requests it sends to YouTube no longer receive a valid response.
-#   A reason for this issue and a solution have not yet been found. You can find the issue outlining this here: https://github.com/jdepoix/youtube-transcript-api/issues/429
-#   For the time being, a separate implementation of `get_transcript_text` has been implemented with the yt-dlp library. It's a bit slower, but it works.
-#   You can switch between the youtube-transcript-api and yt-dlp library by replacing `from get_yt_transcript_yt_dlp` with `from get_yt_transcript` or vice versa.
+# IMPORTANT: YouTube has been changing its requirements recently for fetching data from its API, so it is possible that youtube-transcript-api may break.
+#   If this happens, a separate implementation of `get_transcript_text` has been implemented with the yt-dlp library. It's a bit slower, but it works.
+#   You can switch between the youtube-transcript-api and yt-dlp library by replacing `from get_yt_transcript` (in this script) with `from get_yt_transcript_yt_dlp` or vice versa.
 # This script will download all transcripts from the Game Maker's Toolkit YouTube series.
 # For this script to work, you must have the list of all GMTK videos downloaded as `playlist.html`
 # To do this, simply navigate to the GMTK playlist (https://www.youtube.com/playlist?list=PLc38fcMFcV_s7Lf6xbeRfWYRt7-Vmi_X9),
@@ -9,7 +8,7 @@
 
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
-from get_yt_transcript_yt_dlp import get_transcript_text
+from get_yt_transcript import get_transcript_text
 
 FILE_OUT_DIR = "transcripts"
 
@@ -45,7 +44,7 @@ for playlist_video in html.find_all("ytd-playlist-video-renderer"):
 failed_videos = []
 for i in range(len(videos)):
     video = videos[i]
-    print(f"{video["title"]} ({video["id"]})")
+    print(f"({len(videos) - i}/{len(videos)}) {video["title"]} ({video["id"]})")
     try:
         transcript = get_transcript_text(video["id"])
     except Exception:
@@ -59,6 +58,7 @@ for i in range(len(videos)):
             f.write(url + "\n") # Write url to top of file
             f.write(transcript) # Write transcript
 
-print(f"Transcript process completed with {len(failed_videos)} failures:")
+num_fails = len(failed_videos)
+print(f"Transcript process completed with {num_fails} failures{":" if num_fails > 0 else "."}")
 print("\n".join(failed_videos))
     
