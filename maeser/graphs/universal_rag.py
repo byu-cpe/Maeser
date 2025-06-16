@@ -9,6 +9,9 @@ from typing import List, Dict, Annotated, Any
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
+import tiktoken
+
+enc = tiktoken.encoding_for_model("gpt-4o")
 
 def add_messages(left: List[Any], right: List[Any]) -> List[Any]:
     return left + right
@@ -113,17 +116,32 @@ def get_pipeline_rag(vectorstore_config: Dict[str, str], memory_filepath: str, a
         if not state["messages"]:
             print("No messages found in generate_node")
             return {"messages": []}
+
         messages = state["messages"]
         docs = state.get("retrieved_context", [])
         summary = state.get("chat_summary", "")
 
+        # Input to the chain
         result = generate_chain.invoke({
             "context": docs,
             "input": getattr(messages[-1], "content", messages[-1]),
             "messages": messages[:-1] + [summary] if summary else messages[:-1]
         })
 
-        return {"messages": messages + [result]}
+        # Append result and trim to last 10 messages
+        new_messages = messages + [result]
+        trimmed_messages = new_messages[-10:]
+
+        # Log token usage
+        def count_tokens(msgs):
+            content = ""
+            for m in msgs:
+                content += getattr(m, "content", str(m))
+            return len(enc.encode(content))
+
+        print(f"📦 Token count for latest 10 messages: {count_tokens(trimmed_messages)}")
+        return {"messages": trimmed_messages}
+
 
     def summarize_chat_history_node(state: GraphState) -> Dict[str, Any]:
         messages = state.get("messages", [])
@@ -183,8 +201,7 @@ def get_pipeline_rag(vectorstore_config: Dict[str, str], memory_filepath: str, a
     graph.add_node("retrieve_and_accumulate", retrieve_and_accumulate_node)
     graph.add_node("generate", generate_node)
 
-    graph.add_edge(START, "check_related")
-    graph.add_edge("check_related", "determine_relevant_topics")
+    graph.add_edge(START, "determine_relevant_topics")
     graph.add_edge("determine_relevant_topics", "summarize_chat")
     graph.add_conditional_edges("summarize_chat", lambda s: "generate" if not s.get("recommended_topics") else "retrieve_and_accumulate")
     graph.add_conditional_edges("retrieve_and_accumulate", route_retrieval)
