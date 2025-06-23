@@ -41,7 +41,7 @@ Additionally, if you have created your Maeser project using the [Development Set
 pip install maeser
 ```
 2. Once the package is installed successfully, remove the `maeser/` directory from your project.
-3. All done! Your project should be referencing Maeser functions from the PyPI package instead of `maeser/`.
+3. All done! Your project should now reference Maeser functions from the PyPI package instead of from `maeser/`. Run your project locally to make sure these changes were successful.
 
 ---
 
