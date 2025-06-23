@@ -8,7 +8,7 @@ This guide covers best practices for deploying Maeser into production environmen
 
 ## 1. Prerequisites
 
-- A production server or cloud instance (e.g., AWS EC2, Azure VM, Google Compute Engine) running a Unix‑like OS (Ubuntu, Debian, etc.).
+- A production server or cloud instance (e.g., AWS EC2, Azure VM, Google Compute Engine) running a linux OS (Ubuntu, Debian, etc.).
 - Maeser application code cloned or pulled onto the server.
 - Python 3.10+ installed.
 - A PostgreSQL or MySQL database if you plan to use relational storage (optional).
