@@ -208,4 +208,7 @@ docker-compose up -d --build
 - **Vectorstore Snapshots**: Archive FAISS indexes after embedding runs to prevent data loss.  
 - **Certificate Renewal**: Automate Let’s Encrypt renewals with `certbot renew --quiet` in a cron job.
 
-
+<!-- Additional sections worth adding:
+- Creating a service file to run the wsgi app
+- using a unix socket for reverse proxy instead of a port
+ -->
