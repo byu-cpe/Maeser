@@ -27,7 +27,6 @@ setup:
 	$(PIP) install langchain
 	$(PIP) install tiktoken
 	$(PIP) install PyMuPDF
-	$(PIP) install fitz
 	$(PIP) install Pillow
 	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock
