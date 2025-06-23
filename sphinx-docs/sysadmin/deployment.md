@@ -11,6 +11,8 @@ While Flask makes it easy to test your Maeser project locally, deploying your Fl
 3. **Use reverse-proxy to host your server with HTTP** <!--TODO-->
 4. **Deploy your server publicly with a domain name** <!--TODO-->
 
+Because there are several ways to accomplish these steps, this guide will not explicitly explain how to get everything set up but will instead provide resources that explain how to set things up for your preferences. The Maeser app has been tested to work with [Gunicorn](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/) for WSGI server creation and [nginx](https://flask.palletsprojects.com/en/stable/deploying/nginx/) for reverse proxy, but feel free to choose any of Flask's [reccomended programs for deployment](https://flask.palletsprojects.com/en/stable/deploying/#self-hosted-options) if they work better for your needs.
+
 ---
 
 ## Prerequisites
