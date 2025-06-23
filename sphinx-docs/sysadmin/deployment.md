@@ -21,46 +21,25 @@ While Flask makes it easy to test your Maeser project locally, deploying your Fl
 
 ---
 
-<!-- It might be worth putting an overview here to outline the major deployment steps -->
+## Configure Your App for Deployment
 
-## Virtual Environment & Dependencies
+Not much needs to be changed within the application itself; however, if you have been working on your app from the `example/` directory, it is recommended that you restructure your project to include only the files that your application needs and remove the `example_` prefix from any remaining files. If you follow this recommendation, keep in mind that `config_example.py` looks for these specific paths:
+```python
+    config_paths = [
+        'config_example.yaml',
+        './config_example.yaml',
+        'example/config_example.yaml'
+    ]
+```
+These paths should be updated to match the path and name of your app's `config.yaml` file.
 
-1. **Clone the repository** and enter the directory:
-   ```bash
-   git clone https://github.com/byu-cpe/Maeser.git
-   cd Maeser
-   ```
-2. **Create a virtual environment** and install dependencies:
-   ```bash
-   python3.10 -m venv .venv
-   source .venv/bin/activate
-   pip install -e .
-   pip install gunicorn
-   ```
-3. **Configuration**: Edit your production `config.yaml` with production API keys, paths, and DB credentials (or set environment variables).
-   ```bash
-   cp config_example.yaml config.yaml
-   # Edit config.yaml with production API keys, paths, and DB credentials
-   ```
-
-> **Note:**  
-> For deployment, it is recommended, although not required, that you copy the provided files in the `example/` directory as opposed to modifying them directly. Make a copy of `config_example.py` and rename it to `config.yaml`:
->    ```bash
->    cp config_example.yaml config.yaml
->    # Edit config.yaml with production API keys, paths, and DB credentials
->    ```
->
-> Then in "config_example.py", be sure to update the config paths:
-> ```python
->     config_paths = [
->         'config.yaml',
->         './config.yaml',
->         'example/config.yaml'
->         # Or anywhere else you plan on storing config.yaml
->     ]
-> ```
-> 
-> Be sure to rename the other example files and update their references accordingly.
+Additionally, if you have created your Maeser project using the [Development Setup Guide](../development-setup/development_setup.md), the Maeser package is located in the `maeser/` directory by default. Rather than having this package copied within your project, you should instead consider using the official Maeser PyPI package. Making this change is simple:
+1. In your project's virtual environment, execute the following command:  
+```bash
+pip install maeser
+```
+2. Once the package is installed successfully, remove the `maeser/` directory from your project.
+3. All done! Your project should be referencing Maeser functions from the PyPI package instead of `maeser/`.
 
 ---
 
