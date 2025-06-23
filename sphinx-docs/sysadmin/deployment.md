@@ -7,8 +7,8 @@ While Flask makes it easy to test your Maeser project locally, deploying your Fl
 **By following this guide, you will:**
 
 1. [**Configure your app for deployment**](#configure-your-app-for-deployment)
-2. **Run your app as a WSGI server** <!--TODO-->
-3. **Use reverse-proxy to host your server with HTTP** <!--TODO-->
+2. [**Configure a WSGI server to run your app**](#configure-a-wsgi-server-to-run-your-app)
+3. [**Use reverse-proxy to host your server with HTTP**](#use-reverse-proxy-to-host-your-server-with-http)
 4. **Deploy your server publicly with a domain name** <!--TODO-->
 
 Because there are several ways to accomplish these steps, this guide will not explicitly explain how to get everything set up but will instead provide resources that explain how to set things up for your preferences. The Maeser app has been tested to work with [Gunicorn](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/) for WSGI server creation and [nginx](https://flask.palletsprojects.com/en/stable/deploying/nginx/) for reverse proxy, but feel free to choose any of Flask's [reccomended programs for deployment](https://flask.palletsprojects.com/en/stable/deploying/#self-hosted-options) if they work better for your needs.
@@ -45,105 +45,25 @@ pip install maeser
 
 ---
 
-## Using Gunicorn as WSGI Server
+## Configure a WSGI Server to Run Your App
 
-Gunicorn provides a robust, multi‑worker Python WSGI server for Flask apps.
-<!-- Consider explaining what WSGI is -->
-<!-- Let the user know that they need to reconfigure their github app both online and in config_example.yaml -->
+> "Flask is a WSGI application. A WSGI server is used to run the application, converting incoming HTTP requests to the standard WSGI environ, and converting outgoing WSGI responses to HTTP responses."  
+> —[Deploying to Production](https://flask.palletsprojects.com/en/stable/deploying/), Flask Documentation
 
-1. **Start Gunicorn** with multiple workers:
-   ```bash
-   gunicorn \
-     --workers 4 \
-     --bind 0.0.0.0:8000 \
-     --timeout 120 \
-     example.flask_example_user_mangement:app
-   ```
-2. **Background Process**: Use a process manager (systemd, Supervisor) to keep Gunicorn running.
+While Flask does have a development server that allows the app to be run locally, a separate program is required to run the application as a production WSGI server.
 
-### systemd Service Example
+Consult the list of [Self-Hosted Options](https://flask.palletsprojects.com/en/stable/deploying/#self-hosted-options) from Flask's deployment guide to start setting up your own WSGI server. Each of these options link to a guide on how to set them up and test them locally. Maeser has been tested to work with [Gunicorn](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/), but any of the listed options should theoretically work.
 
-<!-- Explain what a service file is and what this configuration does -->
-<!-- Explain what a .sock is and why we're using it here instead of 0.0.0.0:8000 -->
+Keep in mind that if you are using Github authentication, you will need to update the `Homepage URL` and `Authorization callback URL` within the settings of your OAuth app. As a reminder, this is accessible via the [Developer Settings page](https://github.com/settings/developers) on GitHub. Be sure to also update `github_callback_uri` in your project's `config.yaml`. If you are using other authentication methods, they will likely need to be updated as well. These settings will need to be updated again after you [set up a reverse proxy](#use-reverse-proxy-to-host-your-server-with-http) for your WSGI server.
 
-Create `/etc/systemd/system/maeser.service`:
-```ini
-[Unit]
-Description=Maeser Flask App
-After=network.target
+## Use Reverse-Proxy to Host Your Server with HTTP
 
-[Service]
-User=www-data
-Group=www-data
-WorkingDirectory=/path/to/Maeser
-ExecStart=/path/to/Maeser/.venv/bin/gunicorn --workers 4 --bind unix:/path/to/Maeser/maeser.sock example.flask_example_user_mangement:app
-Restart=always
+> "WSGI servers have HTTP servers built-in. However, a dedicated HTTP server may be safer, more efficient, or more capable. Putting an HTTP server in front of the WSGI server is called a 'reverse proxy.'"  
+> —[Deploying to Production](https://flask.palletsprojects.com/en/stable/deploying/), Flask Documentation
 
-[Install]
-WantedBy=multi-user.target
-```
+Running your WSGI server with a reverse proxy is standard for Flask apps and is relatively straightforward. [nginx](https://flask.palletsprojects.com/en/stable/deploying/nginx/) is one of the most commonly used HTTP servers and has been tested to work with Maeser. The official flask guide recommends using either [nginx](https://flask.palletsprojects.com/en/stable/deploying/nginx/) or [Apache httpd](https://flask.palletsprojects.com/en/stable/deploying/apache-httpd/) for setting up the reverse proxy, so follow the guide for either service and you should have a functioning HTTP server in no time.
 
-Reload and start:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable maeser
-sudo systemctl start maeser
-```
-
----
-
-## Reverse Proxy with NGINX & TLS
-
-<!-- Explain what these things are -->
-<!-- Note: I ran into a plethora of issues trying to get this to work with nginx using a web socket. This section needs to be looked at in further detail.-->
-
-Use NGINX to terminate TLS and proxy requests to Gunicorn.
-
-1. **Install NGINX**:
-   ```bash
-   sudo apt install nginx
-   ```
-2. **Obtain TLS Certificates** with Let’s Encrypt:
-   ```bash
-   sudo apt install certbot python3-certbot-nginx
-   sudo certbot --nginx -d yourdomain.com
-   ```
-3. **NGINX Server Block** (`/etc/nginx/sites-available/maeser`):
-   ```nginx
-   server {
-       listen 80;
-       server_name yourdomain.com;
-       location /.well-known/acme-challenge/ { allow all; }
-       location / {
-           return 301 https://$host$request_uri;
-       }
-   }
-
-   server {
-       listen 443 ssl;
-       server_name yourdomain.com;
-       ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-       ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
-
-       location /static/ {
-           alias /path/to/Maeser/maeser/controllers/common/static/;
-       }
-
-       location / {
-           proxy_pass http://unix:/path/to/Maeser/maeser.sock;
-           proxy_set_header Host $host;
-           proxy_set_header X-Real-IP $remote_addr;
-           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-           proxy_set_header X-Forwarded-Proto $scheme;
-       }
-   }
-   ```
-4. **Enable** and **Test**:
-   ```bash
-   sudo ln -s /etc/nginx/sites-available/maeser /etc/nginx/sites-enabled/
-   sudo nginx -t
-   sudo systemctl reload nginx
-   ```
+Once your http server is configured, follow the guide to [Tell Flask it is Behind a Proxy](https://flask.palletsprojects.com/en/stable/deploying/proxy_fix/). This will involve making a slight modification to your project's main python script. Be sure to update your OAuth settings (as described [above](#configure-a-wsgi-server-to-run-your-app)) since the webserver is now accessed through the HTTP server. Your Flask app should now be fully functional and accessible via reverse-proxy.
 
 ---
 
