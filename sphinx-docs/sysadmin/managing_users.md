@@ -89,7 +89,7 @@ user_manager.register_authenticator("github", github_auth)
 user_manager.register_authenticator("ldap", ldap_auth)
 ```
 
-### 1. Listing Users
+### Listing Users
 
 ```python
 all_users = user_manager.list_users()
@@ -98,7 +98,7 @@ admin_users = user_manager.list_users(admin_filter="admin")
 banned_users = user_manager.list_users(banned_filter="banned")
 ```
 
-### 2. Admin Privileges
+### Admin Privileges
 
 ```python
 # Grant admin\ nuser_manager.update_admin_status("github", "alice123", True)
@@ -106,14 +106,14 @@ banned_users = user_manager.list_users(banned_filter="banned")
 user_manager.update_admin_status("github", "bob456", False)
 ```
 
-### 3. Banning & Unbanning
+### Banning & Unbanning
 
 ```python
 user_manager.update_banned_status("github", "malicious_user", True)
 user_manager.update_banned_status("github", "good_user", False)
 ```
 
-### 4. Quota Management
+### Quota Management
 
 ```python
 remaining = user_manager.get_requests_remaining("github", "alice123")
@@ -122,7 +122,7 @@ user_manager.decrease_requests("github", "alice123")
 user_manager.increase_requests("github", "alice123", inc_by=5)
 ```
 
-### 5. Initializing the First Admin
+### Initializing the First Admin
 
 ```python
 user = user_manager.authenticate("github", code="<oauth-code>")
@@ -134,20 +134,20 @@ Or update the DB directly:
 UPDATE githubUsers SET admin=1 WHERE user_id='alice123';
 ```
 
-### 6. Removing Users
+### Removing Users
 
 ```python
 user_manager.remove_user_from_cache("github", "temp_user", force_remove=True)
 ```
 
-### 7. Cleanup & Maintenance
+### Cleanup & Maintenance
 
 ```python
 removed = user_manager.clean_cache()
 to_remove = user_manager.list_cleanables()
 ```
 
-### 8. Automating with Scripts
+### Automating with Scripts
 
 Create CLI scripts (e.g., `scripts/add_admin.py`) using `UserManager` methods to streamline admin tasks.
 

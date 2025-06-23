@@ -6,19 +6,17 @@ This guide covers best practices for deploying Maeser into production environmen
 
 ---
 
-## 1. Prerequisites
+## Prerequisites
 
 - A production server or cloud instance (e.g., AWS EC2, Azure VM, Google Compute Engine) running a linux OS (Ubuntu, Debian, etc.).
 - Maeser application code cloned or pulled onto the server.
-- Python 3.10+ installed.
-- A PostgreSQL or MySQL database if you plan to use relational storage (optional).
 - Domain name and DNS access for configuring TLS certificates.
 
 ---
 
 <!-- It might be worth putting an overview here to outline the major deployment steps -->
 
-## 2. Virtual Environment & Dependencies
+## Virtual Environment & Dependencies
 
 1. **Clone the repository** and enter the directory:
    ```bash
@@ -59,7 +57,7 @@ This guide covers best practices for deploying Maeser into production environmen
 
 ---
 
-## 3. Using Gunicorn as WSGI Server
+## Using Gunicorn as WSGI Server
 
 Gunicorn provides a robust, multi‑worker Python WSGI server for Flask apps.
 <!-- Consider explaining what WSGI is -->
@@ -75,7 +73,7 @@ Gunicorn provides a robust, multi‑worker Python WSGI server for Flask apps.
    ```
 2. **Background Process**: Use a process manager (systemd, Supervisor) to keep Gunicorn running.
 
-### 3.1 systemd Service Example
+### systemd Service Example
 
 <!-- Explain what a service file is and what this configuration does -->
 <!-- Explain what a .sock is and why we're using it here instead of 0.0.0.0:8000 -->
@@ -106,7 +104,7 @@ sudo systemctl start maeser
 
 ---
 
-## 4. Reverse Proxy with NGINX & TLS
+## Reverse Proxy with NGINX & TLS
 
 <!-- Explain what these things are -->
 <!-- Note: I ran into a plethora of issues trying to get this to work with nginx using a web socket. This section needs to be looked at in further detail.-->
@@ -161,11 +159,11 @@ Use NGINX to terminate TLS and proxy requests to Gunicorn.
 
 ---
 
-## 5. Containerization with Docker & Docker Compose
+## Containerization with Docker & Docker Compose
 
 <!-- Explain the purpose of Docker briefly -->
 
-### 5.1 Dockerfile Example
+### Dockerfile Example
 
 ```Dockerfile
 FROM python:3.10-slim
@@ -177,7 +175,7 @@ env OPENAI_API_KEY=<your-key>
 CMD ["gunicorn", "example.flask_example_user_mangement:app", "--bind", "0.0.0.0:8000"]
 ```
 
-### 5.2 docker-compose.yml Example
+### docker-compose.yml Example
 
 ```yaml
 version: '3'
@@ -201,7 +199,7 @@ docker-compose up -d --build
 
 ---
 
-## 6. Scaling & High Availability
+## Scaling & High Availability
 
 - **Horizontal Scaling**: Deploy multiple Gunicorn containers behind a load balancer (e.g., AWS ELB, NGINX upstream).  
 - **Session Storage**: Use centralized memory store (Redis) or persistent DB for session state and chat logs.  
@@ -209,7 +207,7 @@ docker-compose up -d --build
 
 ---
 
-## 7. Monitoring & Logging
+## Monitoring & Logging
 
 - **Application Logs**: Configure Gunicorn `--access-logfile` and `--error-logfile` options.  
 - **Chat Logs**: Ensure `ChatLogsManager` is writing to a persistent volume or external storage.  
@@ -218,7 +216,7 @@ docker-compose up -d --build
 
 ---
 
-## 8. Backup & Maintenance
+## Backup & Maintenance
 
 - **Database Backups**: Schedule regular dumps of `USERS_DB_PATH` and chat logs.  
 - **Vectorstore Snapshots**: Archive FAISS indexes after embedding runs to prevent data loss.  
