@@ -2,14 +2,21 @@
 
 # Deployment Guide
 
-This guide covers best practices for deploying Maeser into production environments, including containerization, process management, reverse proxy configuration, and scaling considerations.
+While Flask makes it easy to test your Maeser project locally, deploying your Flask app publicly is a layered process. Flask handles the functionality of your application, but it is not a server in of itself. For full functionality, a [WSGI](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface) server program is need to serve your application. A typical Flask-based server connects a flask app to a WSGI server, which communicates with an HTTP server by a "reverse proxy" protocol. See [Deploying to Production](https://flask.palletsprojects.com/en/stable/deploying/) from Flask's official documentation for more information.
+
+**By following this guide, you will:**
+
+1. [**Configure your app for deployment**](#configure-your-app-for-deployment)
+2. **Run your app as a WSGI server** <!--TODO-->
+3. **Use reverse-proxy to host your server with HTTP** <!--TODO-->
+4. **Deploy your server publicly with a domain name** <!--TODO-->
 
 ---
 
 ## Prerequisites
 
 - A production server or cloud instance (e.g., AWS EC2, Azure VM, Google Compute Engine) running a linux OS (Ubuntu, Debian, etc.).
-- Maeser application code cloned or pulled onto the server.
+- A Maeser application that is setup and working locally. See either the [User Setup](../user-setup/user_setup.md) or [Development Setup](../development-setup/development_setup.md) workflows.
 - Domain name and DNS access for configuring TLS certificates.
 
 ---
