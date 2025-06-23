@@ -9,7 +9,7 @@ While Flask makes it easy to test your Maeser project locally, deploying your Fl
 1. [**Configure your app for deployment**](#configure-your-app-for-deployment)
 2. [**Configure a WSGI server to run your app**](#configure-a-wsgi-server-to-run-your-app)
 3. [**Use reverse-proxy to host your server with HTTP**](#use-reverse-proxy-to-host-your-server-with-http)
-4. **Deploy your server publicly with a domain name** <!--TODO-->
+4. [**Deploy your server publicly with a domain name**](#deploy-your-server-publicly-with-a-domain-name)
 
 Because there are several ways to accomplish these steps, this guide will not explicitly explain how to get everything set up but will instead provide resources that explain how to set things up for your preferences. The Maeser app has been tested to work with [Gunicorn](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/) for WSGI server creation and [nginx](https://flask.palletsprojects.com/en/stable/deploying/nginx/) for reverse proxy, but feel free to choose any of Flask's [reccomended programs for deployment](https://flask.palletsprojects.com/en/stable/deploying/#self-hosted-options) if they work better for your needs.
 
@@ -67,9 +67,11 @@ Once your http server is configured, follow the guide to [Tell Flask it is Behin
 
 ---
 
-## Containerization with Docker & Docker Compose
+## Deploy your server publicly with a domain name
+<!--TODO-->
 
-<!-- Explain the purpose of Docker briefly -->
+<!-- Old Docker Section
+## Containerization with Docker & Docker Compose
 
 ### Dockerfile Example
 
@@ -106,7 +108,8 @@ docker-compose up -d --build
 ```
 
 ---
-
+-->
+<!-- Other Old Sections
 ## Scaling & High Availability
 
 - **Horizontal Scaling**: Deploy multiple Gunicorn containers behind a load balancer (e.g., AWS ELB, NGINX upstream).  
@@ -129,6 +132,7 @@ docker-compose up -d --build
 - **Database Backups**: Schedule regular dumps of `USERS_DB_PATH` and chat logs.  
 - **Vectorstore Snapshots**: Archive FAISS indexes after embedding runs to prevent data loss.  
 - **Certificate Renewal**: Automate Let’s Encrypt renewals with `certbot renew --quiet` in a cron job.
+-->
 
 <!-- Additional sections worth adding:
 - Creating a service file to run the wsgi app
