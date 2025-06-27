@@ -8,7 +8,7 @@ from langchain_community.vectorstores import FAISS
 # For my sanity's sake, I am having my key be read in from a local, unsunc file.
 # This is also to make it easier and more secure to run from inside a container, by getting the key
 # external to the container but encrypted, when implemented.
-os.environ["OPENAI_API_KEY"] = str(open("Keys.txt").readline().strip())
+os.environ["OPENAI_API_KEY"] = str(open("Keys.txt").readline().strip()) # Modify this line to open it from a cloud based file
 
 
 # Load and combine all text from .txt files in the "output" directory

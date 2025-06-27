@@ -140,34 +140,6 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
     return response['messages'][-1]
 
 
-# --- Utility for Ngrok (for local testing of webhook-based bots like Teams) ---
-
-TEAMS_BOT_LOCAL_PORT = 3978 # Standard default port for Bot Framework bots
-
-def start_ngrok_tunnel(port: int):
-    """
-    Starts an ngrok tunnel to expose the local server to the internet.
-    This is necessary for webhook-based bots (like Teams) to receive messages locally.
-    """
-    print(f"Attempting to start ngrok tunnel for port {port}...")
-    try:
-        # Check if ngrok is already running (e.g., from a previous run)
-        # This is a basic check and might not catch all scenarios
-        # You can also manually check with `ngrok http ${port}` and look for already bound errors.
-        # This Popen command starts ngrok in the background.
-        # "--log=stdout" outputs logs to stdout/stderr, which are then redirected to DEVNULL.
-        # A more robust solution would be to parse ngrok's API for the URL.
-        subprocess.Popen(["ngrok", "http", str(port), "--log=stdout"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        time.sleep(5) # Give ngrok a few seconds to establish the tunnel
-        print(f"Ngrok tunnel for port {port} started. Check your ngrok console for the public URL.")
-        print(f"Remember to update your Teams bot messaging endpoint in Azure with this ngrok URL + '/api/messages'.")
-    except FileNotFoundError:
-        print("Error: 'ngrok' command not found.")
-        print("Please ensure ngrok is installed and added to your system's PATH.")
-        print("Download ngrok from: https://ngrok.com/download")
-    except Exception as e:
-        print(f"An unexpected error occurred while starting ngrok: {e}")
-
 # --- Main Application Entry Point ---
 
 if __name__ == "__main__":
