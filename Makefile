@@ -28,6 +28,7 @@ setup:
 	$(PIP) install tiktoken
 	$(PIP) install PyMuPDF
 	$(PIP) install Pillow
+	$(PIP) install -U langgraph
 	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock
 	$(POETRY) install
