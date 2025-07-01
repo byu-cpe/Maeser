@@ -18,7 +18,6 @@ Maeser. If not, see <https://www.gnu.org/licenses/>.
 import os
 import threading
 import asyncio # Needed for running Discord bot client
-import subprocess # For ngrok
 import time # For ngrok delay and main thread loop
 
 # Import Maeser components
@@ -138,49 +137,3 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
     # Ask the question to the Maeser session and return the reply
     response = sessions_manager.ask_question(message_text, branch_name, maeser_session_id)
     return response['messages'][-1]
-
-
-# --- Main Application Entry Point ---
-
-if __name__ == "__main__":
-    print("Starting Maeser Multi-Interface Application...")
-
-    # Import bot handlers. They rely on the functions defined above in terminal_script.
-    import discord_handler
-    import teams_bot_runner
-
-    # --- Launch Discord Bot ---
-    # Discord bot needs to run its asyncio event loop in a separate thread
-    print("Launching Discord Bot in a background thread...")
-    discord_thread = threading.Thread(
-        target=lambda: asyncio.run(discord_handler.client.start(DISCORD_BOT_TOKEN)),
-        daemon=True # Daemon thread will exit when main program exits
-    )
-    discord_thread.start()
-    print("Discord bot initiated.")
-
-    # --- Launch Teams Bot (FastAPI Server) ---
-    # The FastAPI server also needs to run in a separate thread as uvicorn.run() is blocking.
-    print(f"Launching Teams Bot FastAPI server on port {TEAMS_BOT_LOCAL_PORT} in a background thread...")
-    teams_server_thread = threading.Thread(
-        target=lambda: teams_bot_runner.start_teams_bot_server(TEAMS_BOT_LOCAL_PORT),
-        daemon=True
-    )
-    teams_server_thread.start()
-    print("Teams bot server initiated.")
-
-    # --- Start Ngrok Tunnel for Local Teams Testing ---
-    # This is crucial for local development of webhook-based bots.
-    start_ngrok_tunnel(TEAMS_BOT_LOCAL_PORT)
-
-    print("\nMaeser application is now running. Interact via Discord or Microsoft Teams.")
-    print("Press Ctrl+C to stop the application.")
-
-    # Keep the main thread alive so that the daemon threads (bots) continue to run.
-    try:
-        while True:
-            time.sleep(1) # Sleep to prevent busy-waiting
-    except KeyboardInterrupt:
-        print("\nApplication stopped by user (Ctrl+C).")
-    except Exception as e:
-        print(f"An unexpected error occurred in the main application loop: {e}")

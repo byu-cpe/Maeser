@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, jsonify
 
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
-from terminal_script import handle_message, get_valid_course_ids
+from generate_response import handle_message, get_valid_course_ids
 from config import CHAT_HISTORY_PATH, LOG_SOURCE_PATH
 
 # --- Setup ---

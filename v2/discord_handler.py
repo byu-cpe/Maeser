@@ -2,7 +2,7 @@ import discord
 import asyncio
 import os
 import re
-from terminal_script import handle_message, get_valid_course_ids
+from generate_response import handle_message, get_valid_course_ids
 from config import DISCORD_BOT_TOKEN
 import maeser.graphs.universal_rag as RAG_VARS
 
@@ -134,3 +134,5 @@ async def on_message(message):
 
 # Run the bot
 client.run(DISCORD_BOT_TOKEN)
+
+client.start()

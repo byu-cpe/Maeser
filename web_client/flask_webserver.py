@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask import flash
+from config import UPLOAD_ROOT
 import os
 import subprocess
 from werkzeug.utils import secure_filename
@@ -38,7 +39,7 @@ def home():
 def parse_bot_file(bot_txt):
     content = bot_txt
     print(bot_txt)
-    # Define regex patterns for sections
+    # Define regex patterns for sections, this helps parse data from a corresponding bot.txt file
     pattern = r'# (\w+)\s+```.*?```\s+((?:.|\n)*?)(?=\n#|\Z)'
     matches = re.findall(pattern, content)
 
@@ -70,8 +71,6 @@ def login():
         else:
             error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
-
-UPLOAD_ROOT = '../v2/bot_data'  # base folder to save everything
 
 @app.route('/design_model', methods=['GET', 'POST'])
 def design_model():

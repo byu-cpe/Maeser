@@ -21,9 +21,7 @@ import os
 def load_config():
     """Load configuration from YAML file."""
     config_paths = [
-        'config_example.yaml',
-        './config_example.yaml',
-        'example/config_example.yaml'
+        '../v2/config.yaml'
     ]
     
     for path in config_paths:
@@ -80,3 +78,12 @@ EMBED_PROVIDER = config.get('embed', {}).get('embed_provider', 'openai')
 # User Management
 USERS_DB_PATH = config.get('user_management', {}).get('accounts_db_path')
 CHAT_HISTORY_PATH = config.get('user_management', {}).get('chat_history_path')
+
+# Tokens
+DISCORD_BOT_TOKEN = config.get('discord', {}).get('discord_token')
+
+# Teams Bot Credentials (Obtain from Azure Bot Service)
+TEAMS_APP_ID = os.getenv("TEAMS_APP_ID", "")
+TEAMS_APP_PASSWORD = os.getenv("TEAMS_APP_PASSWORD", "")
+
+UPLOAD_ROOT = '../'+config.get('vectorstore',{}).get('vec_store_path')
