@@ -6,7 +6,7 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 
 ## Prerequisites
 
-- A **Maeser development** or **user** environment set up (see `development_setup.md`).
+- A **Maeser development** or **user** environment set up (see [Development Setup](development_setup)).
 - **Python 3.10+** virtual environment activated.
 - **Maeser** and its dependencies installed (`pip install -e .` or `make setup`).
 - Your documents in **plain text** format (e.g., `.txt`, Markdown `.md`, or PDF converted to text).
@@ -23,6 +23,8 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 3. Ensure each file’s encoding is UTF‑8 to avoid errors when reading in Python.
 
 ---
+
+This guide will walk you through building your own python script for storing your data into vectorstores. Similar code can be seen in the "embeddings_example.py" script in the "example" folder.
 
 **Your script for storing data will consist of two parts--chunking, and storing.**
 ## Chunk Your Documents

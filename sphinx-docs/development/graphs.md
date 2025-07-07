@@ -8,9 +8,9 @@ This guide provides a deep dive into Maeser’s two primary Retrieval‑Augmente
 
 Before you begin, ensure you have:
 
-- A Maeser development environment configured (see `development_setup.md`).
+- A Maeser development environment configured (see [Development Setup](development_setup)).
 - Python 3.10+ and the Maeser package installed in editable mode.
-- At least one FAISS vectorstore (for Simple RAG) and multiple vectorstores (for Pipeline RAG) created via `embedding.md`.
+- At least one FAISS vectorstore (for Simple RAG) and multiple vectorstores (for Pipeline RAG) created via [Embedding New Content](embedding).
 
 ---
 
