@@ -107,8 +107,7 @@ def get_pipeline_rag (
         else:
             return ", ".join(f"'{key}'" for key in keys[:-1]) + f", or '{keys[-1]}'"
 
-    def determine_topic_node (state: GraphState, vectorstore_config: Dict) -> dict:
-
+    def determine_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
         # Prepare the list of valid topics plus "off topic"
         formatted_topics = format_topic_keys(vectorstore_config)
         current_topic = state.get("current_topic")
@@ -128,6 +127,11 @@ def get_pipeline_rag (
         llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
         result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
         topic = normalize_topic(result.content)
+
+        # Edge case handling
+        topic = topic if topic in vectorstore_config.keys() else current_topic # Case where topic is not in in list of topics
+        topic = topic if topic is not None else list(vectorstore_config.keys())[0] # Case where topic is none (may happen on first response)
+
         return {"current_topic": topic}
     
     # Create a factory for retrieval nodes to return relevant information
