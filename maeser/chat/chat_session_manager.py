@@ -22,7 +22,7 @@ from maeser.user_manager import User
 import time
 from uuid import uuid4 as uid
 from langchain_community.callbacks import get_openai_callback
-from langgraph.graph.graph import CompiledGraph
+from langgraph.graph import CompiledGraph
 
 class ChatSessionManager:
     """
