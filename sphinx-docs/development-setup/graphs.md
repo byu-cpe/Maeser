@@ -42,7 +42,7 @@ The following code snippet assumes that you have an initialized `ChatSessionMana
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
-from langgraph.graph import CompiledStateGraph
+from langgraph.graph.graph import CompiledGraph
 
 # Create a system prompt for your medieval literature chatbot with appended context. Example prompt:
 medieval_prompt: str = """
@@ -54,7 +54,7 @@ medieval_prompt: str = """
 """
 
 # Build a Simple RAG graph for Medieval Literature
-medieval_professor: CompiledStateGraph = get_simple_rag(
+medieval_professor: CompiledGraph = get_simple_rag(
     vectorstore_path=f"{VEC_STORE_PATH}/medieval_lit",
     vectorstore_index="index", # the name of the .faiss and .pkl files in your vectorstore
     memory_filepath=f"{LOG_SOURCE_PATH}/medieval_memory.db",
@@ -100,7 +100,7 @@ The following code snippet assumes that you have an initialized `ChatSessionMana
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
-from langgraph.graph import CompiledStateGraph
+from langgraph.graph.graph import CompiledGraph
 
 # Define vectorstore paths for each domain
 vectorstore_config = {
@@ -121,7 +121,7 @@ multi_domain_prompt: str = """
 """
 
 # Create a Pipeline RAG graph
-multi_domain_professor: CompiledStateGraph = get_pipeline_rag(
+multi_domain_professor: CompiledGraph = get_pipeline_rag(
     vectorstore_config=vectorstore_config,
     memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
     api_key=OPENAI_API_KEY,

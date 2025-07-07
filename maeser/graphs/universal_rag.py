@@ -1,9 +1,9 @@
 from langchain_core.documents.base import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langgraph.graph import StateGraph, START, END
+from langgraph.graph.graph import StateGraph, START, END
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
-from langgraph.graph import CompiledStateGraph
+from langgraph.graph.graph import CompiledGraph
 from typing_extensions import TypedDict
 from typing import List, Dict, Annotated, Any
 from langchain_community.vectorstores import FAISS
@@ -41,7 +41,7 @@ def format_topic_keys(topics: Dict[str, str]) -> str:
     else:
         return ", ".join(f"'{key}'" for key in keys[:-1]) + f", or '{keys[-1]}'"
 
-def get_pipeline_rag(vectorstore_config: Dict[str, str], memory_filepath: str, api_key: str | None = None, system_prompt_text: str = 'You are a helpful teacher helping a student with course material.\nYou will answer a question based on the context provided:\nDon\'t answer questions about other things.\n\n{context}\n', model: str = 'gpt-4o-mini') -> CompiledStateGraph:
+def get_pipeline_rag(vectorstore_config: Dict[str, str], memory_filepath: str, api_key: str | None = None, system_prompt_text: str = 'You are a helpful teacher helping a student with course material.\nYou will answer a question based on the context provided:\nDon\'t answer questions about other things.\n\n{context}\n', model: str = 'gpt-4o-mini') -> CompiledGraph:
     retrievers = {
 
         topic: FAISS.load_local(

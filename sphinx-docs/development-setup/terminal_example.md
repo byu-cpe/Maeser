@@ -87,7 +87,7 @@ Pipelines are comprised of multiple RAGs. You may read up on Pipeline RAGs in [G
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
-from langgraph.graph import CompiledStateGraph
+from langgraph.graph.graph import CompiledGraph
 
 # Simple RAG: Karl G. Maeser
 a_graph = get_simple_rag(

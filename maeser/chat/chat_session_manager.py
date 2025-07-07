@@ -22,7 +22,7 @@ from maeser.user_manager import User
 import time
 from uuid import uuid4 as uid
 from langchain_community.callbacks import get_openai_callback
-from langgraph.graph import CompiledStateGraph
+from langgraph.graph.graph import CompiledGraph
 
 class ChatSessionManager:
     """
@@ -45,7 +45,7 @@ class ChatSessionManager:
         self.chat_logs_manager: BaseChatLogsManager | None = chat_logs_manager
         self.graphs: dict = {}
 
-    def register_branch(self, branch_name: str, branch_label: str, graph: CompiledStateGraph) -> None:
+    def register_branch(self, branch_name: str, branch_label: str, graph: CompiledGraph) -> None:
         """
         Registers a branch with its information and graph.
 
