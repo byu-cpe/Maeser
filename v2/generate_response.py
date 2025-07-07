@@ -24,7 +24,7 @@ import time # For ngrok delay and main thread loop
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
 from maeser.graphs.universal_rag import get_pipeline_rag
-from langgraph.graph.graph import CompiledGraph
+from langgraph.graph import CompiledStateGraph
 
 # Import configuration
 from config import (
@@ -110,7 +110,7 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
         }
         ruleset = "\n".join(rules) + "\n{context}\n"
 
-        pipeline_rag: CompiledGraph = get_pipeline_rag(
+        pipeline_rag: CompiledStateGraph = get_pipeline_rag(
             vectorstore_config=vectorstore_config,
             memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory_{course_id}.db",
             api_key=OPENAI_API_KEY,

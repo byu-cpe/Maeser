@@ -22,7 +22,7 @@ from langgraph.graph import StateGraph, START, END
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
-from langgraph.graph.graph import CompiledGraph
+from langgraph.graph import CompiledStateGraph
 from typing_extensions import TypedDict
 from typing import List, Dict, Annotated
 from langchain_community.vectorstores import FAISS
@@ -61,7 +61,7 @@ def get_pipeline_rag (
         '{context}\n'
     ),
     model: str = 'gpt-4o-mini'
-) -> CompiledGraph:
+) -> CompiledStateGraph:
     """
     Create a dynamic retrieval-augmented generation (RAG) graph that includes topic extraction,
     conditional routing to retrieval nodes, and answer generation. The returned object is a
@@ -182,5 +182,5 @@ def get_pipeline_rag (
     
     # Set up memory checkpoint using SQLite.
     memory = SqliteSaver.from_conn_string(f'{memory_filepath}')
-    compiled_graph: CompiledGraph = graph.compile(checkpointer=memory)
+    compiled_graph: CompiledStateGraph = graph.compile(checkpointer=memory)
     return compiled_graph

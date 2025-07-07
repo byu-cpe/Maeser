@@ -92,7 +92,7 @@ The following code snippet assumes that you have an initialized `ChatSessionMana
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
-from langgraph.graph.graph import CompiledGraph
+from langgraph.graph import CompiledStateGraph
 
 # Create a system prompt for your chatbot with appended context. Example prompt:
 my_prompt: str = """
@@ -104,7 +104,7 @@ my_prompt: str = """
 """
 
 # Create a RAG graph pointing to your vector store
-my_simple_rag: CompiledGraph = get_simple_rag(
+my_simple_rag: CompiledStateGraph = get_simple_rag(
     vectorstore_path=f"{VEC_STORE_PATH}/my_vectorstore",
     vectorstore_index="index", # the name of the .faiss and .pkl files in your vectorstore
     memory_filepath=f"{LOG_SOURCE_PATH}/my_branch.db",

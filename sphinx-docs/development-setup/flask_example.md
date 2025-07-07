@@ -134,13 +134,13 @@ Here we are creating RAG pipelines (Karl G. Maeser, BYU, and combined pipeline) 
 ```python
 # Multigroup
 from maeser.graphs.simple_rag import get_simple_rag
-from langgraph.graph.graph import CompiledGraph
+fro import CompiledStateGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser",
+maeser_simple_rag: CompiledStateGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser",
 vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt, model=LLM_MODEL_NAME)
 sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
+byu_simple_rag: CompiledStateGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
 sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
 
 ```
@@ -163,14 +163,14 @@ Here we are creating RAG pipelines (Karl Maeser, BYU, and combined pipeline) and
 # Pipeline
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
-from langgraph.graph.graph import CompiledGraph
+from langgraph.graph import CompiledStateGraph
 
 vectorstore_config = {
     "byu history": f"{VEC_STORE_PATH}/byu",      # Vectorstore for BYU history.
     "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
 }
 
-byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
+byu_maeser_pipeline_rag: CompiledStateGraph = get_pipeline_rag(
     vectorstore_config=vectorstore_config, 
     memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
     api_key=OPENAI_API_KEY, 

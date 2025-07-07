@@ -22,7 +22,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import StateGraph
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
-from langgraph.graph.graph import CompiledGraph
+from langgraph.graph import CompiledStateGraph
 from typing_extensions import TypedDict
 from typing import List, Annotated
 from langchain_core.vectorstores import VectorStoreRetriever
@@ -42,7 +42,7 @@ def get_simple_rag(
         '{context}\n'
     ),
     model: str = 'gpt-4o-mini'
-) -> CompiledGraph:
+) -> CompiledStateGraph:
     """Create a simple retrieval-augmented generation (RAG) graph.
     
     Args:
@@ -109,5 +109,5 @@ def get_simple_rag(
     graph.set_finish_point('generate')
 
     memory = SqliteSaver.from_conn_string(f'{memory_filepath}')
-    compiled_graph: CompiledGraph = graph.compile(checkpointer=memory)
+    compiled_graph: CompiledStateGraph = graph.compile(checkpointer=memory)
     return compiled_graph
