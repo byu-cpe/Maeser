@@ -4,7 +4,7 @@ langchain_core
 langchain_community
 langchain_openai
 langchain-text-splitters
-langgraph
+langgraph==0.1.19
 
 # FAISS for vector stores (choose either faiss-cpu or faiss-gpu depending on your setup)
 faiss-cpu
