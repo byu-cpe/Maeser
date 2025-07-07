@@ -115,10 +115,16 @@ def get_pipeline_rag (
         # Build a prompt that includes the current topic (if any) and the user message.
         clean_system_prompt = remove_context_placeholder(system_prompt_text)
         prompt_template = ChatPromptTemplate.from_messages([
-            ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. Here is the Current Topic: {current_topic}. If the Current Topic is None, please choose a valid topic."
-                       f"The AI who will be answering the users questions and using your topics has been given this prompt {clean_system_prompt}. Please use this as part of your consideration for the topic."
+            ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. Here is the Current Topic: {current_topic}."
+                       f"A separate AI who will be answering the users questions and using your topics has been given this prompt {clean_system_prompt}."
+                            f"Use this prompt as context, but ignore the response instructions. Instead, follow these response guidelines:"
                        f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates that the topic should change, "
-                       f"output the new topic; otherwise, repeat the current topic."),
+                       f"output the new topic." 
+                       f"If the Current Topic is None, please choose a valid topic."
+                       f"If none of the topics match, choose the first topic."
+                       f"In any other case, repeat the current topic."
+                       f"In all cases, your topic should exactly match one of the topics listed."
+            ),
             ("human", "User message: {question}\nExtract the topic:")
         ])
 
