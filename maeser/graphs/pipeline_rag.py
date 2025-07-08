@@ -34,9 +34,9 @@ def add_messages(left: List[str], right: List[str]) -> List[str]:
 
 class GraphState (TypedDict):
     messages: Annotated[list, add_messages]
-    current_topic: str | None = None
-    retrieved_context: List[Document] | None = None
-    first_messsage: bool = True
+    current_topic: str
+    retrieved_context: List[Document]
+    first_messsage: bool
 
 def normalize_topic(topic: str) -> str:
     """
