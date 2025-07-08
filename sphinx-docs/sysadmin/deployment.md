@@ -1,3 +1,5 @@
+<!-- Ayden here - I have left some comments here on areas where this documentation page can be improved. -->
+
 # Deployment Guide
 
 This guide covers best practices for deploying Maeser into production environments, including containerization, process management, reverse proxy configuration, and scaling considerations.
@@ -13,6 +15,8 @@ This guide covers best practices for deploying Maeser into production environmen
 - Domain name and DNS access for configuring TLS certificates.
 
 ---
+
+<!-- It might be worth putting an overview here to outline the major deployment steps -->
 
 ## 2. Virtual Environment & Dependencies
 
@@ -58,6 +62,8 @@ This guide covers best practices for deploying Maeser into production environmen
 ## 3. Using Gunicorn as WSGI Server
 
 Gunicorn provides a robust, multi‑worker Python WSGI server for Flask apps.
+<!-- Consider explaining what WSGI is -->
+<!-- Let the user know that they need to reconfigure their github app both online and in config_example.yaml -->
 
 1. **Start Gunicorn** with multiple workers:
    ```bash
@@ -71,6 +77,9 @@ Gunicorn provides a robust, multi‑worker Python WSGI server for Flask apps.
 
 ### 3.1 systemd Service Example
 
+<!-- Explain what a service file is and what this configuration does -->
+<!-- Explain what a .sock is and why we're using it here instead of 0.0.0.0:8000 -->
+
 Create `/etc/systemd/system/maeser.service`:
 ```ini
 [Unit]
@@ -81,10 +90,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/path/to/Maeser
-ExecStart=/path/to/Maeser/.venv/bin/gunicorn \
-    --workers 4 \
-    --bind unix:/path/to/Maeser/maeser.sock \
-    example.flask_example_user_mangement:app
+ExecStart=/path/to/Maeser/.venv/bin/gunicorn --workers 4 --bind unix:/path/to/Maeser/maeser.sock example.flask_example_user_mangement:app
 Restart=always
 
 [Install]
@@ -101,6 +107,9 @@ sudo systemctl start maeser
 ---
 
 ## 4. Reverse Proxy with NGINX & TLS
+
+<!-- Explain what these things are -->
+<!-- Note: I ran into a plethora of issues trying to get this to work with nginx using a web socket. This section needs to be looked at in further detail.-->
 
 Use NGINX to terminate TLS and proxy requests to Gunicorn.
 
@@ -153,6 +162,8 @@ Use NGINX to terminate TLS and proxy requests to Gunicorn.
 ---
 
 ## 5. Containerization with Docker & Docker Compose
+
+<!-- Explain the purpose of Docker briefly -->
 
 ### 5.1 Dockerfile Example
 

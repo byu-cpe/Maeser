@@ -1,6 +1,6 @@
 from langchain_core.documents.base import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langgraph.graph.graph import StateGraph, START, END
+from langgraph.graph import StateGraph, START, END
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from langgraph.graph.graph import CompiledGraph
