@@ -59,6 +59,6 @@ When you are finished with your permissions and such, you may share the link und
 
 ## Using Discord ##
 To use the discord app, you may begin a DM with the bot after it has been set up.
-- `!start` to begina new conversation at any time, in any course
+- `!start` to begin a new conversation at any time, in any course
 - `!end` to end a conversation
 - Type in a course code from any set up courses. If the course you type is unavailable, it will give you a list of courses. As of right now, you must retype `!start` if the course is unavailable to begin a conversation with an available course.
