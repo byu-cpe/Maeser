@@ -46,3 +46,5 @@ USER = {
 ```
 on line 17.
 
+After you have set up rules and such, you will need to set up your handlers. There are various guides for setting up specific handlers:
+- [Discord](discord.md)

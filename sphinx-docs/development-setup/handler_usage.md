@@ -44,7 +44,7 @@ This function is to be called by the handler whenever a message is sent from any
 ## Required Files and Directory Structure
 
 Ensure your course bot data is structured as follows:
-```txt
+```
 v2/
 ├── bot_data/
 │ ├── course1/
@@ -61,7 +61,7 @@ v2/
 
 Each `bot.txt` must contain:
 
-```txt
+```
 #NAME
 #RULES
 Always answer with citations.
