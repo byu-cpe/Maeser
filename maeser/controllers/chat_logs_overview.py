@@ -24,7 +24,12 @@ from maeser.chat.chat_session_manager import ChatSessionManager
 from flask import render_template, request
 
 
-def controller(chat_sessions_manager: ChatSessionManager, app_name: str | None = None, favicon: str | None = None) -> str:
+def controller(
+    chat_sessions_manager: ChatSessionManager,
+    app_name: str | None = None,
+    main_logo_chat: str | None = None,
+    favicon: str | None = None
+) -> str:
     """
     Render the home page with log files and aggregate token and cost data.
 
@@ -58,6 +63,7 @@ def controller(chat_sessions_manager: ChatSessionManager, app_name: str | None =
         total_tokens=total_tokens, 
         total_cost=total_cost,
         users=users,
+        main_logo_chat = main_logo_chat,
         favicon=favicon,
         app_name=app_name if app_name else "Maeser",
     )

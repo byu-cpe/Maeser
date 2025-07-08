@@ -274,7 +274,6 @@ class App_Manager:
                 """Route for managing users."""
                 return manage_users_view.controller(
                     self.user_manager,
-                    main_logo_login=self.main_logo_login,
                     main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name,
@@ -384,6 +383,7 @@ class App_Manager:
                 """Route for viewing chat logs."""
                 return chat_logs_overview.controller(
                     self.chat_session_manager,
+                    main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name,
                 )
