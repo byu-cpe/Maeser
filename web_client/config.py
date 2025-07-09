@@ -21,7 +21,7 @@ import os
 def load_config():
     """Load configuration from YAML file."""
     config_paths = [
-        '../v2/config.yaml'
+        '../dynamic_implementations/config.yaml'
     ]
     
     for path in config_paths:
@@ -86,4 +86,4 @@ DISCORD_BOT_TOKEN = config.get('discord', {}).get('discord_token')
 TEAMS_APP_ID = os.getenv("TEAMS_APP_ID", "")
 TEAMS_APP_PASSWORD = os.getenv("TEAMS_APP_PASSWORD", "")
 
-UPLOAD_ROOT = '../'+config.get('vectorstore',{}).get('vec_store_path')
+UPLOAD_ROOT = config.get('vectorstore',{}).get('bot_store_path')

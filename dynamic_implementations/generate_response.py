@@ -69,7 +69,7 @@ def parse_vectorstores_from_bot_txt(path):
 
 def get_valid_course_ids():
     """Retrieves a list of valid course IDs from the bot_data directory."""
-    bot_data_path = "v2/bot_data"
+    bot_data_path = "dynamic_implementations/bot_data"
     if not os.path.exists(bot_data_path):
         print("Error: bot_data directory not found. Please ensure it exists with course subdirectories.")
         return []
@@ -86,7 +86,7 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
     Manages bot registration and session creation for Maeser.
     """
     # Verify bot config exists for the given course ID
-    bot_config_path = f"v2/bot_data/{course_id}/bot.txt"
+    bot_config_path = f"dynamic_implementations/bot_data/{course_id}/bot.txt"
     if not os.path.exists(bot_config_path):
         return f"Bot config for course '{course_id}' not found. Please ensure the course ID is valid and configured."
     

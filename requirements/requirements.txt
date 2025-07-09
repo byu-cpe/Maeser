@@ -36,3 +36,6 @@ sphinxcontrib-mermaid
 
 # Default logger
 pyYAML
+
+# Discord
+discord
