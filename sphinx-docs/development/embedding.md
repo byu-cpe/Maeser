@@ -24,6 +24,8 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 
 ---
 
+This guide will walk you through building your own python script for storing your data into vectorstores. Similar code can be seen in the "embeddings_example.py" script in the "example" folder.
+
 **Your script for storing data will consist of two parts--chunking, and storing.**
 ## Chunk Your Documents
 

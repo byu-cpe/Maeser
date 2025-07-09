@@ -24,6 +24,11 @@ PYTEST := $(VENV)/bin/pytest
 
 setup: $(VENV)/bin/activate
 	$(PIP) install poetry
+	$(PIP) install langchain
+	$(PIP) install tiktoken
+	$(PIP) install PyMuPDF
+	$(PIP) install Pillow
+	$(PIP) install discord
 	@echo "Updating poetry lock file if necessary..."
 	$(POETRY) lock
 	$(POETRY) install

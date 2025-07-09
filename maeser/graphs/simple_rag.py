@@ -19,7 +19,7 @@ Maeser. If not, see <https://www.gnu.org/licenses/>.
 
 from langchain_core.documents.base import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langgraph.graph import StateGraph
+from langgraph.graph.graph import StateGraph
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from langgraph.graph.graph import CompiledGraph

@@ -18,7 +18,7 @@ Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
 from langchain_core.documents.base import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langgraph.graph import StateGraph, START, END
+from langgraph.graph.graph import StateGraph, START, END
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
@@ -34,9 +34,9 @@ def add_messages(left: List[str], right: List[str]) -> List[str]:
 
 class GraphState (TypedDict):
     messages: Annotated[list, add_messages]
-    current_topic: str | None = None
-    retrieved_context: List[Document] | None = None
-    first_messsage: bool = True
+    current_topic: str
+    retrieved_context: List[Document]
+    first_messsage: bool
 
 def normalize_topic(topic: str) -> str:
     """
@@ -107,8 +107,7 @@ def get_pipeline_rag (
         else:
             return ", ".join(f"'{key}'" for key in keys[:-1]) + f", or '{keys[-1]}'"
 
-    def determine_topic_node (state: GraphState, vectorstore_config: Dict) -> dict:
-
+    def determine_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
         # Prepare the list of valid topics plus "off topic"
         formatted_topics = format_topic_keys(vectorstore_config)
         current_topic = state.get("current_topic")
@@ -116,10 +115,19 @@ def get_pipeline_rag (
         # Build a prompt that includes the current topic (if any) and the user message.
         clean_system_prompt = remove_context_placeholder(system_prompt_text)
         prompt_template = ChatPromptTemplate.from_messages([
-            ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. Here is the Current Topic: {current_topic}. If the Current Topic is None, please choose a valid topic."
-                       f"The AI who will be answering the users questions and using your topics has been given this prompt {clean_system_prompt}. Please use this as part of your consideration for the topic."
-                       f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates that the topic should change, "
-                       f"output the new topic; otherwise, repeat the current topic."),
+            ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. Here is the Current Topic: {current_topic}."
+                        f"For context, a separate AI who will be answering the users questions and using your topics has been given the following prompt:"
+                            f"===== CONTEXT ====="
+                            f"{clean_system_prompt}."
+                            f"==================="
+                        f"Use the prompt above as context, but ignore the response instructions. Instead, follow these response guidelines:"
+                        f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates that the topic should change, "
+                        f"output the new topic." 
+                        f"If the Current Topic is None, please choose a valid topic."
+                        f"If none of the topics match, choose the first topic."
+                        f"In any other case, repeat the current topic."
+                        f"In all cases, your topic should exactly match one of the topics listed."
+            ),
             ("human", "User message: {question}\nExtract the topic:")
         ])
 
@@ -128,6 +136,11 @@ def get_pipeline_rag (
         llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
         result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
         topic = normalize_topic(result.content)
+
+        # Edge case handling
+        topic = topic if topic in vectorstore_config.keys() else current_topic # Case where topic is not in in list of topics
+        topic = topic if topic is not None else list(vectorstore_config.keys())[0] # Case where topic is none (may happen on first response)
+
         return {"current_topic": topic}
     
     # Create a factory for retrieval nodes to return relevant information
