@@ -48,16 +48,12 @@ def parse_bot_file(bot_txt):
         if section == "ModelName" and lines:
             global model_name
             model_name = lines[0]
-        elif section == "HostAddress" and lines:
-            global host_address
-            host_address = lines[0]
         elif section == "Rules":
             global rules
             rules = lines
         elif section == "Contexts":
             global contexts
             contexts = lines
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

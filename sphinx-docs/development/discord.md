@@ -1,7 +1,9 @@
 # Setting up a Discord Bot
 
 ## Setting up Config.yaml
+
 In order for Discord to talk with your script, you need to have a discord bot token. This token will go under the section in your `config.yaml` in the `dynamic_implementations` folder.
+
 
 Future plans may include entering the token details in the administrator app, but for now, it must be entered manually.
 
@@ -55,9 +57,7 @@ The following must be ticked `enabled` in order for the bot to run properly. **I
 - Create Polls
 
 ### Installation ###
-<<<<<<< HEAD:sphinx-docs/development-setup/discord.md
-When you are finished with your permissions and such, you may share the link under the `Install Link` with individuals you want to share this with.
-=======
+
 When you are finished with your permissions and such, you may share the link under the `Install Link` with individuals you want to share this with.
 
 ## Using Discord ##
@@ -65,4 +65,3 @@ To use the discord app, you may begin a DM with the bot after it has been set up
 - `!start` to begin a new conversation at any time, in any course
 - `!end` to end a conversation
 - Type in a course code from any set up courses. If the course you type is unavailable, it will give you a list of courses. As of right now, you must retype `!start` if the course is unavailable to begin a conversation with an available course.
->>>>>>> pre_release:sphinx-docs/development/discord.md
