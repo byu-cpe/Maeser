@@ -94,6 +94,18 @@ Save this to your `my-maeser-app.service` file, and run `sudo systemctl daemon-r
 
 > **Note:** If you make changes to your service file in the future, always be sure to run `sudo systemctl daemon-reload` afterward.
 
+Before starting the service, you will need to grant user `www-data` necessary file permissions for your Maeser app. If you wish to retain ownership of your app's directory, you can grant `www-data` read-write-execute access while also retaining your permissions using `setfacl`. Run the following two commands:
+
+```bash
+sudo setfacl -R -m u:www-data:rwx /path/to/maeser/app
+```
+
+```bash
+sudo setfacl -R -m -d u:www-data:rwx /path/to/maeser/app
+```
+
+The first command grants read-write-execute permissions for `www-data` for every file in your project directory. The second command sets these permissions as the default for files created in this directory in the future, so these commands only need to be run once.
+
 To start your service, run `sudo systemctl start my-maeser-app.service`, or equivalently, `sudo systemctl start my-maeser-app`. To confirm that it started successfully and is running, run `sudo systemctl status my-maeser-app.service`. If all is well, you should see something similar to the following:
 ```
 ● my-maeser-app.service - My Maeser WSGI Server
