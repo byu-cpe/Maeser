@@ -32,5 +32,4 @@ example/vectorstores/pipeline_memory.db
 # Ignore MAC .DS_Store
 .DS_Store
 # Ignore web_client
-v2/bot_data/*
-web_client/*
+dynamic_implementations/bot_data/*
