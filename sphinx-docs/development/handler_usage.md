@@ -26,7 +26,7 @@ This function is to be called by the handler whenever a message is sent from any
 - **Arguments**:
   - `user_id`: Unique string identifier for the user (e.g., Discord ID or session ID)
     - This thould be used for user tracking. As it stands, the current `webapp_handler.md` does not have any authentication that could be used to pass in an ID.
-  - `course_id`: String identifier corresponding to a configured course in `v2/bot_data`
+  - `course_id`: String identifier corresponding to a configured course in `dynamic_implementations/bot_data`
     - This path is defined in the config.yaml under the `vec_store_path`.
   - `message_text`: The user's question or input message
 
@@ -34,7 +34,7 @@ This function is to be called by the handler whenever a message is sent from any
   A string representing Maeser's final response message
 
 - **Behavior**:
-  - Verifies and parses the bot configuration from `v2/bot_data/{course_id}/bot.txt`
+  - Verifies and parses the bot configuration from `dynamic_implementations/bot_data/{course_id}/bot.txt`
   - Registers a RAG pipeline if not already registered for that course
   - Tracks sessions across all interfaces with a global `session_key = user_id:course_id`
   - Sends the message to the appropriate `LangGraph` session and returns the response
@@ -45,7 +45,7 @@ This function is to be called by the handler whenever a message is sent from any
 
 Ensure your course bot data is structured as follows:
 ```
-v2/
+dynamic_implementations/
 ├── bot_data/
 │ ├── course1/
 │ │ ├── bot.txt

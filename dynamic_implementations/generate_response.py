@@ -69,7 +69,9 @@ def parse_vectorstores_from_bot_txt(path):
 
 def get_valid_course_ids():
     """Retrieves a list of valid course IDs from the bot_data directory."""
+
     bot_data_path = "dynamic_implementations/bot_data"
+
     if not os.path.exists(bot_data_path):
         print("Error: bot_data directory not found. Please ensure it exists with course subdirectories.")
         return []

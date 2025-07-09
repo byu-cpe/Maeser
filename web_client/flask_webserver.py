@@ -54,6 +54,9 @@ def parse_bot_file(bot_txt):
         elif section == "Contexts":
             global contexts
             contexts = lines
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     error = None
     if request.method == 'POST':
         username = request.form['username']
@@ -78,7 +81,7 @@ def design_model():
             flash("Class Code is required.", "error")
             return redirect(url_for('design_model'))
 
-        base_path = os.path.join(UPLOAD_ROOT,secure_filename(class_code))
+        base_path = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
         os.makedirs(base_path, exist_ok=True)
 
         file_groups = []  # Initialize list of saved group directories

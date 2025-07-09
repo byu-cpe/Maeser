@@ -112,7 +112,7 @@ async def on_message(message):
             try:
                 # Extract and send figures if referenced
 
-                FIGURE_DIR = f"v2/bot_data/{course_id}/{RAG_VARS.recommended_topics[0]}"
+                FIGURE_DIR = f"dynamic_implementations/bot_data/{course_id}/{RAG_VARS.recommended_topics[0]}"
                 figure_names = extract_figures_from_text(reply)
                 files = []
                 for fig in figure_names:
