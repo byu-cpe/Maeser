@@ -14,8 +14,8 @@ jobs:
       # if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
         run: |
-            echo "v 0.1"
-            echo "${GITHUB_REF}"
+            echo "v 0.2"
+            echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
             echo "${{ !contains(github.event.pull_request.labels.name, 'actiongate-pre') }}"
             echo "::error ::This PR must have the 'pre_release' label before it can be merged."
             exit 1
