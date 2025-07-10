@@ -19,6 +19,6 @@ jobs:
         run: |
             echo "v 0.2"
             echo "${{ steps.extract_branch.outputs.branch }}"
-            echo "${{ 1==1 }}"
+            echo "${{ 1==2 }}"
             echo "::error ::This PR must have the 'pre_release' label before it can be merged."
             exit 1
