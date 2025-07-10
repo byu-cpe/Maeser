@@ -1,4 +1,4 @@
-name: “Require pre_release label on PRs into main”
+name: Require PR into main from pre_release
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - actiongate-main
 
 jobs:
-  require-label:
+  require-pre-release-branch:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +17,6 @@ jobs:
             echo Attempting to pull from $branch branch...
         id: extract_branch
       - name: Confirm that PR is from pre_release branch
-        # if: ${{ !steps.extract_branch.outputs.branch=='actiongate-pre' }}
         run: |
             if [ ${{ steps.extract_branch.outputs.branch }}=='actiongate-pre' ]; then
                 echo "PR is from the correct branch; pass."
