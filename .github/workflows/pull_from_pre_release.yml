@@ -1,3 +1,5 @@
+# 'Extract Branch Name' step based on aborilov's Stack Overflow answer here: https://stackoverflow.com/a/58035262/14797164
+
 name: Require PR into main from pre_release
 
 on:
@@ -14,11 +16,11 @@ jobs:
         run: |
             branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
             echo "branch=$branch" >> $GITHUB_OUTPUT
-            echo Attempting to pull from $branch branch...
+            echo PR started from $branch branch.
         id: extract_branch
       - name: Confirm that PR is from pre_release branch
         run: |
-            if [ ${{ steps.extract_branch.outputs.branch }}=='actiongate-pre' ]; then
+            if [ ${{ steps.extract_branch.outputs.branch }}=='pre_release' ]; then
                 echo "PR is from the correct branch; pass."
             else
                 echo "::error ::This PR must come from the 'pre_release' branch in order to merge into main."
