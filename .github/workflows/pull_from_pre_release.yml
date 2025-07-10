@@ -13,10 +13,10 @@ jobs:
       - name: Extract Branch Name
         run: |
             branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-            echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+            echo "branch=$branch" >> $GITHUB_OUTPUT
             echo Attempting to pull from $branch branch...
         id: extract_branch
-      - name: Only accept PRs from pre_release
+      - name: Fail if PR is not from pre_release branch
         if: ${{ !steps.extract_branch.outputs.branch=='actiongate-pre' }}
         run: |
             echo "::error ::This PR must come from the 'pre_release' branch in order to merge into main."
