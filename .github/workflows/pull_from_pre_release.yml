@@ -10,12 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Extract Branch Name
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
       - name: Only accept PRs from pre_release
-      # if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
+        # if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
         if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
         run: |
             echo "v 0.2"
-            echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
-            echo "${{ !contains(github.event.pull_request.labels.name, 'actiongate-pre') }}"
+            echo "${{ steps.extract_branch.outputs.branch }}"
+            echo "${{ !contains(github.event.pull_request.labels.name, '${{ }}') }}"
             echo "::error ::This PR must have the 'pre_release' label before it can be merged."
             exit 1
