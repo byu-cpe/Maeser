@@ -8,23 +8,17 @@ This guide details how to manage users in Maeser through built-in Flask routes, 
 
 Maeser provides ready‑made web interfaces and APIs for user administration. These routes are protected by authentication and admin checks.
 
+We will discuss each of these routes below.
+
 ### Logs Overview Page
 - **Route:** `GET /logs`
 - **Description:** Paginated overview of chat logs with filters for branch, user, feedback, and metrics (tokens, cost).
 - **Controller:** `chat_logs_overview.controller(chat_session_manager, app_name, favicon)`
-- **Example:**  
-  ```bash
-  curl -u admin:password "https://yourdomain.com/logs?branch=maeser&order=desc"
-  ```
 
 ### Display Specific Log
 - **Route:** `GET /logs/<branch>/<filename>`
 - **Description:** Streams a single chat log file for inspection.
 - **Controller:** `display_chat_log.controller(chat_session_manager, branch, filename, app_name)`
-- **Example:**  
-  ```bash
-  curl -u admin:password "https://yourdomain.com/logs/maeser/session_20250418.json"
-  ```
 
 ### User Management Page
 - **Route:** `GET /users`
@@ -53,13 +47,6 @@ Maeser provides ready‑made web interfaces and APIs for user administration. Th
   | `update-requests` | Adjust user quota (`add` / `remove`)  |
   | `remove-user`     | Delete user record                    |
   | `clean-cache`     | Purge non-admin, non-banned users     |
-- **Example:**
-  ```bash
-  curl -X POST -H "Content-Type: application/json" \
-       -u admin:password \
-       -d '{"type":"toggle-ban","user_auth":"github","user_id":"bob456","new_status":true}' \
-       https://yourdomain.com/users/api
-  ```
 
 ---
 
@@ -73,10 +60,13 @@ If you prefer to build a custom management interface or scripts, use the `UserMa
 - A `config.yaml` with `USERS_DB_PATH` pointing to your SQLite database.
 - Registered authenticators in your app or REPL.
 
+## Use Cases: ##
 ```python
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
-# Initialize UserManager\ nuser_manager = UserManager(
+# Initialize UserManager
+nuser_manager = 
+UserManager(
     db_file_path="path/to/users.db",
     max_requests=100,
     rate_limit_interval=60
