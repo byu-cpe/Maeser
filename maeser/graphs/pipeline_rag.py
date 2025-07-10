@@ -1,7 +1,7 @@
 """
 Module for creating a simple retrieval-augmented generation (RAG) graph using LangChain.
 
-© 2024 Gohaun Manley
+© 2024
 
 This file is part of Maeser.
 

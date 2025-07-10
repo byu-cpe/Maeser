@@ -1,7 +1,7 @@
 """
 Module for handling login and GitHub OAuth2 authorization controllers.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

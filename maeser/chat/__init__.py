@@ -6,7 +6,7 @@ This package contains the following subpackages and modules:
 - `chat_logs`: This module provides functionality for managing chat logs.
 - `chat_session_manager`: This module provides functionality for managing chat sessions.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

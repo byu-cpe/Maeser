@@ -5,7 +5,7 @@ This module provides a utility function to easily customize HTML layouts and con
 responses to HTML with additional processing, such as adding target="_blank" to anchor tags 
 and adjusting paths for images.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

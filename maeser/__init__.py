@@ -13,7 +13,7 @@ The package is organized as follows:
 - `render`: This module contains classes and functions for rendering the user
           interface of the chat application.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

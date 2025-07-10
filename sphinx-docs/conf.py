@@ -4,7 +4,7 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# © 2024 Blaine Freestone, Carson Bush
+# © 2024
 
 # This file is part of the Maeser unit test suite.
 

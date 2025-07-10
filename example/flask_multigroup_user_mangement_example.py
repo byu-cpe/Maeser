@@ -1,5 +1,5 @@
 """
-© 2024 Blaine Freestone, Carson Bush, Brent Nelson, Gohaun Manley
+© 2024
 
 This file is part of the Maeser usage example.
 
