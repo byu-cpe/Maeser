@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Only accept PRs from pre_release
       # if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
-        if: ${{ !contains(github.event.pull_request.labels.name, 'actiongate-pre') }}
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
         run: |
             echo "v 0.1"
             echo "${{ github.event.pull_request.labels.name }}"
