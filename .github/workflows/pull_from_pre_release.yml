@@ -20,7 +20,7 @@ jobs:
         id: extract_branch
       - name: Confirm that PR is from pre_release branch
         run: |
-            if [ '${{ steps.extract_branch.outputs.branch }}'=='pre_release' ]; then
+            if [ "${{ steps.extract_branch.outputs.branch }}" == "pre_release" ]; then
                 echo "PR is from the correct branch; pass."
             else
                 echo "::error ::This PR must come from the 'pre_release' branch in order to merge into main."
