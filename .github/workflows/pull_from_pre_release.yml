@@ -1,0 +1,18 @@
+name: “Require pre_release label on PRs into main”
+
+on:
+  pull_request:
+    branches:
+      - actiongate-main
+
+jobs:
+  require-label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Only accept PRs from pre_release
+      # if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
+        if: ${{ !contains(github.event.pull_request.labels.name, 'actiongate-pre') }}
+        run: |
+          echo "::error ::This PR must have the 'pre_release' label before it can be merged."
+          exit 1
