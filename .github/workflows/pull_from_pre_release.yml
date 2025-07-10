@@ -11,14 +11,12 @@ jobs:
 
     steps:
       - name: Extract Branch Name
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        run: |
+            echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+            echo "Attempting to pull from ${{ branch }} branch..."
         id: extract_branch
       - name: Only accept PRs from pre_release
-        # if: ${{ !contains(github.event.pull_request.labels.*.name, 'actiongate-pre') }}
         if: ${{ !steps.extract_branch.outputs.branch=='actiongate-pre' }}
         run: |
-            echo "v 0.3"
-            echo "${{ steps.extract_branch.outputs.branch }}"
-            echo "${{ steps.extract_branch.outputs.branch=='actiongate-pre' }}"
-            echo "::error ::This PR must have the 'pre_release' label before it can be merged."
+            echo "::error ::This PR must come from the 'pre_release' branch in order to merge into main."
             exit 1
