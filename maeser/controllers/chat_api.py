@@ -2,7 +2,7 @@
 
 This module contains the controller function for managing chat sessions and processing incoming messages.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

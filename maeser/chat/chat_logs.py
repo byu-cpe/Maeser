@@ -2,7 +2,7 @@
 Module for managing chat logs, including logging and retrieving chat history,
 feedback, and training data.
 
-© 2024 Blaine Freestone, Carson Bush
+© 2024
 
 This file is part of Maeser.
 

@@ -1,5 +1,5 @@
 /*
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

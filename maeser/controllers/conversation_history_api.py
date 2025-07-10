@@ -5,7 +5,7 @@ This module defines a controller function that retrieves the conversation histor
 for a given session and branch. The conversation history is processed to handle
 system messages by applying HTML response formatting.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

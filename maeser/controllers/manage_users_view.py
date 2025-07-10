@@ -1,7 +1,7 @@
 """
 This module contains the controller for rendering the user management page.
 
-© 2024 Carson Bush
+© 2024
 
 This file is part of Maeser.
 

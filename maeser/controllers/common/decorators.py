@@ -2,7 +2,7 @@
 This module contains decorators for rate limiting and admin access control
 in a Flask application.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 
