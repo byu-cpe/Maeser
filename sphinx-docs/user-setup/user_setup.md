@@ -1,20 +1,17 @@
 # User Guide: Getting Started with Maeser
 
-This guide is designed for users who want to **use** Maeser’s chatbot capabilities without diving into development. You will learn how to install Maeser, configure it via a simple YAML file, and run the provided **web** and **terminal** chat interfaces with minimal technical overhead.
+This guide is designed for users who want to use Maeser’s chatbot capabilities without diving into development. You will learn how to install Maeser, configure it via a simple YAML file, and run the provided **web** and **terminal** chat interfaces with minimal technical overhead.
 
 ---
 
-## 1. Prerequisites
+## Prerequisites
 
-- **Python 3.10+** installed on your system (download from https://python.org).  
-- Basic command‑line familiarity (opening a terminal or PowerShell window).  
-- Internet access for installing packages and, optionally, for registering an OpenAI API key.  
-
-> **Note:** No programming experience is required—follow the steps below to get started.
+- **Python 3.10+** installed on your system.
+- Basic command-line familiarity (opening a terminal or PowerShell window).
 
 ---
 
-## 2. Install Maeser
+## Install Maeser
 
 Open a terminal (macOS/Linux) or PowerShell (Windows) and run:
 
@@ -26,98 +23,118 @@ This command downloads the latest Maeser release and its dependencies from PyPI.
 
 ---
 
-## 3. Prepare Configuration
+## Download Examples from GitHub
 
-Maeser uses a simple **YAML** file (`config.yaml`) to store settings like API keys and file paths. You only need to do this once.
+Navigate to the [**Maeser GitHub repository**](https://github.com/byu-cpe/Maeser) and download everything within the [`example/`](https://github.com/byu-cpe/Maeser/tree/main/example) directory into your project directory. Your project's folder structure should now contain:
 
-1. **Copy the example file** (in the installation directory) to your working folder:
-   ```bash
-   cp $(python -c "import maeser; print(maeser.__file__)")/../config_example.yaml config.yaml
-   ```
-2. **Open `config.yaml`** in a text editor and update only these fields:
-   ```yaml
-   OPENAI_API_KEY: "<your-openai-key>"
-   VEC_STORE_PATH: "./vectorstores"
-   CHAT_HISTORY_PATH: "./chat_logs"
-   USERS_DB_PATH: "./users.db"
-   LLM_MODEL_NAME: "gpt-4o"
-   ```
-   - If you don’t have an OpenAI key, you can sign up at https://platform.openai.com/signup.  
-   - The default paths (`./vectorstores`, `./chat_logs`, `./users.db`) work in your current folder.
-
-> **Tip:** You can also set `OPENAI_API_KEY` as an environment variable to avoid editing `config.yaml`:
-> ```bash
-> export OPENAI_API_KEY="<your-openai-key>"
-> ```
-
----
-
-## 4. Download Example Vectorstores
-
-Maeser requires pre-built vectorstores (FAISS indexes) to retrieve knowledge. For simplicity, download the **Maeser** and **BYU** vectorstores from the project’s GitHub releases:
-
-1. Visit: [https://github.com/byu-cpe/Maeser/releases/latest](https://github.com/byu-cpe/Maeser/releases/latest)
-2. Download `vectorstores-maeser.zip` and `vectorstores-byu.zip`.  
-3. Unzip into your working folder:
-   ```bash
-   unzip vectorstores-maeser.zip -d vectorstores/maeser
-   unzip vectorstores-byu.zip   -d vectorstores/byu
-   ```
-
-Your folder structure should now contain:
 ```
-./config.yaml
-./vectorstores/
-    ├─ maeser/
-    └─ byu/
+.
+├── config_example.py
+├── config_example.yaml
+├── create_byu_vectorstore.py
+├── create_maeser_vectorstore.py
+├── embeddings_example.py
+├── flask_multigroup_example.py
+├── flask_multigroup_example_user_management.py
+├── flask_pipeline_example.py
+├── flask_pipeline_example_user_management.py
+├── requirements.txt
+├── terminal_multigroup_example.py
+├── terminal_pipeline_example.py
+├── static
+│   └── ...
+└── vectorstores
+    ├── maeser
+    │   ├── index.faiss
+    │   └── index.pkl
+    └── byu
+        ├── index.faiss
+        └── index.pkl
 ```
 
 ---
 
-## 5. Running the Web Chat Interface
+## Prepare Configuration
 
-Maeser provides a ready‑to‑use Flask web app with optional user authentication.
+Maeser uses a simple **YAML** file (`config_example.yaml`) to configure settings like API keys and file paths. You only need to do this once.
 
-1. **Install extra requirements**:
+**Open `config_example.yaml`** in a text editor and update only these fields:
+
+```yaml
+OPENAI_API_KEY: "<your-openai-key>"
+VEC_STORE_PATH: "vectorstores"
+CHAT_HISTORY_PATH: "chat_logs"
+USERS_DB_PATH: "users.db"
+LLM_MODEL_NAME: "gpt-4o"
+```
+
+- If you don’t have an OpenAI key, you can sign up at https://platform.openai.com/signup.  
+- The default paths (`vectorstores`, `chat_logs`, `users.db`) work in your current folder.
+
+---
+
+## A Note on the Example Vectorstores
+
+The Maeser chatbot uses pre-built databases called **vectorstores** to retrieve knowledge. Each vectorstore is a directory containing an `index.faiss` and an `index.pkl` file. The Maeser GitHub repository contains two example vectorstores, **Maeser** and **BYU**. The example applications in this project are already configured to use these two vectorstores when the chatbot interacts with users.
+
+---
+
+## Choose one of the Example Flask Apps
+
+Maeser uses a program called [**Flask**](https://flask.palletsprojects.com/en/stable/) to render its web chat interface. There are several example Flask apps to choose from; if you are choosing an example for the first time, start with either [`flask_multigroup_example.py`](https://github.com/byu-cpe/Maeser/blob/main/example/flask_multigroup_example.py) or [`flask_pipeline_example.py`](https://github.com/byu-cpe/Maeser/blob/main/example/flask_pipeline_example.py), based on your preferences:
+
+- [`flask_multigroup_example.py`](https://github.com/byu-cpe/Maeser/blob/main/example/flask_multigroup_example.py) contains **separate chat branches** for each vectorstore.
+- [`flask_pipeline_example.py`](https://github.com/byu-cpe/Maeser/blob/main/example/flask_pipeline_example.py) contains **one chat branch** that uses both vectorstores.
+
+---
+
+## Run the Web Chat Interface
+
+1. **Run the web app** by executing the following in your terminal:
+   
    ```bash
-   pip install maeser[web]
+   python flask_multigroup_example.py
    ```
-2. **Run the web app**:
+
+   or if you are using `flask_pipeline_example.py`:
    ```bash
-   python -m maeser.webapp
+   python flask_pipeline_example.py
    ```
-3. **Open your browser** and go to:
+
+2. **Open your browser** and go to:
    ```
    http://localhost:3002
    ```
-4. **Select a knowledge branch** (e.g., "Karl G. Maeser History" or "BYU History") and start chatting!
 
-> **Tip:** If you have a GitHub OAuth key in `config.yaml`, you can log in to manage user quotas.
-
----
-
-## 6. Running the Terminal Chat Interface
-
-For quick, command‑line access without a web browser:
-
-```bash
-python -m maeser.terminal
-```
-1. Select a branch from the numbered menu.  
-2. Type your question and press **Enter**.  
-3. Type `exit` or `quit` to end the session.
+3. **Select a knowledge branch** (e.g., "Karl G. Maeser History", "BYU History", or "pipeline") and start chatting!
 
 ---
 
-## 7. Customizing Your Experience
+## Running the Terminal Chat Interface
 
-- **Add Your Own Content:** Follow the easy guide at [Embedding New Content](../development/embedding.md) (no coding required) to embed your own documents.  
-- **Switch Models:** Change `LLM_MODEL_NAME` in `config.yaml` to another model name supported by OpenAI.  
-- **Adjust Quotas:** If you’re an admin, set per‑user request limits in `config.yaml` under `MAX_REQUESTS` and `RATE_LIMIT_INTERVAL`.
+For quick, command‑line access without a web browser, **Run one of the terminal scripts** by executing the following in your terminal:
+
+   ```bash
+   python terminal_multigroup_example.py
+   ```
+
+   or if you prefer to use `terminal_pipeline_example.py`:
+
+   ```bash
+   python terminal_pipeline_example.py
+   ```
 
 ---
 
-## 8. Getting Help  
-- **GitHub Issues:** Report bugs or ask questions at https://github.com/byu-cpe/Maeser/issues.  
+## Customizing Your Experience
+
+- **Add Your Own Content:** Follow the guide at [**Embedding New Content**](../development/embedding.md) to embed your own documents as vectorstores. 
+- **Customize the Web Interface:** Change the parameters of the **App_Manager** in your Flask script to change the color and icons used by the web interface. (For more information on the App_Manager class, refer to the source code documentation on [blueprints](../autodoc/maeser/maeser.blueprints.rst)).
+- **Add Authentication:** Download one of the `flask_*_user_management_example.py` scripts to configure GitHub or LDAP authentication. See [**User Management Setup**](../development/flask_example.md#user-management-setup) in the **Maeser Example (with Flask & User Management)** documentation page for instructions on how to configure authentication.
+
+---
+
+## Getting Help  
+- **GitHub Issues:** Report bugs or ask questions at [https://github.com/byu-cpe/Maeser/issues](https://github.com/byu-cpe/Maeser/issues).  
 
 
