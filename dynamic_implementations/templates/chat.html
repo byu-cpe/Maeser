@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Maeser Web Chat</title>
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        background-color: #e5e5e5;
+        overflow: hidden;
+    }
+
+    .sidebar {
+        width: 280px;
+        background-color: #2e2e2e;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid #444;
+    }
+
+    .sidebar h3 {
+        padding: 20px;
+        margin: 0;
+        font-size: 20px;
+        border-bottom: 1px solid #444;
+        background-color: #1f1f1f;
+    }
+
+    .log-list {
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
+    .log-item {
+        padding: 14px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid #444;
+        font-size: 14px;
+    }
+
+    .log-item:hover {
+        background-color: #444;
+    }
+
+    .main {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .chat-header {
+        padding: 20px;
+        background-color: #1c3373;
+        color: white;
+        font-weight: bold;
+        font-size: 22px;
+        border-bottom: 1px solid #005fa3;
+    }
+
+    .setup-form {
+        padding: 12px 20px;
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .setup-form input,
+    .setup-form select {
+        margin-right: 10px;
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .chat-messages {
+        flex-grow: 1;
+        padding: 24px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        color: white;
+        background-color: #f3f3f3;
+    }
+
+    .message {
+        max-width: 70%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 14px;
+        line-height: 1.4;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        display: inline-block;
+        margin-bottom: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .user-message {
+        align-self: flex-end;
+        background-color: #385dc3;
+        border-bottom-right-radius: 0;
+    }
+
+    .bot-message {
+        align-self: flex-start;
+        background-color: #7c7c7c;
+        border-bottom-left-radius: 0;
+    }
+
+    .chat-form {
+        display: flex;
+        gap: 10px;
+        padding: 15px 20px;
+        background-color: #fafafa;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-form input[type="text"] {
+        flex-grow: 1;
+        padding: 10px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    .chat-form button {
+        background-color: #1c3373;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .chat-form button:hover {
+        background-color: #005fa3;
+    }
+</style>
+</head>
+<body>
+    <div class="sidebar">
+        <h3>Previous Chats</h3>
+        <div id="log-list" class="log-list"></div>
+    </div>
+
+    <div class="main">
+        <div class="chat-container">
+            <div class="chat-header">Maeser Assistant</div>
+
+            <form class="setup-form" id="setup-form">
+                <label>User ID: <input type="text" id="user_id" required></label>
+                <label>Course ID:
+                    <select id="course_id" required></select>
+                </label>
+                <button type="submit">Start Session</button>
+            </form>
+
+            <div class="chat-messages" id="chat-messages"></div>
+
+            <form class="chat-form" id="chat-form" style="display: none;">
+                <input type="text" id="message" placeholder="Type your message..." required autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let userId = "";
+        let courseId = "";
+
+        // Load course list
+        fetch("/courses")
+            .then(res => res.json())
+            .then(data => {
+                const courseSelect = document.getElementById("course_id");
+                data.courses.forEach(course => {
+                    const opt = document.createElement("option");
+                    opt.value = course;
+                    opt.text = course;
+                    courseSelect.appendChild(opt);
+                });
+            });
+
+        // Setup session
+        document.getElementById("setup-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            userId = document.getElementById("user_id").value.trim();
+            courseId = document.getElementById("course_id").value;
+
+            if (userId && courseId) {
+                document.getElementById("setup-form").style.display = "none";
+                document.getElementById("chat-form").style.display = "flex";
+                loadChatLogs(userId);
+            }
+        });
+
+        // Send message
+        document.getElementById("chat-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const msgInput = document.getElementById("message");
+            const msg = msgInput.value.trim();
+            if (!msg) return;
+
+            addMessage(msg, "user-message");
+            msgInput.value = "";
+
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id: userId, course_id: courseId, message: msg })
+            });
+
+            const data = await res.json();
+            const reply = data.response || data.error || "No response.";
+            addMessage(reply, "bot-message");
+        });
+
+        // Show messages
+        function addMessage(text, className) {
+            const msgDiv = document.createElement("div");
+            msgDiv.className = `message ${className}`;
+            msgDiv.innerText = text;
+
+            const chatBox = document.getElementById("chat-messages");
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Load and show logs
+        function loadChatLogs(user) {
+            fetch(`/api/logs/${user}`)
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById("log-list");
+                    list.innerHTML = "";
+                    data.sessions?.forEach(session => {
+                        const item = document.createElement("div");
+                        item.className = "log-item";
+                        item.textContent = `${session.branch} — ${session.time}`;
+                        item.onclick = () => loadLogContent(session.filename);
+                        list.appendChild(item);
+                    });
+                });
+        }
+
+
+        function loadLogContent(filename) {
+            fetch(`/api/logs/content/${filename}`)
+                .then(res => res.json())
+                .then(data => {
+                    const chatBox = document.getElementById("chat-messages");
+                    chatBox.innerHTML = "";
+
+                    if (!data.messages || data.messages.length === 0) {
+                        const noMsg = document.createElement("div");
+                        noMsg.className = "bot-message message";
+                        noMsg.innerText = "(This chat log has no messages.)";
+                        chatBox.appendChild(noMsg);
+                        return;
+                    }
+
+                    data.messages.forEach(entry => {
+                        const role = entry.role || "system";
+                        let cls = "";
+
+                        if (role === "user") {
+                            cls = "user-message";
+                        } else if (role === "assistant" || role === "system") {
+                            cls = "bot-message";
+                        } else {
+                            cls = "bot-message";
+                        }
+
+                        addMessage(entry.content || "(No content)", cls);
+                    });
+
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                })
+                .catch(err => {
+                    const chatBox = document.getElementById("chat-messages");
+                    chatBox.innerHTML = `<div class="bot-message message">❌ Error loading chat log: ${err}</div>`;
+                });
+        }
+
+    </script>
+</body>
+</html>

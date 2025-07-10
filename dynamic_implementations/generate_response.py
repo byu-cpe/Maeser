@@ -1,0 +1,141 @@
+"""
+© 2024 Blaine Freestone, Brent Nelson, Gohaun Manley
+
+This file is part of the Maeser usage example.
+
+Maeser is free software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE. See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with
+Maeser. If not, see <https://www.gnu.org/licenses/>.
+"""
+
+import os
+import threading
+import asyncio # Needed for running Discord bot client
+import time # For ngrok delay and main thread loop
+
+# Import Maeser components
+from maeser.chat.chat_logs import ChatLogsManager
+from maeser.chat.chat_session_manager import ChatSessionManager
+from maeser.graphs.universal_rag import get_pipeline_rag
+from langgraph.graph.graph import CompiledGraph
+
+# Import configuration
+from config import (
+    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME, DISCORD_BOT_TOKEN
+)
+
+# Set API key
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+# Managers
+chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
+sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
+
+# Unified session tracking for Maeser: {session_key (user_id:course_id): maeser_session_id}
+# This dictionary will hold the Maeser chat session IDs for ALL interfaces (Discord, Teams, etc.)
+global_maeser_sessions = {}
+
+# --- Utility Functions (shared by all bot handlers) ---
+
+def parse_vectorstores_from_bot_txt(path):
+    """Parses a bot config file to extract rules and datasets."""
+    sections = {}
+    current_header = None
+    buffer = []
+
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith("#"):
+                if current_header:
+                    sections[current_header] = buffer if len(buffer) > 1 else buffer[0] if buffer else ""
+                current_header = line[1:].lower()
+                buffer = []
+            elif current_header:
+                buffer.append(line)
+
+        # Save the last section
+        if current_header:
+            sections[current_header] = buffer if len(buffer) > 1 else buffer[0] if buffer else ""
+
+    return sections
+
+def get_valid_course_ids():
+    """Retrieves a list of valid course IDs from the bot_data directory."""
+
+    bot_data_path = "dynamic_implementations/bot_data"
+
+    if not os.path.exists(bot_data_path):
+        print("Error: bot_data directory not found. Please ensure it exists with course subdirectories.")
+        return []
+    return [
+        name for name in os.listdir(bot_data_path)
+        if os.path.isdir(os.path.join(bot_data_path, name))
+    ]
+
+# --- Main Chat Handling Function (Unified Logic) ---
+
+def handle_message(user_id: str, course_id: str, message_text: str) -> str:
+    """
+    Handles a message from any interface, routing it to the correct Maeser session.
+    Manages bot registration and session creation for Maeser.
+    """
+    # Verify bot config exists for the given course ID
+    bot_config_path = f"dynamic_implementations/bot_data/{course_id}/bot.txt"
+    if not os.path.exists(bot_config_path):
+        return f"Bot config for course '{course_id}' not found. Please ensure the course ID is valid and configured."
+    
+    branch_name = f"pipeline_{course_id}"
+
+    # Register the Maeser bot branch if it hasn't been registered yet
+    if branch_name not in sessions_manager.branches:
+        parsed_data = parse_vectorstores_from_bot_txt(bot_config_path)
+        
+        # Ensure required keys exist in parsed data
+        if "rules" not in parsed_data or "datasets" not in parsed_data:
+            return f"Error: 'rules' or 'datasets' section missing in bot.txt for course '{course_id}'."
+
+        rules = parsed_data["rules"]
+        datasets = parsed_data["datasets"]
+        if isinstance(datasets, str):
+            datasets = [datasets]
+
+        vectorstore_config = {
+            dataset: os.path.join(VEC_STORE_PATH, course_id, dataset) for dataset in datasets
+        }
+        ruleset = "\n".join(rules) + "\n{context}\n"
+
+        pipeline_rag: CompiledGraph = get_pipeline_rag(
+            vectorstore_config=vectorstore_config,
+            memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory_{course_id}.db",
+            api_key=OPENAI_API_KEY,
+            system_prompt_text=ruleset,
+            model=LLM_MODEL_NAME
+        )
+
+        sessions_manager.register_branch(
+            branch_name=branch_name,
+            branch_label=f"Universal-{course_id}",
+            graph=pipeline_rag
+        )
+        print(f"Registered Maeser bot branch for course: {course_id}")
+
+    # Get or create a Maeser session for the unique user+course combination
+    session_key = f"{user_id}:{course_id}"
+    if session_key not in global_maeser_sessions:
+        maeser_session_id = sessions_manager.get_new_session_id(branch_name)
+        global_maeser_sessions[session_key] = maeser_session_id
+        print(f"Started new Maeser session '{maeser_session_id}' for user '{user_id}' in course '{course_id}'.")
+    else:
+        maeser_session_id = global_maeser_sessions[session_key]
+
+    # Ask the question to the Maeser session and return the reply
+    response = sessions_manager.ask_question(message_text, branch_name, maeser_session_id)
+    return response['messages'][-1]
