@@ -16,7 +16,7 @@ jobs:
         run: |
             branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
             echo "branch=$branch" >> $GITHUB_OUTPUT
-            echo PR started from $branch branch.
+            echo PR started from '$branch' branch.
         id: extract_branch
       - name: Confirm that PR is from pre_release branch
         run: |
