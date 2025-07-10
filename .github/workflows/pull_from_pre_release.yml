@@ -16,8 +16,12 @@ jobs:
             echo "branch=$branch" >> $GITHUB_OUTPUT
             echo Attempting to pull from $branch branch...
         id: extract_branch
-      - name: Fail if PR is not from pre_release branch
-        if: ${{ !steps.extract_branch.outputs.branch=='actiongate-pre' }}
+      - name: Confirm that PR is from pre_release branch
+        # if: ${{ !steps.extract_branch.outputs.branch=='actiongate-pre' }}
         run: |
-            echo "::error ::This PR must come from the 'pre_release' branch in order to merge into main."
-            exit 1
+            if [ ${{ steps.extract_branch.outputs.branch=='actiongate-pre' }} ]; then
+                echo "PR is from the correct branch; pass."
+            else
+                echo "::error ::This PR must come from the 'pre_release' branch in order to merge into main."
+                exit 1
+            fi
