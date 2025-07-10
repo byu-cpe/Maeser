@@ -5,7 +5,7 @@ name: Require PR into main from pre_release
 on:
   pull_request:
     branches:
-      - actiongate-main
+      - main
 
 jobs:
   require-pre-release-branch:
