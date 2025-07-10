@@ -1,227 +1,164 @@
-<!-- Ayden here - I have left some comments here on areas where this documentation page can be improved. -->
-
 # Deployment Guide
 
-This guide covers best practices for deploying Maeser into production environments, including containerization, process management, reverse proxy configuration, and scaling considerations.
+While Flask makes it easy to test your Maeser project locally, deploying your Flask app publicly is a layered process. Flask handles the functionality of your application, but it is not a server in and of itself. For full functionality, a [WSGI](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface) server program is needed to serve your application. A typical Flask-based server connects a Flask app to a WSGI server, which communicates with an HTTP server by a "reverse proxy" protocol. See [Deploying to Production](https://flask.palletsprojects.com/en/stable/deploying/) from Flask's official documentation for more information.
+
+**By following this guide, you will:**
+
+1. [**Configure your app for deployment**](#configure-your-app-for-deployment)
+2. [**Configure a WSGI server to run your app**](#configure-a-wsgi-server-to-run-your-app)
+3. [**Use reverse proxy to host your server with HTTP**](#use-reverse-proxy-to-host-your-server-with-http)
+4. [**Run your web server as a Linux service (optional)**](#run-your-web-server-as-a-linux-service-optional)
+5. [**Deploy your server publicly with a domain name**](#deploy-your-server-publicly-with-a-domain-name)
+
+Because there are several ways to accomplish these steps, this guide will not explicitly explain how to get everything set up, but will instead provide resources that explain how to set things up for your preferences. The Maeser app has been tested to work with [**Gunicorn**](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/) for WSGI server creation and [**nginx**](https://flask.palletsprojects.com/en/stable/deploying/nginx/) for reverse proxy, but feel free to choose any of Flask's [recommended programs for deployment](https://flask.palletsprojects.com/en/stable/deploying/#self-hosted-options) if they work better for your needs.
 
 ---
 
-## 1. Prerequisites
+## Prerequisites
 
-- A production server or cloud instance (e.g., AWS EC2, Azure VM, Google Compute Engine) running a Unix‑like OS (Ubuntu, Debian, etc.).
-- Maeser application code cloned or pulled onto the server.
-- Python 3.10+ installed.
-- A PostgreSQL or MySQL database if you plan to use relational storage (optional).
-- Domain name and DNS access for configuring TLS certificates.
+- A Maeser application that is set up and working locally. See either the [**User Setup**](../user-setup/user_setup.md) or [**Development Setup**](../development/development_setup.md) workflows.
+- A domain name and SSL/TLS certificate (explained in [**Deploy Your Server Publicly With a Domain Name**](#deploy-your-server-publicly-with-a-domain-name)).
 
 ---
 
-<!-- It might be worth putting an overview here to outline the major deployment steps -->
+## Configure Your App for Deployment
 
-## 2. Virtual Environment & Dependencies
+Not much needs to be changed within the application itself; however, if you have been working on your app from the `example/` directory, it is recommended that you restructure your project to include only the files that your application needs and remove the `example_` prefix from any remaining files. If you follow this recommendation, keep in mind that `config_example.py` looks for these specific paths:
+```python
+    config_paths = [
+        'config_example.yaml',
+        './config_example.yaml',
+        'example/config_example.yaml'
+    ]
+```
+These paths should be updated to match the path and name of your app's `config.yaml` file.
 
-1. **Clone the repository** and enter the directory:
-   ```bash
-   git clone https://github.com/byu-cpe/Maeser.git
-   cd Maeser
-   ```
-2. **Create a virtual environment** and install dependencies:
-   ```bash
-   python3.10 -m venv .venv
-   source .venv/bin/activate
-   pip install -e .
-   pip install gunicorn
-   ```
-3. **Configuration**: Edit your production `config.yaml` with production API keys, paths, and DB credentials (or set environment variables).
-   ```bash
-   cp config_example.yaml config.yaml
-   # Edit config.yaml with production API keys, paths, and DB credentials
-   ```
-
-> **Note:**  
-> For deployment, it is recommended, although not required, that you copy the provided files in the `example/` directory as opposed to modifying them directly. Make a copy of `config_example.py` and rename it to `config.yaml`:
->    ```bash
->    cp config_example.yaml config.yaml
->    # Edit config.yaml with production API keys, paths, and DB credentials
->    ```
->
-> Then in "config_example.py", be sure to update the config paths:
-> ```python
->     config_paths = [
->         'config.yaml',
->         './config.yaml',
->         'example/config.yaml'
->         # Or anywhere else you plan on storing config.yaml
->     ]
-> ```
-> 
-> Be sure to rename the other example files and update their references accordingly.
+Additionally, if you have created your Maeser project using the [**Development Setup Guide**](../development/development_setup.md), the Maeser package is located in the `maeser/` directory by default. Rather than having this package copied within your project, you should instead consider using the official Maeser PyPI package. Making this change is simple:
+1. In your project's virtual environment, execute the following command:  
+```bash
+pip install maeser
+```
+2. Once the package is installed successfully, remove the `maeser/` directory from your project.
+3. All done! Your project should now reference Maeser functions from the PyPI package instead of from `maeser/`. Run your project locally to make sure these changes were successful.
 
 ---
 
-## 3. Using Gunicorn as WSGI Server
+## Configure a WSGI Server to Run Your App
 
-Gunicorn provides a robust, multi‑worker Python WSGI server for Flask apps.
-<!-- Consider explaining what WSGI is -->
-<!-- Let the user know that they need to reconfigure their github app both online and in config_example.yaml -->
+> "Flask is a WSGI application. A WSGI server is used to run the application, converting incoming HTTP requests to the standard WSGI environ, and converting outgoing WSGI responses to HTTP responses."  
+> —[Deploying to Production](https://flask.palletsprojects.com/en/stable/deploying/), Flask Documentation
 
-1. **Start Gunicorn** with multiple workers:
-   ```bash
-   gunicorn \
-     --workers 4 \
-     --bind 0.0.0.0:8000 \
-     --timeout 120 \
-     example.flask_example_user_mangement:app
-   ```
-2. **Background Process**: Use a process manager (systemd, Supervisor) to keep Gunicorn running.
+While Flask does have a development server that allows the app to be run locally, a separate program is required to run the application as a **production WSGI server**.
 
-### 3.1 systemd Service Example
+Consult the list of [Self-Hosted Options](https://flask.palletsprojects.com/en/stable/deploying/#self-hosted-options) from Flask's deployment guide to start setting up your own WSGI server. Each of these options links to a guide on how to set them up and test them locally. Maeser has been tested to work with [**Gunicorn**](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/), but any of the listed options should work.
 
-<!-- Explain what a service file is and what this configuration does -->
-<!-- Explain what a .sock is and why we're using it here instead of 0.0.0.0:8000 -->
+Keep in mind that if you are using GitHub authentication, you will need to update the **Homepage URL** and **Authorization callback URL** within the settings of your OAuth app. As a reminder, this is accessible via the [Developer Settings page](https://github.com/settings/developers) on GitHub. Be sure to also update `github_callback_uri` in your project's `config.yaml`. If you are using other authentication methods, they will likely need to be updated as well. These settings will need to be updated again after you [**set up a reverse proxy**](#use-reverse-proxy-to-host-your-server-with-http) for your WSGI server.
 
-Create `/etc/systemd/system/maeser.service`:
+## Use Reverse Proxy to Host Your Server with HTTP
+
+> "WSGI servers have HTTP servers built-in. However, a dedicated HTTP server may be safer, more efficient, or more capable. Putting an HTTP server in front of the WSGI server is called a 'reverse proxy.'"  
+> —[Deploying to Production](https://flask.palletsprojects.com/en/stable/deploying/), Flask Documentation
+
+Running your WSGI server with a **reverse proxy** is standard for Flask apps and is relatively straightforward. [**nginx**](https://flask.palletsprojects.com/en/stable/deploying/nginx/) is one of the most commonly used HTTP servers and has been tested to work with Maeser. The official Flask guide recommends using either [**nginx**](https://flask.palletsprojects.com/en/stable/deploying/nginx/) or [**Apache httpd**](https://flask.palletsprojects.com/en/stable/deploying/apache-httpd/) for setting up the reverse proxy, so follow the guide for either service and you should have a functioning HTTP server in no time.
+
+Once your HTTP server is configured, follow the guide to [**Tell Flask it is Behind a Proxy**](https://flask.palletsprojects.com/en/stable/deploying/proxy_fix/). This will involve making a slight modification to your project's main Python script. Be sure to update your OAuth settings (as described [above](#configure-a-wsgi-server-to-run-your-app)) since the web server is now accessed through the HTTP server. Your Flask app should now be fully functional and accessible via reverse proxy.
+
+---
+
+## Run Your Web Server as a Linux Service (Optional)
+
+A **Linux systemctl service** is a service that runs in the background (also known as a **daemon**). By creating a service to run your web server, you can more easily control when the server should start, stop, and restart, without needing to control the service manually in a terminal session.
+
+To create a Linux service for your web server, navigate to `/etc/systemd/system/` and create a new file named `my-maeser-app.service`, replacing `my-maeser-app` with whatever you would like the service to be called. This **service file** is where the configuration for your service will be stored. There are many ways to configure a Linux service, but the following configuration has proven to work well with a Maeser application:
+
 ```ini
 [Unit]
-Description=Maeser Flask App
+Description=My Maeser WSGI Server
 After=network.target
 
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/path/to/Maeser
-ExecStart=/path/to/Maeser/.venv/bin/gunicorn --workers 4 --bind unix:/path/to/Maeser/maeser.sock example.flask_example_user_mangement:app
+WorkingDirectory=/path/to/maeser/app
+ExecStart=/path/to/maeser/app/.venv/bin/gunicorn -w 16 --access-logfile=- 'gmtk_flask:app'
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-Reload and start:
+> **Note:** If you have configured your server with a different WSGI server program or with different arguments, update the `ExecStart=...` line accordingly, making sure that `/path/to/maeser/app/.venv/bin/gunicorn` is the path to your WSGI server program within your virtual environment's directory.
+
+Save this to your `my-maeser-app.service` file, and run `sudo systemctl daemon-reload`. This will reload the configurations for all daemons on your machine, which will allow systemctl to recognize the new maeser service.
+
+> **Note:** If you make changes to your service file in the future, always be sure to run `sudo systemctl daemon-reload` afterward.
+
+Before starting the service, you will need to grant user `www-data` necessary file permissions for your Maeser app. If you wish to retain ownership of your app's directory, you can use `setfacl` to grant `www-data` read-write-execute access while also retaining your permissions. Run the following two commands:
+
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl enable maeser
-sudo systemctl start maeser
+sudo setfacl -R -m u:www-data:rwx /path/to/maeser/app
 ```
 
----
-
-## 4. Reverse Proxy with NGINX & TLS
-
-<!-- Explain what these things are -->
-<!-- Note: I ran into a plethora of issues trying to get this to work with nginx using a web socket. This section needs to be looked at in further detail.-->
-
-Use NGINX to terminate TLS and proxy requests to Gunicorn.
-
-1. **Install NGINX**:
-   ```bash
-   sudo apt install nginx
-   ```
-2. **Obtain TLS Certificates** with Let’s Encrypt:
-   ```bash
-   sudo apt install certbot python3-certbot-nginx
-   sudo certbot --nginx -d yourdomain.com
-   ```
-3. **NGINX Server Block** (`/etc/nginx/sites-available/maeser`):
-   ```nginx
-   server {
-       listen 80;
-       server_name yourdomain.com;
-       location /.well-known/acme-challenge/ { allow all; }
-       location / {
-           return 301 https://$host$request_uri;
-       }
-   }
-
-   server {
-       listen 443 ssl;
-       server_name yourdomain.com;
-       ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-       ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
-
-       location /static/ {
-           alias /path/to/Maeser/maeser/controllers/common/static/;
-       }
-
-       location / {
-           proxy_pass http://unix:/path/to/Maeser/maeser.sock;
-           proxy_set_header Host $host;
-           proxy_set_header X-Real-IP $remote_addr;
-           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-           proxy_set_header X-Forwarded-Proto $scheme;
-       }
-   }
-   ```
-4. **Enable** and **Test**:
-   ```bash
-   sudo ln -s /etc/nginx/sites-available/maeser /etc/nginx/sites-enabled/
-   sudo nginx -t
-   sudo systemctl reload nginx
-   ```
-
----
-
-## 5. Containerization with Docker & Docker Compose
-
-<!-- Explain the purpose of Docker briefly -->
-
-### 5.1 Dockerfile Example
-
-```Dockerfile
-FROM python:3.10-slim
-WORKDIR /app
-COPY . /app
-RUN pip install -e . && pip install gunicorn
-EXPOSE 8000
-env OPENAI_API_KEY=<your-key>
-CMD ["gunicorn", "example.flask_example_user_mangement:app", "--bind", "0.0.0.0:8000"]
-```
-
-### 5.2 docker-compose.yml Example
-
-```yaml
-version: '3'
-services:
-  maeser:
-    build: .
-    command: gunicorn example.flask_example_user_mangement:app --bind 0.0.0.0:8000
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - config=/app/config.yaml
-```
-
-Launch:
 ```bash
-docker-compose up -d --build
+sudo setfacl -R -m -d u:www-data:rwx /path/to/maeser/app
 ```
 
+The first command grants read-write-execute permissions for `www-data` for every file in your project directory. The second command sets these permissions as the default for files created in this directory in the future, so these commands only need to be run once.
+
+> **Note:** You can use `getfacl` to check the permissions set for any file or directory.
+
+To start your service, run `sudo systemctl start my-maeser-app.service`, or equivalently, `sudo systemctl start my-maeser-app`. To confirm that it started successfully and is running, run `sudo systemctl status my-maeser-app.service`. If all is well, you should see something similar to the following:
+```
+● my-maeser-app.service - My Maeser WSGI Server
+     Loaded: loaded (/etc/systemd/system/my-maeser-app.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-07-08 16:59:05 MDT; 8s ago
+     ...
+```
+
+If your service is "**active (running)**", then you are all set! You should be able to access your server in a web browser just as before. Your web server will now run in the background and will automatically start up when your machine starts up. You can manage your service in the following ways:
+1. Start Service
+  ```bash
+  sudo systemctl start my-maeser-app.service
+  ```
+
+2. Stop Service
+  ```bash
+  sudo systemctl stop my-maeser-app.service
+  ```
+
+3. Restart Service
+  ```bash
+  sudo systemctl restart my-maeser-app.service
+  ```
+
+> **Note:** To see a live feed of your service's logs, you can use `journalctl`. Run the following command in its own terminal session:
+> ```bash
+> sudo journalctl -fu my-maeser-app.service
+> ```
+> The terminal window will now show the live output of your web server.
+
 ---
 
-## 6. Scaling & High Availability
+## Deploy Your Server Publicly With a Domain Name
 
-- **Horizontal Scaling**: Deploy multiple Gunicorn containers behind a load balancer (e.g., AWS ELB, NGINX upstream).  
-- **Session Storage**: Use centralized memory store (Redis) or persistent DB for session state and chat logs.  
-- **Container Orchestration**: Use Kubernetes, Docker Swarm, or ECS/EKS to manage replicas, auto‑scaling, and rolling updates.
+There are three main things you will need to acquire to fully deploy your server:
+1. **A domain name**
+2. **An SSL/TLS certificate**
+3. **A private key**
 
----
+A **domain name** will need to be acquired from a [**domain name registrar**](https://en.wikipedia.org/wiki/Domain_name_registrar) — a company that registers domain names for a price (like [**Cloudflare**](https://www.cloudflare.com/products/registrar/), just as an example). Several registrars exist, so it is encouraged that you **do your own research** to find a domain name registrar that best fits your needs.
 
-## 7. Monitoring & Logging
+An **SSL/TLS certificate** and a **private key** are needed to upgrade your web server from HTTP to HTTPS, which encrypts messages between the user's web browser and the web server for added security. This certificate and key must be acquired from a **Certificate Authority (CA)**, such as [**Let's Encrypt**](https://letsencrypt.org/). There are many Certificate Authorities, and some offer certificates for free while others charge for them, so **do your own research** to find a Certificate Authority that best fits your needs.
 
-- **Application Logs**: Configure Gunicorn `--access-logfile` and `--error-logfile` options.  
-- **Chat Logs**: Ensure `ChatLogsManager` is writing to a persistent volume or external storage.  
-- **Monitoring Tools**: Integrate Prometheus/Grafana for metrics (CPU, memory, request latency).  
-- **Alerts**: Set up alerts for high error rates or API quota exhaustion.
+> For more information on SSL/TLS Certificates, refer to [this article](https://aws.amazon.com/what-is/ssl-certificate/) by Amazon.
 
----
+Once you have acquired your domain name, SSL certificate, and private key, you will need to configure your web server to work with them. For an nginx server, refer to its [documentation](https://nginx.org/en/docs/http/configuring_https_servers.html) on how to configure your HTTP server with SSL. Configuration will vary for other HTTP server applications.
 
-## 8. Backup & Maintenance
+Lastly, be sure to update your OAuth settings once more (as described [above](#configure-a-wsgi-server-to-run-your-app)) since the web server is now accessed through your site's domain name.
 
-- **Database Backups**: Schedule regular dumps of `USERS_DB_PATH` and chat logs.  
-- **Vectorstore Snapshots**: Archive FAISS indexes after embedding runs to prevent data loss.  
-- **Certificate Renewal**: Automate Let’s Encrypt renewals with `certbot renew --quiet` in a cron job.
-
-
+## Resources
+- [**Deploying to Production**](https://flask.palletsprojects.com/en/stable/deploying/), Flask documentation
+- The section on directives for a `.service file` from [**this DigitalOcean article**](https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files#the-service-section)
+- Wikipedia article on [**Web Server Gateway Interface (WSGI)**](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface)
+- Wikipedia article on [**Domain Name Registrars**](https://en.wikipedia.org/wiki/Domain_name_registrar)
+- Amazon article on [**SSL/TLS Certificates**](https://aws.amazon.com/what-is/ssl-certificate/)
