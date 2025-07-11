@@ -17,25 +17,6 @@ The following sections will cover each Menu item.
 ### General Information ###
 The information here is optional, but may be helpful if managing multiple bots.
 
-### OAuth2 ###
-In the OAuth2 → URL Generator:
-
-Under Scopes, check:
-- dm_channels.messages.read
-- messages.read
-- dm_channels.read
-- presences.write
-- dm_channels.messages.write 
-- bot
-- gateway.coonnect
-
-A URL will be generated at the bottom — copy and open it in your browser.
-
-Select a server you own or have permission to add bots to. If you need to do this, go and set one up, and then come back to this step.
-
-Click `Authorize`.
-
-
 ### Bot ###
 You will want to define a bot icon and username here. This will be as if you are creating an account for the bot as a person (username and user icon).
 
@@ -58,7 +39,7 @@ The following must be ticked `enabled` in order for the bot to run properly. **I
 
 ### Installation ###
 
-When you are finished with your permissions and such, you may share the link under the `Install Link` with individuals you want to share this with.
+When you are finished with your permissions and such, you may copy and paste the install link into your browser window, which should allow you to interact with the bot. After setting it up, you are more than welcome to share it with others if you'd like.
 
 ## Using Discord ##
 To use the discord app, you may begin a DM with the bot after it has been set up.
