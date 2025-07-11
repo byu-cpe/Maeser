@@ -37,6 +37,11 @@ The following must be ticked `enabled` in order for the bot to run properly. **I
 - Use External Apps
 - Create Polls
 
+### OAuth2 ###
+This is a key part of the setup process. Scroll down to OAuth2 URL Generator, select `bot`. If permissions have not been added yet, you can add them here.
+
+Copy the generated url and enter it into your browser to set it up.
+
 ### Installation ###
 
 When you are finished with your permissions and such, you may copy and paste the install link into your browser window, which should allow you to interact with the bot. After setting it up, you are more than welcome to share it with others if you'd like.
