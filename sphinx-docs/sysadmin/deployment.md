@@ -100,7 +100,7 @@ sudo setfacl -R -m u:www-data:rwx /path/to/maeser/app
 ```
 
 ```bash
-sudo setfacl -R -m -d u:www-data:rwx /path/to/maeser/app
+sudo setfacl -R -d -m u:www-data:rwx /path/to/maeser/app
 ```
 
 The first command grants read-write-execute permissions for `www-data` for every file in your project directory. The second command sets these permissions as the default for files created in this directory in the future, so these commands only need to be run once.
