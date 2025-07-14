@@ -25,7 +25,7 @@ def extract_figures_from_text(text):
     pattern = r'Figure (\d+\.\d+)'
     return re.findall(pattern, text)
 
-def split_string(text, max_length=1999):
+def split_string(text:str, max_length=1999):
     chunks = []
     while len(text) > max_length:
         # Try to split at the last newline before max_length
@@ -51,7 +51,7 @@ async def on_ready():
     print(f"✅ Discord Bot connected as {client.user}")
 
 @client.event
-async def on_message(message):
+async def on_message(message: discord.Message):
     if message.author.bot:
         return
 
@@ -67,11 +67,11 @@ async def on_message(message):
         await message.channel.send("🧑‍🏫 Please enter your course ID:")
         awaiting_course_id_users.add(user_id)
 
-        def check(m):
+        def check(m: discord.Message):
             return m.author == message.author and m.channel == message.channel and m.content.strip()
 
         try:
-            reply_message = await client.wait_for("message", check=check, timeout=60)
+            reply_message: discord.Message = await client.wait_for("message", check=check, timeout=60)
             course_id = reply_message.content.strip()
             valid_courses = get_valid_course_ids()
 
