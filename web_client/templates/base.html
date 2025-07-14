@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+    <title>{% block title %}title{% endblock %} - Admin Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    {% endblock %}
+</head>
+<body>
+    <div class="header">
+        {% block header %}
+        <div class="user-welcome">Welcome, {{ username }}! --Admin Portal: {% block page_name %}{{ self.title() }}{% endblock %}--</div>
+        {% endblock %}
+    </div>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            {% block sidebar %}
+            <h3>Admin Navigation</h3>
+            <ul>
+                <li><a href="design_model">Design New Model</a></li>
+                <li><a href="manage_models">Manage Models</a></li>
+                <li><a href="/">Return Home</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+            {% endblock %}
+        </div>
+
+        <div class="content">
+            {% block content %}
+            <p>content</p>
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
