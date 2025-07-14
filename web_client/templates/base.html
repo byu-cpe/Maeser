@@ -3,7 +3,9 @@
 <head>
     {% block head %}
     <title>{% block title %}title{% endblock %} - Admin Portal</title>
+    {% block stylesheets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    {% endblock %}
     {% endblock %}
 </head>
 <body>
