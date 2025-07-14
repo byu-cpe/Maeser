@@ -75,9 +75,14 @@ async def on_message(message: discord.Message):
             course_id = reply_message.content.strip()
             valid_courses = get_valid_course_ids()
 
-            if course_id not in valid_courses:
-                await message.channel.send(f"❌ Invalid course ID. Available options: {', '.join(valid_courses)}")
-                return
+            while course_id not in valid_courses:
+                await message.channel.send(
+                    f"❌ Invalid course ID. Available options: {', '.join(valid_courses)}\n"
+                    f"🧑‍🏫 Please enter your course ID:"
+                )
+                reply_message = await client.wait_for("message", check=check, timeout=60)
+                course_id = reply_message.content.strip()
+                valid_courses = get_valid_course_ids()
 
             discord_user_course_ids[user_id] = course_id
             await message.channel.send(f"✅ Session started for course `{course_id}`! Send your question.")
