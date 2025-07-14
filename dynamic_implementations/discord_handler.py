@@ -2,7 +2,7 @@ import discord
 import asyncio
 import os
 import re
-from generate_response import handle_message, get_valid_course_ids
+from generate_response import handle_message, get_valid_course_ids, BOT_DATA_PATH
 from config import DISCORD_BOT_TOKEN
 import maeser.graphs.universal_rag as RAG_VARS
 
@@ -18,8 +18,6 @@ client = discord.Client(intents=intents)
 discord_user_course_ids = {}
 awaiting_course_id_users = set()
 
-FIGURE_DIR = ""
-RESOURCE = ""
 
 # Helper: Extract figure references like "1_page3_fig2"
 def extract_figures_from_text(text):
@@ -112,15 +110,15 @@ async def on_message(message):
             try:
                 # Extract and send figures if referenced
 
-                FIGURE_DIR = f"dynamic_implementations/bot_data/{course_id}/{RAG_VARS.recommended_topics[0]}"
-                figure_names = extract_figures_from_text(reply)
-                files = []
-                for fig in figure_names:
-                    image_path = os.path.join(FIGURE_DIR, f"{fig}.png")
-                    if os.path.exists(image_path):
-                        files.append(discord.File(image_path, filename=f"{fig}.png"))
-                    else:
-                        print(f"[WARN] Figure not found: {image_path}")
+                    figure_dir = f"{BOT_DATA_PATH}/{course_id}/{RAG_VARS.recommended_topics[0]}"
+                    figure_names = extract_figures_from_text(reply)
+                    files = []
+                    for fig in figure_names:
+                        image_path = os.path.join(figure_dir, f"{fig}.png")
+                        if os.path.exists(image_path):
+                            files.append(discord.File(image_path, filename=f"{fig}.png"))
+                        else:
+                            print(f"[WARN] Figure not found: {image_path}")
 
                 if files:
                     await message.channel.send(files=files)
