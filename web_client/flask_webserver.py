@@ -4,10 +4,7 @@ from config import UPLOAD_ROOT
 import os
 import subprocess
 from werkzeug.utils import secure_filename
-import re
 import shutil
-
-
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
@@ -20,9 +17,6 @@ USER = {
     'is_admin' : True
 }
 
-from flask import request, render_template, redirect, url_for, session
-import os
-
 # Global Variables
 model_name = ""
 host_address = ""
@@ -34,26 +28,6 @@ def home():
     if 'user' in session:
         return render_template('admin_portal.html', username=session['user'])
     return redirect(url_for('login'))
-
-
-def parse_bot_file(bot_txt):
-    content = bot_txt
-    print(bot_txt)
-    # Define regex patterns for sections, this helps parse data from a corresponding bot.txt file
-    pattern = r'# (\w+)\s+```.*?```\s+((?:.|\n)*?)(?=\n#|\Z)'
-    matches = re.findall(pattern, content)
-
-    for section, data in matches:
-        lines = [line.strip() for line in data.strip().splitlines() if line.strip()]
-        if section == "ModelName" and lines:
-            global model_name
-            model_name = lines[0]
-        elif section == "Rules":
-            global rules
-            rules = lines
-        elif section == "Contexts":
-            global contexts
-            contexts = lines
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
