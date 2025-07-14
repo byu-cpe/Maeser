@@ -34,6 +34,9 @@ from config import (
 # Set API key
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
+# Path to the bot data directory
+BOT_DATA_PATH = VEC_STORE_PATH
+
 # Managers
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
@@ -70,14 +73,12 @@ def parse_vectorstores_from_bot_txt(path):
 def get_valid_course_ids():
     """Retrieves a list of valid course IDs from the bot_data directory."""
 
-    bot_data_path = "dynamic_implementations/bot_data"
-
-    if not os.path.exists(bot_data_path):
+    if not os.path.exists(BOT_DATA_PATH):
         print("Error: bot_data directory not found. Please ensure it exists with course subdirectories.")
         return []
     return [
-        name for name in os.listdir(bot_data_path)
-        if os.path.isdir(os.path.join(bot_data_path, name))
+        name for name in os.listdir(BOT_DATA_PATH)
+        if os.path.isdir(os.path.join(BOT_DATA_PATH, name))
     ]
 
 # --- Main Chat Handling Function (Unified Logic) ---
@@ -88,7 +89,7 @@ def handle_message(user_id: str, course_id: str, message_text: str) -> str:
     Manages bot registration and session creation for Maeser.
     """
     # Verify bot config exists for the given course ID
-    bot_config_path = f"dynamic_implementations/bot_data/{course_id}/bot.txt"
+    bot_config_path = f"{BOT_DATA_PATH}/{course_id}/bot.txt"
     if not os.path.exists(bot_config_path):
         return f"Bot config for course '{course_id}' not found. Please ensure the course ID is valid and configured."
     
