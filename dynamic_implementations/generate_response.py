@@ -16,9 +16,6 @@ Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
 
 import os
-import threading
-import asyncio # Needed for running Discord bot client
-import time # For ngrok delay and main thread loop
 
 # Import Maeser components
 from maeser.chat.chat_logs import ChatLogsManager
@@ -28,7 +25,7 @@ from langgraph.graph.graph import CompiledGraph
 
 # Import configuration
 from config import (
-    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME, DISCORD_BOT_TOKEN
+    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 
 # Set API key
