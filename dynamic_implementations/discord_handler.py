@@ -102,18 +102,19 @@ async def on_message(message: discord.Message):
     # -- MESSAGE PROCESSING --
     if user_id in discord_user_course_ids:
         course_id = discord_user_course_ids[user_id]
-        try:
-            reply = handle_message(user_id, course_id, msg_text)
-            # Send text reply
-            if(len(reply)>1999):
-                chunks = split_string(reply)
-                for i in chunks:
-                    await message.channel.send(f"🤖 {i}")
-            else:   
-                await message.channel.send(f"🤖 {reply}")
-
+        async with message.channel.typing():
             try:
-                # Extract and send figures if referenced
+                reply = handle_message(user_id, course_id, msg_text)
+                # Send text reply
+                if(len(reply)>1999):
+                    chunks = split_string(reply)
+                    for chunk in chunks:
+                        await message.channel.send(f"🤖 {chunk}")
+                else:   
+                    await message.channel.send(f"🤖 {reply}")
+
+                try:
+                    # Extract and send figures if referenced
 
                     figure_dir = f"{BOT_DATA_PATH}/{course_id}/{RAG_VARS.recommended_topics[0]}"
                     figure_names = extract_figures_from_text(reply)
@@ -125,13 +126,13 @@ async def on_message(message: discord.Message):
                         else:
                             print(f"[WARN] Figure not found: {image_path}")
 
-                if files:
-                    await message.channel.send(files=files)
-            except Exception:
-                print("❌ There was an issue sending figures.")
+                    if files:
+                        await message.channel.send(files=files)
+                except Exception:
+                    print("❌ There was an issue sending figures.")
 
-        except Exception as e:
-            await message.channel.send(f"❌ Error: {e}")
+            except Exception as e:
+                await message.channel.send(f"❌ Error: {e}")
     else:
         await message.channel.send("❗ Please start a session first using `!start`.")
 
