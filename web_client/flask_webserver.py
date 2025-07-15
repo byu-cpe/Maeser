@@ -23,11 +23,22 @@ host_address = ""
 rules = []
 contexts = []
 
+# decorator for login checking
+import functools
+def require_login(func):
+    @functools.wraps(func) # check_login.__name__ == func.__name__
+    def check_login(*args, **kwargs):
+        if 'user' in session:
+            return func(*args, **kwargs)
+        else:
+            return redirect(url_for('login'))
+    return check_login
+
 @app.route('/')
+@require_login
 def home():
-    if 'user' in session:
-        return render_template('admin_portal.html', username=session['user'])
-    return redirect(url_for('login'))
+    return render_template('admin_portal.html', username=session['user'])
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -43,10 +54,8 @@ def login():
     return render_template('login.html', error=error)
 
 @app.route('/design_model', methods=['GET', 'POST'])
+@require_login
 def design_model():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
     if request.method == 'POST':
         rules = request.form.getlist('rules[]')
         class_code = request.form.get('class_code', '').strip()
@@ -108,10 +117,8 @@ def design_model():
     return render_template('design_model.html', username=session['user'])
 
 @app.route('/manage_models', methods=['GET'])
+@require_login
 def manage_models():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
     # List all class_code folders inside UPLOAD_ROOT
     models = []
     for item in os.listdir(UPLOAD_ROOT):
@@ -123,10 +130,8 @@ def manage_models():
 
 
 @app.route('/edit_model/<class_code>', methods=['GET', 'POST'])
+@require_login
 def edit_model(class_code):
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
     model_dir = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
     bot_path = os.path.join(model_dir, 'bot.txt')
 
