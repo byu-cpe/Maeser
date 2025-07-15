@@ -4,7 +4,7 @@ This module contains functions for processing and rendering chat logs.
 It includes functions to process messages, get the log file template, and display
 the content of a specified log file.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

@@ -4,7 +4,7 @@ User management module for authentication and authorization.
 This module provides classes and utilities for managing users,
 including authentication methods, database operations, and request tracking.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

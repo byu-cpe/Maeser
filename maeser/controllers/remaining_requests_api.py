@@ -1,7 +1,7 @@
 """
 This module provides a controller for fetching the remaining requests for a user.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

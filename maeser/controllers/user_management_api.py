@@ -5,7 +5,7 @@ This module provides an API endpoint for managing users, including listing users
 toggling admin and banned statuses, updating request counts, removing users from
 the cache, fetching users, listing cleanable users, and cleaning the cache.
 
-© 2024 Carson Bush
+© 2024
 
 This file is part of Maeser.
 

@@ -4,7 +4,7 @@ This module handles API requests for creating new chat sessions.
 It uses the ChatSessionManager to manage session creation and optionally integrates
 with user management through Flask-Login's current_user.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

@@ -1,5 +1,5 @@
 # Minimal makefile for Sphinx documentation
-# © 2024 Carson Bush
+# © 2024
 
 # This file is part of the Maeser unit test suite.
 

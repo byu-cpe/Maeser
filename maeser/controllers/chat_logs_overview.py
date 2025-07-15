@@ -3,7 +3,7 @@ This module contains the controller function for rendering the chat logs overvie
 
 It handles fetching log files, applying filters, and calculating aggregate data such as total tokens and cost.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

@@ -1,7 +1,7 @@
 """
 Module for managing chat sessions and interactions with multiple chat interfaces.
 
-© 2024 Blaine Freestone, Carson Bush
+© 2024
 
 This file is part of Maeser.
 

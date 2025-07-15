@@ -1,7 +1,7 @@
 """
 Logout controller for handling user logouts and session cleanup.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

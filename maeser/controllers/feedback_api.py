@@ -5,7 +5,7 @@ for messages. The feedback includes information such as the branch,
 session ID, message, whether it is a like or dislike, and the index
 of the message.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

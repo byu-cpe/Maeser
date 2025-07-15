@@ -2,7 +2,7 @@
 This is the controllers subpackage for the Maeser package. It contains the
 controllers for the different parts of the application.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

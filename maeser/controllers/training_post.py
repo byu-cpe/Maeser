@@ -2,7 +2,7 @@
 This module contains functions to save training data and handle controller
 requests in a Flask application.
 
-© 2024 Carson Bush, Blaine Freestone
+© 2024
 
 This file is part of Maeser.
 

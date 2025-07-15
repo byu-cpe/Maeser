@@ -2,7 +2,7 @@
 
 This module contains a function to render the chat interface template with relevant data.
 
-© 2024 Blaine Freestone, Carson Bush
+© 2024
 
 This file is part of Maeser.
 
