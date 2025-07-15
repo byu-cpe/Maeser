@@ -12,10 +12,10 @@
         <input type="text" id="class_code" name="class_code" required><br><br>
     
         <!-- File upload -->
-        <!-- File Groups Section -->
-        <label>PDF File Groups:</label>
+        <!-- File Groups/Datasets Section -->
+        <label>PDF Datasets:</label>
         <div id="file-groups-container"></div>
-        <button type="button" onclick="addFileGroup()">Add File Group</button><br><br>
+        <button type="button" onclick="addFileGroup()">Add Dataset</button><br><br>
 
         <!-- Rules section -->
         <label>Rules:</label>
@@ -40,7 +40,7 @@
         
             // Group name
             const nameLabel = document.createElement('label');
-            nameLabel.textContent = 'File Group Name:';
+            nameLabel.textContent = 'Dataset Name:';
             const nameInput = document.createElement('input');
             nameInput.type = 'text';
             nameInput.name = `file_groups[${fileGroupCount}][name]`;

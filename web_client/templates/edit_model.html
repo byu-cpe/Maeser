@@ -37,9 +37,9 @@
         <hr>
 
         <!-- Upload New File Groups -->
-        <h3>Add New File Groups</h3>
+        <h3>Add New Datasets</h3>
         <div id="file-groups-container"></div>
-        <button type="button" onclick="addFileGroup()">Add File Group</button>
+        <button type="button" onclick="addFileGroup()">Add Dataset</button>
 
         <hr>
         <input type="submit" value="Update Model">
@@ -86,7 +86,7 @@
             innerDiv.className = 'file-group-content';
 
             const nameLabel = document.createElement('label');
-            nameLabel.textContent = 'File Group Name:';
+            nameLabel.textContent = 'Dataset Name:';
             const nameInput = document.createElement('input');
             nameInput.type = 'text';
             nameInput.name = `file_groups[${fileGroupCount}][name]`;
