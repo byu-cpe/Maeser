@@ -26,7 +26,7 @@ contexts = []
 # decorator for login checking
 import functools
 def require_login(func):
-    @functools.wraps(func) # check_login.__name__ == func.__name__
+    @functools.wraps(func) # updates metadata so that check_login.__name__ == func.__name__
     def check_login(*args, **kwargs):
         if 'user' in session:
             return func(*args, **kwargs)
