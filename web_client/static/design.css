@@ -71,6 +71,25 @@ body {
     font-size: 14px;
 }
 
+.file-list {
+  margin-top: 0.5em;
+}
+
+.file-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25em;
+}
+
+.file-entry span {
+  flex: 1;
+}
+
+.file-entry button {
+  margin-left: 0.5em;
+}
+
+
 .remove-button {
     position: absolute;
     top: 8px;
