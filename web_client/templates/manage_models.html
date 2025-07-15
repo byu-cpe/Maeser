@@ -8,10 +8,15 @@
     {% if models %}
         <ul>
         {% for model in models %}
-            <li>
+            <li class="file-entry">
                 {{ model }}
                 <a href="{{ url_for('edit_model', class_code=model) }}">Edit</a>
-                <!-- Optionally add delete button -->
+
+                <!-- Delete -->
+                <form method="POST">
+                    <input type="hidden" name="class_code" value="{{ model }}">
+                    <button type="submit">Delete</button>
+                </form>
             </li>
         {% endfor %}
         </ul>

@@ -78,6 +78,7 @@ body {
 .file-entry {
   display: flex;
   align-items: center;
+  gap: 0.25em;
   margin-bottom: 0.25em;
 }
 

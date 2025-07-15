@@ -23,6 +23,19 @@ host_address = ""
 rules = []
 contexts = []
 
+# Remove class model from bot data directory
+def remove_class_model(class_code:str):
+    print(f"Removing {class_code} from {UPLOAD_ROOT} directory...")
+    class_path = os.path.join(UPLOAD_ROOT,class_code)
+    try:
+        if not os.path.isdir(class_path):
+            raise NotADirectoryError(f"Unable to find directory {class_path}")
+        shutil.rmtree(class_path)
+        print(f"Successfuly removed {class_code}.")
+    except Exception as e:
+        print(f"Unable to remove {class_code}:")
+        print(e)
+
 # decorator for login checking
 import functools
 def require_login(func):
@@ -116,9 +129,17 @@ def design_model():
 
     return render_template('design_model.html', username=session['user'])
 
-@app.route('/manage_models', methods=['GET'])
+@app.route('/manage_models', methods=['GET', 'POST'])
 @require_login
 def manage_models():
+    if request.method == 'POST':
+        class_code = request.form.get("class_code")
+        if not class_code:
+            flash("Class Code is required.", "error")
+            return redirect(url_for('design_model'))
+        else:
+            remove_class_model(class_code)
+
     # List all class_code folders inside UPLOAD_ROOT
     models = []
     for item in os.listdir(UPLOAD_ROOT):
