@@ -1,0 +1,13 @@
+header:
+  license:
+    spdx-id: LGPL-3.0-or-later
+    copyright-owner: BYU Configurable Computing Laboratory
+
+  paths-ignore:
+    - 'dist'
+    - 'licenses'
+    - '**/*.md'
+    - 'LICENSE'
+    - 'NOTICE'
+
+  comment: on-failure
