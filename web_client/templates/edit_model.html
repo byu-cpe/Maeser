@@ -4,7 +4,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
 {% endblock stylesheets %}
 {% block content %}
-<form id="model-form" method="POST" enctype="multipart/form-data">
+    <a href="/manage_models">
+        <b>&larr;</b>Back
+    </a>
+    <form id="model-form" method="POST" enctype="multipart/form-data">
         <h2>Edit Model "{{ class_code }}"</h2>
         
         <!-- Rules Section -->
@@ -43,11 +46,11 @@
             
             <hr>
             <input type="submit" value="Update Model">
-            <div id="generate-model-status" style="display: none;">
-                <p id="status-text">Updating</p>
-                <div id="loading-spinner" class="loading-spinner"></div>
-            </div>
         </form>
+        <div id="generate-model-status" style="display: none;">
+            <p id="status-text">Updating</p>
+            <div id="loading-spinner" class="loading-spinner"></div>
+        </div>
 {% endblock content %}
 {% block scripts %}
     <script src="/static/js/design_model.js"></script>
