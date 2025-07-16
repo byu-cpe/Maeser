@@ -6,7 +6,6 @@
     {% block stylesheets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
     {% endblock stylesheets %}
-    {% block scripts %}{% endblock scripts %}
     {% endblock head %}
 </head>
 <body>
@@ -28,12 +27,13 @@
             </ul>
             {% endblock sidebar %}
         </div>
-
+        
         <div class="content">
             {% block content %}
             <p>content</p>
             {% endblock content %}
         </div>
     </div>
+    {% block scripts %}{% endblock scripts %}
 </body>
 </html>

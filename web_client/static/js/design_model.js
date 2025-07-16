@@ -124,4 +124,14 @@ function addRule() {
     ruleDiv.appendChild(deleteButton);
     container.appendChild(ruleDiv);
 }
+
+// Display loading text
+const STATUS_MSG = " Model... You can view current progress in the terminal. You will be redirected to the 'Manage Models' page when generation is complete.";
+const form = document.getElementById('model-form');
+const generatingStatus = document.getElementById('generate-model-status');
+const statusText = generatingStatus.querySelector('#status-text');
+form.addEventListener('submit', function(event) {
+    statusText.textContent += STATUS_MSG;
+    generatingStatus.style.display = 'block';
+});
         

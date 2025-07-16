@@ -3,9 +3,6 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
 {% endblock stylesheets %}
-{% block scripts %}
-    <script src="/static/js/design_model.js"></script>    
-{% endblock scripts %}
 {% block content %}
 <form id="model-form" method="POST" enctype="multipart/form-data">
     <h2>Create New Model</h2>
@@ -26,5 +23,12 @@
     <button type="button" onclick="addRule()">Add Rule</button><br><br>
     
     <input type="submit" value="Submit Model">
+    <div id="generate-model-status" style="display: none;">
+        <p id="status-text">Generating</p>
+        <div id="loading-spinner" class="loading-spinner"></div>
+    </div>
 </form>
 {% endblock content %}
+{% block scripts %}
+    <script src="/static/js/design_model.js"></script>    
+{% endblock scripts %}
