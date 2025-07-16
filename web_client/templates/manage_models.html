@@ -4,6 +4,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
 {% endblock %}
 {% block content %}
+    <script>
+        function confirm_delete(model) {
+            return confirm(`Are you sure you want to delete ${model}?`)
+        }
+    </script>
     <h2>Existing Models</h2>
     {% if models %}
         <ul>
@@ -15,7 +20,12 @@
                 <!-- Delete -->
                 <form method="POST">
                     <input type="hidden" name="class_code" value="{{ model }}">
-                    <button type="submit">Delete</button>
+                    <button 
+                        type="submit"
+                        onclick="return confirm_delete('{{ model }}');"
+                    >
+                        Delete
+                    </button>
                 </form>
             </li>
         {% endfor %}
