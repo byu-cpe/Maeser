@@ -10,11 +10,14 @@ header:
     - '**/*.md'
     - 'LICENSE'
     - 'NOTICE'
+    - '.licenserc.yaml'
     - '.github'
+    - '.gitignore'
     - '**/*.txt'
     - '**/*.json'
     - 'maeser/data/static/bootstrap-icons'
     - 'maeser/data/static/normalize.css'
     - 'example/vectorstores'
+    - 'sphinx-docs'
 
   comment: on-failure
