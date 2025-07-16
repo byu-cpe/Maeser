@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 This module contains decorators for rate limiting and admin access control
 in a Flask application.
