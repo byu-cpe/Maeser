@@ -125,7 +125,7 @@ def design_model():
         except subprocess.CalledProcessError as e:
             flash(f"Makefile failed: {e}", "error")
 
-        return redirect(url_for('home'))
+        return redirect(url_for('manage_models'))
 
     return render_template('design_model.html', username=session['user'])
 
