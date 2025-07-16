@@ -2,17 +2,18 @@
 <html>
 <head>
     {% block head %}
-    <title>{% block title %}title{% endblock %} - Admin Portal</title>
+    <title>{% block title %}title{% endblock title %} - Admin Portal</title>
     {% block stylesheets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
-    {% endblock %}
-    {% endblock %}
+    {% endblock stylesheets %}
+    {% block scripts %}{% endblock scripts %}
+    {% endblock head %}
 </head>
 <body>
     <div class="header">
         {% block header %}
-        <div class="user-welcome">Welcome, {{ username }}! --Admin Portal: {% block page_name %}{{ self.title() }}{% endblock %}--</div>
-        {% endblock %}
+        <div class="user-welcome">Welcome, {{ username }}! --Admin Portal: {% block page_name %}{{ self.title() }}{% endblock page_name %}--</div>
+        {% endblock header %}
     </div>
     
     <div class="main-container">
@@ -25,13 +26,13 @@
                 <li><a href="/manage_models">Manage Models</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
-            {% endblock %}
+            {% endblock sidebar %}
         </div>
 
         <div class="content">
             {% block content %}
             <p>content</p>
-            {% endblock %}
+            {% endblock content %}
         </div>
     </div>
 </body>
