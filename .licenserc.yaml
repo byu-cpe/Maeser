@@ -10,5 +10,8 @@ header:
     - '**/*.md'
     - 'LICENSE'
     - 'NOTICE'
+    - '.github'
+    - '**/*.txt'
+    - '**/*.json'
 
   comment: on-failure
