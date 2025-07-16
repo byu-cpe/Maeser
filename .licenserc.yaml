@@ -1,7 +1,5 @@
 header:
   license:
-    spdx-id: LGPL-3.0-or-later
-    copyright-owner: BYU Configurable Computing Laboratory
     content: 'SPDX-License-Identifier: LGPL-3.0-or-later'
 
   paths-ignore:
@@ -13,5 +11,8 @@ header:
     - '.github'
     - '**/*.txt'
     - '**/*.json'
+    - 'maeser/data/static/bootstrap-icons'
+    - 'maeser/data/static/normalize.css'
+    - 'example/vectorstores'
 
   comment: on-failure
