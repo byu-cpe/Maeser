@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
 // Wait for the DOM to be fully loaded before executing the script
 document.addEventListener('DOMContentLoaded', function() {
     // Constants

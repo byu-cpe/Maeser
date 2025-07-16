@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 This is the controllers subpackage for the Maeser package. It contains the
 controllers for the different parts of the application.

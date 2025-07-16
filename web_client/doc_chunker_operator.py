@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 # doc_chunker_operator.py
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pathlib import Path

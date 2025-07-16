@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 This module provides a controller for fetching the remaining requests for a user.
 """

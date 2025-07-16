@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 This is the Maeser package, which provides a set of classes and
 functions for managing a chat application.
