@@ -13,6 +13,7 @@ header:
     - '.licenserc.yaml'
     - '.github'
     - '.gitignore'
+    - '**/*.toml'
     - '**/*.txt'
     - '**/*.json'
     - 'maeser/data/static/bootstrap-icons'
