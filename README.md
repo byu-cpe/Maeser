@@ -39,7 +39,12 @@ An understanding of langchain and langgraph is necessary for customizing the app
 - `sphinx_docs` contains sphinx related code and various documentation files.
 - `tests` contains unit test files for the application's source code. 
 
-This package is licensed on the LGPL version 3 or later.
-See [COPYING.LESSER.md](COPYING.LESSER.md) and [COPYING.md](COPYING.md) for details.
+Maeser is licensed on the LGPL version 3 or later: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
 
-Other resources may be licensed under different compatible licenses, such as the [MIT License](https://opensource.org/license/mit) (Bootstrap Icons), [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) (normalize.css), or [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) (images and vector stores).
+Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
+
+See [COPYING.LESSER.md](COPYING.LESSER.md) and [COPYING.md](COPYING.md) for more details on the GNU Lesser General Public License. Other resources may be licensed under different compatible licenses, such as the [MIT License](https://opensource.org/license/mit) (Bootstrap Icons), [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/legalcode) (normalize.css), or [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en) (images and vector stores).
