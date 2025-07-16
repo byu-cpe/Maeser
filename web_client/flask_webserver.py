@@ -139,6 +139,7 @@ def manage_models():
             return redirect(url_for('design_model'))
         else:
             remove_class_model(class_code)
+        return redirect(url_for('manage_models'))
 
     # List all class_code folders inside UPLOAD_ROOT
     models = []
