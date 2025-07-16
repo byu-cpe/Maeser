@@ -1,8 +1,8 @@
-name: Apply SPDX License Headers
+name: SkyWalking Eyes License Headers
 on: push
 jobs:
   build:
-    name: Run tests
+    name: Apply SPDX headers
     runs-on: ubuntu-latest
     strategy:
       matrix:
