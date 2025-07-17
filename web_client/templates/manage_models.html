@@ -1,41 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Manage Models</title>
+{% extends "base.html" %}
+{% block title %}Manage Models{% endblock title %}
+{% block stylesheets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
-</head>
-<body>
-    <div class="header">
-        <div class="user-welcome">Welcome, {{ username }}!   --Manage Models--</div>
-    </div>
-
-    <div class="main-container">
-        <div class="sidebar">
-            <h3>Admin Navigation</h3>
-            <ul>
-                <li><a href="{{ url_for('design_model') }}">Design New Model</a></li>
-                <li><a href="{{ url_for('manage_models') }}">Manage Models</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="/">Return Home</a></li>
-            </ul>
-        </div>
-
-        <div class="content">
-            <h2>Existing Models</h2>
-            {% if models %}
-                <ul>
-                {% for model in models %}
-                    <li>
-                        {{ model }}
-                        <a href="{{ url_for('edit_model', class_code=model) }}">Edit</a>
-                        <!-- Optionally add delete button -->
-                    </li>
+{% endblock stylesheets %}
+{% block content %}
+    <h2>Existing Models</h2>
+    {% if models %}
+        <ul>
+        {% for model in models %}
+                <li class="file-entry">
+                    {{ model }}
+                    <a href="{{ url_for('edit_model', class_code=model) }}">Edit</a>
+                    
+                    <!-- Delete -->
+                    <form method="POST">
+                        <input type="hidden" name="class_code" value="{{ model }}">
+                        <button 
+                            type="submit"
+                            onclick="return confirm_delete('{{ model }}');"
+                            >
+                            Delete
+                        </button>
+                    </form>
+                </li>
                 {% endfor %}
-                </ul>
-            {% else %}
-                <p>No models found.</p>
-            {% endif %}
-        </div>
-    </div>
-</body>
-</html>
+        </ul>
+    {% else %}
+        <p>No models found.</p>
+    {% endif %}
+    <script>
+        function confirm_delete(model) {
+            return confirm(`Are you sure you want to delete ${model}?`)
+        }
+    </script>
+{% endblock content %}

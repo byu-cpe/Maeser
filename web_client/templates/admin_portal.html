@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Portal</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
-</head>
-<body>
-    <div class="header">
-        <div class="user-welcome">Welcome, {{ username }}!   --Admin Portal--</div>
-    </div>
-
-    <div class="main-container">
-        <div class="sidebar">
-            <h3>Admin Navigation</h3>
-            <ul>
-                <li><a href="design_model">Design New Model</a></li>
-                <li><a href="manage_models">Manage Models</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="/">Return Home</a></li>
-            </ul>
-        </div>
-
-        <div class="content">
-            <p>This is the admin content area. Choose a task from the menu.</p>
-        </div>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Home{% endblock title %}
+{% block content %}
+    <p>This is the admin content area. Choose a task from the menu.</p>
+{% endblock content %}

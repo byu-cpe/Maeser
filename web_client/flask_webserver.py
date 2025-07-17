@@ -4,10 +4,7 @@ from config import UPLOAD_ROOT
 import os
 import subprocess
 from werkzeug.utils import secure_filename
-import re
 import shutil
-
-
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
@@ -20,40 +17,41 @@ USER = {
     'is_admin' : True
 }
 
-from flask import request, render_template, redirect, url_for, session
-import os
-
 # Global Variables
 model_name = ""
 host_address = ""
 rules = []
 contexts = []
 
+# Remove class model from bot data directory
+def remove_class_model(class_code:str):
+    print(f"Removing {class_code} from {UPLOAD_ROOT} directory...")
+    class_path = os.path.join(UPLOAD_ROOT,class_code)
+    try:
+        if not os.path.isdir(class_path):
+            raise NotADirectoryError(f"Unable to find directory {class_path}")
+        shutil.rmtree(class_path)
+        print(f"Successfuly removed {class_code}.")
+    except Exception as e:
+        print(f"Unable to remove {class_code}:")
+        print(e)
+
+# decorator for login checking
+import functools
+def require_login(func):
+    @functools.wraps(func) # updates metadata so that check_login.__name__ == func.__name__
+    def check_login(*args, **kwargs):
+        if 'user' in session:
+            return func(*args, **kwargs)
+        else:
+            return redirect(url_for('login'))
+    return check_login
+
 @app.route('/')
+@require_login
 def home():
-    if 'user' in session:
-        return render_template('admin_portal.html', username=session['user'])
-    return redirect(url_for('login'))
+    return render_template('admin_portal.html', username=session['user'])
 
-
-def parse_bot_file(bot_txt):
-    content = bot_txt
-    print(bot_txt)
-    # Define regex patterns for sections, this helps parse data from a corresponding bot.txt file
-    pattern = r'# (\w+)\s+```.*?```\s+((?:.|\n)*?)(?=\n#|\Z)'
-    matches = re.findall(pattern, content)
-
-    for section, data in matches:
-        lines = [line.strip() for line in data.strip().splitlines() if line.strip()]
-        if section == "ModelName" and lines:
-            global model_name
-            model_name = lines[0]
-        elif section == "Rules":
-            global rules
-            rules = lines
-        elif section == "Contexts":
-            global contexts
-            contexts = lines
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -69,10 +67,8 @@ def login():
     return render_template('login.html', error=error)
 
 @app.route('/design_model', methods=['GET', 'POST'])
+@require_login
 def design_model():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
     if request.method == 'POST':
         rules = request.form.getlist('rules[]')
         class_code = request.form.get('class_code', '').strip()
@@ -129,14 +125,21 @@ def design_model():
         except subprocess.CalledProcessError as e:
             flash(f"Makefile failed: {e}", "error")
 
-        return redirect(url_for('home'))
+        return redirect(url_for('manage_models'))
 
     return render_template('design_model.html', username=session['user'])
 
-@app.route('/manage_models', methods=['GET'])
+@app.route('/manage_models', methods=['GET', 'POST'])
+@require_login
 def manage_models():
-    if 'user' not in session:
-        return redirect(url_for('login'))
+    if request.method == 'POST':
+        class_code = request.form.get("class_code")
+        if not class_code:
+            flash("Class Code is required.", "error")
+            return redirect(url_for('design_model'))
+        else:
+            remove_class_model(class_code)
+        return redirect(url_for('manage_models'))
 
     # List all class_code folders inside UPLOAD_ROOT
     models = []
@@ -149,10 +152,8 @@ def manage_models():
 
 
 @app.route('/edit_model/<class_code>', methods=['GET', 'POST'])
+@require_login
 def edit_model(class_code):
-    if 'user' not in session:
-        return redirect(url_for('login'))
-
     model_dir = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
     bot_path = os.path.join(model_dir, 'bot.txt')
 

@@ -17,6 +17,10 @@ all:
 process:
 	@echo "Processing subdirectories in $(CLASS_DIR)..."
 	@for dir in $(shell find $(CLASS_DIR) -mindepth 1 -maxdepth 1 -type d); do \
+		if [ -f "$$dir/index.faiss" ]; then \
+			echo "⚠ dataset for $$dir already exists, skipping."; \
+			continue; \
+		fi; \
 		echo "---- Processing $$dir ----"; \
 		\
 		echo "1. Renaming PDF files..."; \
