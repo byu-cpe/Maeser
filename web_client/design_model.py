@@ -95,3 +95,16 @@ def delete_datasets(model_dir:str):
         group_path = os.path.join(model_dir, secure_filename(dataset))
         if os.path.exists(group_path) and os.path.isdir(group_path):
             shutil.rmtree(group_path)
+
+# Remove class model from bot data directory
+def remove_class_model(upload_root:str, class_code:str):
+    print(f"Removing {class_code} from {upload_root} directory...")
+    class_path = os.path.join(upload_root, class_code)
+    try:
+        if not os.path.isdir(class_path):
+            raise NotADirectoryError(f"Unable to find directory {class_path}")
+        shutil.rmtree(class_path)
+        print(f"Successfuly removed {class_code}.")
+    except Exception as e:
+        print(f"Unable to remove {class_code}:")
+        print(e)

@@ -4,7 +4,7 @@ import os
 import subprocess
 from werkzeug.utils import secure_filename
 import shutil
-from design_model import get_model_config, save_model, delete_datasets
+from design_model import get_model_config, save_model, delete_datasets, remove_class_model
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
@@ -22,19 +22,6 @@ model_name = ""
 host_address = ""
 rules = []
 contexts = []
-
-# Remove class model from bot data directory
-def remove_class_model(class_code:str):
-    print(f"Removing {class_code} from {UPLOAD_ROOT} directory...")
-    class_path = os.path.join(UPLOAD_ROOT,class_code)
-    try:
-        if not os.path.isdir(class_path):
-            raise NotADirectoryError(f"Unable to find directory {class_path}")
-        shutil.rmtree(class_path)
-        print(f"Successfuly removed {class_code}.")
-    except Exception as e:
-        print(f"Unable to remove {class_code}:")
-        print(e)
 
 # decorator for login checking
 import functools
@@ -98,7 +85,7 @@ def manage_models():
             print("Error: Class Code is required.")
             return redirect(url_for('design_model'))
         else:
-            remove_class_model(class_code)
+            remove_class_model(UPLOAD_ROOT, class_code)
         return redirect(url_for('manage_models'))
 
     # List all class_code folders inside UPLOAD_ROOT
