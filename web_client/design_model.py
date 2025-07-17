@@ -106,5 +106,4 @@ def remove_class_model(upload_root:str, class_code:str):
         shutil.rmtree(class_path)
         print(f"Successfuly removed {class_code}.")
     except Exception as e:
-        print(f"Unable to remove {class_code}:")
-        print(e)
+        print(f"Unable to remove {class_code}: {e}")
