@@ -73,14 +73,14 @@ def design_model():
     if request.method == 'POST':
         # Get model config
         try:
-            class_code, rules, datasets = get_model_config(UPLOAD_ROOT)
+            model_config:tuple = get_model_config(UPLOAD_ROOT)
         except AttributeError as e:
             print(f"Unable to use model config: {e}")
             return redirect(url_for('design_model'))
         
         # Save model
         try:
-            save_model(UPLOAD_ROOT, class_code, rules, datasets)
+            save_model(UPLOAD_ROOT, *model_config)
         except subprocess.CalledProcessError as e:
             print(f"Makefile failed: {e}")
             return redirect(url_for('design_model'))

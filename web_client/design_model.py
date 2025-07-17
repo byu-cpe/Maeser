@@ -8,9 +8,12 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 import os
 import subprocess
+import shutil
 
 # Retrieve model config from request
-def get_model_config(upload_root:str) -> tuple[str, list[str], dict[str, list[FileStorage]]]:
+def get_model_config(upload_root:str) -> tuple[
+    str, str, str, list[str], dict[str, list[FileStorage]]
+]:
     # Make sure class_code is defined
     class_code = request.form.get('class_code', '').strip()
     if not class_code:
@@ -43,16 +46,14 @@ def get_model_config(upload_root:str) -> tuple[str, list[str], dict[str, list[Fi
             #     if f and f.filename.endswith('.pdf'):
             #         filename = secure_filename(f.filename)
             #         f.save(os.path.join(dataset_path, filename))
-    return class_code, rules, datasets
+    return class_code, model_dir, bot_path, rules, datasets
 
 # Save model given config
-def save_model(upload_root:str, class_code: str, rules: list[str], datasets: dict[str, list[FileStorage]]):
+def save_model(
+    upload_root:str, class_code: str, model_dir: str, bot_path:str, rules: list[str], datasets: dict[str, list[FileStorage]]
+):
     # Make model dir
-    model_dir = os.path.join(upload_root, secure_filename(class_code))
     os.makedirs(model_dir, exist_ok=True)
-
-    # Get bot path
-    bot_path = os.path.join(model_dir, 'bot.txt')
 
     # Save datasets
     for dataset_path, files in datasets.items():
