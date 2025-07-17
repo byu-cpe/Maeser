@@ -3,7 +3,6 @@ from config import UPLOAD_ROOT
 import os
 import subprocess
 from werkzeug.utils import secure_filename
-import shutil
 from design_model import (
     get_model_config, save_model,
     delete_datasets, remove_class_model,
