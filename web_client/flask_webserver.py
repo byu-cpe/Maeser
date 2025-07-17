@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask import flash
 from config import UPLOAD_ROOT
 import os
 import subprocess
@@ -96,7 +95,7 @@ def manage_models():
     if request.method == 'POST':
         class_code = request.form.get("class_code")
         if not class_code:
-            flash("Class Code is required.", "error")
+            print("Error: Class Code is required.")
             return redirect(url_for('design_model'))
         else:
             remove_class_model(class_code)
