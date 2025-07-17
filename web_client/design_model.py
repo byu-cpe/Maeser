@@ -87,3 +87,11 @@ def process_datasets(model_dir:str):
         ['make', f'CLASS_DIR={model_dir}'],
         check=True,
     )
+
+# Delete datasets
+def delete_datasets(model_dir:str):
+    to_delete = request.form.getlist('delete_datasets[]')
+    for dataset in to_delete:
+        group_path = os.path.join(model_dir, secure_filename(dataset))
+        if os.path.exists(group_path) and os.path.isdir(group_path):
+            shutil.rmtree(group_path)

@@ -5,7 +5,7 @@ import os
 import subprocess
 from werkzeug.utils import secure_filename
 import shutil
-from design_model import get_model_config, save_model
+from design_model import get_model_config, save_model, delete_datasets
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
@@ -120,57 +120,25 @@ def edit_model(class_code):
     bot_path = os.path.join(model_dir, 'bot.txt')
 
     if request.method == 'POST':
-        # Get ruleset
-        rules = request.form.getlist('rules[]')
-
-        # Save uploaded files grouped properly
-        for key in request.files:
-            if key.startswith('file_groups'):
-                idx = key.split('[')[1].split(']')[0]
-                group_name = request.form.get(f'file_groups[{idx}][name]', f'Group_{idx}').lower()
-                group_dir = os.path.join(model_dir, secure_filename(group_name))
-                os.makedirs(group_dir, exist_ok=True)
-
-                files = request.files.getlist(f'file_groups[{idx}][files]')
-                for f in files:
-                    if f and f.filename.endswith('.pdf'):
-                        filename = secure_filename(f.filename)
-                        f.save(os.path.join(group_dir, filename))
-
-
-        # Handle dataset deletion
-        to_delete = request.form.getlist('delete_datasets[]')
-        for group in to_delete:
-            group_path = os.path.join(model_dir, secure_filename(group))
-            if os.path.exists(group_path) and os.path.isdir(group_path):
-                shutil.rmtree(group_path)
-
-        # Rewrite bot.txt with all required sections
-        with open(bot_path, 'w', encoding='utf-8') as bot_file:
-            bot_file.write("#NAME\n")
-            bot_file.write(f"{class_code}\n")
-
-            bot_file.write("#RULES\n")
-            for rule in rules:
-                bot_file.write(f"{rule}\n")
-
-            bot_file.write("#DATASETS\n")
-            for group in os.listdir(model_dir):
-                group_path = os.path.join(model_dir, group)
-                if os.path.isdir(group_path):
-                    bot_file.write(f"{group.lower()}\n")
-
-        # Run Makefile - pass only CLASS_DIR
+        # Get model config
         try:
-            subprocess.run(
-                ['make', f'CLASS_DIR={model_dir}'],
-                check=True
-            )
-            flash("Model updated and Makefile executed successfully!", "success")
-        except subprocess.CalledProcessError as e:
-            flash(f"Makefile failed: {e}", "error")
+            model_config:tuple = get_model_config(UPLOAD_ROOT)
+        except AttributeError as e:
+            print(f"Unable to use model config: {e}")
+            return redirect(url_for('edit_model', class_code=class_code))
+        
+        # Delete selected datasets
+        delete_datasets(model_dir)
 
-        return redirect(url_for('manage_models'))
+        # Save model
+        try:
+            save_model(UPLOAD_ROOT, *model_config)
+        except subprocess.CalledProcessError as e:
+            print(f"Makefile failed: {e}")
+            return redirect(url_for(f'/edit_model/{class_code}'))
+        finally:
+            print("Model submitted and Makefile executed successfully!")
+            return redirect(url_for('manage_models'))
 
     # Load rules from bot.txt
     rules = []
