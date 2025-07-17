@@ -5,6 +5,7 @@ import os
 import subprocess
 from werkzeug.utils import secure_filename
 import shutil
+from design_model import get_model_config, save_model
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
@@ -70,61 +71,22 @@ def login():
 @require_login
 def design_model():
     if request.method == 'POST':
-        # Make sure class_code is defined
-        class_code = request.form.get('class_code', '').strip()
-        if not class_code:
-            flash("Class Code is required.", "error")
+        # Get model config
+        try:
+            class_code, rules, datasets = get_model_config(UPLOAD_ROOT)
+        except AttributeError as e:
+            print(f"Unable to use model config: {e}")
             return redirect(url_for('design_model'))
         
-        # Get important file paths
-        model_dir = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
-        os.makedirs(model_dir, exist_ok=True)
-        bot_path = os.path.join(model_dir, 'bot.txt')
-
-        # Get ruleset
-        rules = request.form.getlist('rules[]')
-
-
-        # Save uploaded files grouped properly
-        for key in request.files:
-            if key.startswith('file_groups'):
-                idx = key.split('[')[1].split(']')[0]
-                group_name = request.form.get(f'file_groups[{idx}][name]', f'Group_{idx}').lower()
-                group_dir = os.path.join(model_dir, secure_filename(group_name))
-                os.makedirs(group_dir, exist_ok=True)
-
-                files = request.files.getlist(f'file_groups[{idx}][files]')
-                for f in files:
-                    if f and f.filename.endswith('.pdf'):
-                        filename = secure_filename(f.filename)
-                        f.save(os.path.join(group_dir, filename))
-
-        # Write bot.txt with all required sections
-        with open(bot_path, 'w', encoding='utf-8') as bot_file:
-            bot_file.write("#NAME\n")
-            bot_file.write(f"{class_code}\n")
-
-            bot_file.write("#RULES\n")
-            for rule in rules:
-                bot_file.write(f"{rule}\n")
-
-            bot_file.write("#DATASETS\n")
-            for group in os.listdir(model_dir):
-                group_path = os.path.join(model_dir, group)
-                if os.path.isdir(group_path):
-                    bot_file.write(f"{group.lower()}\n")
-
-        # Run Makefile - pass only CLASS_DIR
+        # Save model
         try:
-            subprocess.run(
-                ['make', f'CLASS_DIR={model_dir}'],
-                check=True
-            )
-            flash("Model submitted and Makefile executed successfully!", "success")
+            save_model(UPLOAD_ROOT, class_code, rules, datasets)
         except subprocess.CalledProcessError as e:
-            flash(f"Makefile failed: {e}", "error")
-
-        return redirect(url_for('manage_models'))
+            print(f"Makefile failed: {e}")
+            return redirect(url_for('design_model'))
+        finally:
+            print("Model submitted and Makefile executed successfully!")
+            return redirect(url_for('manage_models'))
 
     return render_template('design_model.html', username=session['user'])
 
