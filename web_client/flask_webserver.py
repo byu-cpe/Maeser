@@ -81,7 +81,7 @@ def design_model():
         os.makedirs(model_dir, exist_ok=True)
         bot_path = os.path.join(model_dir, 'bot.txt')
 
-        # Get new ruleset
+        # Get ruleset
         rules = request.form.getlist('rules[]')
 
 
@@ -158,7 +158,7 @@ def edit_model(class_code):
     bot_path = os.path.join(model_dir, 'bot.txt')
 
     if request.method == 'POST':
-        # Get new ruleset
+        # Get ruleset
         rules = request.form.getlist('rules[]')
 
         # Save uploaded files grouped properly
