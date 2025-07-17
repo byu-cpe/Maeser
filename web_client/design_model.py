@@ -1,6 +1,5 @@
 """
-This is a helper script used by flask_webserver.py
-that handles designing and editing class models
+This module is used by flask_webserver.py and contains several helper functions that handle designing and editing class chatbot models.
 """
 
 from flask import request
