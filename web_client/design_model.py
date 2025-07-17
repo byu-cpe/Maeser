@@ -107,3 +107,30 @@ def remove_class_model(upload_root:str, class_code:str):
         print(f"Successfuly removed {class_code}.")
     except Exception as e:
         print(f"Unable to remove {class_code}: {e}")
+
+# Loads rules from bot.txt
+def load_rules(bot_path: str) -> list[str]:
+    rules = []
+    if os.path.exists(bot_path):
+        with open(bot_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+            collecting = False
+            for line in lines:
+                if line.strip() == "#RULES":
+                    collecting = True
+                    continue
+                if line.strip().startswith("#") and collecting:
+                    break
+                if collecting:
+                    rules.append(line.strip())
+    
+    return rules
+
+# Loads list of existing datasets from class model directory
+def load_datasets(model_dir: str) -> list[str]:
+    datasets = [
+        d for d in os.listdir(model_dir)
+        if os.path.isdir(os.path.join(model_dir, d)) and d != '__pycache__'
+    ]
+
+    return datasets

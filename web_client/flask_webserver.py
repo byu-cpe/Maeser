@@ -4,7 +4,11 @@ import os
 import subprocess
 from werkzeug.utils import secure_filename
 import shutil
-from design_model import get_model_config, save_model, delete_datasets, remove_class_model
+from design_model import (
+    get_model_config, save_model,
+    delete_datasets, remove_class_model,
+    load_rules, load_datasets
+)
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
@@ -126,32 +130,17 @@ def edit_model(class_code):
             print("Model submitted and Makefile executed successfully!")
             return redirect(url_for('manage_models'))
 
-    # Load rules from bot.txt
-    rules = []
-    if os.path.exists(bot_path):
-        with open(bot_path, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-            collecting = False
-            for line in lines:
-                if line.strip() == "#RULES":
-                    collecting = True
-                    continue
-                if line.strip().startswith("#") and collecting:
-                    break
-                if collecting:
-                    rules.append(line.strip())
+    # Get rules and datasets
+    rules = load_rules(bot_path)
+    current_datasets = load_datasets(model_dir)
 
-    # Load current datasets
-    current_datasets = [
-        d for d in os.listdir(model_dir)
-        if os.path.isdir(os.path.join(model_dir, d)) and d != '__pycache__'
-    ]
-
-    return render_template('edit_model.html',
-                           class_code=class_code,
-                           rules=rules,
-                           current_datasets=current_datasets,
-                           username=session['user'])
+    return render_template(
+        'edit_model.html',
+        class_code=class_code,
+        rules=rules,
+        current_datasets=current_datasets,
+        username=session['user'],
+    )
 
 @app.route('/logout')
 def logout():
