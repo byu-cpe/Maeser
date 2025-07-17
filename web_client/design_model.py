@@ -11,7 +11,7 @@ import subprocess
 import shutil
 
 # Retrieve model config from request
-def get_model_config(upload_root:str) -> tuple[
+def get_model_config(upload_root: str) -> tuple[
     str, str, str, list[str], dict[str, list[FileStorage]]
 ]:
     # Make sure class_code is defined
@@ -50,7 +50,7 @@ def get_model_config(upload_root:str) -> tuple[
 
 # Save model given config
 def save_model(
-    upload_root:str, class_code: str, model_dir: str, bot_path:str, rules: list[str], datasets: dict[str, list[FileStorage]]
+    upload_root: str, class_code: str, model_dir: str, bot_path: str, rules: list[str], datasets: dict[str, list[FileStorage]]
 ):
     # Make model dir
     os.makedirs(model_dir, exist_ok=True)
@@ -82,14 +82,14 @@ def save_model(
     process_datasets(model_dir)
 
 # Process datasets via Makefile
-def process_datasets(model_dir:str):
+def process_datasets(model_dir: str):
     subprocess.run(
         ['make', f'CLASS_DIR={model_dir}'],
         check=True,
     )
 
 # Delete datasets
-def delete_datasets(model_dir:str):
+def delete_datasets(model_dir: str):
     to_delete = request.form.getlist('delete_datasets[]')
     for dataset in to_delete:
         group_path = os.path.join(model_dir, secure_filename(dataset))
@@ -97,7 +97,7 @@ def delete_datasets(model_dir:str):
             shutil.rmtree(group_path)
 
 # Remove class model from bot data directory
-def remove_class_model(upload_root:str, class_code:str):
+def remove_class_model(upload_root: str, class_code: str):
     print(f"Removing {class_code} from {upload_root} directory...")
     class_path = os.path.join(upload_root, class_code)
     try:
