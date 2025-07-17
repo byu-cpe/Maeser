@@ -10,10 +10,21 @@ import os
 import subprocess
 import shutil
 
-# Retrieve model config from request
 def get_model_config(upload_root: str) -> tuple[
     str, str, str, list[str], dict[str, list[FileStorage]]
 ]:
+    """Retrieves config for a class model from a post request.
+
+    Args:
+        upload_root (str): The root directory where all class models are created and modified.
+
+    Raises:
+        AttributeError: If the request form is missing 'class_code'.
+
+    Returns:
+        ( class code: str, model_dir: str, bot_path: str, rules: list[str], datsets: dict[str, list[FileStorage]] ): Parsed config data from the request form.
+        See the parameters of `save_model` for more info.
+    """
     # Make sure class_code is defined
     class_code = request.form.get('class_code', '').strip()
     if not class_code:
@@ -48,10 +59,19 @@ def get_model_config(upload_root: str) -> tuple[
             #         f.save(os.path.join(dataset_path, filename))
     return class_code, model_dir, bot_path, rules, datasets
 
-# Save model given config
 def save_model(
     upload_root: str, class_code: str, model_dir: str, bot_path: str, rules: list[str], datasets: dict[str, list[FileStorage]]
 ):
+    """Saves the class model using the provided config.
+
+    Args:
+        upload_root (str): The root directory where all class models are created and modified.
+        class_code (str): The code used to identify the class.
+        model_dir (str): The directory to where the model's data will be saved.
+        bot_path (str): The path to where the model's 'bot.txt' file will be saved.
+        rules (list[str]): The list of rules for the model's chatbot to follow.
+        datasets (dict[str, list[FileStorage]]): A dictionary containing the path to each dataset (key) and a list of its files (value).
+    """
     # Make model dir
     os.makedirs(model_dir, exist_ok=True)
 
@@ -81,23 +101,39 @@ def save_model(
     # Process datasets
     process_datasets(model_dir)
 
-# Process datasets via Makefile
 def process_datasets(model_dir: str):
+    """Processes the datasets via a makefile, extracting figures and creating vectorstores.
+
+    Args:
+        model_dir (str): The directory containing the model's data.
+    """
     subprocess.run(
         ['make', f'CLASS_DIR={model_dir}'],
         check=True,
     )
 
-# Delete datasets
 def delete_datasets(model_dir: str):
+    """Deletes specified datasets from a class model. The specified datasets are retrieved from the last request form.
+
+    Args:
+        model_dir (str): The directory containing the model's data.
+    """
     to_delete = request.form.getlist('delete_datasets[]')
     for dataset in to_delete:
         group_path = os.path.join(model_dir, secure_filename(dataset))
         if os.path.exists(group_path) and os.path.isdir(group_path):
             shutil.rmtree(group_path)
 
-# Remove class model from bot data directory
 def remove_class_model(upload_root: str, class_code: str):
+    """Removes a class model from the root bot data directory.
+
+    Args:
+        upload_root (str): The root directory where all class models are created and modified.
+        class_code (str): The code used to identify the class.
+
+    Raises:
+        NotADirectoryError: If the model's directory does not exist/cannot be found.
+    """
     print(f"Removing {class_code} from {upload_root} directory...")
     class_path = os.path.join(upload_root, class_code)
     try:
@@ -108,8 +144,15 @@ def remove_class_model(upload_root: str, class_code: str):
     except Exception as e:
         print(f"Unable to remove {class_code}: {e}")
 
-# Loads rules from bot.txt
 def load_rules(bot_path: str) -> list[str]:
+    """Loads the rules for a class model from the model's 'bot.txt' file.
+
+    Args:
+        bot_path (str): The path of the model's 'bot.txt' file.
+
+    Returns:
+        list[str]: A list of the model's rules.
+    """
     rules = []
     if os.path.exists(bot_path):
         with open(bot_path, 'r', encoding='utf-8') as f:
@@ -126,8 +169,15 @@ def load_rules(bot_path: str) -> list[str]:
     
     return rules
 
-# Loads list of existing datasets from class model directory
 def load_datasets(model_dir: str) -> list[str]:
+    """Loads the names of a class model's existing datasets.
+
+    Args:
+        model_dir (str): The directory containing the model's data.
+
+    Returns:
+        list[str]: The names of the model's datasets.
+    """
     datasets = [
         d for d in os.listdir(model_dir)
         if os.path.isdir(os.path.join(model_dir, d)) and d != '__pycache__'
