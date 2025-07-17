@@ -70,24 +70,27 @@ def login():
 @require_login
 def design_model():
     if request.method == 'POST':
-        rules = request.form.getlist('rules[]')
+        # Make sure class_code is defined
         class_code = request.form.get('class_code', '').strip()
-
         if not class_code:
             flash("Class Code is required.", "error")
             return redirect(url_for('design_model'))
+        
+        # Get important file paths
+        model_dir = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
+        os.makedirs(model_dir, exist_ok=True)
+        bot_path = os.path.join(model_dir, 'bot.txt')
 
-        base_path = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
-        os.makedirs(base_path, exist_ok=True)
+        # Get new ruleset
+        rules = request.form.getlist('rules[]')
 
-        file_groups = []  # Initialize list of saved group directories
 
         # Save uploaded files grouped properly
         for key in request.files:
             if key.startswith('file_groups'):
                 idx = key.split('[')[1].split(']')[0]
-                group_name = request.form.get(f'file_groups[{idx}][name]', f'Group_{idx}')
-                group_dir = os.path.join(base_path, secure_filename(group_name))
+                group_name = request.form.get(f'file_groups[{idx}][name]', f'Group_{idx}').lower()
+                group_dir = os.path.join(model_dir, secure_filename(group_name))
                 os.makedirs(group_dir, exist_ok=True)
 
                 files = request.files.getlist(f'file_groups[{idx}][files]')
@@ -96,13 +99,8 @@ def design_model():
                         filename = secure_filename(f.filename)
                         f.save(os.path.join(group_dir, filename))
 
-                file_groups.append(group_dir)  # Append each group directory
-
-        context_names = [os.path.basename(path) for path in file_groups]
-
         # Write bot.txt with all required sections
-        bot_file_path = os.path.join(base_path, 'bot.txt')
-        with open(bot_file_path, 'w', encoding='utf-8') as bot_file:
+        with open(bot_path, 'w', encoding='utf-8') as bot_file:
             bot_file.write("#NAME\n")
             bot_file.write(f"{class_code}\n")
 
@@ -110,15 +108,16 @@ def design_model():
             for rule in rules:
                 bot_file.write(f"{rule}\n")
 
-
             bot_file.write("#DATASETS\n")
-            for context in context_names:
-                bot_file.write(f"{context.lower()}\n")
+            for group in os.listdir(model_dir):
+                group_path = os.path.join(model_dir, group)
+                if os.path.isdir(group_path):
+                    bot_file.write(f"{group.lower()}\n")
 
         # Run Makefile - pass only CLASS_DIR
         try:
             subprocess.run(
-                ['make', f'CLASS_DIR={base_path}'],
+                ['make', f'CLASS_DIR={model_dir}'],
                 check=True
             )
             flash("Model submitted and Makefile executed successfully!", "success")
@@ -154,28 +153,28 @@ def manage_models():
 @app.route('/edit_model/<class_code>', methods=['GET', 'POST'])
 @require_login
 def edit_model(class_code):
+    # Get important file paths
     model_dir = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
     bot_path = os.path.join(model_dir, 'bot.txt')
 
     if request.method == 'POST':
-        # Handle rules update
-        new_rules = request.form.getlist('rules[]')
+        # Get new ruleset
+        rules = request.form.getlist('rules[]')
 
-        # Handle file uploads
-        file_groups = []
+        # Save uploaded files grouped properly
         for key in request.files:
             if key.startswith('file_groups'):
                 idx = key.split('[')[1].split(']')[0]
-                group_name = request.form.get(f'file_groups[{idx}][name]', f'Group_{idx}')
+                group_name = request.form.get(f'file_groups[{idx}][name]', f'Group_{idx}').lower()
                 group_dir = os.path.join(model_dir, secure_filename(group_name))
                 os.makedirs(group_dir, exist_ok=True)
 
                 files = request.files.getlist(f'file_groups[{idx}][files]')
                 for f in files:
                     if f and f.filename.endswith('.pdf'):
-                        f.save(os.path.join(group_dir, secure_filename(f.filename)))
+                        filename = secure_filename(f.filename)
+                        f.save(os.path.join(group_dir, filename))
 
-                file_groups.append(group_dir)
 
         # Handle dataset deletion
         to_delete = request.form.getlist('delete_datasets[]')
@@ -184,13 +183,13 @@ def edit_model(class_code):
             if os.path.exists(group_path) and os.path.isdir(group_path):
                 shutil.rmtree(group_path)
 
-        # Rewrite bot.txt
+        # Rewrite bot.txt with all required sections
         with open(bot_path, 'w', encoding='utf-8') as bot_file:
             bot_file.write("#NAME\n")
             bot_file.write(f"{class_code}\n")
 
             bot_file.write("#RULES\n")
-            for rule in new_rules:
+            for rule in rules:
                 bot_file.write(f"{rule}\n")
 
             bot_file.write("#DATASETS\n")
@@ -199,10 +198,13 @@ def edit_model(class_code):
                 if os.path.isdir(group_path):
                     bot_file.write(f"{group.lower()}\n")
 
-        # Re-vectorize via make
+        # Run Makefile - pass only CLASS_DIR
         try:
-            subprocess.run(['make', f'CLASS_DIR={model_dir}'], check=True)
-            flash("Model updated and Makefile executed!", "success")
+            subprocess.run(
+                ['make', f'CLASS_DIR={model_dir}'],
+                check=True
+            )
+            flash("Model updated and Makefile executed successfully!", "success")
         except subprocess.CalledProcessError as e:
             flash(f"Makefile failed: {e}", "error")
 
