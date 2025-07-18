@@ -75,6 +75,26 @@ body {
     font-size: 14px;
 }
 
+.file-list {
+  margin-top: 0.5em;
+}
+
+.file-entry {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.file-entry span {
+  flex: 1;
+}
+
+.file-entry button {
+  margin-left: 0.5em;
+}
+
+
 .remove-button {
     position: absolute;
     top: 8px;
@@ -91,4 +111,21 @@ body {
 
 .remove-button:hover {
     background-color: #cc0000;
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 4px solid rgba(0,0,0,0.1);
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#generate-model-status * {
+    margin: 1em auto;
 }
