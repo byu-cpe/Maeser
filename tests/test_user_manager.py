@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 from pathlib import Path
 import pytest
 from maeser.user_manager import UserManager, GithubAuthenticator

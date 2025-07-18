@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 Module for handling conversation history retrieval in a Flask API.
 

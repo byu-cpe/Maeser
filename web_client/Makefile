@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 # Accept from CLI or use defaults
 CLASS_DIR ?= uploads/Code
 

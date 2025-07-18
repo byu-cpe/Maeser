@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 Module for managing chat logs, including logging and retrieving chat history,
 feedback, and training data.
