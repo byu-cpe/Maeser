@@ -2,7 +2,7 @@
 
 """
 This module is used to vectorize data from text files.
-Output files will be saved in `output_dir` as "index.faiss" and "index.pkl"
+Output files will be saved in **output_dir** as "index.faiss" and "index.pkl".
 This module can be executed in the terminal or used within another script.
 """
 
@@ -20,6 +20,11 @@ os.environ["OPENAI_API_KEY"] = key # Modify this line to open it from a cloud ba
 # Load and combine all text from .txt files in the "output" directory
 # This will provide one unified file per upload for training data, try to make it separate data for separate sources later on?
 def vectorize_data(output_dir: str):
+    """Vectorizes text files in **output_dir** and saves the resultant files as "index.faiss" and "index.pkl".
+
+    Args:
+        output_dir (str): The directory where the text files are located and where the vectorstore will be saved.
+    """
     texts = []
 
     for filename in os.listdir(output_dir):

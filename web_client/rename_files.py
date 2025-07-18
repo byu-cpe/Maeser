@@ -9,7 +9,12 @@ This module can be executed in the terminal or used within another script.
 import os
 import sys
 
-def rename_files(target_dir: str):
+def rename_pdfs(target_dir: str):
+    """Renames a series of pdfs in a directory '1.pdf', '2.pdf', '3.pdf', etc.
+
+    Args:
+        target_dir (str): The directory containing the pdfs.
+    """
     if not os.path.isdir(target_dir):
         print(f"Error: {target_dir} is not a valid directory.")
         sys.exit(1)
@@ -31,4 +36,4 @@ if __name__ == "__main__":
 
     target_dir = sys.argv[1]
 
-    rename_files(target_dir)
+    rename_pdfs(target_dir)

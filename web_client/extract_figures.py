@@ -4,7 +4,7 @@
 This module is used to extract figures from a series of pdfs in a directory
 It does this by looking for "Figure X.Y" in the text and extracting a screenshot of the page
 cropped around this text.
-This procedure is **very** rudimentary and could use much improvement.
+This procedure is *very* rudimentary and could use much improvement.
 This module can be executed in the terminal or used within another script.
 """
 
@@ -54,7 +54,14 @@ def extract_figures_with_captions(pdf_path, output_dir):
                         figures_extracted += 1
     return figures_extracted
 
+# TODO: This system is flawed, since figures from the next pdf in the
+# series will overwrite some or all of the figures from the pdf preceding it.
 def extract_all_figures(target_dir: str):
+    """Identifies all pdfs in **target_dir** and extracts all figures from that pdf.
+
+    Args:
+        target_dir (str): The directory containing the pdfs.
+    """
     for filename in os.listdir(target_dir):
         if filename.lower().endswith(".pdf"):
             pdf_path = os.path.join(target_dir, filename)
