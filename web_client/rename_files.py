@@ -3,7 +3,7 @@
 """
 This module is used to rename a series of pdfs in a directory
 to '1.pdf', '2.pdf', '3.pdf', etc.
-Can be executed in the terminal or used within another script.
+This module can be executed in the terminal or used within another script.
 """
 
 import os
