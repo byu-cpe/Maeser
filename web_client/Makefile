@@ -1,6 +1,5 @@
 # Accept from CLI or use defaults
 CLASS_DIR ?= uploads/Code
-SUBDIRS ?= $(CLASS_DIR)/GroupOne,$(CLASS_DIR)/GroupTwo
 
 # Python scripts
 RENAME_SCRIPT = rename_files.py
@@ -10,8 +9,7 @@ FIGURE_SCRIPT = extract_figures.py
 # Main rule
 all:
 	@echo "Processing CLASS_DIR: $(CLASS_DIR)"
-	@echo "Processing SUBDIRS: $(SUBDIRS)"
-	@$(MAKE) process SUBDIRS="$(SUBDIRS)"
+	@$(MAKE) process
 
 # Processing each group directory
 process:
