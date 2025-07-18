@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """Module for handling feedback form display.
 
 This module contains the controller function to render the feedback form template.

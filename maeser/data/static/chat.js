@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
 // Initialize variables
 let session = "";
 let chat_branch = "";

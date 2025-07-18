@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 This module contains the controller function for rendering the chat logs overview page.
 

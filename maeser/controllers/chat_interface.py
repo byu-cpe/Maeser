@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """Module for handling chat interface rendering.
 
 This module contains a function to render the chat interface template with relevant data.
