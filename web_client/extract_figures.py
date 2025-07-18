@@ -4,17 +4,17 @@
 import sys
 import os
 import re
-import pymupdf as fitz  # PyMuPDF
+import pymupdf
 
 def extract_figures_with_captions(pdf_path, output_dir):
     os.makedirs(output_dir, exist_ok=True)
-    doc = fitz.open(pdf_path)
-    base_name = os.path.splitext(os.path.basename(pdf_path))[0]
+    doc = pymupdf.open(pdf_path)
     figures_extracted = 0
 
     # Desired size in points (600x400 px @ 300 dpi)
-    width_pt = 300  # 600px
+    width_pt = 600  # 600px
     height_pt = 400  # 400px
+    padding = 16
 
     for page_index in range(len(doc)):
         page = doc[page_index]
@@ -27,16 +27,16 @@ def extract_figures_with_captions(pdf_path, output_dir):
                     match = re.match(r"(Figure\s+(\d+\.\d+))", text, re.IGNORECASE)
                     if match:
                         fig_label = match.group(2)
-                        caption_rect = fitz.Rect(span["bbox"])
+                        caption_rect = pymupdf.Rect(span["bbox"])
                         center_x = (caption_rect.x0 + caption_rect.x1) / 2
                         center_y = (caption_rect.y0 + caption_rect.y1) / 2
 
                         # Define fixed-size capture rectangle centered on the caption
-                        x0 = center_x - width_pt / 2
-                        y0 = center_y - height_pt / 2
-                        x1 = center_x + width_pt / 2
-                        y1 = center_y + height_pt / 2
-                        capture_rect = fitz.Rect(x0, y0, x1, y1)
+                        x0 = center_x - (width_pt / 2 + padding)
+                        y0 = center_y - (height_pt + padding)
+                        x1 = center_x + (width_pt / 2 + padding)
+                        y1 = center_y + padding
+                        capture_rect = pymupdf.Rect(x0, y0, x1, y1)
 
                         pix = page.get_pixmap(clip=capture_rect, dpi=300)
                         image_name = f"{fig_label}.png"
@@ -46,14 +46,14 @@ def extract_figures_with_captions(pdf_path, output_dir):
                         figures_extracted += 1
     return figures_extracted
 
-def main(directory):
-    for filename in os.listdir(directory):
+def extract_all_figures(target_dir: str):
+    for filename in os.listdir(target_dir):
         if filename.lower().endswith(".pdf"):
-            pdf_path = os.path.join(directory, filename)
-            extract_figures_with_captions(pdf_path, directory)
+            pdf_path = os.path.join(target_dir, filename)
+            extract_figures_with_captions(pdf_path, target_dir)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python extract_figures.py <directory>")
         sys.exit(1)
-    main(sys.argv[1])
+    extract_all_figures(sys.argv[1])
