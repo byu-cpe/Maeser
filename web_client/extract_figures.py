@@ -1,5 +1,13 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
+"""
+This module is used to extract figures from a series of pdfs in a directory
+It does this by looking for "Figure X.Y" in the text and extracting a screenshot of the page
+cropped around this text.
+This procedure is **very** rudimentary and could use much improvement.
+This module can be executed in the terminal or used within another script.
+"""
+
 # extract_figures.py
 import sys
 import os
