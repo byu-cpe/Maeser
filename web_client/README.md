@@ -7,4 +7,4 @@ The folder is comprised of a few files:
 - `static` & `templates` are used for the flask app display to the user. These come with all standard flask based projects.
 - `doc_chunker_operator.py`, `rename_files.py`, & `extract_figures.py` are all necessary for file modification and manipulation. They are used by the local Makefile, intended to manipulate files that are uploaded and store them in the `bot_data` directory.
 - `flask_webserver.py` is the main executable python file. This runs the flask web app.
-- `Makefile` is usseful for the reasons stated earlier. It is run any time a change is made, wether that be a new dataset or an existing one.
+- `Makefile` is useful for the reasons stated earlier. It is run any time a change is made, wether that be a new dataset or an existing one.

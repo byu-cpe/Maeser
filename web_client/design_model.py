@@ -98,9 +98,12 @@ def save_model(
                 bot_file.write(f"{dataset.lower()}\n")
 
     # Process datasets
-    process_datasets(model_dir)
+    process_datasets_make(model_dir)
 
 def process_datasets(model_dir: str):
+    pass
+
+def process_datasets_make(model_dir: str):
     """Processes the datasets via a makefile, extracting figures and creating vectorstores.
 
     Args:
