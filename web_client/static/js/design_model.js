@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
 let fileGroupCount = 0;
 function addFileGroup() {
     const container = document.getElementById('file-groups-container');
