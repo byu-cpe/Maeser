@@ -142,18 +142,6 @@ def process_datasets(model_dir: str):
         
         print(f"✔ Completed {dir}")
 
-
-def process_datasets_make(model_dir: str):
-    """Processes the datasets via a makefile, extracting figures and creating vectorstores.
-
-    Args:
-        model_dir (str): The directory containing the model's data.
-    """
-    subprocess.run(
-        ['make', f'CLASS_DIR={model_dir}'],
-        check=True,
-    )
-
 def delete_datasets(model_dir: str):
     """Deletes specified datasets from a class model. The specified datasets are retrieved from the last request form.
 

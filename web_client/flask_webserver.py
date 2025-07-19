@@ -72,11 +72,11 @@ def design_model():
         # Save model
         try:
             save_model(UPLOAD_ROOT, *model_config)
-        except subprocess.CalledProcessError as e:
-            print(f"Makefile failed: {e}")
+        except Exception as e:
+            print(f"Unable to generate model: {e}")
             return redirect(url_for('design_model'))
         finally:
-            print("Model submitted and Makefile executed successfully!")
+            print("Model generated successfully!")
             return redirect(url_for('manage_models'))
 
     return render_template('design_model.html', username=session['user'])
@@ -124,11 +124,11 @@ def edit_model(class_code):
         # Save model
         try:
             save_model(UPLOAD_ROOT, *model_config)
-        except subprocess.CalledProcessError as e:
-            print(f"Makefile failed: {e}")
+        except Exception as e:
+            print(f"Unable to generate model: {e}")
             return redirect(url_for(f'/edit_model/{class_code}'))
         finally:
-            print("Model submitted and Makefile executed successfully!")
+            print("Model generated successfully!")
             return redirect(url_for('manage_models'))
 
     # Get rules and datasets
