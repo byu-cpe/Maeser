@@ -28,7 +28,7 @@ def vectorize_data(output_dir: str):
     texts = []
 
     for filename in os.listdir(output_dir):
-        if filename.endswith(".txt"):
+        if filename.endswith(".md"):
             with open(os.path.join(output_dir, filename), "r", encoding="utf-8") as f:
                 texts.append(f.read())
 

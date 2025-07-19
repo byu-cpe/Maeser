@@ -114,7 +114,7 @@ def process_datasets(model_dir: str):
         ])
     for dir in dirs:
         if os.path.exists(os.path.join(dir, "index.faiss")):
-            print(f"⚠ dataset for {dir} already exists, skipping.")
+            print(f"(dataset for {dir} already exists, skipping.)")
             continue
 
         print(f"---- Processing {dir} ----")
@@ -124,7 +124,7 @@ def process_datasets(model_dir: str):
         print("2. Converting PDFs to markdown (this may take a moment)...")
         pdf_files = sorted([f for f in os.listdir(dir) if f.lower().endswith(".pdf")])
         for pdf in pdf_files:
-            filename = os.path.splitext(pdf)[0]+".txt"
+            filename = os.path.splitext(pdf)[0]+".md"
             md_text = pymupdf4llm.to_markdown(os.path.join(dir, pdf))
             pathlib.Path(os.path.join(dir, filename)).write_bytes(md_text.encode())
 
@@ -134,9 +134,9 @@ def process_datasets(model_dir: str):
         print("4. Running vector store operator...")
         vectorize_data(dir)
 
-        print("5. Deleting .txt and .pdf files...")
+        print("5. Deleting .md and .pdf files...")
         for f in os.listdir(dir):
-            if f.lower().endswith(".pdf") or f.lower().endswith(".txt"):
+            if f.lower().endswith(".pdf") or f.lower().endswith(".md"):
                 os.remove(os.path.join(dir, f))
         
         print(f"✔ Completed {dir}")
