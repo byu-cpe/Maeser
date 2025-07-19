@@ -8,6 +8,9 @@ from werkzeug.datastructures import FileStorage
 import os
 import subprocess
 import shutil
+from rename_files import rename_pdfs
+from extract_figures import extract_all_figures
+from vector_store_operator import vectorize_data
 
 def get_model_config(upload_root: str) -> tuple[
     str, str, str, list[str], dict[str, list[FileStorage]]
@@ -98,10 +101,47 @@ def save_model(
                 bot_file.write(f"{dataset.lower()}\n")
 
     # Process datasets
-    process_datasets_make(model_dir)
+    process_datasets(model_dir)
 
 def process_datasets(model_dir: str):
-    pass
+    print(f"Processing CLASS_DIR: {model_dir}")
+    print(f"Processing subdirectories in {model_dir}...")
+    dirs = sorted([
+        os.path.join(model_dir, dir) for dir in os.listdir(model_dir)
+        if os.path.isdir(os.path.join(model_dir, dir))
+        ])
+    for dir in dirs:
+        if os.path.exists(os.path.join(dir, "index.faiss")):
+            print(f"⚠ dataset for {dir} already exists, skipping.")
+            continue
+
+        print(f"---- Processing {dir} ----")
+        print("1. Renaming PDF files...")
+        rename_pdfs(dir)
+
+        print("2. Converting PDFs to text...")
+        pdf_files = sorted([f for f in os.listdir(dir) if f.lower().endswith(".pdf")])
+        for pdf in pdf_files:
+            filename = os.path.splitext(pdf)[0]+".txt"
+            # TODO: Replace pdftotext with a PyMuPDF
+            subprocess.run(
+                ["pdftotext", os.path.join(dir, pdf), os.path.join(dir, filename)],
+                check=True,
+            )
+
+        print("3. Extracting figures from PDFs...")
+        extract_all_figures(dir)
+
+        print("4. Running vector store operator...")
+        vectorize_data(dir)
+
+        print("5. Deleting .txt and .pdf files...")
+        for f in os.listdir(dir):
+            if f.lower().endswith(".pdf") or f.lower().endswith(".txt"):
+                os.remove(os.path.join(dir, f))
+        
+        print(f"✔ Completed {dir}")
+
 
 def process_datasets_make(model_dir: str):
     """Processes the datasets via a makefile, extracting figures and creating vectorstores.
