@@ -7,7 +7,6 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 import os
 import pathlib
-import subprocess
 import shutil
 import pymupdf4llm
 from rename_files import rename_pdfs
