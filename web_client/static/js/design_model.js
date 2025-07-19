@@ -126,7 +126,7 @@ function addRule() {
 }
 
 // Display loading text
-const STATUS_MSG = " Model... You can view current progress in the terminal. You will be redirected to the 'Manage Models' page when generation is complete.";
+const STATUS_MSG = " model, this may take a moment... You can view current progress in the terminal. You will be redirected to the 'Manage Models' page when generation is complete.";
 const form = document.getElementById('model-form');
 const generatingStatus = document.getElementById('generate-model-status');
 const statusText = generatingStatus.querySelector('#status-text');

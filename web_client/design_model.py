@@ -118,23 +118,24 @@ def process_datasets(model_dir: str):
             continue
 
         print(f"---- Processing {dir} ----")
-        print("1. Renaming PDF files...")
-        rename_pdfs(dir)
 
-        print("2. Converting PDFs to markdown (this may take a moment)...")
+        print("1. Converting PDFs to markdown (this may take a moment)...")
         pdf_files = sorted([f for f in os.listdir(dir) if f.lower().endswith(".pdf")])
         for pdf in pdf_files:
             filename = os.path.splitext(pdf)[0]+".md"
-            md_text = pymupdf4llm.to_markdown(os.path.join(dir, pdf))
+            md_text = pymupdf4llm.to_markdown(
+                doc=os.path.join(dir, pdf),
+                show_progress=True,
+            )
             pathlib.Path(os.path.join(dir, filename)).write_bytes(md_text.encode())
 
-        print("3. Extracting figures from PDFs...")
+        print("2. Extracting figures from PDFs...")
         extract_all_figures(dir)
 
-        print("4. Running vector store operator...")
+        print("3. Running vector store operator...")
         vectorize_data(dir)
 
-        print("5. Deleting .md and .pdf files...")
+        print("4. Deleting .md and .pdf files...")
         for f in os.listdir(dir):
             if f.lower().endswith(".pdf") or f.lower().endswith(".md"):
                 os.remove(os.path.join(dir, f))
