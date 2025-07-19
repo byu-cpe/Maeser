@@ -16,6 +16,7 @@ setup: $(VENV)/bin/activate
 	$(PIP) install tiktoken
 	$(PIP) install PyMuPDF
 	$(PIP) install pymupdf-stubs
+	$(PIP) install pymupdf4llm
 	$(PIP) install Pillow
 	$(PIP) install discord
 	@echo "Updating poetry lock file if necessary..."
