@@ -13,7 +13,7 @@ def load_config():
     config_paths = [
         'config.yaml',
         './config.yaml',
-        'dynamic_implementations/config.yaml'
+        'dynamic_implementations/config.yaml',
     ]
     
     for path in config_paths:
