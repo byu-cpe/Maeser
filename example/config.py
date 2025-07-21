@@ -1,5 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
+"""
+This module is used to locate `config.yaml` and expose its values for use by the example Maeser Flask implementations.
+**config_paths** determines where this module will look for `config.yaml`.
+"""
+
 import yaml
 import os
 
