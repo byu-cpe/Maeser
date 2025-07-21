@@ -38,7 +38,7 @@ Simple Rag is the best choice when:
 
 ### Code Example
 
-The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and a `medieval_lit` vectorstore with names `index.faiss` and `index.pkl`. The code also assumes that you have imported config variables from `config_example.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
+The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and a `medieval_lit` vectorstore with names `index.faiss` and `index.pkl`. The code also assumes that you have imported config variables from `config.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag
@@ -95,7 +95,7 @@ Pipline RAG is the best choice when:
 
 ### Code Example
 
-The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and vectorstores `homework`, `lab_manuals`, and `lectures` with file names `index.faiss` and `index.pkl`. The code also assumes that you have imported config variables from `config_example.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
+The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and vectorstores `homework`, `lab_manuals`, and `lectures` with file names `index.faiss` and `index.pkl`. The code also assumes that you have imported config variables from `config.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag

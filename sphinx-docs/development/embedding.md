@@ -90,7 +90,7 @@ vectorstore.save_local("my_vectorstore")
 
 ## Integrate with Maeser
 
-The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and that you have imported config variables from `config_example.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
+The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and that you have imported config variables from `config.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
 
 ```python
 from maeser.graphs.simple_rag import get_simple_rag

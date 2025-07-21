@@ -48,7 +48,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
     ```
   - Confirm with `echo $OPENAI_API_KEY` (Unix) or `echo %OPENAI_API_KEY%` (Windows).
 
-### Incorrect Paths in `config_example.yaml`
+### Incorrect Paths in `config.yaml`
 - **Symptom:** FileNotFoundError for vectorstores or log directories.
 - **Solution:** Verify the following fields point to existing locations:
   - `vec_store_path`
