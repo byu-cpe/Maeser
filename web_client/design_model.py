@@ -6,10 +6,9 @@ from flask import request
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 import os
-import pathlib
 import shutil
-import pymupdf4llm
 from extract_figures import extract_all_figures
+from extract_text import extract_all_pdf_texts
 from vector_store_operator import vectorize_data
 
 def get_model_config(upload_root: str) -> tuple[
@@ -118,14 +117,7 @@ def process_datasets(model_dir: str):
         print(f"---- Processing {dir} ----")
 
         print("1. Converting PDFs to markdown (this may take a moment)...")
-        pdf_files = sorted([f for f in os.listdir(dir) if f.lower().endswith(".pdf")])
-        for pdf in pdf_files:
-            filename = os.path.splitext(pdf)[0]+".md"
-            md_text = pymupdf4llm.to_markdown(
-                doc=os.path.join(dir, pdf),
-                show_progress=True,
-            )
-            pathlib.Path(os.path.join(dir, filename)).write_bytes(md_text.encode())
+        extract_all_pdf_texts(dir)
 
         print("2. Extracting figures from PDFs...")
         extract_all_figures(dir)

@@ -8,7 +8,6 @@ This procedure is *very* rudimentary and could use much improvement.
 This module can be executed in the terminal or used within another script.
 """
 
-# extract_figures.py
 import sys
 import os
 import re
@@ -22,7 +21,7 @@ def extract_figures_with_captions(pdf_path, output_dir):
     # Desired size in points (600x400 px @ 300 dpi)
     width_pt = 600  # 600px
     height_pt = 400  # 400px
-    padding = 16
+    padding_pt = 16
 
     for page_index in range(len(doc)):
         page = doc[page_index]
@@ -40,10 +39,10 @@ def extract_figures_with_captions(pdf_path, output_dir):
                         center_y = (caption_rect.y0 + caption_rect.y1) / 2
 
                         # Define fixed-size capture rectangle centered on the caption
-                        x0 = center_x - (width_pt / 2 + padding)
-                        y0 = center_y - (height_pt + padding)
-                        x1 = center_x + (width_pt / 2 + padding)
-                        y1 = center_y + padding
+                        x0 = center_x - (width_pt / 2 + padding_pt)
+                        y0 = center_y - (height_pt + padding_pt)
+                        x1 = center_x + (width_pt / 2 + padding_pt)
+                        y1 = center_y + padding_pt
                         capture_rect = pymupdf.Rect(x0, y0, x1, y1)
 
                         pix = page.get_pixmap(clip=capture_rect, dpi=300)
