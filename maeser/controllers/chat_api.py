@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """Module for handling chat API requests.
 
 This module contains the controller function for managing chat sessions and processing incoming messages.

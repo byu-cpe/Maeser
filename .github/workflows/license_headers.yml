@@ -1,0 +1,20 @@
+name: SkyWalking Eyes License Headers
+on: push
+jobs:
+  build:
+    name: Apply SPDX headers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: SkyWalking Eyes Header Fix
+        uses: apache/skywalking-eyes/header@v0.7.0
+        with:
+          mode: fix
+      - name: Apply SkyWalking Eyes Header Changes
+        uses: EndBug/add-and-commit@v4
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          author_name: License Bot
+          author_email: license_bot@github.com
+          message: 'SkyWalking Eyes: Automatic application of license header'

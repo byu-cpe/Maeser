@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
 from config_example import (

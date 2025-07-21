@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from config import UPLOAD_ROOT
 import os

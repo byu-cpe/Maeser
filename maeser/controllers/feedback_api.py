@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """Module for handling feedback for messages through a controller.
 
 This module defines a controller function that processes feedback

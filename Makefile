@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 # Minimal makefile for development setup
 
 .PHONY: setup test testVerbose clean_venv

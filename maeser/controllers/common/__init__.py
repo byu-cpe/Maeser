@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 This is the common subpackage for controllers subpackage in the Maeser package.
 This package contains commonly used functions and classes that are used across

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 import re
 from dataclasses import dataclass, field
 from typing import List

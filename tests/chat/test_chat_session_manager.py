@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 import pytest
 from unittest.mock import MagicMock, patch
 from maeser.chat.chat_session_manager import ChatSessionManager

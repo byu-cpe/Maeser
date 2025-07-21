@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 # Extract the text from the Karl G. Maeser Wikipedia page
 
 import wikipediaapi

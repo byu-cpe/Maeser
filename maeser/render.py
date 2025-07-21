@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 Markdown response conversion module. Intended for use with LLM output.
 
