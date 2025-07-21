@@ -100,24 +100,20 @@ function addRule() {
 
     // Create wrapper div for rule input and delete button
     const ruleDiv = document.createElement('div');
-    ruleDiv.style.marginBottom = '8px';
-    ruleDiv.style.display = 'flex';
-    ruleDiv.style.alignItems = 'center';
+    ruleDiv.className = 'rule-entry';
 
     // Create input
     const input = document.createElement('input');
+    input.className = 'rule-input';
     input.type = 'text';
     input.name = 'rules[]';
     input.placeholder = 'Enter rule';
-    input.style.flex = '1';
 
     // Create delete button
     const deleteButton = document.createElement('button');
+    deleteButton.className = 'btn-delete-rule'
     deleteButton.type = 'button';
     deleteButton.textContent = 'X';
-    deleteButton.style.marginLeft = '8px';
-    deleteButton.style.backgroundColor = '#ff4d4d';
-    deleteButton.style.color = 'white';
     deleteButton.onclick = () => container.removeChild(ruleDiv);
 
     ruleDiv.appendChild(input);

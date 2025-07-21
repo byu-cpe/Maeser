@@ -113,6 +113,22 @@ body {
     background-color: #cc0000;
 }
 
+.rule-entry {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.rule-input {
+    flex: 1;
+}
+
+.btn-delete-rule {
+    margin-left: 8px;
+    background-color: #ff4d4d;
+    color: white;
+}
+
 .loading-spinner {
   width: 36px;
   height: 36px;
