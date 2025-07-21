@@ -1,12 +1,15 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask import flash
 from config import UPLOAD_ROOT
 import os
 import subprocess
 from werkzeug.utils import secure_filename
-import shutil
+from design_model import (
+    get_model_config, save_model,
+    delete_datasets, remove_class_model,
+    load_rules, load_datasets
+)
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
@@ -24,19 +27,6 @@ model_name = ""
 host_address = ""
 rules = []
 contexts = []
-
-# Remove class model from bot data directory
-def remove_class_model(class_code:str):
-    print(f"Removing {class_code} from {UPLOAD_ROOT} directory...")
-    class_path = os.path.join(UPLOAD_ROOT,class_code)
-    try:
-        if not os.path.isdir(class_path):
-            raise NotADirectoryError(f"Unable to find directory {class_path}")
-        shutil.rmtree(class_path)
-        print(f"Successfuly removed {class_code}.")
-    except Exception as e:
-        print(f"Unable to remove {class_code}:")
-        print(e)
 
 # decorator for login checking
 import functools
@@ -72,62 +62,22 @@ def login():
 @require_login
 def design_model():
     if request.method == 'POST':
-        rules = request.form.getlist('rules[]')
-        class_code = request.form.get('class_code', '').strip()
-
-        if not class_code:
-            flash("Class Code is required.", "error")
-            return redirect(url_for('design_model'))
-
-        base_path = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
-        os.makedirs(base_path, exist_ok=True)
-
-        file_groups = []  # Initialize list of saved group directories
-
-        # Save uploaded files grouped properly
-        for key in request.files:
-            if key.startswith('file_groups'):
-                idx = key.split('[')[1].split(']')[0]
-                group_name = request.form.get(f'file_groups[{idx}][name]', f'Group_{idx}')
-                group_dir = os.path.join(base_path, secure_filename(group_name))
-                os.makedirs(group_dir, exist_ok=True)
-
-                files = request.files.getlist(f'file_groups[{idx}][files]')
-                for f in files:
-                    if f and f.filename.endswith('.pdf'):
-                        filename = secure_filename(f.filename)
-                        f.save(os.path.join(group_dir, filename))
-
-                file_groups.append(group_dir)  # Append each group directory
-
-        context_names = [os.path.basename(path) for path in file_groups]
-
-        # Write bot.txt with all required sections
-        bot_file_path = os.path.join(base_path, 'bot.txt')
-        with open(bot_file_path, 'w', encoding='utf-8') as bot_file:
-            bot_file.write("#NAME\n")
-            bot_file.write(f"{class_code}\n")
-
-            bot_file.write("#RULES\n")
-            for rule in rules:
-                bot_file.write(f"{rule}\n")
-
-
-            bot_file.write("#DATASETS\n")
-            for context in context_names:
-                bot_file.write(f"{context.lower()}\n")
-
-        # Run Makefile - pass only CLASS_DIR
+        # Get model config
         try:
-            subprocess.run(
-                ['make', f'CLASS_DIR={base_path}'],
-                check=True
-            )
-            flash("Model submitted and Makefile executed successfully!", "success")
+            model_config:tuple = get_model_config(UPLOAD_ROOT)
+        except AttributeError as e:
+            print(f"Unable to use model config: {e}")
+            return redirect(url_for('design_model'))
+        
+        # Save model
+        try:
+            save_model(UPLOAD_ROOT, *model_config)
         except subprocess.CalledProcessError as e:
-            flash(f"Makefile failed: {e}", "error")
-
-        return redirect(url_for('manage_models'))
+            print(f"Makefile failed: {e}")
+            return redirect(url_for('design_model'))
+        finally:
+            print("Model submitted and Makefile executed successfully!")
+            return redirect(url_for('manage_models'))
 
     return render_template('design_model.html', username=session['user'])
 
@@ -137,10 +87,10 @@ def manage_models():
     if request.method == 'POST':
         class_code = request.form.get("class_code")
         if not class_code:
-            flash("Class Code is required.", "error")
+            print("Error: Class Code is required.")
             return redirect(url_for('design_model'))
         else:
-            remove_class_model(class_code)
+            remove_class_model(UPLOAD_ROOT, class_code)
         return redirect(url_for('manage_models'))
 
     # List all class_code folders inside UPLOAD_ROOT
@@ -156,86 +106,42 @@ def manage_models():
 @app.route('/edit_model/<class_code>', methods=['GET', 'POST'])
 @require_login
 def edit_model(class_code):
+    # Get important file paths
     model_dir = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
     bot_path = os.path.join(model_dir, 'bot.txt')
 
     if request.method == 'POST':
-        # Handle rules update
-        new_rules = request.form.getlist('rules[]')
-
-        # Handle file uploads
-        file_groups = []
-        for key in request.files:
-            if key.startswith('file_groups'):
-                idx = key.split('[')[1].split(']')[0]
-                group_name = request.form.get(f'file_groups[{idx}][name]', f'Group_{idx}')
-                group_dir = os.path.join(model_dir, secure_filename(group_name))
-                os.makedirs(group_dir, exist_ok=True)
-
-                files = request.files.getlist(f'file_groups[{idx}][files]')
-                for f in files:
-                    if f and f.filename.endswith('.pdf'):
-                        f.save(os.path.join(group_dir, secure_filename(f.filename)))
-
-                file_groups.append(group_dir)
-
-        # Handle dataset deletion
-        to_delete = request.form.getlist('delete_datasets[]')
-        for group in to_delete:
-            group_path = os.path.join(model_dir, secure_filename(group))
-            if os.path.exists(group_path) and os.path.isdir(group_path):
-                shutil.rmtree(group_path)
-
-        # Rewrite bot.txt
-        with open(bot_path, 'w', encoding='utf-8') as bot_file:
-            bot_file.write("#NAME\n")
-            bot_file.write(f"{class_code}\n")
-
-            bot_file.write("#RULES\n")
-            for rule in new_rules:
-                bot_file.write(f"{rule}\n")
-
-            bot_file.write("#DATASETS\n")
-            for group in os.listdir(model_dir):
-                group_path = os.path.join(model_dir, group)
-                if os.path.isdir(group_path):
-                    bot_file.write(f"{group.lower()}\n")
-
-        # Re-vectorize via make
+        # Get model config
         try:
-            subprocess.run(['make', f'CLASS_DIR={model_dir}'], check=True)
-            flash("Model updated and Makefile executed!", "success")
+            model_config:tuple = get_model_config(UPLOAD_ROOT)
+        except AttributeError as e:
+            print(f"Unable to use model config: {e}")
+            return redirect(url_for('edit_model', class_code=class_code))
+        
+        # Delete selected datasets
+        delete_datasets(model_dir)
+
+        # Save model
+        try:
+            save_model(UPLOAD_ROOT, *model_config)
         except subprocess.CalledProcessError as e:
-            flash(f"Makefile failed: {e}", "error")
+            print(f"Makefile failed: {e}")
+            return redirect(url_for(f'/edit_model/{class_code}'))
+        finally:
+            print("Model submitted and Makefile executed successfully!")
+            return redirect(url_for('manage_models'))
 
-        return redirect(url_for('manage_models'))
+    # Get rules and datasets
+    rules = load_rules(bot_path)
+    current_datasets = load_datasets(model_dir)
 
-    # Load rules from bot.txt
-    rules = []
-    if os.path.exists(bot_path):
-        with open(bot_path, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-            collecting = False
-            for line in lines:
-                if line.strip() == "#RULES":
-                    collecting = True
-                    continue
-                if line.strip().startswith("#") and collecting:
-                    break
-                if collecting:
-                    rules.append(line.strip())
-
-    # Load current datasets
-    current_datasets = [
-        d for d in os.listdir(model_dir)
-        if os.path.isdir(os.path.join(model_dir, d)) and d != '__pycache__'
-    ]
-
-    return render_template('edit_model.html',
-                           class_code=class_code,
-                           rules=rules,
-                           current_datasets=current_datasets,
-                           username=session['user'])
+    return render_template(
+        'edit_model.html',
+        class_code=class_code,
+        rules=rules,
+        current_datasets=current_datasets,
+        username=session['user'],
+    )
 
 @app.route('/logout')
 def logout():
