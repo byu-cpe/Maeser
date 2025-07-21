@@ -2,7 +2,7 @@
 
 ### NOTICE ###
 # `config_template.yaml` should NOT be modified directly. Please create a copy of this file and name it `config.yaml`.
-# Use `config.yaml` to configure your maeser app handlers.
+# Use `config.yaml` to edit the configuration for your Maeser app handlers.
 
 ### API keys are required for OpenAI and GitHub integrations ###
 
