@@ -9,7 +9,6 @@ import os
 import pathlib
 import shutil
 import pymupdf4llm
-from rename_files import rename_pdfs
 from extract_figures import extract_all_figures
 from vector_store_operator import vectorize_data
 
