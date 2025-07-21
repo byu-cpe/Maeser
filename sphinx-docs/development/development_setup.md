@@ -89,9 +89,9 @@ This will:
 
 Maeser uses a small configuration file for API keys, file paths, and settings.
 
-First, **create a copy of `example/config_template.yaml`** and name this copy `config.yaml`.
+First, **make a copy of `example/config_template.yaml` and name it `config.yaml`.** You will populate the latter file with the necessary keys and configuration for your Maeser app.
 
-Next, **update these parameters in `config.yaml`** with the following:
+Next, **update the following parameters in `config.yaml`**:
 
 ```yaml
 OPENAI_API_KEY: "your-openai-key-here"
