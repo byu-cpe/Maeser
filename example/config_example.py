@@ -6,9 +6,9 @@ import os
 def load_config():
     """Load configuration from YAML file."""
     config_paths = [
-        'config_example.yaml',
-        './config_example.yaml',
-        'example/config_example.yaml'
+        'config.yaml',
+        './config.yaml',
+        'example/config.yaml',
     ]
     
     for path in config_paths:
