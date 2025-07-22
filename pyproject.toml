@@ -42,9 +42,6 @@ markdown = "^3.6"
 pymdown-extensions = "^10.8.1"
 markdownify = "^0.14.1"
 
-# Unit testing
-ragas = "^0.1.10"
-
 # Configuration
 pyYAML = "^6.0.1"
 
@@ -53,7 +50,11 @@ requests = "^2.32.3"
 
 # Declare your project's development dependencies here
 [tool.poetry.group.dev.dependencies]
+# Pytest for testing Maeser
 pytest = "^8.2"
+
+# Unit testing
+ragas = "^0.1.10"
 
 # Documentation
 sphinx = "^7.2.6"
