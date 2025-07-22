@@ -1,4 +1,5 @@
 ### Vanilla Python Project Specifications ###
+
 [project]
 name = "maeser"
 version = "0.2.1"
@@ -18,6 +19,7 @@ repository = "https://github.com/byu-cpe/Maeser"
 documentation = "https://byu-cpe.github.io/Maeser/"
 
 ### Poetry Project Specifications ###
+
 [tool.poetry]
 include = [
     "maeser/data/*",
