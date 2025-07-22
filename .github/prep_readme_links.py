@@ -6,6 +6,7 @@ import pathlib
 GITHUB_URL = "https://github.com/byu-cpe/Maeser"
 README_PATH = "README.md"
 
+# Get readme text
 with open(README_PATH) as f:
     long_description = f.read()
 
