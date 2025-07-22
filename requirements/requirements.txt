@@ -6,6 +6,9 @@ langchain_openai==0.1.25
 langchain-text-splitters==0.2.4
 langgraph==0.1.19
 
+# Tiktoken library used by maeser/graphs/universal_rag.py
+tiktoken==0.9.0
+
 # FAISS for vector stores (choose either faiss-cpu or faiss-gpu depending on your setup)
 faiss-cpu==1.8.0.post1
 
@@ -20,7 +23,12 @@ ldap3==2.9.1
 markdown==3.6
 pymdown-extensions==10.8.1
 markdownify==0.14.1
-requests
+
+# For HTTP requests
+requests==2.32.3
+
+# Pytest for testing Maeser
+pytest==8.2
 
 # Unit testing
 ragas==0.1.10
