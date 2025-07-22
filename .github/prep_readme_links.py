@@ -5,7 +5,9 @@ import pathlib
 
 GITHUB_URL = "https://github.com/byu-cpe/Maeser"
 README_PATH = "README.md"
-long_description = open(README_PATH).read()
+
+with open(README_PATH) as f:
+    long_description = f.read()
 
 # links on PyPI should have absolute URLs
 long_description = re.sub(
