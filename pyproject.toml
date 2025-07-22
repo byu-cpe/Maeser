@@ -24,7 +24,7 @@ documentation = "https://byu-cpe.github.io/Maeser/"
 include = [
     "maeser/data/*",
     "maeser/data/templates/*",
-    "maeser/data/static/*"
+    "maeser/data/static/*",
 ]
 
 # Trove classifiers used by PyPI for categorization; see https://pypi.org/classifiers/
