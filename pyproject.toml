@@ -1,3 +1,4 @@
+### Vanilla Python Project Specifications ###
 [project]
 name = "maeser"
 version = "0.2.1"
@@ -16,6 +17,7 @@ dynamic = [ "classifiers" ]
 repository = "https://github.com/byu-cpe/Maeser"
 documentation = "https://byu-cpe.github.io/Maeser/"
 
+### Poetry Project Specifications ###
 [tool.poetry]
 include = [
     "maeser/data/*",
@@ -23,6 +25,7 @@ include = [
     "maeser/data/static/*"
 ]
 
+# Trove classifiers used by PyPI for categorization; see https://pypi.org/classifiers/
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
