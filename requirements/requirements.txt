@@ -21,7 +21,7 @@ ldap3
 # Turning markdown into HTML for display
 markdown
 pymdown-extensions
-markdownify
+markdownify==0.14.1
 requests
 
 # Unit testing
