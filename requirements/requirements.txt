@@ -7,32 +7,32 @@ langchain-text-splitters==0.2.4
 langgraph==0.1.19
 
 # FAISS for vector stores (choose either faiss-cpu or faiss-gpu depending on your setup)
-faiss-cpu
+faiss-cpu==1.8.0.post1
 # faiss-gpu
 faiss-gpu
 
 # Web backend
-flask
-flask-login
+flask==3.0.3
+flask-login==0.6.3
 
 #Caedm Authenticator 
-ldap3
+ldap3==2.9.1
 
 # Turning markdown into HTML for display
-markdown
-pymdown-extensions
+markdown==3.6
+pymdown-extensions==10.8.1
 markdownify==0.14.1
 requests
 
 # Unit testing
-ragas
+ragas==0.1.10
 
 # Documentation
 sphinx
-sphinx_rtd_theme
-myst_parser
-sphinx-book-theme
-sphinxcontrib-mermaid
+sphinx_rtd_theme==2.0.0
+myst_parser==3.0.1
+sphinx-book-theme==1.1.3
+sphinxcontrib-mermaid==1.0.0
 
 # Default logger
 pyYAML
