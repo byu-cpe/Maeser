@@ -1,4 +1,4 @@
-name: Publish
+name: Publish PyPI Package
 
 on: 
   push:
@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Pypi credentials
+    - name: PyPI credentials
       run: |  
         python -m pip install --upgrade pip
         pip install poetry
