@@ -8,8 +8,6 @@ langgraph==0.1.19
 
 # FAISS for vector stores (choose either faiss-cpu or faiss-gpu depending on your setup)
 faiss-cpu==1.8.0.post1
-# faiss-gpu
-faiss-gpu
 
 # Web backend
 flask==3.0.3
