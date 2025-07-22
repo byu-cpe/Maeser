@@ -29,7 +29,6 @@ tiktoken = "^0.9.0"
 # FAISS for vector stores (CPU version by default, GPU as optional)
 # pip install maeser[gpu] for the GPU variant
 faiss-cpu = "^1.8.0.post1"
-# faiss-gpu = { version = "^1.7.2", optional = true }
 
 # Web backend
 flask = "^3.0.3"
