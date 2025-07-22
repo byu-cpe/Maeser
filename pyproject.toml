@@ -23,6 +23,9 @@ langchain_openai = "^0.1.16"
 langchain-text-splitters = "^0.2.2"
 langgraph = "^0.1.8"
 
+# Tiktoken library used by maeser/graphs/universal_rag.py
+tiktoken = "^0.9.0"
+
 # FAISS for vector stores (CPU version by default, GPU as optional)
 # pip install maeser[gpu] for the GPU variant
 faiss-cpu = "^1.8.0.post1"
@@ -32,8 +35,8 @@ faiss-cpu = "^1.8.0.post1"
 flask = "^3.0.3"
 flask-login = "^0.6.3"
 
-#Ldap3 for alternative authentication purposes
-ldap3 = "^2.9.1" 
+# Ldap3 for alternative authentication purposes
+ldap3 = "^2.9.1"
 
 # Turning markdown into HTML for display
 markdown = "^3.6"

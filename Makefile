@@ -13,7 +13,6 @@ PYTEST := $(VENV)/bin/pytest
 setup: $(VENV)/bin/activate
 	$(PIP) install poetry
 	$(PIP) install langchain
-	$(PIP) install tiktoken
 	$(PIP) install PyMuPDF
 	$(PIP) install pymupdf-stubs
 	$(PIP) install pymupdf4llm
