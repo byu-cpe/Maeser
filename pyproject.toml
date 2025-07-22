@@ -21,9 +21,22 @@ dynamic = [
     "dependencies",
 ]
 
+# URLs to be displayed on PyPI
 [project.urls]
 repository = "https://github.com/byu-cpe/Maeser"
 documentation = "https://byu-cpe.github.io/Maeser/"
+
+# Optional dependencies, installed with `pip install maeser[dependency_group]`
+[project.optional-dependencies]
+# For everything in the web_client directory
+web_client = [
+    "PyMuPDF>=1.26.3,<2.0.0",
+    "pymupdf4llm>=0.0.27,<1.0.0",
+]
+# For dynamic_implementations/discord_handler.py
+discord = [
+    "discord.py>=2.5.2,<3.0.0",
+]
 
 ### Poetry Project Specifications ###
 
