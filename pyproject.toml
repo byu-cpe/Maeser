@@ -10,6 +10,8 @@ license = { text = "LGPL-3.0-or-later" }
 readme = "README.md"
 keywords = [ "maeser", "chatbot", "llm", "AI", "Retrieval Augmented Generation", "RAG", "education" ]
 
+dynamic = [ "classifiers" ]
+
 [project.urls]
 repository = "https://github.com/byu-cpe/Maeser"
 documentation = "https://byu-cpe.github.io/Maeser/"
@@ -19,6 +21,21 @@ include = [
     "maeser/data/*",
     "maeser/data/templates/*",
     "maeser/data/static/*"
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Environment :: Web Environment",
+    "Framework :: Flask",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Communications :: Chat",
+    "Topic :: Education :: Computer Aided Instruction (CAI)",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 
 # Dependencies required by your project
