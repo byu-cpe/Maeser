@@ -12,7 +12,11 @@ license = { text = "LGPL-3.0-or-later" }
 readme = "README.md"
 keywords = [ "maeser", "chatbot", "llm", "AI", "Retrieval Augmented Generation", "RAG", "education" ]
 
-dynamic = [ "classifiers" ] # The classifiers field in [tool.poetry] will populate this field
+# the fields specified in 'dynamic' will be populated from the corresponding fields in the [tool.poetry] sections
+dynamic = [
+    "classifiers",
+    "dependencies",
+]
 
 [project.urls]
 repository = "https://github.com/byu-cpe/Maeser"
