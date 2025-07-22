@@ -6,6 +6,13 @@ authors = [
     { name = "Ayden Bales", email = "aydenmb@byu.edu" },
     { name = "Adam Sandland", email = "adam@sandland.org" },
 ]
+license = { text = "LGPL-3.0-or-later" }
+readme = "README.md"
+keywords = [ "maeser", "chatbot", "llm", "AI", "Retrieval Augmented Generation", "RAG", "education" ]
+
+[project.urls]
+repository = "https://github.com/byu-cpe/Maeser"
+documentation = "https://byu-cpe.github.io/Maeser/"
 
 [tool.poetry]
 include = [
