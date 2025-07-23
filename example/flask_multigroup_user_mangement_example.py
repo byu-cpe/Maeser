@@ -78,7 +78,7 @@ base_app = Flask(__name__)
 
 from maeser.blueprints import AppManager
 
-# Create the App_Manager class
+# Create the AppManager class
 
 app_manager = AppManager(
     app=base_app,
