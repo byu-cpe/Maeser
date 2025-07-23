@@ -34,7 +34,68 @@ To return home, simply click your Maeser app's logo at the top-left corner of th
 
 ## Chat Logs Management Page
 
-...
+The Chat Logs Management page lets you see the conversation history between users and your chatbot. Each log file corresponds with one conversation created by a user.
+
+### Filters
+
+The Chat Logs Management page has the following sorting and filtering options:
+
+- **Sort by Modification Time/Creation:** Whether the logs should be sorted by when they were modified or when they were created.
+- **Order:** The direction in which the log entries should be sorted.
+- **User:** Display log files from a specific user.
+- **Feedback:** Display either log files with user-submitted feedback or log files without feedback.
+
+### List of Log Files
+
+The list of log files on the Chat Logs Management page displays a high level overview of each log, displaying the following:
+- **User** (formatted like `authenticator.user_id`)
+- **Log File Name** (a string of numbers followed by `-authenticator-user_id.log`)
+- **Time and Date Created**
+- **Time and Date Last Modified**
+- **Feeback** (True or False, depending on whether the user submitted feedback in that conversation thread)
+
+A few helpful aggregate statistics are listed above the list of log files:
+- **Total Tokens**
+- **Total Cost**
+
+These statistics are a grand total for your Maeser app, summed from all log files saved.
+
+### View Individual Logs
+
+To view the contents of a single log file, simply click it's file name and it's contents will open in a new page.
+
+The top of the log file contains statistics for the entire conversation thread:
+- **Name:** The name of the user conversing with your chatbot.
+- **User Authentication:** The authenticator and user id of the user, formatted like `authenticator.user_id`
+- **Time:** The time and date the log file was created, or in other words, the time and date the conversation started.
+- **Branch:** The chat branch selected for the conversation. This should correspond with one of the branches registered to your app's ChatSessionManager object (in your app's Flask script).
+- **Total Cost:** The total cost of the conversation thread, accrued from the total tokens used during response generation.
+- **Total Tokens:** The total number of tokens used in the conversation thread by the LLM for response generation.
+
+The rest of the log file consists of the conversation history, following this general form:
+```
+────────────────────
+<user question>
+────────────────────
+<chatbot response>
+<response statistics>
+────────────────────
+```
+
+The response statistics are as follows:
+- **Cost:** The precise cost of processing the chatbot's response.
+- **Tokens:** The number of tokens used to process the chatbot's response.
+- **Time to Response:** The amount of time it took for the chatbot to generate a response.
+
+> **Note: Vectorstore Context in Log File**
+>
+> The chat log files also record the context pulled from the vectorstore(s) that was used by the chatbot to generate a relevant response. For brevity, this context is not exposed on the Chat Logs Management web view, but it can be accessed directly in your chat logs directory if desired.
+
+The bottom of the Log page contains the link "Back to list", which will take you back to the **List of Log Files**.
+
+### Return Home
+
+To return home, simply click your Maeser app's logo at the top-left corner of the page. If you are viewing a single log file, first click "Back to list"; then click your Maeser app's logo at the top-left corner of the page.
 
 ---
 
