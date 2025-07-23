@@ -15,7 +15,7 @@ The User Management page lets you see and modify the permissions of all users re
 
 The User Management page provides the following filters to sort through your user database:
 1. **Authenticators:** Display users from a specific authentication method. (**Note:** This filter is only visible if you have more than one authenticator registered with your app.) 
-2. **Admin Status:** Display either users that have administrator priviliges or users that do not.
+2. **Admin Status:** Display either users that have administrator privileges or users that do not.
 3. **Banned Status:** Display either banned or non-banned users.
 
 ### Edit User Options
@@ -47,12 +47,12 @@ The Chat Logs Management page has the following sorting and filtering options:
 
 ### List of Log Files
 
-The list of log files on the Chat Logs Management page displays a high level overview of each log, displaying the following:
+The list of log files on the Chat Logs Management page displays a high-level overview of each log, displaying the following:
 - **User** (formatted like `authenticator.user_id`)
 - **Log File Name** (a string of numbers followed by `-authenticator-user_id.log`)
 - **Time and Date Created**
 - **Time and Date Last Modified**
-- **Feeback** (True or False, depending on whether the user submitted feedback in that conversation thread)
+- **Feedback** (True or False, depending on whether the user submitted feedback in that conversation thread)
 
 A few helpful aggregate statistics are listed above the list of log files:
 - **Total Tokens**
@@ -62,7 +62,7 @@ These statistics are a grand total for your Maeser app, summed from all log file
 
 ### View Individual Logs
 
-To view the contents of a single log file, simply click it's file name and it's contents will open in a new page.
+To view the contents of a single log file, simply click its file name and it's contents will open in a new page.
 
 The top of the log file contains statistics for the entire conversation thread:
 - **Name:** The name of the user conversing with your chatbot.
@@ -101,17 +101,17 @@ To return home, simply click your Maeser app's logo at the top-left corner of th
 
 ## Obtaining Administrator Privileges
 
-Before you can access the User and Chat Logs Management pages, you must first have administrator privileges. You have three options to acquire these priveleges:
+Before you can access the User and Chat Logs Management pages, you must first have administrator privileges. You have three options to acquire these privileges:
 
 1. [**Receive privileges from another administrator.**](#receive-privileges-from-another-administrator)
-3. [**Use `user_manager.update_admin_status()`.**](#use-user_managerupdate_admin_status)
-2. [**Modify the user database directly.**](#modify-the-user-database-directly)
+2. [**Use `user_manager.update_admin_status()`.**](#use-user_managerupdate_admin_status)
+3. [**Modify the user database directly.**](#modify-the-user-database-directly)
 
 For these methods to work, you must have logged in to your Maeser app at least once. You can **check your admin** status by opening the side panel via the button at the top-left corner of the page. If you see buttons labeled "User Management" and "Logs", then you have administrator privileges; if these buttons are missing, then you do not have administrator privileges.
 
 ### Receive Privileges From Another Administrator
 
-If another user already has administrator rights, they can simply login and remotely grant administrator privileges to your account via the [**User Management Page**](#user-management-page). This is the most straightforward approach, but the other methods listed will work if you are unable to receive privileges from another administrator.
+If another user already has administrator rights, they can simply log in and remotely grant administrator privileges to your account via the [**User Management Page**](#user-management-page). This is the most straightforward approach, but the other methods listed will work if you are unable to receive privileges from another administrator.
 
 ### Use `user_manager.update_admin_status()`
 
@@ -142,7 +142,7 @@ user_manager.update_admin_status(
 
 Replace `your_username` with the username registered under your authenticator, and if using an authenticator other than GitHub, replace `github` with the name of your authenticator.
 
-Save these changes and restart your Maeser app; you should now have administrator privileges. You may now remove `user_manager.update_admin_status(...)` from your code and your priviliges will still be elevated.
+Save these changes and restart your Maeser app; you should now have administrator privileges. You may now remove `user_manager.update_admin_status(...)` from your code and your privileges will still be elevated.
 
 ### Modify the User Database Directly
 
