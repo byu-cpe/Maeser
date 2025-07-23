@@ -76,11 +76,11 @@ from flask import Flask
 
 base_app = Flask(__name__)
 
-from maeser.blueprints import App_Manager
+from maeser.blueprints import AppManager
 
 # Create the App_Manager class
 
-app_manager = App_Manager(
+app_manager = AppManager(
     app=base_app,
     app_name="Maeser Test App",
     flask_secret_key="secret",
