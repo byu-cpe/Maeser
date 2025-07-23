@@ -45,7 +45,13 @@ def prep_readme_links(verbose: bool = False):
         long_description,
     )
 
-    v.print(f"Result:\n{long_description}")
+    # Result
+    v.print("\n".join([
+        "Result:",
+        f"===== {README_PATH} (pending changes) =====",
+        long_description,
+        "====================",
+    ]))
 
     # Write modified readme
     v.print(f"Updating readme at {README_PATH}...")
