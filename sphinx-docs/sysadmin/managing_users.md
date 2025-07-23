@@ -9,7 +9,26 @@ The Maeser Flask app comes with a built-in web interface for [**User Management*
 
 ## User Management Page
 
-...
+The User Management page lets you see and modify the permissions of all users registered in your Maeser app.
+
+### Filters
+
+The User Management page provides the following filters to sort through your user database:
+1. **Authenticators:** Display users from a specific authentication method. (**Note:** This filter is only visible if you have more than one authenticator registered with your app.) 
+2. **Admin Status:** Display either users that have administrator priviliges or users that do not.
+3. **Banned Status:** Display either banned or non-banned users.
+
+### Edit User Options
+
+To edit the permissions and options of a user, click on their user card in the list of users. A menu will appear where you can change the following:
+- **Admin Status:** Whether the user has elevated or standard privileges.
+- **Ban Status:** Whether or not the user is banned from accessing your web server.
+- **Requests:** The number of messages the user has left before they will be rate-limited.
+- **Remove User:** Deletes a user from the user database. The user will have to re-create their account the next time they log in.
+
+### Return Home
+
+To return home, simply click your Maeser app's logo at the top-left corner of the page.
 
 ---
 
