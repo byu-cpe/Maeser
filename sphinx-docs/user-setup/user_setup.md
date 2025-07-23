@@ -129,7 +129,7 @@ For quick, command‑line access without a web browser, **Run one of the termina
 ## Customizing Your Experience
 
 - **Add Your Own Content:** Follow the guide at [**Embedding New Content**](../development/embedding.md) to embed your own documents as vectorstores. 
-- **Customize the Web Interface:** Change the parameters of the **App_Manager** in your Flask script to change the color and icons used by the web interface. (For more information on the App_Manager class, refer to the source code documentation on [blueprints](../autodoc/maeser/maeser.blueprints.rst)).
+- **Customize the Web Interface:** Change the parameters of the **AppManager** in your Flask script to change the color and icons used by the web interface. (For more information on the AppManager class, refer to the source code documentation on [blueprints](../autodoc/maeser/maeser.blueprints.rst)).
 - **Add Authentication:** Download one of the `flask_*_user_management_example.py` scripts to configure GitHub or LDAP authentication. See [**User Management Setup**](../development/flask_example.md#user-management-setup) in the **Maeser Example (with Flask & User Management)** documentation page for instructions on how to configure authentication.
 
 ---
