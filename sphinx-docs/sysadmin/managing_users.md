@@ -4,7 +4,7 @@ The Maeser Flask app comes with a built-in web interface for managing users and 
 
 ---
 
-# Administrator Access is Required
+## Administrator Access is Required
 
 ...
 
@@ -14,12 +14,12 @@ Before you can access the User and Chat Logs Management pages, you must first ha
 
 ---
 
-# User Management Page
+## User Management Page
 
 ...
 
 ---
 
-# Chat Logs Management Page
+## Chat Logs Management Page
 
 ...
