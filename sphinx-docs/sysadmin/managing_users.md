@@ -5,7 +5,7 @@ The Maeser Flask app comes with a built-in web interface for [**User Management*
 ---
 
 ## Prerequisites
-- **Administrator Privileges**: You must be an admin to access the User Management and Chat Logs Management pages. For instructions on how to acquire administrator privileges, see [**Obtaining Administrator Privileges**](#obtaining-administrator-privileges).
+- **Administrator Privileges**: You must be an administrator to access the User Management and Chat Logs Management pages. For instructions on how to acquire administrator privileges, see [**Obtaining Administrator Privileges**](#obtaining-administrator-privileges).
 
 ## User Management Page
 
@@ -107,7 +107,7 @@ Before you can access the User and Chat Logs Management pages, you must first ha
 2. [**Use `user_manager.update_admin_status()`.**](#use-user_managerupdate_admin_status)
 3. [**Modify the user database directly.**](#modify-the-user-database-directly)
 
-For these methods to work, you must have logged in to your Maeser app at least once. You can **check your admin** status by opening the side panel via the button at the top-left corner of the page. If you see buttons labeled "User Management" and "Logs", then you have administrator privileges; if these buttons are missing, then you do not have administrator privileges.
+For these methods to work, you must have logged in to your Maeser app at least once. You can **check your administrator status** by opening the side panel via the button at the top-left corner of the page. If you see buttons labeled "User Management" and "Logs", then you have administrator privileges; if these buttons are missing, then you do not have administrator privileges.
 
 ### Receive Privileges From Another Administrator
 
