@@ -22,7 +22,7 @@ The User Management page provides the following filters to sort through your use
 
 To edit the permissions and options of a user, click on their user card in the list of users. A menu will appear where you can change the following:
 - **Admin Status:** Whether the user has elevated or standard privileges.
-- **Ban Status:** Whether or not the user is banned from accessing your web server.
+- **Ban Status:** Whether or not the user is banned from accessing your web interface.
 - **Requests:** The number of messages the user has left before they will be rate-limited.
 - **Remove User:** Deletes a user from the user database. The user will have to re-create their account the next time they log in.
 
@@ -34,25 +34,25 @@ To return home, simply click your Maeser app's logo at the top-left corner of th
 
 ## Chat Logs Management Page
 
-The Chat Logs Management page lets you see the conversation history between users and your chatbot. Each log file corresponds with one conversation created by a user.
+The Chat Logs Management page lets you see the conversation history between users and your chatbot. Each log file corresponds to one conversation created by a user.
 
 ### Filters
 
 The Chat Logs Management page has the following sorting and filtering options:
 
-- **Sort by Modification Time/Creation:** Whether the logs should be sorted by when they were modified or when they were created.
+- **Sort by Modification or Creation Time:** Whether the logs should be sorted by when they were modified or when they were created.
 - **Order:** The direction in which the log entries should be sorted.
 - **User:** Display log files from a specific user.
 - **Feedback:** Display either log files with user-submitted feedback or log files without feedback.
 
 ### List of Log Files
 
-The list of log files on the Chat Logs Management page displays a high-level overview of each log, displaying the following:
-- **User** (formatted like `authenticator.user_id`)
-- **Log File Name** (a string of numbers followed by `-authenticator-user_id.log`)
-- **Time and Date Created**
-- **Time and Date Last Modified**
-- **Feedback** (True or False, depending on whether the user submitted feedback in that conversation thread)
+The list of log files on the Chat Logs Management page displays a high-level overview of each log, including:
+- **User:** Formatted like `authenticator.user_id`.
+- **Log File Name:** A string of numbers followed by `-authenticator-user_id.log`.
+- **Creation Date/Time:** The time and date the log file was created, or in other words, the time and date the conversation started.
+- **Last Modified Date/Time:** The time and date the log file was last modified, or in other words, the time and date of the last message in the conversation.
+- **Feedback:** True or False, depending on whether the user submitted feedback in that conversation thread.
 
 A few helpful aggregate statistics are listed above the list of log files:
 - **Total Tokens**
@@ -62,13 +62,13 @@ These statistics are a grand total for your Maeser app, summed from all log file
 
 ### View Individual Logs
 
-To view the contents of a single log file, simply click its file name and it's contents will open in a new page.
+To view the contents of a single log file, simply click its file name to open its contents in a new page.
 
 The top of the log file contains statistics for the entire conversation thread:
 - **Name:** The name of the user conversing with your chatbot.
 - **User Authentication:** The authenticator and user id of the user, formatted like `authenticator.user_id`
 - **Time:** The time and date the log file was created, or in other words, the time and date the conversation started.
-- **Branch:** The chat branch selected for the conversation. This should correspond with one of the branches registered to your app's ChatSessionManager object (in your app's Flask script).
+- **Branch:** The chat branch selected for the conversation. This should correspond to one of the branches registered to your app's `ChatSessionManager` object (in your app's Flask script).
 - **Total Cost:** The total cost of the conversation thread, accrued from the total tokens used during response generation.
 - **Total Tokens:** The total number of tokens used in the conversation thread by the LLM for response generation.
 
