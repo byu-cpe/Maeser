@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
-from config_example import (
+from config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH, 
     VEC_STORE_PATH, MAX_REQUESTS, RATE_LIMIT_INTERVAL, 
     GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_AUTH_CALLBACK_URI, 

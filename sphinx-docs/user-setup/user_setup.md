@@ -29,8 +29,8 @@ Navigate to the [**Maeser GitHub repository**](https://github.com/byu-cpe/Maeser
 
 ```
 .
-├── config_example.py
-├── config_example.yaml
+├── config.py
+├── config_template.yaml
 ├── create_byu_vectorstore.py
 ├── create_maeser_vectorstore.py
 ├── embeddings_example.py
@@ -56,9 +56,11 @@ Navigate to the [**Maeser GitHub repository**](https://github.com/byu-cpe/Maeser
 
 ## Prepare Configuration
 
-Maeser uses a simple **YAML** file (`config_example.yaml`) to configure settings like API keys and file paths. You only need to do this once.
+Maeser uses a simple **YAML** file (`config.yaml`) to configure settings like API keys and file paths. You only need to do this once.
 
-**Open `config_example.yaml`** in a text editor and update only these fields:
+First, **make a copy of `config_template.yaml` and name it `config.yaml`.** You will populate the latter file with the necessary keys and configuration for your Maeser app.
+
+Next, **Open `config.yaml`** in a text editor and update only these fields:
 
 ```yaml
 OPENAI_API_KEY: "<your-openai-key>"
@@ -68,8 +70,8 @@ USERS_DB_PATH: "users.db"
 LLM_MODEL_NAME: "gpt-4o"
 ```
 
-- If you don’t have an OpenAI key, you can sign up at https://platform.openai.com/signup.  
-- The default paths (`vectorstores`, `chat_logs`, `users.db`) work in your current folder.
+- If you don’t have an OpenAI key, you can sign up at [https://platform.openai.com/signup](https://platform.openai.com/signup).  
+- The default paths (`vectorstores`, `chat_logs`, `users.db`) are relative to your working directory.
 
 ---
 
