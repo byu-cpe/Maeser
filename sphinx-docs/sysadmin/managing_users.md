@@ -146,4 +146,9 @@ Save these changes and restart your Maeser app; you should now have administrato
 
 ### Modify the User Database Directly
 
-The database file used to store user data is located at the path specified by `accounts_db_path` in your app's `config.yaml` (located at `chat_logs/users.db` by default). This file is an SQLite database; several programs and code editor extensions exist that can open and modify SQLite files, so pick the program of your choice to do so. To grant yourself administrator privileges using this method, open the database file, enter the table corresponding to your authentication method (e.g. `githubUsers` for GitHub), and find your row entry in the table (with help from the `user_id` and `realname` columns). Look for the column labeled `admin` and change the value at this column and on your row from 0 to 1. Once you commit this change to the database, you will be granted administrator privileges.
+The SQLite database file used to store user data is located at the path specified by `accounts_db_path` in your app's `config.yaml` (located at `chat_logs/users.db` by default). You will need a program that can open SQLite database files; several programs and code editor extensions exist that can do this. To grant yourself administrator privileges using this method, do the following:
+1. **Open the database file** with a program of your choice.
+2. **Find your row in the database** by entering the table corresponding to your authentication method (e.g. `githubUsers` for GitHub) and using the `user_id` and `realname` columns to locate your entry.
+3. **Toggle your admin status** by changing the value of the "admin" cell on your row from 0 to 1.
+
+Once you commit this change to the database, you will be granted administrator privileges.
