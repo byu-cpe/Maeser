@@ -47,10 +47,11 @@ def prep_readme_links(verbose: bool = False):
 
     # Result
     v.print("\n".join([
-        "Result:",
+        "::group:: Printing Result:",
         f"===== {README_PATH} (pending changes) =====",
         long_description,
         "====================",
+        "::endgroup::",
     ]))
 
     # Write modified readme
