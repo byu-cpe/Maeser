@@ -11,7 +11,7 @@ This guide demonstrates how to run Maeser as a web-based chatbot **with user aut
 - **Maeser development environment** set up (see [Development Setup](development_setup)).
 - **Python 3.10+** virtual environment activated.
 - **Configured Authentication** for your [GitHub app](#register-your-github-oauth-app), [LDAP server](#ldap-authentication-optional), or both. 
-- **Pre-built FAISS vectorstores** at the paths referenced in `config_example.yaml`. The example scripts use the pre-built `byu` and `maeser` vectorstores found in `example/vectorstores`. See [Embedding New Content](embedding) for instructions on how to build and add your own vectorstores.
+- **Pre-built FAISS vectorstores** at the paths referenced in your `config.yaml` file. The example scripts use the pre-built `byu` and `maeser` vectorstores found in `example/vectorstores`. See [Embedding New Content](embedding) for instructions on how to build and add your own vectorstores.
 
 ---
 
@@ -25,9 +25,11 @@ Choose whichever example is more applicable to your needs. If you prefer each co
 
 ---
 
-## Configuring `config_example.yaml`
+## Configuring `config.yaml`
 
-Configure the following fields in your `config_example.yaml` file:
+> **Note:** You should have created a copy of `config_template.yaml` and named it `config.yaml` be sure to modify only the latter file, as that is what the example scripts use.
+
+Configure the following fields in your `config.yaml` file:
 
 ```yaml
 ### API keys are required for OpenAI and GitHub integrations ###
@@ -77,17 +79,17 @@ llm:
 - **github_** entries: Configure GitHub OAuth flow.
 - **ldap3_** entries: Configure LDAP authentication parameters.
 
-> **Note:** Feel free to change other fields in `config_example.yaml` according to your needs (such as `vec_store_path` or `max_requests`)
+> **Note:** Feel free to change other fields in `config.yaml` according to your needs (such as `vec_store_path` or `max_requests`)
 
 ---
 
 ## Inspect the Example Scripts
-The following sections will go through `flask_multigroup_user_mangement_example.py` and `flask_pipeline_user_mangement_example.py` section by section and explain how the code works. Most of the code can be left unchanged and should work as-is assuming that `config_example.yaml` is configured correctly.
+The following sections will go through `flask_multigroup_user_mangement_example.py` and `flask_pipeline_user_mangement_example.py` section by section and explain how the code works. Most of the code can be left unchanged and should work as-is assuming that your `config.yaml` file is configured correctly.
 
 ### Configuration Imports & Env Setup
 Imports all config variables and sets the OpenAI API key in the environment.
 ```python
-from config_example import (
+from config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH,
     VEC_STORE_PATH, MAX_REQUESTS, RATE_LIMIT_INTERVAL,
     GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET,
@@ -251,11 +253,11 @@ from flask import Flask
 
 base_app = Flask(__name__)
 
-from maeser.blueprints import App_Manager
+from maeser.blueprints import AppManager
 
-# Create the App_Manager class
+# Create the AppManager class
 
-app_manager = App_Manager(
+app_manager = AppManager(
     app=base_app,
     app_name="Maeser Test App",
     flask_secret_key="secret",
@@ -288,13 +290,13 @@ Navigate to **http://localhost:3002**, authenticate via GitHub or LDAP, select a
 
 1. In GitHub, click on your user profile and go to **Settings → Developer Settings → OAuth Apps → New OAuth App**.
 2. Set **Homepage URL** to `http://localhost:3002` and **Authorization callback URL** to `http://localhost:3002/login/github_callback`.
-3. Copy the **Client ID** and **Client Secret** into `config_example.yaml`.
+3. Copy the **Client ID** and **Client Secret** into `config.yaml`.
 
 ---
 
 ## LDAP Authentication (Optional)
 
-Ensure your LDAP server is reachable, and the fields in `config_example.yaml` match your directory’s schema. The `LDAPAuthenticator` will bind and lookup users based on these settings.
+Ensure your LDAP server is reachable, and the fields in `config.yaml` match your directory’s schema. The `LDAPAuthenticator` will bind and lookup users based on these settings.
 
 ---
 

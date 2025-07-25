@@ -53,7 +53,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ### [Flask](https://flask.palletsprojects.com/en/stable/quickstart/)
 - **Role:** Lightweight WSGI framework for web endpoints
-- **Use case:** Hosts chat UI, auth flows, admin dashboards—bootstrapped by `App_Manager`.
+- **Use case:** Hosts chat UI, auth flows, admin dashboards—bootstrapped by `AppManager`.
 
 ### [Jinja2](https://jinja.palletsprojects.com/en/stable/)
 - **Role:** HTML templating engine

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
-from config_example import (
+from config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 
@@ -49,9 +49,9 @@ from flask import Flask
 
 base_app = Flask(__name__)
 
-from maeser.blueprints import App_Manager
+from maeser.blueprints import AppManager
 
-app_manager = App_Manager(
+app_manager = AppManager(
     app=base_app,
     app_name="Maeser Test App -- NO USER MANAGER",
     flask_secret_key="secret",
