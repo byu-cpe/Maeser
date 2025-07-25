@@ -4,7 +4,7 @@ header:
   license:
     content: 'SPDX-License-Identifier: LGPL-3.0-or-later'
 
-  # See "About the licenses used in the Maeser project" for info on which paths fall under the LGPL v3.0+ license
+  # See "About the licenses used in the Maeser project" in the documentation for info on which paths fall under the LGPL v3.0+ license
   paths:
     - maeser
     - example
