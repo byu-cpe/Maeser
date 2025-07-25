@@ -21,9 +21,10 @@ jobs:
           SPHINXOPTS="-W" make html # The -W flag throws all warnings as errors
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: sphinx-docs/_build/html/
           force_orphan: true
+          allow_empty_commit: ${{ github.event_name == 'workflow_dispatch' }} # Force-commit if run using workflow dispatch
