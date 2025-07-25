@@ -4,24 +4,24 @@ header:
   license:
     content: 'SPDX-License-Identifier: LGPL-3.0-or-later'
 
+  # See "About the licenses used in the Maeser project" for info on which paths fall under the LGPL v3.0+ license
   paths:
+    - maeser
+    - example
+    - tests/**/*.py
     - .github/**/*.py
+    - .github/**/Makefile
+    - sphinx-docs/**/*.py
+    - sphinx-docs/**/Makefile
+    - sphinx-docs/**/*.js
 
   paths-ignore:
-    - 'dist'
-    - 'licenses'
-    - '**/*.md'
-    - 'LICENSE'
-    - 'NOTICE'
-    - '.licenserc.yaml'
-    - '.github/**/*.yml'
-    - '.gitignore'
     - '**/*.toml'
+    - '**/*.md'
     - '**/*.txt'
     - '**/*.json'
     - 'maeser/data/static/bootstrap-icons'
     - 'maeser/data/static/normalize.css'
     - 'example/vectorstores'
-    - 'sphinx-docs'
 
   comment: on-failure
