@@ -1,11 +1,11 @@
 # Architecture Overview
 
-This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **App_Manager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy:
+This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **AppManager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy:
 
 ```{mermaid}
 flowchart LR
   %% Root Flask orchestrator
-  A0["Maeser Flask App"] --> A1["App_Manager"]
+  A0["Maeser Flask App"] --> A1["AppManager"]
 
   %% ChatSessionManager Module
   subgraph ChatModule["ChatSessionManager Module"]
@@ -54,7 +54,7 @@ flowchart LR
 
 ## Core Components
 
-### App_Manager
+### AppManager
 - **File:** `maeser/blueprints.py`  
 - **Role:** Bootstraps and configures the Flask app, registers routes via blueprints, applies theming, and initializes background tasks (e.g., quota refresh). Everything flows through this central orchestrator.
 
@@ -98,7 +98,7 @@ flowchart LR
 
 ## Request Flow Summary
 1. **HTTP Request** arrives at the Flask app.  
-2. **App_Manager** routes the request to the proper controller.  
+2. **AppManager** routes the request to the proper controller.  
 3. **Controllers** interact with **ChatSessionManager** or **UserManager** depending on the endpoint.  
 4. **ChatSessionManager** invokes RAG graphs or logs via **ChatLogsManager** for chat operations.  
 5. **UserManager** authenticates and manages user data for secure endpoints.  

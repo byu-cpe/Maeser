@@ -1,14 +1,19 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
+"""
+This module is used to locate `config.yaml` and expose its values for use by the example Maeser Flask implementations.
+**config_paths** determines where this module will look for `config.yaml`.
+"""
+
 import yaml
 import os
 
 def load_config():
     """Load configuration from YAML file."""
     config_paths = [
-        'config_example.yaml',
-        './config_example.yaml',
-        'example/config_example.yaml'
+        'config.yaml',
+        './config.yaml',
+        'example/config.yaml',
     ]
     
     for path in config_paths:

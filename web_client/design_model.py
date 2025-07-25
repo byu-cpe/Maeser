@@ -105,7 +105,6 @@ def save_model(
     process_datasets(model_dir)
 
 def process_datasets(model_dir: str):
-    print(f"Processing CLASS_DIR: {model_dir}")
     print(f"Processing subdirectories in {model_dir}...")
     dirs = sorted([
         os.path.join(model_dir, dir) for dir in os.listdir(model_dir)

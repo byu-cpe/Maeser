@@ -23,12 +23,12 @@ Because there are several ways to accomplish these steps, this guide will not ex
 
 ## Configure Your App for Deployment
 
-Not much needs to be changed within the application itself; however, if you have been working on your app from the `example/` directory, it is recommended that you restructure your project to include only the files that your application needs and remove the `example_` prefix from any remaining files. If you follow this recommendation, keep in mind that `config_example.py` looks for these specific paths:
+Not much needs to be changed within the application itself; however, if you have been working on your app from the `example/` directory, it is recommended that you restructure your project to include only the files that your application needs and remove the `example_` prefix from any remaining files. If you follow this recommendation, keep in mind that `config.py` looks for these specific paths:
 ```python
     config_paths = [
-        'config_example.yaml',
-        './config_example.yaml',
-        'example/config_example.yaml'
+        'config.yaml',
+        './config.yaml',
+        'example/config.yaml'
     ]
 ```
 These paths should be updated to match the path and name of your app's `config.yaml` file.

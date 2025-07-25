@@ -47,8 +47,8 @@ autodoc_mock_imports = [
 # -- Project information -----------------------------------------------------
 
 project = 'Maeser'
-copyright = '2025, Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors'
-author = 'Carson Bush, Blaine Freestone, Mike Wirthlin, Brent Nelson, Gohaun Manley, Ayden Bales, Adam Sandland contributors'
+copyright = '2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].'
+author = 'The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].'
 
 # The full version, including alpha/beta/rc tags
 release = 'alpha'
@@ -111,5 +111,6 @@ html_static_path = ['_static']
 # Add all javascript files to be used in the documentation pages
 html_js_files = [
     "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js", # Mermaid diagrams
-    "mermaid-theme-switch.js", # Allows mermaid diagrams to render properly based on current theme
+    "js/mermaid-theme-switch.js", # Allows mermaid diagrams to render properly based on current theme
+    "js/dynamic-footer-disclaimers.js", # Replaces Author and Copyright disclaimers in the page footer with custom content, allowing hyperlinks to be included
 ]

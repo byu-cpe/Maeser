@@ -29,8 +29,8 @@ Navigate to the [**Maeser GitHub repository**](https://github.com/byu-cpe/Maeser
 
 ```
 .
-├── config_example.py
-├── config_example.yaml
+├── config.py
+├── config_template.yaml
 ├── create_byu_vectorstore.py
 ├── create_maeser_vectorstore.py
 ├── embeddings_example.py
@@ -56,9 +56,11 @@ Navigate to the [**Maeser GitHub repository**](https://github.com/byu-cpe/Maeser
 
 ## Prepare Configuration
 
-Maeser uses a simple **YAML** file (`config_example.yaml`) to configure settings like API keys and file paths. You only need to do this once.
+Maeser uses a simple **YAML** file (`config.yaml`) to configure settings like API keys and file paths. You only need to do this once.
 
-**Open `config_example.yaml`** in a text editor and update only these fields:
+First, **make a copy of `config_template.yaml` and name it `config.yaml`.** You will populate the latter file with the necessary keys and configuration for your Maeser app.
+
+Next, **Open `config.yaml`** in a text editor and update only these fields:
 
 ```yaml
 OPENAI_API_KEY: "<your-openai-key>"
@@ -68,8 +70,8 @@ USERS_DB_PATH: "users.db"
 LLM_MODEL_NAME: "gpt-4o"
 ```
 
-- If you don’t have an OpenAI key, you can sign up at https://platform.openai.com/signup.  
-- The default paths (`vectorstores`, `chat_logs`, `users.db`) work in your current folder.
+- If you don’t have an OpenAI key, you can sign up at [https://platform.openai.com/signup](https://platform.openai.com/signup).  
+- The default paths (`vectorstores`, `chat_logs`, `users.db`) are relative to your working directory.
 
 ---
 
@@ -129,7 +131,7 @@ For quick, command‑line access without a web browser, **Run one of the termina
 ## Customizing Your Experience
 
 - **Add Your Own Content:** Follow the guide at [**Embedding New Content**](../development/embedding.md) to embed your own documents as vectorstores. 
-- **Customize the Web Interface:** Change the parameters of the **App_Manager** in your Flask script to change the color and icons used by the web interface. (For more information on the App_Manager class, refer to the source code documentation on [blueprints](../autodoc/maeser/maeser.blueprints.rst)).
+- **Customize the Web Interface:** Change the parameters of the **AppManager** in your Flask script to change the color and icons used by the web interface. (For more information on the AppManager class, refer to the source code documentation on [blueprints](../autodoc/maeser/maeser.blueprints.rst)).
 - **Add Authentication:** Download one of the `flask_*_user_management_example.py` scripts to configure GitHub or LDAP authentication. See [**User Management Setup**](../development/flask_example.md#user-management-setup) in the **Maeser Example (with Flask & User Management)** documentation page for instructions on how to configure authentication.
 
 ---
