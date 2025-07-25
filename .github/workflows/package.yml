@@ -12,6 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Prepare Links in Readme
+      run: |
+        python .github/prep_readme_links.py -v
+
     - name: PyPI credentials
       run: |  
         python -m pip install --upgrade pip
