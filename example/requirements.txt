@@ -2,3 +2,4 @@ maeser
 flask
 flask-login
 wikipedia-api
+pyinputplus
