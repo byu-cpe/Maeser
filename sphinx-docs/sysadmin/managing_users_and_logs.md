@@ -86,6 +86,7 @@ The response statistics are as follows:
 - **Cost:** The precise cost of processing the chatbot's response.
 - **Tokens:** The number of tokens used to process the chatbot's response.
 - **Time to Response:** The amount of time it took for the chatbot to generate a response.
+- **Feedback:** Either "Positive" or "Negative" depending on the feedback selected by the user. (**Note:** This statistic is only visible if the user left feedback on the chatbot's response.)
 
 > **Note: Vectorstore Context in Log File**
 >
