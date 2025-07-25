@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 SHELL := /bin/bash
 IN_ENV := source .venv/bin/activate;
 

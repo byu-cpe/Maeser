@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
 // This small javascript code replaces the content of the author and copyright sections, allowing hyperlinks to be inserted
 
 GITHUB_URL = "https://github.com/byu-cpe/Maeser";
