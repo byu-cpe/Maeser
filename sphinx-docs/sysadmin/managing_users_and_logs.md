@@ -74,12 +74,12 @@ The top of the log file contains statistics for the entire conversation thread:
 
 The rest of the log file consists of the conversation history, following this general form:
 ```
-────────────────────
-<user question>
-────────────────────
-<chatbot response>
-<response statistics>
-────────────────────
+────────────────────────
+<user_question>
+────────────────────────
+<chatbot_response>
+<response_statistics>
+────────────────────────
 ```
 
 The response statistics are as follows:
@@ -132,7 +132,7 @@ Below this section, add the following code:
 user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
 
-# --- New code starts here --- #
+# ---- New code starts here ---- #
 user_manager.update_admin_status(
     auth_method="github",
     ident="your_username",
@@ -149,7 +149,7 @@ Save these changes and restart your Maeser app; you should now have administrato
 
 The SQLite database file used to store user data is located at the path specified by `accounts_db_path` in your app's `config.yaml` (located at `chat_logs/users.db` by default). You will need a program that can open SQLite database files; several programs and code editor extensions exist that can do this. To grant yourself administrator privileges using this method, do the following:
 1. **Open the database file** with a program of your choice.
-2. **Find your row in the database** by entering the table corresponding to your authentication method (e.g. `githubUsers` for GitHub) and using the `user_id` and `realname` columns to locate your entry.
+2. **Find your row in the database** by entering the table corresponding to your authentication method (e.g. `githubUsers` for GitHub) and by using the `user_id` and `realname` columns to locate your entry.
 3. **Toggle your admin status** by changing the value of the "admin" cell on your row from 0 to 1.
 
 Once you commit this change to the database, you will be granted administrator privileges.
