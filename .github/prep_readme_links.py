@@ -47,7 +47,7 @@ def prep_readme_links(verbose: bool = False):
 
     # Result
     v.print("\n".join([
-        "::group:: Printing Result...",
+        "::group::Printing Result...",
         f"===== {README_PATH} (pending changes) =====",
         long_description,
         "====================",
