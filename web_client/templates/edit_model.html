@@ -20,8 +20,8 @@
         <div id="rules-container">
             {% for rule in rules %}
                 <div class="rule-entry">
-                    <input type="text" name="rules[]" value="{{ rule|e }}" required>
-                    <button type="button" onclick="this.parentElement.remove()">X</button>
+                    <input type="text" class="rule-input" name="rules[]" value="{{ rule|e }}" required>
+                    <button type="button" class="btn-delete-rule" onclick="this.parentElement.remove()">X</button>
                 </div>
                 {% endfor %}
             </div>

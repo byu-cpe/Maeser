@@ -38,7 +38,7 @@ from .controllers import (
 )
 
 
-class App_Manager:
+class AppManager:
     """
     Manages the Maeser App and its configurations.
 

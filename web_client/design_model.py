@@ -8,8 +8,10 @@ from flask import request
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 import os
-import subprocess
 import shutil
+from extract_figures import extract_all_figures
+from extract_text import extract_all_pdf_texts
+from vector_store_operator import vectorize_data
 
 def get_model_config(upload_root: str) -> tuple[
     str, str, str, list[str], dict[str, list[FileStorage]]
@@ -103,15 +105,33 @@ def save_model(
     process_datasets(model_dir)
 
 def process_datasets(model_dir: str):
-    """Processes the datasets via a makefile, extracting figures and creating vectorstores.
+    print(f"Processing subdirectories in {model_dir}...")
+    dirs = sorted([
+        os.path.join(model_dir, dir) for dir in os.listdir(model_dir)
+        if os.path.isdir(os.path.join(model_dir, dir))
+        ])
+    for dir in dirs:
+        if os.path.exists(os.path.join(dir, "index.faiss")):
+            print(f"(dataset for {dir} already exists, skipping.)")
+            continue
 
-    Args:
-        model_dir (str): The directory containing the model's data.
-    """
-    subprocess.run(
-        ['make', f'CLASS_DIR={model_dir}'],
-        check=True,
-    )
+        print(f"---- Processing {dir} ----")
+
+        print("1. Converting PDFs to markdown (this may take a moment)...")
+        extract_all_pdf_texts(dir)
+
+        print("2. Extracting figures from PDFs...")
+        extract_all_figures(dir)
+
+        print("3. Running vector store operator...")
+        vectorize_data(dir)
+
+        print("4. Deleting .md and .pdf files...")
+        for f in os.listdir(dir):
+            if f.lower().endswith(".pdf") or f.lower().endswith(".md"):
+                os.remove(os.path.join(dir, f))
+        
+        print(f"✔ Completed {dir}")
 
 def delete_datasets(model_dir: str):
     """Deletes specified datasets from a class model. The specified datasets are retrieved from the last request form.
@@ -179,9 +199,9 @@ def load_datasets(model_dir: str) -> list[str]:
     Returns:
         list[str]: The names of the model's datasets.
     """
-    datasets = [
+    datasets = sorted([
         d for d in os.listdir(model_dir)
         if os.path.isdir(os.path.join(model_dir, d)) and d != '__pycache__'
-    ]
+    ])
 
     return datasets
