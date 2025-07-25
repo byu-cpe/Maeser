@@ -112,5 +112,5 @@ html_static_path = ['_static']
 html_js_files = [
     "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js", # Mermaid diagrams
     "js/mermaid-theme-switch.js", # Allows mermaid diagrams to render properly based on current theme
-    "js/dynamic-footer-disclaimers.js",
+    "js/dynamic-footer-disclaimers.js", # Replaces Author and Copyright disclaimers in the page footer with custom content, allowing hyperlinks to be included
 ]
