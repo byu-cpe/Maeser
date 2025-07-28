@@ -85,6 +85,7 @@ copybutton_custom_prompts = [
 ]
 copybutton_prompt_text = r'|'.join(copybutton_custom_prompts)
 copybutton_prompt_is_regexp = True
+copybutton_line_continuation_character = '\\'
 
 # -- Options for MyST --------------------------------------------------------
 # Enable MyST extensions
