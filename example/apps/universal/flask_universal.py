@@ -41,7 +41,7 @@ byu_maeser_universal_rag: CompiledGraph = get_universal_rag(
     system_prompt_text=(universal_prompt),
     model=LLM_MODEL_NAME,
 )
-  
+
 sessions_manager.register_branch(branch_name="universal", branch_label="BYU and Karl G. Maeser History", graph=byu_maeser_universal_rag)
 
 from flask import Flask
