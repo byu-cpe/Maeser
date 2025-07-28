@@ -2,7 +2,7 @@
 
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
-from config import (
+from example.apps.config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 import os
@@ -12,18 +12,16 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
-# A pipeline is a generalized prompt, often for providing answers across larger datasets,
+# The prompt for a Pipeline RAG is a generalized prompt, often for providing answers across larger datasets,
 # but still specific to relevant course information.
-
 pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history or the history of BYU based on 
     the context provided.
-    Don't answer questions about other things.
-
+    If the question is unrelated to the topic or the context, politely inform the user that their questions is outside the context of your resources.
+    
     {context}
 """
 
-from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
@@ -36,18 +34,14 @@ vectorstore_config = {
 }
 
 byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
-    vectorstore_config=vectorstore_config, 
+    vectorstore_config=vectorstore_config,
     memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
-        api_key=OPENAI_API_KEY, 
-        system_prompt_text=(
-            "You are speaking from the perspective of Karl G. Maeser."
-            "Answer questions about your life and BYU's history only. "
-            "Do not answer questions about other things. \n\n"
-            "{context}\n"
-        ),
-        model=LLM_MODEL_NAME
-    )
-sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=(pipeline_prompt),
+    model=LLM_MODEL_NAME,
+)
+
+sessions_manager.register_branch(branch_name="pipeline", branch_label="BYU and Karl G. Maeser History", graph=byu_maeser_pipeline_rag)
 
 import pyinputplus as pyip
 

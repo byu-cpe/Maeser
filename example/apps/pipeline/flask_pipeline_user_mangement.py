@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
-from config import (
+from example.apps.config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH, 
     VEC_STORE_PATH, MAX_REQUESTS, RATE_LIMIT_INTERVAL, 
     GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_AUTH_CALLBACK_URI, 
     GITHUB_TIMEOUT, CHAT_HISTORY_PATH, LDAP3_NAME, 
     LDAP_SERVER_URLS, LDAP_BASE_DN, LDAP_ATTRIBUTE_NAME, LDAP_SEARCH_FILTER, 
     LDAP_OBJECT_CLASS, LDAP_ATTRIBUTES, LDAP_CA_CERT_PATH, LDAP_CONNECTION_TIMEOUT, 
-    LLM_MODEL_NAME
+    LLM_MODEL_NAME, STATIC_FOLDER,
 )
 
 import os
@@ -20,18 +20,16 @@ from maeser.chat.chat_session_manager import ChatSessionManager
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
-# A pipeline is a generalized prompt, often for providing answers across larger datasets,
+# The prompt for a Pipeline RAG is a generalized prompt, often for providing answers across larger datasets,
 # but still specific to relevant course information.
-
 pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history or the history of BYU based on 
     the context provided.
-    Don't answer questions about other things.
-
+    If the question is unrelated to the topic or the context, politely inform the user that their questions is outside the context of your resources.
+    
     {context}
 """
 
-from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
@@ -43,12 +41,14 @@ vectorstore_config = {
 }
 
 byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
-    vectorstore_config=vectorstore_config, 
+    vectorstore_config=vectorstore_config,
     memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
-    api_key=OPENAI_API_KEY, 
+    api_key=OPENAI_API_KEY,
     system_prompt_text=(pipeline_prompt),
-    model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
+    model=LLM_MODEL_NAME,
+)
+
+sessions_manager.register_branch(branch_name="pipeline", branch_label="BYU and Karl G. Maeser History", graph=byu_maeser_pipeline_rag)
 
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
@@ -60,7 +60,9 @@ github_authenticator = GithubAuthenticator(
     timeout=GITHUB_TIMEOUT,
     max_requests=MAX_REQUESTS
 )
+
 # Replace the '...' in the config_example.yaml with all the proper configurations
+# If you are not using LDAP, comment out this block
 ldap3_authenticator = LDAPAuthenticator(
     name=LDAP3_NAME,
     ldap_server_urls=LDAP_SERVER_URLS,
@@ -75,11 +77,18 @@ ldap3_authenticator = LDAPAuthenticator(
 
 user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
-user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
+user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator) # If you are not using LDAP, comment out this line
 
 from flask import Flask
 
-base_app = Flask(__name__)
+# Default resources must be relative to the directory the Flask script is located in (regardless of current working directory)
+app_dir = os.path.dirname(__file__)
+
+# Configure base app
+base_app = Flask(
+    __name__,
+    static_folder=os.path.relpath(STATIC_FOLDER, app_dir),
+)
 
 from maeser.blueprints import AppManager
 

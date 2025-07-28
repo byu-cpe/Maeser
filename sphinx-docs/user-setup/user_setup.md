@@ -7,7 +7,8 @@ This guide is designed for users who want to use Maeser’s chatbot capabilities
 ## Prerequisites
 
 - **Python 3.10+** installed on your system.
-- Basic command-line familiarity (opening a terminal or PowerShell window).
+- **Basic command-line familiarity** (opening a terminal or PowerShell window).
+- **Python Virtual Environment (Optional)**—see [**Using `venv`**](../development/development_setup.md#using-venv) in the **Development Setup** guide for an example on how to set up a virtual environment.
 
 ---
 
@@ -29,27 +30,63 @@ Navigate to the [**Maeser GitHub repository**](https://github.com/byu-cpe/Maeser
 
 ```
 .
-├── config.py
-├── config_template.yaml
-├── create_byu_vectorstore.py
-├── create_maeser_vectorstore.py
-├── embeddings_example.py
-├── flask_multigroup_example.py
-├── flask_multigroup_example_user_management.py
-├── flask_pipeline_example.py
-├── flask_pipeline_example_user_management.py
+├── apps
+│   ├── chat_logs
+│   │   ├── byu.db
+│   │   ├── chat_history
+│   │   │   ├── pipeline
+│   │   │   │   ├── 0a2fb0b0-321f-4dd4-b56d-a8e09580dedb-anon.log
+│   │   │   │   └── 6f680ac0-6d0d-4769-ab42-da310c195ccd-anon.log
+│   │   │   ├── simple_byu
+│   │   │   │   ├── 00caee17-ac7f-45a3-bc37-6872a9cbd751-github-Parsistence.log
+│   │   │   │   └── 3586dcad-b5af-4f6a-ae9d-36ce91b6d4ba-anon.log
+│   │   │   ├── simple_maeser
+│   │   │   │   ├── 593ca839-ccc5-4a71-a28f-fad85b4a4e85-github-Parsistence.log
+│   │   │   │   └── b861118c-a7f8-46ab-9c72-0c787b098397-anon.log
+│   │   │   └── universal
+│   │   │       ├── 845059d2-273f-4753-adec-c7fa763843d0-anon.log
+│   │   │       └── e4195224-0895-4dae-8406-4fb1530067b7-anon.log
+│   │   ├── maeser.db
+│   │   ├── pipeline_memory.db
+│   │   ├── universal_memory.db
+│   │   └── users.db
+│   ├── config.py
+│   ├── config_template.yaml
+│   ├── config.yaml
+│   ├── pipeline
+│   │   ├── flask_pipeline.py
+│   │   ├── flask_pipeline_user_mangement.py
+│   │   └── terminal_pipeline.py
+│   ├── __pycache__
+│   │   └── config.cpython-312.pyc
+│   ├── simple
+│   │   ├── flask_simple.py
+│   │   ├── flask_simple_user_mangement.py
+│   │   └── terminal_simple.py
+│   └── universal
+│       ├── flask_pipeline_user_mangement.py
+│       ├── flask_universal.py
+│       └── terminal_pipeline.py
+├── __pycache__
+│   ├── config.cpython-312.pyc
+│   └── config_example.cpython-312.pyc
 ├── requirements.txt
-├── terminal_multigroup_example.py
-├── terminal_pipeline_example.py
-├── static
-│   └── ...
-└── vectorstores
-    ├── maeser
-    │   ├── index.faiss
-    │   └── index.pkl
-    └── byu
-        ├── index.faiss
-        └── index.pkl
+├── resources
+│   ├── static
+│   │   ├── Karl_G_Maeser.png
+│   │   └── LICENSE.EXAMPLE_RESOURCES.md
+│   └── vectorstores
+│       ├── byu
+│       │   ├── index.faiss
+│       │   └── index.pkl
+│       ├── LICENSE.VECTORSTORE.md
+│       └── maeser
+│           ├── index.faiss
+│           └── index.pkl
+└── tools
+    ├── create_byu_vectorstore.py
+    ├── create_maeser_vectorstore.py
+    └── embeddings_example.py
 ```
 
 ---
