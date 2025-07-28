@@ -94,8 +94,9 @@ function unhighlightButtons() {
 actionButtons.forEach(button => {
     button.addEventListener('click', () => {
         const action = button.getAttribute('data-action');
-        console.log(`Okay, I'll help you with ${action}!`);
-        addMessageBubble(`Okay, I'll help you with ${action}!`, 'receiver');
+        const branchName = button.innerText;
+        console.log(`Okay, I'll help you with ${branchName}!`);
+        addMessageBubble(`Okay, I'll help you with ${branchName}!`, 'receiver');
         enableForm();
         input.focus();
         highlightButton(button);
