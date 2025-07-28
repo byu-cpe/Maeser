@@ -1,32 +1,20 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
-from config import (
+from maeser.chat.chat_logs import ChatLogsManager
+from maeser.chat.chat_session_manager import ChatSessionManager
+from example.apps.config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
-
 import os
 
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
-from maeser.chat.chat_logs import ChatLogsManager
-from maeser.chat.chat_session_manager import ChatSessionManager
-
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
-maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
-    You will answer a question about your own life history based on the context provided.
-    Don't answer questions about other things.
+# A pipeline is a generalized prompt, often for providing answers across larger datasets,
+# but still specific to relevant course information.
 
-    {context}
-    """
-
-byu_prompt: str = """You are speaking about the history of Brigham Young University.
-    You will answer a question about the history of BYU based on the context provided.
-    Don't answer questions about other things.
-
-    {context}
-    """
 pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history or the history of BYU based on 
     the context provided.
@@ -34,15 +22,32 @@ pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maese
 
     {context}
 """
+
 from maeser.graphs.simple_rag import get_simple_rag
 from maeser.graphs.pipeline_rag import get_pipeline_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt, model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
 
-byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
+# One for the history of BYU and one for the life of Karl G. Maeser.
+# Ensure that topics are all lower case and spaces between words
+vectorstore_config = {
+    "byu history": f"{VEC_STORE_PATH}/byu",      # Vectorstore for BYU history.
+    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
+}
+
+byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
+    vectorstore_config=vectorstore_config, 
+    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
+        api_key=OPENAI_API_KEY, 
+        system_prompt_text=(
+            "You are speaking from the perspective of Karl G. Maeser."
+            "Answer questions about your life and BYU's history only. "
+            "Do not answer questions about other things. \n\n"
+            "{context}\n"
+        ),
+        model=LLM_MODEL_NAME
+    )
+sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
 
 import pyinputplus as pyip
 
