@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
 from example.apps.config import (
-    LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH, 
+    LOG_SOURCE_PATH, OPENAI_API_KEY, STATIC_FOLDER, USERS_DB_PATH, 
     VEC_STORE_PATH, MAX_REQUESTS, RATE_LIMIT_INTERVAL, 
     GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_AUTH_CALLBACK_URI, 
     GITHUB_TIMEOUT, CHAT_HISTORY_PATH, LDAP3_NAME, 
@@ -24,14 +24,14 @@ sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
 maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history based on the context provided.
-    Don't answer questions about other things.
+    If the question is unrelated to the topic or the context, politely inform the user that their questions is outside the context of your resources.
 
     {context}
     """
 
 byu_prompt: str = """You are speaking about the history of Brigham Young University.
     You will answer a question about the history of BYU based on the context provided.
-    Don't answer questions about other things.
+    If the question is unrelated to the topic or the context, politely inform the user that their questions is outside the context of your resources.
 
     {context}
     """
@@ -39,15 +39,32 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
 from maeser.graphs.simple_rag import get_simple_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt, model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
+maeser_simple_rag: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/maeser",
+    vectorstore_index="index",
+    memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=maeser_prompt,
+    model=LLM_MODEL_NAME,
+)
 
-byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
+sessions_manager.register_branch(branch_name="simple_maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
+
+byu_simple_rag: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/byu",
+    vectorstore_index="index",
+    memory_filepath=f"{LOG_SOURCE_PATH}/byu.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=byu_prompt,
+    model=LLM_MODEL_NAME,
+)
+
+sessions_manager.register_branch(branch_name="simple_byu", branch_label="BYU History", graph=byu_simple_rag)
 
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
 # Replace the '...' in the config_example.yaml with a client id and secret from a GitHub OAuth App that you generate
+# If you are not using LDAP, comment out this block
 github_authenticator = GithubAuthenticator(
     client_id=GITHUB_CLIENT_ID, 
     client_secret=GITHUB_CLIENT_SECRET, 
@@ -55,26 +72,33 @@ github_authenticator = GithubAuthenticator(
     timeout=GITHUB_TIMEOUT,
     max_requests=MAX_REQUESTS
 )
-# Replace the '...' in the config_example.yaml with all the proper configurations
-ldap3_authenticator = LDAPAuthenticator(
-    name=LDAP3_NAME,
-    ldap_server_urls=LDAP_SERVER_URLS,
-    ldap_base_dn=LDAP_BASE_DN,
-    attribute_name=LDAP_ATTRIBUTE_NAME,
-    search_filter=LDAP_SEARCH_FILTER,
-    object_class=LDAP_OBJECT_CLASS,
-    attributes=LDAP_ATTRIBUTES,
-    ca_cert_path=LDAP_CA_CERT_PATH,
-    connection_timeout=LDAP_CONNECTION_TIMEOUT
-)
+# # Replace the '...' in the config_example.yaml with all the proper configurations
+# ldap3_authenticator = LDAPAuthenticator(
+#     name=LDAP3_NAME,
+#     ldap_server_urls=LDAP_SERVER_URLS,
+#     ldap_base_dn=LDAP_BASE_DN,
+#     attribute_name=LDAP_ATTRIBUTE_NAME,
+#     search_filter=LDAP_SEARCH_FILTER,
+#     object_class=LDAP_OBJECT_CLASS,
+#     attributes=LDAP_ATTRIBUTES,
+#     ca_cert_path=LDAP_CA_CERT_PATH,
+#     connection_timeout=LDAP_CONNECTION_TIMEOUT
+# )
 
 user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
-user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator)
+# user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator) # If you are not using LDAP, comment out this line
 
 from flask import Flask
 
-base_app = Flask(__name__)
+# Default resources must be relative to the directory the Flask script is located in (regardless of current working directory)
+app_dir = os.path.dirname(__file__)
+
+# Configure base app
+base_app = Flask(
+    __name__,
+    static_folder=os.path.relpath(STATIC_FOLDER, app_dir),
+)
 
 from maeser.blueprints import AppManager
 

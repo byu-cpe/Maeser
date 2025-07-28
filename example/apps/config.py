@@ -11,15 +11,16 @@ import os
 def load_config():
     """Load configuration from YAML file."""
     config_paths = [
+        'example/apps/config.yaml',
+        'example/config.yaml',
         'config.yaml',
         './config.yaml',
-        'example/config.yaml',
     ]
     
-    for path in config_paths:
+    for i, path in enumerate(config_paths):
         if os.path.exists(path):
             with open(path, 'r') as file:
-                print(f'Using configuration at {path} (Priority {config_paths.index(path)})')
+                print(f'Using configuration at {path} (Priority {i})')
                 return yaml.safe_load(file)
     
     print("Warning: No configuration file found")
@@ -53,6 +54,9 @@ RATE_LIMIT_INTERVAL = config.get('rate_limit', {}).get('rate_limit_interval_seco
 
 # Logging
 LOG_SOURCE_PATH = config.get('logging', {}).get('log_source_path')
+
+# Web Resources
+STATIC_FOLDER = config.get('web_resources', {}).get('static_folder')
 
 # Vectorstore
 VEC_STORE_PATH = config.get('vectorstore', {}).get('vec_store_path')

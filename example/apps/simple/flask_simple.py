@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
 from example.apps.config import (
-    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
+    LOG_SOURCE_PATH, OPENAI_API_KEY, STATIC_FOLDER, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 
 import os
@@ -16,14 +16,14 @@ sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
 maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history based on the context provided.
-    Don't answer questions about other things.
+    If the question is unrelated to the topic or the context, politely inform the user that their questions is outside the context of your resources.
 
     {context}
     """
 
 byu_prompt: str = """You are speaking about the history of Brigham Young University.
     You will answer a question about the history of BYU based on the context provided.
-    Don't answer questions about other things.
+    If the question is unrelated to the topic or the context, politely inform the user that their questions is outside the context of your resources.
 
     {context}
     """
@@ -31,15 +31,38 @@ byu_prompt: str = """You are speaking about the history of Brigham Young Univers
 from maeser.graphs.simple_rag import get_simple_rag
 from langgraph.graph.graph import CompiledGraph
 
-maeser_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/maeser", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db", system_prompt_text=maeser_prompt, model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
+maeser_simple_rag: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/maeser",
+    vectorstore_index="index",
+    memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=maeser_prompt,
+    model=LLM_MODEL_NAME,
+)
 
-byu_simple_rag: CompiledGraph = get_simple_rag(vectorstore_path=f"{VEC_STORE_PATH}/byu", vectorstore_index="index", memory_filepath=f"{LOG_SOURCE_PATH}/byu.db", system_prompt_text=byu_prompt, model=LLM_MODEL_NAME)
-sessions_manager.register_branch(branch_name="byu", branch_label="BYU History", graph=byu_simple_rag)
+sessions_manager.register_branch(branch_name="simple_maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
+
+byu_simple_rag: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/byu",
+    vectorstore_index="index",
+    memory_filepath=f"{LOG_SOURCE_PATH}/byu.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=byu_prompt,
+    model=LLM_MODEL_NAME,
+)
+
+sessions_manager.register_branch(branch_name="simple_byu", branch_label="BYU History", graph=byu_simple_rag)
 
 from flask import Flask
 
-base_app = Flask(__name__)
+# Default resources must be relative to the directory the Flask script is located in (regardless of current working directory)
+app_dir = os.path.dirname(__file__)
+
+# Configure base app
+base_app = Flask(
+    __name__,
+    static_folder=os.path.relpath(STATIC_FOLDER, app_dir),
+)
 
 from maeser.blueprints import AppManager
 
