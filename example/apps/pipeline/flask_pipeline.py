@@ -14,7 +14,7 @@ from maeser.chat.chat_session_manager import ChatSessionManager
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
-# A pipeline is a generalized prompt, often for providing answers across larger datasets,
+# The prompt for a Pipeline RAG is a generalized prompt, often for providing answers across larger datasets,
 # but still specific to relevant course information.
 pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history or the history of BYU based on 
