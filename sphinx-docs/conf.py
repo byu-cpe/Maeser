@@ -77,6 +77,15 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.sphinx-venv']
 
+# -- Options for sphinx-copybutton -------------------------------------------
+# Strip input prompts
+copybutton_custom_prompts = [
+    r'^[^$#\n]+[$#]\s?',    # bash
+    r'>>> |\.\.\. ',        # Python Repl + continuation
+]
+copybutton_prompt_text = r'|'.join(copybutton_custom_prompts)
+copybutton_prompt_is_regexp = True
+
 # -- Options for MyST --------------------------------------------------------
 # Enable MyST extensions
 myst_enable_extensions = [
