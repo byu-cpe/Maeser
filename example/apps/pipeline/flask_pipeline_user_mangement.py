@@ -48,7 +48,7 @@ byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
     model=LLM_MODEL_NAME,
 )
 
-sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline", graph=byu_maeser_pipeline_rag)
+sessions_manager.register_branch(branch_name="pipeline", branch_label="BYU and Karl G. Maeser History", graph=byu_maeser_pipeline_rag)
 
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
