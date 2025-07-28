@@ -52,6 +52,7 @@ File or directory | Type of file(s) | Current license | Acceptable licenses for 
 File or directory | Type of file(s) | Current license | Acceptable licenses for new files in the same family
 ---:|:---:|:---:|:---
 `sphinx-docs/*.py` | Python source | [LGPL v3](LGPL.md)+ | [AGPL v3](AGPL.md)+*, [GPL v3](GPL.md)+*, [LGPL v3](LGPL.md)+, [MIT](MIT.md), [CC0](CC0.md)
+`sphinx-docs/*.js` | JavaScript source | [LGPL v3](LGPL.md)+ | [AGPL v3](AGPL.md)+*, [GPL v3](GPL.md)+*, [LGPL v3](LGPL.md)+, [MIT](MIT.md), [CC0](CC0.md)
 `sphinx-docs/Makefile` | Makefile source | [LGPL v3](LGPL.md)+ | [AGPL v3](AGPL.md)+*, [GPL v3](GPL.md)+*, [LGPL v3](LGPL.md)+, [MIT](MIT.md), [CC0](CC0.md)
 `sphinx-docs/*/*.md` | Markdown source | [CC-BY-SA 4.0](CCBYSA4.md) | [CC-BY-SA 4.0](CCBYSA4.md), [CC0](CC0.md)
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 This module prepares the project's readme for publishing to PyPI by replacing all relative repository links to absolute GitHub links.
 The script can be run from the command line or imported into another script.

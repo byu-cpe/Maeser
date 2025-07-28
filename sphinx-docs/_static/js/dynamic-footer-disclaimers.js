@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
 // This script replaces the content of the author and copyright sections, allowing hyperlinks to be inserted
 
 // Get relative link of TOC page
