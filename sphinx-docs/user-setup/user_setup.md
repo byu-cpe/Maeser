@@ -99,6 +99,8 @@ LLM_MODEL_NAME: "gpt-4o"
 
 The Maeser chatbot uses pre-built databases called **vectorstores** to retrieve knowledge. Each vectorstore is a directory containing an `index.faiss` and an `index.pkl` file. The Maeser GitHub repository contains two example vectorstores, **Maeser** and **BYU**. The example applications in this project are already configured to use these two vectorstores (found in `resources/vectorstores`) when the chatbot interacts with users.
 
+> **Note:** To embed your own documents as vectorstores, follow the guide at [**Embedding New Content**](../development/embedding.md) (after setting up Maeser). You will need to download `example/tools` from the repository to use the scripts in that guide.
+
 ---
 
 ## Choose one of the Example Flask Apps
