@@ -61,23 +61,23 @@ github_authenticator = GithubAuthenticator(
     max_requests=MAX_REQUESTS
 )
 
-# # Replace the '...' in the config_example.yaml with all the proper configurations
-# # If you are not using LDAP, comment out this block
-# ldap3_authenticator = LDAPAuthenticator(
-#     name=LDAP3_NAME,
-#     ldap_server_urls=LDAP_SERVER_URLS,
-#     ldap_base_dn=LDAP_BASE_DN,
-#     attribute_name=LDAP_ATTRIBUTE_NAME,
-#     search_filter=LDAP_SEARCH_FILTER,
-#     object_class=LDAP_OBJECT_CLASS,
-#     attributes=LDAP_ATTRIBUTES,
-#     ca_cert_path=LDAP_CA_CERT_PATH,
-#     connection_timeout=LDAP_CONNECTION_TIMEOUT
-# )
+# Replace the '...' in the config_example.yaml with all the proper configurations
+# If you are not using LDAP, comment out this block
+ldap3_authenticator = LDAPAuthenticator(
+    name=LDAP3_NAME,
+    ldap_server_urls=LDAP_SERVER_URLS,
+    ldap_base_dn=LDAP_BASE_DN,
+    attribute_name=LDAP_ATTRIBUTE_NAME,
+    search_filter=LDAP_SEARCH_FILTER,
+    object_class=LDAP_OBJECT_CLASS,
+    attributes=LDAP_ATTRIBUTES,
+    ca_cert_path=LDAP_CA_CERT_PATH,
+    connection_timeout=LDAP_CONNECTION_TIMEOUT
+)
 
 user_manager = UserManager(db_file_path=USERS_DB_PATH, max_requests=MAX_REQUESTS, rate_limit_interval=RATE_LIMIT_INTERVAL)
 user_manager.register_authenticator(name="github", authenticator=github_authenticator)
-# user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator) # If you are not using LDAP, comment out this line
+user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authenticator) # If you are not using LDAP, comment out this line
 
 from flask import Flask
 
