@@ -49,8 +49,8 @@ autodoc_mock_imports = [
 # -- Project information -----------------------------------------------------
 
 project = 'Maeser'
-copyright = '2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].'
 author = 'The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].'
+copyright = '2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js]'
 
 # The full version, including alpha/beta/rc tags
 release = 'alpha'
