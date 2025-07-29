@@ -87,6 +87,13 @@ copybutton_prompt_text = r'|'.join(copybutton_custom_prompts)
 copybutton_prompt_is_regexp = True
 copybutton_line_continuation_character = '\\'
 
+# Ignore code blocks with the no-copybutton class. Ex:
+# ```{code-block}
+# :class: no-copybutton
+# <code>
+# ```
+copybutton_selector = "div:not(.no-copybutton) > div.highlight > pre"
+
 # -- Options for MyST --------------------------------------------------------
 # Enable MyST extensions
 myst_enable_extensions = [
