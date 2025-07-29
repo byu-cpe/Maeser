@@ -29,6 +29,8 @@ Custom graphs let you compose these behaviors into a coherent pipeline, giving y
 
 The easiest way to build a **custom graph** is to use the web tool [LangGraph Builder](https://build.langchain.com/). We will try to explain a LangGraph here:
 
+---
+
 ## Nodes
 
 In LangGraph, a node is like a building block — it’s one step in your program’s flow.
@@ -57,6 +59,8 @@ def llm_response_node(input):
     return {"answer": "This is a response to: " + input["question"]}
 ```
 
+---
+
 ## Edges
 
 An edge is the connection between two nodes.
@@ -83,6 +87,8 @@ Here’s what’s happening:
 - Each node does some work.
 - Each edge tells the system where to go next.
 - The edge from Classifier is a conditional edge — it chooses the next node based on the output.
+
+---
 
 ## Conditional Edges
 
@@ -112,6 +118,8 @@ def classify_node(state):
         return {"type": "command"}
 
 ```
+
+---
 
 ## Cycles
 
