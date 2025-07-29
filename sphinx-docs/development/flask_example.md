@@ -275,6 +275,12 @@ if __name__ == "__main__":
 
 ---
 
+## Enable Debug Mode (Optional)
+
+<!-- TODO -->
+
+---
+
 ## Run the Application
 
 Activate your virtual environment and execute one of the following commands:
