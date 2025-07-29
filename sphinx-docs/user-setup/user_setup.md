@@ -27,7 +27,7 @@ This command downloads the latest Maeser release and its dependencies from PyPI.
 
 Navigate to the [**Maeser GitHub repository**](https://github.com/byu-cpe/Maeser) and enter the [`example/`](https://github.com/byu-cpe/Maeser/tree/main/example) directory. This directory contains three folders:
 
-```{code-block}
+```{code-block}none
 :class: no-copybutton
 example
 ├── apps
@@ -38,7 +38,7 @@ example
 
 To start, you will only need `apps/` and `resources/`. Download these two folders into your project directory. Your project should now have the following folder structure:
 
-```{code-block}
+```{code-block}none
 :class: no-copybutton
 .
 ├── apps
@@ -47,14 +47,14 @@ To start, you will only need `apps/` and `resources/`. Download these two folder
 │   ├── config.yaml
 │   ├── pipeline
 │   │   ├── flask_pipeline.py
-│   │   ├── flask_pipeline_user_mangement.py
+│   │   ├── flask_pipeline_user_management.py
 │   │   └── terminal_pipeline.py
 │   ├── simple
 │   │   ├── flask_simple.py
-│   │   ├── flask_simple_user_mangement.py
+│   │   ├── flask_simple_user_management.py
 │   │   └── terminal_simple.py
 │   └── universal
-│       ├── flask_pipeline_user_mangement.py
+│       ├── flask_pipeline_user_management.py
 │       ├── flask_universal.py
 │       └── terminal_pipeline.py
 └── resources
@@ -79,7 +79,7 @@ Maeser uses a simple **YAML** file (`config.yaml`) to configure settings like AP
 
 First, **make a copy of `apps/config_template.yaml` and name it `config.yaml`.** You will populate the latter file with the necessary keys and configuration for your Maeser app.
 
-Next, **Open `apps/config.yaml`** in a text editor and update only these fields:
+Next, **open `apps/config.yaml`** in a text editor and update only these fields:
 
 ```{code-block} yaml
 :class: no-copybutton
@@ -90,7 +90,7 @@ USERS_DB_PATH: "users.db"
 LLM_MODEL_NAME: "gpt-4o"
 ```
 
-- If you don’t have an OpenAI key, you can sign up at [https://platform.openai.com/signup](https://platform.openai.com/signup).  
+- If you don’t have an OpenAI key, you can [sign up here](https://platform.openai.com/signup).  
 - The default paths (`vectorstores`, `chat_logs`, `users.db`) are relative to your working directory.
 
 ---
@@ -124,6 +124,7 @@ from example.apps.config import (...)
 ```
 
 Replace that line with the following:
+
 ```python
 from apps.config import (...)
 ```
@@ -131,7 +132,7 @@ from apps.config import (...)
 You will need to replace `example.apps.config` with `apps.config` within all example app scripts you plan on running. Many code editors have a find-and-replace feature that lets you do this trivially. If you are on Linux or Mac, you can also do this in the command line by running the following command within `apps/`:
 
 ```bash
-project/dir/apps$ sed -i 's/example\.apps\.config/apps\.config/g' **/*.py
+sed -i 's/example\.apps\.config/apps\.config/g' **/*.py
 ```
 
 ---
@@ -139,7 +140,7 @@ project/dir/apps$ sed -i 's/example\.apps\.config/apps\.config/g' **/*.py
 ## Run the Web Chat Interface
 
 1. **Run the web app** by executing the following in your terminal (from the **root directory** of your project):
-   
+
    ```bash
    python apps/universal/flask_universal.py
    ```
@@ -147,7 +148,8 @@ project/dir/apps$ sed -i 's/example\.apps\.config/apps\.config/g' **/*.py
    replacing `universal/flask_universal.py` above with the script of your choice.
 
 2. **Open your browser** and go to:
-   ```
+
+   ```none
    http://localhost:3002
    ```
 
@@ -175,7 +177,6 @@ For quick, command‑line access without a web browser, **Run one of the termina
 
 ---
 
-## Getting Help  
+## Getting Help
+
 - **GitHub Issues:** Report bugs or ask questions at [https://github.com/byu-cpe/Maeser/issues](https://github.com/byu-cpe/Maeser/issues).  
-
-
