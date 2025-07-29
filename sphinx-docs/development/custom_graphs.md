@@ -30,6 +30,7 @@ Custom graphs let you compose these behaviors into a coherent pipeline, giving y
 The easiest way to build a **custom graph** is to use the web tool [LangGraph Builder](https://build.langchain.com/). We will try to explain a LangGraph here:
 
 ## Nodes
+
 In LangGraph, a node is like a building block — it’s one step in your program’s flow.
 
 More technically:
@@ -46,6 +47,7 @@ Let’s say you're building a chatbot that answers questions. You could make a L
 Each of those steps is a node.
 
 This is an example of a node in python:
+
 ```python
 def ask_question_node(input):
     return {"question": input["user_input"]}
@@ -56,6 +58,7 @@ def llm_response_node(input):
 ```
 
 ## Edges
+
 An edge is the connection between two nodes.
 
 Think of it like a wire or a path that tells LangGraph:
@@ -64,21 +67,25 @@ Think of it like a wire or a path that tells LangGraph:
 When a node finishes its job and returns some output, the edge decides what node to run next.
 
 There are two main types of edges:
+
 - Static Edges – Always go to the same next node, no matter the result.
 - Conditional Edges – Choose the next node based on some value in the output.
 
 Let’s say you’re building a flow like this:
+
 - User types a message → (Start node)
 - Classify message as 'question' or 'command' → (Classifier node)
 - If it's a question, go to AnswerQuestion node
 - If it's a command, go to RunCommand node
 
 Here’s what’s happening:
+
 - Each node does some work.
 - Each edge tells the system where to go next.
 - The edge from Classifier is a conditional edge — it chooses the next node based on the output.
 
 ## Conditional Edges
+
 A conditional edge chooses which node to run next based on the output of the current node.
 
 It’s like saying:
@@ -89,11 +96,13 @@ It’s like saying:
 They let your graph make decisions.
 
 This is useful when:
+
 - You want to branch the logic based on input.
 - You’re handling different types of tasks (e.g. questions vs commands).
 - You want to loop or exit based on a condition.
 
 For example, you may want to classify an input. You can do so in something like this:
+
 ```python
 def classify_node(state):
     text = state["user_input"]
@@ -103,16 +112,20 @@ def classify_node(state):
         return {"type": "command"}
 
 ```
+
 ## Cycles
+
 A cycle in LangGraph is when a node can eventually lead back to itself or to an earlier node in the graph.
 In simple terms, A cycle lets your program loop or repeat steps.
 
 You use cycles when:
+
 - You want to retry something.
 - You want to keep asking the user for more input.
 - You need a multi-step process where results feed back into earlier logic.
 
 Logic for this would look something like this:
+
 ```mermaid
 flowchart TB
     %% Nodes
@@ -146,4 +159,4 @@ flowchart TB
 - Read [Graphs: Simple RAG vs. Pipline RAG](graphs) for built‑in pipelines.
 - Experiment with external tools (e.g., web search) by adding new states.
 - Share your custom graphs with the Maeser community via GitHub.
-- For more information on langgraphs, you can find documentation [here](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.#)
+- For more information on LangGraphs, you can [find documentation here](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.#).
