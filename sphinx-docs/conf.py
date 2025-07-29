@@ -79,9 +79,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.sphinx-venv']
 
 # -- Options for sphinx-copybutton -------------------------------------------
 # Strip input prompts
+# These use regular expressions to match the prompts that should be stripped from the code blocks.
+# If you are having issues with copying, you can try changing these to better match your terminal prompts.
 copybutton_custom_prompts = [
-    r'^[^$#\n]+[$#]\s?',    # bash
+    r'^[^$#\n]*\$ ',        # bash
     r'>>> |\.\.\. ',        # Python Repl + continuation
+    r'^(?:\S)*> ',          # Windows CMD/Powershell
 ]
 copybutton_prompt_text = r'|'.join(copybutton_custom_prompts)
 copybutton_prompt_is_regexp = True
