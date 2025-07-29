@@ -27,7 +27,8 @@ This command downloads the latest Maeser release and its dependencies from PyPI.
 
 Navigate to the [**Maeser GitHub repository**](https://github.com/byu-cpe/Maeser) and enter the [`example/`](https://github.com/byu-cpe/Maeser/tree/main/example) directory. This directory contains three folders:
 
-```
+```{code-block}
+:class: no-copybutton
 example
 ├── apps
 ├── resources
@@ -37,7 +38,8 @@ example
 
 To start, you will only need `apps/` and `resources/`. Download these two folders into your project directory. Your project should now have the following folder structure:
 
-```
+```{code-block}
+:class: no-copybutton
 .
 ├── apps
 │   ├── config.py
@@ -79,7 +81,8 @@ First, **make a copy of `apps/config_template.yaml` and name it `config.yaml`.**
 
 Next, **Open `apps/config.yaml`** in a text editor and update only these fields:
 
-```yaml
+```{code-block} yaml
+:class: no-copybutton
 OPENAI_API_KEY: "<your-openai-key>"
 VEC_STORE_PATH: "vectorstores"
 CHAT_HISTORY_PATH: "chat_logs"
@@ -110,7 +113,7 @@ Pick the behavior of your choice, and choose one of the scripts to use for your 
 
 ---
 
-# Update the Path to `config.py`
+## Update the Path to `config.py`
 
 By default, the Maeser app scripts look for `config.py` in `example/apps`. Since your project is structured differently, you will need to update this. Each of the example app scripts have the following line of code near the top of the file:
 
@@ -146,7 +149,7 @@ project/dir/apps$ sed -i 's/example\.apps\.config/apps\.config/g' **/*.py
    http://localhost:3002
    ```
 
-3. **Select a knowledge branch** (e.g., "Karl G. Maeser History", "BYU History", or "pipeline") and start chatting!
+3. **Select a knowledge branch** (e.g., "Karl G. Maeser History" or "BYU History") and start chatting!
 
 ---
 
