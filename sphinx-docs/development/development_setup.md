@@ -25,7 +25,7 @@ This gives you the latest `main` branch of the Maeser source code and examples.
 
 ---
 
-## Create & Activate a Virtual Environment
+## Create and Activate a Virtual Environment
 
 You have two options: use plain `venv`, or Poetry.
 

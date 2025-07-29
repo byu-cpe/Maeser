@@ -9,7 +9,8 @@ This guide is designed for users who want to use Maeser’s chatbot capabilities
 ## Prerequisites
 
 - **Python 3.10+** installed on your system.
-- Basic command-line familiarity (opening a terminal or PowerShell window).
+- **Basic command-line familiarity** (opening a terminal or PowerShell window).
+- **Python Virtual Environment (Optional but Recommended)**—Activating a virtual environment ensures that Maeser's dependencies are of the right version and will not interfere with packages installed system-wide. For reference on setting up a Python virtual environment, see [Create and Activate a Virtual Environment](../development/development_setup.md#create-and-activate-a-virtual-environment).
 
 ---
 
