@@ -16,10 +16,10 @@ from vector_store_operator import vectorize_data
 def get_model_config(upload_root: str) -> tuple[
     str, str, str, list[str], dict[str, list[FileStorage]]
 ]:
-    """Retrieves config for a class model from a post request.
+    """Retrieves config for a course model from a post request.
 
     Args:
-        upload_root (str): The root directory where all class models are created and modified.
+        upload_root (str): The root directory where all course models are created and modified.
 
     Raises:
         AttributeError: If the request form is missing 'class_code'.
@@ -65,10 +65,10 @@ def get_model_config(upload_root: str) -> tuple[
 def save_model(
     upload_root: str, class_code: str, model_dir: str, bot_path: str, rules: list[str], datasets: dict[str, list[FileStorage]]
 ):
-    """Saves the class model using the provided config.
+    """Saves the course model using the provided config.
 
     Args:
-        upload_root (str): The root directory where all class models are created and modified.
+        upload_root (str): The root directory where all course models are created and modified.
         class_code (str): The code used to identify the class.
         model_dir (str): The directory to where the model's data will be saved.
         bot_path (str): The path to where the model's 'bot.txt' file will be saved.
@@ -134,7 +134,7 @@ def process_datasets(model_dir: str):
         print(f"✔ Completed {dir}")
 
 def delete_datasets(model_dir: str):
-    """Deletes specified datasets from a class model. The specified datasets are retrieved from the last request form.
+    """Deletes specified datasets from a course model. The specified datasets are retrieved from the last request form.
 
     Args:
         model_dir (str): The directory containing the model's data.
@@ -146,10 +146,10 @@ def delete_datasets(model_dir: str):
             shutil.rmtree(group_path)
 
 def remove_class_model(upload_root: str, class_code: str):
-    """Removes a class model from the root bot data directory.
+    """Removes a course model from the root bot data directory.
 
     Args:
-        upload_root (str): The root directory where all class models are created and modified.
+        upload_root (str): The root directory where all course models are created and modified.
         class_code (str): The code used to identify the class.
 
     Raises:
@@ -166,7 +166,7 @@ def remove_class_model(upload_root: str, class_code: str):
         print(f"Unable to remove {class_code}: {e}")
 
 def load_rules(bot_path: str) -> list[str]:
-    """Loads the rules for a class model from the model's 'bot.txt' file.
+    """Loads the rules for a course from the model's 'bot.txt' file.
 
     Args:
         bot_path (str): The path of the model's 'bot.txt' file.
@@ -191,7 +191,7 @@ def load_rules(bot_path: str) -> list[str]:
     return rules
 
 def load_datasets(model_dir: str) -> list[str]:
-    """Loads the names of a class model's existing datasets.
+    """Loads the names of a course model's existing datasets.
 
     Args:
         model_dir (str): The directory containing the model's data.
