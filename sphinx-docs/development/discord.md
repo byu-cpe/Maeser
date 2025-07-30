@@ -1,13 +1,17 @@
-# Setting Up a Discord Bot
+# The Discord Handler: Setting Up a Discord Bot
 
 While the Maeser package primarily supports creating flask web apps, you can use `dynamic_implementations/discord_handler.py` to create a **Discord bot** that interfaces with students on a discord server with the same functionality. This guide provides instructions on setting up your own Maeser Discord bot.
 
 > **Note:** The `dynamic_implementations` directory contains examples of handlers that interface with maeser using `dynamic_implementations/generate_response.py`. In the future, `generate_response.py` and certain popular handlers will be added directly to the maeser package, but for now, these scripts are provided externally as working examples.
 
+---
+
 ## Prerequisites
 
 - **The Maeser Repository:** cloned locally and set up using the [**Development Setup Guide**](./development_setup.md).
 - **One or More Chatbot Class Models/Courses:** created manually or using the [**Admin Portal**](./admin_portal.md) (recommended).
+
+---
 
 ## Set up Config
 
@@ -17,6 +21,8 @@ In order for Discord to talk with your script, you need to have a discord bot to
 
 Future plans may include entering the token details in the [**Admin Portal**](./admin_portal.md), but for now, it must be entered manually.
 
+---
+
 ## Set Up the Discord Bot on the Discord Website
 
 Go to the [**Discord for Developers**](https://discord.com/developers/applications) website, and set up an account if needed.
@@ -25,9 +31,13 @@ In the `Applications` tab, click `New Application`. Give it a name, and then cli
 
 The following sections will cover each Menu item.
 
+---
+
 ### General Information
 
 The information here is optional, but may be helpful if managing multiple bots.
+
+---
 
 ### Bot
 
@@ -43,6 +53,8 @@ You will also want to scroll down to the `Privileged Gateway Intents` section an
 - Message Content Intent
 
 Be sure to save your changes before leaving this page.
+
+---
 
 ### OAuth2
 
@@ -60,6 +72,8 @@ This is a key part of the setup process. Scroll down to "OAuth2 URL Generator" a
 
 A URL will be generated at the bottom of this menu that allows your bot to be installed to discord servers with the marked permissions. **Copy this URL** and enter it into your browser to add your bot to a Discord server. You may also share this URL with anyone who wishes to add your bot to their server.
 
+---
+
 ## Run the Discord Handler
 
 Once your bot is configured on the Discord website and `config.yaml` is configured, run `dynamic_implementations/discord_handler.py` from your project's root directory. Your command output should look like the following:
@@ -72,9 +86,13 @@ Using configuration at dynamic_implementations/config.yaml (Priority 0)
 ✅ Discord Bot connected as Bot Name#1984
 ```
 
+---
+
 ## Creating and Modifying Courses
 
 Class models can be configured and modified using the [**Admin Portal**](./admin_portal.md). By default, the admin portal places these in `dynamic_implementations/bot_data`, which is where the Discord handler also looks for courses.
+
+---
 
 ## Using Discord
 
