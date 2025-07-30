@@ -11,9 +11,9 @@ import os
 def load_config():
     """Load configuration from YAML file."""
     config_paths = [
+        'dynamic_implementations/config.yaml',
         'config.yaml',
         './config.yaml',
-        'dynamic_implementations/config.yaml',
     ]
     
     for path in config_paths:
