@@ -7,7 +7,7 @@ While the Maeser package primarily supports creating flask web apps, you can use
 ## Prerequisites
 
 - **The Maeser Repository:** cloned locally and set up using the [**Development Setup Guide**](./development_setup.md).
-- **One or More Chatbot Class Models:** created manually or using the [**Admin Portal**](./admin_portal.md) (recommended).
+- **One or More Chatbot Class Models/Courses:** created manually or using the [**Admin Portal**](./admin_portal.md) (recommended).
 
 ## Set up Config
 
@@ -71,6 +71,10 @@ Using configuration at dynamic_implementations/config.yaml (Priority 0)
 2025-07-30 10:29:44 INFO     discord.gateway Shard ID None has connected to Gateway (Session ID: <...>).
 ✅ Discord Bot connected as Bot Name#1984
 ```
+
+## Creating and Modifying Courses
+
+Class models can be configured and modified using the [**Admin Portal**](./admin_portal.md). By default, the admin portal places these in `dynamic_implementations/bot_data`, which is where the Discord handler also looks for courses.
 
 ## Using Discord
 
