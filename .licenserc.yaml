@@ -8,6 +8,8 @@ header:
   paths:
     - maeser
     - example
+    - admin_portal
+    - dynamic_implementations
     - tests/**/*.py
     - .github/**/*.py
     - .github/**/Makefile
