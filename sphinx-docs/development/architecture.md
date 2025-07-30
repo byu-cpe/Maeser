@@ -57,15 +57,16 @@ flowchart LR
 ### AppManager
 
 - **File:** `maeser/blueprints.py`  
-- **Role:** Bootstraps and configures the Flask app, registers routes via blueprints, applies theming, and initializes background tasks (e.g., quota refresh). Everything flows through this central orchestrator.
+- **Role:** Bootstraps and configures the Flask app, registers routes via blueprints, applies theming, and initializes background tasks (e.g., message requests refresh).
 
 ### ChatSessionManager Module
 
 - **Class:** `ChatSessionManager` (`maeser/chat/chat_session_manager.py`)  
 - **Responsibilities:** Manages conversation sessions, routes messages to the appropriate RAG graph, and tracks session metadata.
 - **Subcomponents:**
-  - **Simple RAG** (`get_simple_rag`): Single-domain retrieval and generation pipeline.
-  - **Pipeline RAG** (`get_pipeline_rag`): Dynamically routed retrieval pipeline.
+  - **Simple RAG** (`get_simple_rag`): Controls chatbot behavior by separating each vectorstore into its own branch, forcing the chatbot to stick to one topic per conversation.
+  - **Pipeline RAG** (`get_pipeline_rag`): Combines all vectorstores into one chat branch, allowing the chatbot to dynamically choose the most relevant vectorstore when answering a user's question.
+  - **Universal RAG** (`get_universal_rag`): Behaves similar to `get_pipeline_rag`, but also allows the chatbot to pull from multiple vectorstores when answering a user's question.
 - **Controllers:**
   - `chat_interface.controller` (renders UI)
   - `new_session_api.controller` (creates sessions)
@@ -109,5 +110,3 @@ flowchart LR
 4. **ChatSessionManager** invokes RAG graphs or logs via **ChatLogsManager** for chat operations.  
 5. **UserManager** authenticates and manages user data for secure endpoints.  
 6. **Render Helpers** generate final HTML/CSS for web responses.
-
-This architecture ensures clear separation of concerns, scalability of RAG pipelines, and maintainable code structure.
