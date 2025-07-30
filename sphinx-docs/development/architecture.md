@@ -55,10 +55,12 @@ flowchart LR
 ## Core Components
 
 ### AppManager
+
 - **File:** `maeser/blueprints.py`  
 - **Role:** Bootstraps and configures the Flask app, registers routes via blueprints, applies theming, and initializes background tasks (e.g., quota refresh). Everything flows through this central orchestrator.
 
 ### ChatSessionManager Module
+
 - **Class:** `ChatSessionManager` (`maeser/chat/chat_session_manager.py`)  
 - **Responsibilities:** Manages conversation sessions, routes messages to the appropriate RAG graph, and tracks session metadata.
 - **Subcomponents:**
@@ -71,6 +73,7 @@ flowchart LR
   - `conversation_history_api.controller` (fetches past messages)
 
 ### ChatLogsManager Module
+
 - **Class:** `ChatLogsManager` (`maeser/chat/chat_logs.py`)  
 - **Responsibilities:** Persists all chat logs, including messages, responses, tokens, and cost metrics.
 - **Controllers:**
@@ -81,6 +84,7 @@ flowchart LR
   - `display_chat_log.controller` (stream a specific log)
 
 ### UserManager Module
+
 - **Class:** `UserManager` (`maeser/user_manager.py`)  
 - **Responsibilities:** Handles authentication (OAuth, LDAP), user registration, admin/ban status, and rate limiting.
 - **Authenticators:**
@@ -93,10 +97,12 @@ flowchart LR
   - `user_management_api.controller` (user CRUD API)
 
 ### Jinja2 Render Helpers
+
 - **File:** `maeser/render.py`  
 - **Role:** Provides helper functions for Jinja2 templates to render CSS, HTML snippets, and inject dynamic theming variables.
 
 ## Request Flow Summary
+
 1. **HTTP Request** arrives at the Flask app.  
 2. **AppManager** routes the request to the proper controller.  
 3. **Controllers** interact with **ChatSessionManager** or **UserManager** depending on the endpoint.  
@@ -105,4 +111,3 @@ flowchart LR
 6. **Render Helpers** generate final HTML/CSS for web responses.
 
 This architecture ensures clear separation of concerns, scalability of RAG pipelines, and maintainable code structure.
-
