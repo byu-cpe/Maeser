@@ -9,6 +9,8 @@ The admin portal currently only does two things:
 
 Ideally, there will be more functions in the future, like being able to delete courses and launch different handlers (like discord) from the webapp.
 
+---
+
 ## Creating a Course
 
 A new course takes in three things:
@@ -24,6 +26,8 @@ A new course takes in three things:
 
 When you are done, click "**Submit Model**". The webpage will hold while the data is being processed. When the process is complete, it will return to the home page.
 
+---
+
 ## Altering Courses
 
 You may alter a course by clicking "**Manage Models**" -> Edit next to your desired course.
@@ -35,6 +39,8 @@ When a new form pops up, you may:
 - Add new File groups (datasets)
 
 When everything is finished to your liking, click "**Update Model**" to confirm it. It should return you to the Manage Models page.
+
+---
 
 ## Code Overview
 
