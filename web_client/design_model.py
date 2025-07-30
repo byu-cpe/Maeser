@@ -22,19 +22,19 @@ def get_model_config(upload_root: str) -> tuple[
         upload_root (str): The root directory where all course models are created and modified.
 
     Raises:
-        AttributeError: If the request form is missing 'class_code'.
+        AttributeError: If the request form is missing 'course_id'.
 
     Returns:
-        ( class code: str, model_dir: str, bot_path: str, rules: list[str], datsets: dict[str, list[FileStorage]] ): Parsed config data from the request form.
+        ( course_id: str, model_dir: str, bot_path: str, rules: list[str], datasets: dict[str, list[FileStorage]] ): Parsed config data from the request form.
         See the parameters of `save_model` for more info.
     """
-    # Make sure class_code is defined
-    class_code = request.form.get('class_code', '').strip()
-    if not class_code:
-        raise AttributeError("No class code found in request form.")
+    # Make sure course_id is defined
+    course_id = request.form.get('course_id', '').strip()
+    if not course_id:
+        raise AttributeError("No course ID found in request form.")
     
     # Get important file paths
-    model_dir = os.path.join(upload_root, secure_filename(class_code))
+    model_dir = os.path.join(upload_root, secure_filename(course_id))
     os.makedirs(model_dir, exist_ok=True) # TODO: remove this?
     bot_path = os.path.join(model_dir, 'bot.txt')
 
@@ -60,16 +60,16 @@ def get_model_config(upload_root: str) -> tuple[
             #     if f and f.filename.endswith('.pdf'):
             #         filename = secure_filename(f.filename)
             #         f.save(os.path.join(dataset_path, filename))
-    return class_code, model_dir, bot_path, rules, datasets
+    return course_id, model_dir, bot_path, rules, datasets
 
 def save_model(
-    upload_root: str, class_code: str, model_dir: str, bot_path: str, rules: list[str], datasets: dict[str, list[FileStorage]]
+    upload_root: str, course_id: str, model_dir: str, bot_path: str, rules: list[str], datasets: dict[str, list[FileStorage]]
 ):
     """Saves the course model using the provided config.
 
     Args:
         upload_root (str): The root directory where all course models are created and modified.
-        class_code (str): The code used to identify the class.
+        course_id (str): The code used to identify the class.
         model_dir (str): The directory to where the model's data will be saved.
         bot_path (str): The path to where the model's 'bot.txt' file will be saved.
         rules (list[str]): The list of rules for the model's chatbot to follow.
@@ -89,7 +89,7 @@ def save_model(
     # Write bot.txt with all required sections
     with open(bot_path, 'w', encoding='utf-8') as bot_file:
         bot_file.write("#NAME\n")
-        bot_file.write(f"{class_code}\n")
+        bot_file.write(f"{course_id}\n")
 
         bot_file.write("#RULES\n")
         for rule in rules:
@@ -145,25 +145,25 @@ def delete_datasets(model_dir: str):
         if os.path.exists(group_path) and os.path.isdir(group_path):
             shutil.rmtree(group_path)
 
-def remove_class_model(upload_root: str, class_code: str):
+def remove_class_model(upload_root: str, course_id: str):
     """Removes a course model from the root bot data directory.
 
     Args:
         upload_root (str): The root directory where all course models are created and modified.
-        class_code (str): The code used to identify the class.
+        course_id (str): The code used to identify the class.
 
     Raises:
         NotADirectoryError: If the model's directory does not exist/cannot be found.
     """
-    print(f"Removing {class_code} from {upload_root} directory...")
-    class_path = os.path.join(upload_root, class_code)
+    print(f"Removing {course_id} from {upload_root} directory...")
+    class_path = os.path.join(upload_root, course_id)
     try:
         if not os.path.isdir(class_path):
             raise NotADirectoryError(f"Unable to find directory {class_path}")
         shutil.rmtree(class_path)
-        print(f"Successfuly removed {class_code}.")
+        print(f"Successfuly removed {course_id}.")
     except Exception as e:
-        print(f"Unable to remove {class_code}: {e}")
+        print(f"Unable to remove {course_id}: {e}")
 
 def load_rules(bot_path: str) -> list[str]:
     """Loads the rules for a course from the model's 'bot.txt' file.
