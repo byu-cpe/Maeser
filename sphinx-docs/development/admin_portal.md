@@ -34,7 +34,7 @@ When everything is finished to your liking, click "**Update Model**" to confirm 
 ## Code Overview
 The client is entirely self contained. This is intended to make it possible to run in its own docker container, protecting your model. It currently pulls keys from its own `config.py` which retrieves it from an external config.yaml. 
 
-To run the webserver, make sure you are running everything **Inside the web_client folder**. When you are in the folder, run `python flask_webserver.py`. This will run so long as the terminal session is live, making it easy to access, same as any flask app. It is set up on the default port "5000".
+To run the webserver, make sure you are running everything **Inside the admin_portal folder**. When you are in the folder, run `python flask_webserver.py`. This will run so long as the terminal session is live, making it easy to access, same as any flask app. It is set up on the default port "5000".
 
 User login is only defined right now with one account, which should be changed later to be more dynamic. It can be found in this code snippet: 
 ```

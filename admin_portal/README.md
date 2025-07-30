@@ -1,5 +1,5 @@
 # General Overview #
-The web_client folder contains an update to the project in the form of a web-based editor for class data.
+The admin_portal folder contains an update to the project in the form of a web-based editor for class data.
 
 When fully flushed out, this would be implemented as more than a editor alone, but also a way to set up keys for different services, like discord. 
 
