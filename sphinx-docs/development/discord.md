@@ -1,4 +1,4 @@
-# The Discord Handler: Setting Up a Discord Bot
+# Setting Up a Discord Bot
 
 While the Maeser package primarily supports creating flask web apps, you can use `dynamic_implementations/discord_handler.py` to create a **Discord bot** that interfaces with students on a discord server with the same functionality. This guide provides instructions on setting up your own Maeser Discord bot.
 
