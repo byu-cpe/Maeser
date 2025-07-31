@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
 """
-This module is used to locate `config.yaml` and expose its values for use by the web client.
+This module is used to locate `config.yaml` and expose its values for use by the admin portal.
 **config_paths** determines where this module will look for `config.yaml`.
 By default, it will look for this file in '../dynamic_implementations/config.yaml'
 """

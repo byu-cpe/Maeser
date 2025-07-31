@@ -53,15 +53,15 @@ The "**Managing Courses**" page lists all course models in your bot store path. 
 
 The admin portal is entirely self contained. This is intended to make it possible to run it in its own docker container, protecting your model. It currently pulls keys from its own `config.py` which retrieves it from an external `config.yaml`.
 
-Unlike the other scripts in the Maeser repository, **you need to be inside the web_client folder (not the project root) to run the web server**. When you are in this folder, simply run:
+Unlike the other scripts in the Maeser repository, **you need to be inside the admin_portal folder (not the project root) to run the web server**. When you are in this folder, simply run:
 
 ```bash
-python flask_webserver.py
+python flask_admin_portal.py
 ```
 
 This will start up the admin portal web server (on port 5000 and in debug mode, by default).
 
-User login is only defined right now with one account, which should be changed later to be more dynamic. It can be found in the `USER` parameter within `flask_webserver.py`:
+User login is only defined right now with one account, which should be changed later to be more dynamic. It can be found in the `USER` parameter within `flask_admin_portal.py`:
 
 ```python
 USER = {
