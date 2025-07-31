@@ -17,9 +17,11 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 
 1. Collect all source files you want to embed into a single folder (e.g., `docs/homework`, `docs/labs`, etc.).
 2. If your files are not plain text (e.g., PDF), convert them first. A simple example using `pdftotext`:
+
    ```bash
    pdftotext input.pdf output.txt
    ```
+
 3. Ensure each file’s encoding is UTF‑8 to avoid errors when reading in Python.
 
 ---
@@ -27,6 +29,7 @@ This guide explains how to embed your own documents into a Maeser-compatible vec
 This guide will walk you through building your own python script for storing your data into vectorstores. Similar code can be seen in the "embeddings_example.py" script in the "example" folder.
 
 **Your script for storing data will consist of two parts--chunking, and storing.**
+
 ## Chunk Your Documents
 
 Large documents must be split into smaller, semantically meaningful chunks before embedding:
@@ -82,7 +85,8 @@ vectorstore.save_local("my_vectorstore")
 - Metadatas (`source` field) helps trace which document each vector originated from.
 
 > **Tip:** The code above assumes the OPENAI_API_KEY environment variable is defined. If you want to pass your api key into the script without using the environment variable, assign it when initializing your embeddings:
-> ```
+>
+> ```python
 > embeddings = OpenAIEmbeddings(api_key=<your_api_key_here>)
 > ```
 
@@ -126,13 +130,15 @@ Now, when you run the Maeser app, your new "My Custom Knowledge" branch will ret
 ---
 
 ## Automated VectorStore Building tool
+
 In the maeser folder, there is a folder titled `populate_data`. Inside is a tool to very quickly and efficiently build vector stores to use for your model.
-* Make sure to run `source .venv/bin/activate` to open in a virtual environment.
-* cd into the `populate_data` folder
-* run `make` to install all the required dependencies
-* To run the applet, execute the command `python WebClient.py`.
-   * You may upload any number of pdfs and name the dataset in the applet. The resulting vectorstore will show up in `populate_data/data_stores`
-   * Each time will overwrite the previous data, so move out the data to the desired location before generating a new set.
+
+- Make sure to run `source .venv/bin/activate` to open in a virtual environment.
+- cd into the `populate_data` folder
+- run `make` to install all the required dependencies
+- To run the applet, execute the command `python WebClient.py`.
+  - You may upload any number of PDFs and name the dataset in the applet. The resulting vectorstore will show up in `populate_data/data_stores`
+  - Each time will overwrite the previous data, so move out the data to the desired location before generating a new set.
 
 ---
 
@@ -148,5 +154,3 @@ In the maeser folder, there is a folder titled `populate_data`. Inside is a tool
 
 - Explore **custom graph workflows** for advanced RAG pipelines in [Graphs: Simple RAG vs. Pipeline RAG](graphs).
 - Review the **example flask scripts** in [Maeser Example (with Flask & User Management)](flask_example).
-
-
