@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
 """
-This module is used by flask_webserver.py and contains several helper functions that handle designing and editing class chatbot models.
+This module is used by flask_admin_portal.py and contains several helper functions that handle designing and editing class chatbot models.
 """
 
 from flask import request
