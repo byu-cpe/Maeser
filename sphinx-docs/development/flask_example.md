@@ -10,12 +10,13 @@ This guide demonstrates how to run Maeser as a web-based chatbot **with user aut
 
 - **Maeser development environment** set up (see [Development Setup](development_setup)).
 - **Python 3.10+** virtual environment activated.
-- **Configured Authentication** for your [GitHub app](#register-your-github-oauth-app), [LDAP server](#ldap-authentication-optional), or both. 
+- **Configured Authentication** for your [GitHub app](#register-your-github-oauth-app), [LDAP server](#ldap-authentication-optional), or both.
 - **Pre-built FAISS vectorstores** at the paths referenced in your `config.yaml` file. The example scripts use the pre-built `byu` and `maeser` vectorstores found in `example/vectorstores`. See [Embedding New Content](embedding) for instructions on how to build and add your own vectorstores.
 
 ---
 
 ## Choosing Between Multigroup or Pipeline
+
 `flask_multigroup_example_user_management.py` and `flask_pipeline_example_user_management.py` are very similar in their implementation but have a few key differences:
 
 - **Multigroup** creates separate "branches" for each vectorstore, which configures the chatbot to use only one vectorstore per conversation.
@@ -74,6 +75,7 @@ llm:
 ```
 
 **Field Descriptions**:
+
 - **openai_api_key**: Key to authenticate with OpenAI’s API.
 - **llm_** entries: Configuration for your LLM.
 - **github_** entries: Configure GitHub OAuth flow.
@@ -84,10 +86,13 @@ llm:
 ---
 
 ## Inspect the Example Scripts
+
 The following sections will go through `flask_multigroup_user_mangement_example.py` and `flask_pipeline_user_mangement_example.py` section by section and explain how the code works. Most of the code can be left unchanged and should work as-is assuming that your `config.yaml` file is configured correctly.
 
 ### Configuration Imports & Env Setup
+
 Imports all config variables and sets the OpenAI API key in the environment.
+
 ```python
 from config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, USERS_DB_PATH,
@@ -107,7 +112,9 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 ```
 
 ### Chat Logs & Session Manager Setup
+
 Initializes chat logging and session management to track conversations and user queries.
+
 ```python
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
@@ -119,7 +126,9 @@ sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
 ### Prompt Definitions
+
 Defines system prompts that inject persona and context into the LLM. These differ between the pipeline and multigroup examples. Multigroup has prompts for each group, while pipeline has one prompt designed for the sum total of vector data.
+
 ```python
 # Located in the "multigroup" example
 maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
@@ -149,7 +158,9 @@ pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maese
 ```
 
 ### RAG Graph Construction
+
 Here we are creating RAG pipelines (Karl G. Maeser, BYU, and combined pipeline). These will be registered as separate chat branches in the web interface.
+
 ```python
 # Multigroup
 from maeser.graphs.simple_rag import get_simple_rag
@@ -202,7 +213,9 @@ sessions_manager.register_branch(branch_name="pipeline", branch_label="Pipeline"
 ## User Management Setup
 
 ### Configure Authenticators
+
 Defines GitHub and LDAP authenticators for user login and request quotas. This is consistent across both examples. The code blocks for either LDAP or GitHub can be commented out if you are not planning to use its authentication.
+
 ```python
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
@@ -230,7 +243,9 @@ ldap3_authenticator = LDAPAuthenticator(
 ```
 
 ### Initialize User Manager
+
 Creates a `UserManager` instance and registers the authenticators. Only register both LDAP and GitHub if you are planning on integrating both authentication methods into your project.
+
 ```python
 # Initialize user management with request limits
 user_manager = UserManager(
@@ -247,7 +262,8 @@ user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authent
 
 ## Flask Application Setup
 
-Initializes the Flask app with both chat session and user managers, then registers all routes via [blueprints](../autodoc/maeser/maeser.blueprints).
+Initializes the Flask app with both chat session and user managers, then registers all routes via [blueprints](../autodoc/maeser/maeser.blueprints.rst).
+
 ```python
 from flask import Flask
 
@@ -284,11 +300,13 @@ if __name__ == "__main__":
 ## Run the Application
 
 Activate your virtual environment and execute one of the following commands:
+
 ```bash
 python example/flask_multigroup_user_mangement_example.py
 python example/flask_pipeline_user_mangement_example.py
 ```
-Navigate to **http://localhost:3002**, authenticate via GitHub or LDAP, select a branch, and start chatting.
+
+Navigate to `http://localhost:3002`, authenticate via GitHub or LDAP, select a branch, and start chatting.
 
 ---
 
@@ -312,4 +330,3 @@ Ensure your LDAP server is reachable, and the fields in `config.yaml` match your
 - Review the **CLI example** (`example/terminal_example.py`) for a terminal interface.
 - Dive into **advanced workflows** in [Graphs: Simple RAG vs. Pipeline RAG](graphs).
 - Study Maeser’s **architecture** in [Architecture Overview](architecture).
-
