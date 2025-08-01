@@ -70,7 +70,7 @@ app_manager = AppManager(
     # primary_color="#f5f5f5"
 )
 
-# Initalize the flask blueprint
+# Initialize the flask blueprint
 app: Flask = app_manager.add_flask_blueprint()
 
 if __name__ == "__main__":

@@ -65,7 +65,7 @@ def get_pipeline_rag (
         CompiledGraph: A compiled state graph ready for execution.
     """
 
-    # initalize FAISS retreivers for each topic 
+    # initialize FAISS retrievers for each topic 
     # (i.e load each vectorstore to be used when it is needed)
     retrievers = {}
     for topic, vstore_path in vectorstore_config.items():

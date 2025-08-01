@@ -119,7 +119,7 @@ app_manager = AppManager(
     # Please also check the documentation for further customization options!
 )
 
-# Initalize the flask blueprint
+# Initialize the flask blueprint
 app: Flask = app_manager.add_flask_blueprint()
 
 if __name__ == "__main__":
