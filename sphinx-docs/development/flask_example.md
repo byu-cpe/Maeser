@@ -1,10 +1,12 @@
 # Maeser Example (with Flask & User Management)
 
-There are several example scripts found in `example/apps/` that you can use to make your own Maeser application. The scripts are organized into subdirectories based on chatbot behavior:
+The Maeser chatbot uses pre-built databases called **vector stores** to retrieve knowledge. Several example scripts can be found in the `example/apps/` directory that are already configured to use two example vector stores, **Maeser** and **BYU** (found in `resources/vectorstores`), when the chatbot interacts with users.
 
-- **`simple/`** contains scripts that separate each vectorstore into its own branch, forcing the chatbot to stick to one topic per conversation.
-- **`pipeline/`** contains scripts that combine all vectorstores into one chat branch, allowing the chatbot to dynamically choose the most relevant vectorstore when answering a user's question.
-- **`universal/`** contains scripts that combine all vectorstores into one chat branch, like the `pipeline/` scripts, but also allow the chatbot to pull from multiple vectorstores when answering a user's question.
+Each example script handles retrieval from the application's vector stores a little differently. The scripts are organized into subdirectories based on the following behavior:
+
+- **`simple/`** contains scripts that separate each vector store into its own branch, forcing the chatbot to stick to one topic per conversation.
+- **`pipeline/`** contains scripts that combine all vector stores into one chat branch, allowing the chatbot to dynamically choose the most relevant vector store when answering a user's question.
+- **`universal/`** contains scripts that combine all vector stores into one chat branch, like the `pipeline/` scripts, but also allow the chatbot to pull from multiple vector stores when answering a user's question.
 
 > **Note:** For more details on how these work, see [**Graphs**](./graphs.md).
 
@@ -16,7 +18,7 @@ Each subdirectory contains the following implementations of Maeser:
 
 This guide demonstrates how to run Maeser as a web-based chatbot **with user authentication** (via GitHub OAuth or LDAP) using the example script `universal/flask_universal_user_management.py`.
 
-> **Note:** The steps in this guide can be applied to all the example scripts. Simply skip the user management steps if your example script does not include it.
+> **Note:** The steps in this guide can be applied to all the example scripts. Pay attention to the notes in the sections below and skip the user management steps if your example script does not include it.
 
 ---
 
@@ -24,15 +26,15 @@ This guide demonstrates how to run Maeser as a web-based chatbot **with user aut
 
 - **Maeser development environment** (see [**Development Setup**](development_setup)).
 - **Configured Authentication** for your [**GitHub app**](#register-your-github-oauth-app), [**LDAP server**](#register-your-ldap-authenticator-optional), or both.
-- **Pre-built FAISS vectorstores** at the paths referenced in your `config.yaml` file. The example scripts use the pre-built `byu` and `maeser` vectorstores found in `example/resources/vectorstores`. See [**Embedding New Content**](embedding) for instructions on how to build and add your own vectorstores.
+- **Pre-built FAISS Vector Stores** at the paths referenced in your `config.yaml` file. The example scripts use the pre-built `byu` and `maeser` vector stores found in `example/resources/vectorstores`. See [**Embedding New Content**](embedding) for instructions on how to build and add your own vector stores.
 
 ---
 
 ## Configuring `config.yaml`
 
-Be sure to do the following if you have not already done so:
+Maeser uses a simple config file for API keys and directories. To set up configuration, do the following:
 
-- **Make a copy of `example/apps/config_template.yaml`** and name it `config.yaml`.
+- **Make a copy of `example/apps/config_template.yaml`** and name it **`config.yaml`**.
 - **Configure authentication for your authentication method**; either GitHub, LDAP, or both. For instructions on setting up these authenticators, see [**Configuring Authenticators**](#configuring-authenticators) on this page.
 
 Configure the following fields in your `config.yaml` file:
@@ -93,7 +95,7 @@ llm:
 
 ## Inspect the Example Scripts
 
-The following sections will go through `universal/flask_universal_user_management.py` section-by-section and explain how the code works. Most of the code can be left unchanged and should work as-is assuming that your `config.yaml` file is configured correctly. If your are using a different example script, pay attention to the notes below explaining any differences.
+The following sections will go through `universal/flask_universal_user_management.py` section-by-section and explain how the code works. Most of the code can be left unchanged and should work as-is assuming that your `config.yaml` file is configured correctly. If your are using a different example script, pay attention to the notes at the bottom of each section explaining any differences.
 
 ### Configuration Imports & Environment Setup
 
@@ -129,7 +131,7 @@ sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
 ### Prompt Definitions
 
-Defines system prompts that give the LLM its rules and personality.
+Defines system prompts that give the chatbot its rules and personality.
 
 ```python
 # The prompt for a Universal RAG is a generalized prompt, often for providing answers across larger datasets,
@@ -142,6 +144,8 @@ universal_prompt: str = """You are speaking from the perspective of Karl G. Maes
     {context}
 """
 ```
+
+The `{context}` text is required and will be replaced with actual context from the vector stores when the chatbot is generating a response.
 
 > **Note:** The scripts in the `simple/` subdirectory have one prompt for each vector store, whereas the scripts in `universal/` and `pipeline/` share one prompt across all vector stores.
 
