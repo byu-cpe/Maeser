@@ -315,4 +315,4 @@ The configuration process for an LDAP Authenticator will vary depending on the a
 ## Next Steps
 
 - Follow the instruction in [**Embedding New Content**](./embedding.md) to create your own vectorstores and add them to your script of choice.
-- Review one of the **terminal examples** (`example/apps/*/terminal_*.py`) for a simple terminal interface.
+- Review one of the [**terminal examples**](./terminal_example.md) (`example/apps/*/terminal_*.py`) for a simple terminal interface.
