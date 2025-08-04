@@ -14,11 +14,11 @@
         {% for model in models %}
                 <li class="file-entry">
                     {{ model }}
-                    <a href="{{ url_for('edit_model', class_code=model) }}">Edit</a>
+                    <a href="{{ url_for('edit_model', course_id=model) }}">Edit</a>
                     
                     <!-- Delete -->
                     <form method="POST">
-                        <input type="hidden" name="class_code" value="{{ model }}">
+                        <input type="hidden" name="course_id" value="{{ model }}">
                         <button 
                             type="submit"
                             onclick="return confirm_delete('{{ model }}');"

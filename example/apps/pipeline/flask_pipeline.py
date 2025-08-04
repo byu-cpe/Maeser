@@ -19,7 +19,7 @@ sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history or the history of BYU based on 
     the context provided.
-    If the question is unrelated to the topic or the context, politely inform the user that their questions is outside the context of your resources.
+    If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
     
     {context}
 """
@@ -70,7 +70,7 @@ app_manager = AppManager(
     # primary_color="#f5f5f5"
 )
 
-# Initalize the flask blueprint
+# Initialize the flask blueprint
 app: Flask = app_manager.add_flask_blueprint()
 
 if __name__ == "__main__":

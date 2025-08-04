@@ -6,6 +6,7 @@
 
 PYTHON := python3
 VENV := .venv
+WITH_VENV := . $(VENV)/bin/activate &&
 PIP := $(VENV)/bin/pip
 POETRY := $(VENV)/bin/poetry
 PYTEST := $(VENV)/bin/pytest
@@ -17,7 +18,7 @@ setup: $(VENV)/bin/activate
 	$(POETRY) install --all-extras
 	$(PIP) install -e .
 	@echo "Maeser setup complete. Running pytests..."
-	. $(VENV)/bin/activate && pytest tests
+	$(PYTEST) tests
 
 clean_venv:
 	@echo "Removing existing virtual environment if it exists..."

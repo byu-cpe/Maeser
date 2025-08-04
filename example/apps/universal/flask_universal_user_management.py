@@ -20,17 +20,17 @@ from maeser.chat.chat_session_manager import ChatSessionManager
 chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
 sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 
-# The prompt for a Pipeline RAG is a generalized prompt, often for providing answers across larger datasets,
+# The prompt for a Universal RAG is a generalized prompt, often for providing answers across larger datasets,
 # but still specific to relevant course information.
-pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+universal_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history or the history of BYU based on 
     the context provided.
-    If the question is unrelated to the topic or the context, politely inform the user that their questions is outside the context of your resources.
+    If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
     
     {context}
 """
 
-from maeser.graphs.pipeline_rag import get_pipeline_rag
+from maeser.graphs.universal_rag import get_universal_rag
 from langgraph.graph.graph import CompiledGraph
 
 # One for the history of BYU and one for the life of Karl G. Maeser.
@@ -40,15 +40,15 @@ vectorstore_config = {
     "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
 }
 
-byu_maeser_pipeline_rag: CompiledGraph = get_pipeline_rag(
+byu_maeser_universal_rag: CompiledGraph = get_universal_rag(
     vectorstore_config=vectorstore_config,
-    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
+    memory_filepath=f"{LOG_SOURCE_PATH}/universal_memory.db",
     api_key=OPENAI_API_KEY,
-    system_prompt_text=(pipeline_prompt),
+    system_prompt_text=(universal_prompt),
     model=LLM_MODEL_NAME,
 )
-
-sessions_manager.register_branch(branch_name="pipeline", branch_label="BYU and Karl G. Maeser History", graph=byu_maeser_pipeline_rag)
+  
+sessions_manager.register_branch(branch_name="universal", branch_label="BYU and Karl G. Maeser History", graph=byu_maeser_universal_rag)
 
 from maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
 
@@ -108,7 +108,7 @@ app_manager = AppManager(
     # Please also check the documentation for further customization options!
 )
 
-# Initalize the flask blueprint
+# Initialize the flask blueprint
 app: Flask = app_manager.add_flask_blueprint()
 
 if __name__ == "__main__":

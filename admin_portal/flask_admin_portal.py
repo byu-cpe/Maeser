@@ -85,29 +85,29 @@ def design_model():
 @require_login
 def manage_models():
     if request.method == 'POST':
-        class_code = request.form.get("class_code")
-        if not class_code:
-            print("Error: Class Code is required.")
+        course_id = request.form.get("course_id")
+        if not course_id:
+            print("Error: Course ID is required.")
             return redirect(url_for('design_model'))
         else:
-            remove_class_model(UPLOAD_ROOT, class_code)
+            remove_class_model(UPLOAD_ROOT, course_id)
         return redirect(url_for('manage_models'))
 
-    # List all class_code folders inside UPLOAD_ROOT
+    # List all course_id folders inside UPLOAD_ROOT
     models = []
     for item in os.listdir(UPLOAD_ROOT):
         model_path = os.path.join(UPLOAD_ROOT, item)
         if os.path.isdir(model_path):
-            models.append(item)  # item is the class_code
+            models.append(item)  # item is the course_id
 
     return render_template('manage_models.html', username=session['user'], models=models)
 
 
-@app.route('/edit_model/<class_code>', methods=['GET', 'POST'])
+@app.route('/edit_model/<course_id>', methods=['GET', 'POST'])
 @require_login
-def edit_model(class_code):
+def edit_model(course_id):
     # Get important file paths
-    model_dir = os.path.join(UPLOAD_ROOT, secure_filename(class_code))
+    model_dir = os.path.join(UPLOAD_ROOT, secure_filename(course_id))
     bot_path = os.path.join(model_dir, 'bot.txt')
 
     if request.method == 'POST':
@@ -116,7 +116,7 @@ def edit_model(class_code):
             model_config:tuple = get_model_config(UPLOAD_ROOT)
         except AttributeError as e:
             print(f"Unable to use model config: {e}")
-            return redirect(url_for('edit_model', class_code=class_code))
+            return redirect(url_for('edit_model', course_id=course_id))
         
         # Delete selected datasets
         delete_datasets(model_dir)
@@ -126,7 +126,7 @@ def edit_model(class_code):
             save_model(UPLOAD_ROOT, *model_config)
         except Exception as e:
             print(f"Unable to generate model: {e}")
-            return redirect(url_for(f'/edit_model/{class_code}'))
+            return redirect(url_for(f'/edit_model/{course_id}'))
         finally:
             print("Model generated successfully!")
             return redirect(url_for('manage_models'))
@@ -137,7 +137,7 @@ def edit_model(class_code):
 
     return render_template(
         'edit_model.html',
-        class_code=class_code,
+        course_id=course_id,
         rules=rules,
         current_datasets=current_datasets,
         username=session['user'],

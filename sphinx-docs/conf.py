@@ -49,8 +49,8 @@ autodoc_mock_imports = [
 # -- Project information -----------------------------------------------------
 
 project = 'Maeser'
-copyright = '2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].'
 author = 'The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].'
+copyright = '2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js]'
 
 # The full version, including alpha/beta/rc tags
 release = 'alpha'
@@ -60,7 +60,14 @@ release = 'alpha'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode', 'sphinxcontrib.mermaid']
+extensions = [
+    'myst_parser',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+    'sphinx_copybutton',
+    'sphinxcontrib.mermaid',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -69,6 +76,26 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.sphinx-venv']
+
+# -- Options for sphinx-copybutton -------------------------------------------
+# Strip input prompts
+# These use regular expressions to match the prompts that should be stripped from the code blocks.
+# If you are having issues with copying, you can try changing these to better match your terminal prompts.
+copybutton_custom_prompts = [
+    r'^[^$#\n]*\$ ',        # bash
+    r'>>> |\.\.\. ',        # Python Repl + continuation
+    r'^(?:\S)*> ',          # Windows CMD/Powershell
+]
+copybutton_prompt_text = r'|'.join(copybutton_custom_prompts)
+copybutton_prompt_is_regexp = True
+copybutton_line_continuation_character = '\\'
+
+# Ignore code blocks with the no-copybutton class. Ex:
+# ```{code-block}
+# :class: no-copybutton
+# <code>
+# ```
+copybutton_selector = "div:not(.no-copybutton) > div.highlight > pre"
 
 # -- Options for MyST --------------------------------------------------------
 # Enable MyST extensions
