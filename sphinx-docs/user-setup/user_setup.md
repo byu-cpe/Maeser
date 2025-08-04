@@ -10,7 +10,7 @@ This guide is designed for users who want to use Maeser’s chatbot capabilities
 
 - **Python 3.10+** installed on your system.
 - **Basic command-line familiarity** (opening a terminal or PowerShell window).
-- **Python Virtual Environment (Optional but Recommended)**—Activating a virtual environment ensures that Maeser's dependencies are of the right version and will not interfere with packages installed system-wide. For reference on setting up a Python virtual environment, see [Create and Activate a Virtual Environment](../development/development_setup.md#create-and-activate-a-virtual-environment).
+- **Python Virtual Environment (Optional but Recommended)**—Activating a virtual environment ensures that Maeser's dependencies are of the right version and will not interfere with packages installed system-wide. For reference on setting up a Python virtual environment, see [**Create and Activate a Virtual Environment**](../development/development_setup.md#create-and-activate-a-virtual-environment) in the Development Setup guide.
 
 ---
 
@@ -175,7 +175,7 @@ For quick, command‑line access without a web browser, **run one of the termina
 ## Customizing Your Experience
 
 - **Add Your Own Content:** Follow the guide at [**Embedding New Content**](../development/embedding.md) to embed your own documents as vectorstores. You will need to download `example/tools` from the repository to use the scripts in this guide.
-- **Customize the Web Interface:** Change the parameters of the **AppManager** in your Flask script to change the color and icons used by the web interface. (For more information on the AppManager class, refer to the source code documentation on [blueprints](../autodoc/maeser/maeser.blueprints.rst)).
+- **Customize the Web Interface:** Change the parameters of the **AppManager** in your Flask script to change the color and icons used by the web interface. (For more information on the AppManager class, refer to the source code documentation in the [**maeser.blueprints**](../autodoc/maeser/maeser.blueprints.rst) module.)
 - **Add Authentication:** Open one of the `flask_*_user_management.py` scripts to configure GitHub or LDAP authentication. See [**Configuring Authenticators**](../development/flask_example.md#configuring-authenticators) in the **Maeser Example (with Flask & User Management)** documentation page for instructions on how to configure authentication.
 
 ---
