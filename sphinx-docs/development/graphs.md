@@ -1,28 +1,27 @@
 # Graphs: Simple RAG vs. Pipeline RAG
 
-This guide provides a deep dive into Maeser’s two primary Retrieval‑Augmented Generation (RAG) pipelines—**Simple RAG** and **Pipeline RAG**—with detailed explanations, professor‑style guidance, and practical code examples. By the end, you’ll know when and how to choose each approach.
+This guide provides a deep dive into Maeser’s Retrieval‑Augmented Generation (RAG) graphs—**Simple RAG**, **Pipeline RAG**, and **Universal RAG**—with guidance on when to use each graph. By the end of this guide, you’ll know when and how to choose each approach.
+
+This guide provides a description for each RAG graph but does not provide examples. For working implementations of each RAG graph, see the scripts in `example/apps/` and [**Maeser Example (with Flask & User Management)**](./flask_example.md).
 
 ---
 
 ## Prerequisites
 
-Before you begin, ensure you have:
-
-- A Maeser development environment configured (see [Development Setup](development_setup)).
-- Python 3.10+ and the Maeser package installed in editable mode.
-- At least one FAISS vectorstore (for Simple RAG) and multiple vectorstores (for Pipeline RAG) created via [Embedding New Content](embedding).
+- A Maeser development environment configured (see [**Development Setup**](./development_setup.md)).
+- At least one prebuilt vectorstore (for Simple RAG) or multiple vectorstores (for Pipeline or Universal RAG). Two example vectorstores—`byu` and `maeser`—are provided in `example/resources/vectorstores/`. To create a vectorstore with your own content, see [**Embedding New Content**](./embedding.md).
 
 ---
 
 ## Simple RAG (`get_simple_rag`)
 
-Imagine you’re a university professor specializing in a single course—say, **Medieval Literature**—and students ask you questions only about topics you’ve covered exclusively in that domain. **Simple RAG** is your go‑to approach.
+The Simple RAG only takes in one vectorstore per **chat branch**, forcing the chatbot to stick to one topic per conversation.
 
 ### When to Use Simple Rag
 
 Simple Rag is the best choice when:
 
-- Your application or tutoring session centers around one domain or subject.
+- Your application or centers around one domain or subject.
 - You want minimal complexity and fast responses.
 
 ### Simple RAG Overview
@@ -33,48 +32,19 @@ Simple Rag is the best choice when:
 
 ### Simple RAG Workflow
 
-- **Retrieval**: Queries the designated FAISS index to fetch top‑k document chunks. Think of it as scanning your annotated textbook for the best quotes.
-- **Prompt Construction**: Embeds those chunks into a system prompt template, framing the AI as an expert lecturer.
-- **Generation**: Invokes the LLM (e.g., GPT-3.5) with the composed prompt, yielding a focused response.
+- **Retrieval**: Scans the vectorstore for passages related to the user's question and retrieves the most relevant document chunks.
+- **Prompt Construction**: Concatenates the **conversation history**, **prompt instructions**, and **retrieved context** as input for response generation.
+- **Generation**: Invokes the LLM with the composed prompt, yielding a focused response.
 
-### Simple RAG Code Example
+### Limitations of Simple RAG
 
-The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and a `medieval_lit` vectorstore with names `index.faiss` and `index.pkl`. The code also assumes that you have imported config variables from `config.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
-
-```python
-from maeser.graphs.simple_rag import get_simple_rag
-from langgraph.graph.graph import CompiledGraph
-
-# Create a system prompt for your medieval literature chatbot with appended context. Example prompt:
-medieval_prompt: str = """
-    You are Professor A. Scholar of Medieval Literature.
-    You will answer a student's question about Medieval Literature based on the context provided.
-    Don't answer questions about other things.
-
-    {context}
-"""
-
-# Build a Simple RAG graph for Medieval Literature
-medieval_professor: CompiledGraph = get_simple_rag(
-    vectorstore_path=f"{VEC_STORE_PATH}/medieval_lit",
-    vectorstore_index="index", # the name of the .faiss and .pkl files in your vectorstore
-    memory_filepath=f"{LOG_SOURCE_PATH}/medieval_memory.db",
-    system_prompt_text=medieval_prompt,
-    model=LLM_MODEL_NAME
-)
-# Register this graph as the 'medieval' branch
-sessions_manager.register_branch(
-    branch_name="medieval",
-    branch_label="Medieval Literature Q&A",
-    graph=medieval_professor,    
-)
-```
+- **Only One Vectorstore:** All content used by the chatbot must be embedded into a single vectorstore. This will require you to compile your dataset of resources into one vectorstore and rebuild this vectorstore any time you make changes to your dataset.
 
 ---
 
-## Pipeline RAG (`get_pipeline_rag`)
+## Pipeline RAG
 
-Now picture a professor teaching a comprehensive curriculum with **homework**, **lab assignments**, and **class discussions**—each requiring domain‑specific expertise. **Pipeline RAG** lets you orchestrate multiple RAG pipelines, routing questions to the most relevant domain.
+The Pipeline RAG takes in multiple vectorstores per chat branch, allowing the chatbot to dynamically choose the most relevant vectorstore when answering a user's question.
 
 ### When to use Pipeline RAG
 
@@ -91,54 +61,31 @@ Pipeline RAG is the best choice when:
 
 ### Pipeline RAG Workflow
 
-- **Domain Routing**: Classify the student’s question (e.g., “Is this a lab or homework question?”) to decide which vectorstore to query.
-- **Retrieval**: Fetch top‑k chunks from the relevant domain’s index.
-- **Generation**: Call the LLM with the user's prompt with the retrieved context and generate a focused response.
+- **Domain Routing**: Classify the student’s question (e.g., “Is this a lab or homework question?”) to choose which vectorstore to query.
+- **Retrieval**: Scans the chosen vectorstore for passages related to the user's question and retrieves the most relevant document chunks.
+- **Prompt Construction**: Concatenates the **conversation history**, **prompt instructions**, and **retrieved context** as input for response generation.
+- **Generation**: Invokes the LLM with the composed prompt, yielding a focused response.
 
-### Pipeline RAG Code Example
+### Limitations of Pipeline RAG
 
-The following code snippet assumes that you have an initialized `ChatSessionManager` object called `sessions_manager` and vectorstores `homework`, `lab_manuals`, and `lectures` with file names `index.faiss` and `index.pkl`. The code also assumes that you have imported config variables from `config.py`. Add the following code to your Maeser application (e.g., in `flask_example.py` or your custom script):
+- **More LLM Calls:** Invokes the LLM to identify most relevant vectorstore before retrieving context, resulting in a slightly higher cost and response time per message.
+- **One Vectorstore Per Message:** If the user asks a question relating to multiple vectorstores, the chatbot is limited to only using one of the vectorstores in its retrieval step. (Ex: If the user asks a question related to both the homework and the textbook, the chatbot can retrieve context from either the homework vectorstore or textbook vectorstore, but not both.)
 
-```python
-from maeser.graphs.simple_rag import get_simple_rag
-from maeser.graphs.pipeline_rag import get_pipeline_rag
-from langgraph.graph.graph import CompiledGraph
+---
 
-# Define vectorstore paths for each domain
-vectorstore_config = {
-    "homework": f"{VEC_STORE_PATH}/homework",
-    "lab":      f"{VEC_STORE_PATH}/lab_manuals",
-    "lecture":  f"{VEC_STORE_PATH}/lectures"
-}
-# Note: the name you choose in place of "homework", "lab", etc must
-# be both one word, and all lower case or it will not work at run time.
+## Universal RAG
 
-# Create a system prompt for your pipeline rag chatbot with appended context. Example prompt:
-multi_domain_prompt: str = """
-    You are Professor B, adept at lectures, labs, and homework.
-    You will answer a student's question based on the context provided.
-    Don't answer questions about other things.
+Like the Pipeline RAG, the Universal RAG takes in multiple vectorstores per chat branch, but unlike the Pipeline RAG, it can retrieve from multiple vectorstores simultaneously, allowing the chatbot to use as many vectorstores as needed to answer a user's question.
 
-    {context}
-"""
+In almost all cases, Universal RAG is a better option compared to Pipeline RAG.
 
-# Create a Pipeline RAG graph
-multi_domain_professor: CompiledGraph = get_pipeline_rag(
-    vectorstore_config=vectorstore_config,
-    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
-    api_key=OPENAI_API_KEY,
-    system_prompt_text=pipeline_prompt,
-    model=LLM_MODEL_NAME)
+### When to use Universal RAG
 
-# Register the pipeline branch
-sessions.register_branch(
-    branch_name="curriculum",
-    branch_label="Homework & Lab Assistant",
-    graph=multi_domain_professor
-)
-```
+Universal RAG is the best choice when:
 
-> Note: Make sure the .faiss and .pkl files for the vectorstores in your pipeline RAG are all named `index.faiss` and `index.pkl`. This is required for pipeline RAG to retrieve the vectorstores properly.
+- Your application spans multiple knowledge bases—such as data from homework, labs, and textbooks.
+- Your chatbot needs to dynamically choose which knowledge bases to pull from depending on the question it is asked.
+
 
 ---
 
@@ -154,15 +101,7 @@ sessions.register_branch(
 
 ---
 
-## Tips & Best Practices
-
-- **Optimize Prompts**: Tailor the system prompt to clearly define the professor’s persona and expected depth.
-- **Memory Management**: Use separate memory files for each branch if you want isolated threads.
-
----
-
 ## Next Steps
 
+- Review the scripts in `example/apps/` and [**Maeser Example (with Flask & User Management)**](./flask_example.md) for implementations of each RAG graph.
 - Explore **Custom Graphs** for tool integration (e.g., calculators) in [Custom Graphs: Advanced RAG Workflows](custom_graphs).
-- Review Maeser’s **architecture** in [Architecture Overview](architecture) for internals.
-- Contribute your own pipelines and share use cases on GitHub.
