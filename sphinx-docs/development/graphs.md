@@ -2,6 +2,11 @@
 
 This guide provides a deep dive into Maeser’s Retrieval‑Augmented Generation (RAG) graphs—**Simple RAG**, **Pipeline RAG**, and **Universal RAG**—with guidance on when to use each graph. By the end of this guide, you’ll know when and how to choose each approach.
 
+The following is a good rule of thumb for most use cases:
+
+- If your application only uses one vectorstore, use the [**Simple RAG**](#simple-rag) approach.
+- If your application uses more than one vectorstore, use the [**Universal RAG**](#universal-rag) approach.
+
 This guide provides a description for each RAG graph but does not provide examples. For working implementations of each RAG graph, see the scripts in `example/apps/` and [**Maeser Example (with Flask & User Management)**](./flask_example.md).
 
 ---
@@ -24,11 +29,24 @@ Simple Rag is the best choice when:
 - Your application or centers around one domain or subject.
 - You want minimal complexity and fast responses.
 
-### Simple RAG Workflow
+### Simple RAG Framework
 
-- **Retrieval**: Scans the vectorstore for passages related to the user's question and retrieves the most relevant document chunks.
-- **Prompt Construction**: Concatenates the **conversation history**, **prompt instructions**, and **retrieved context** as input for response generation.
-- **Generation**: Invokes the LLM with the composed prompt, yielding a focused response.
+```mermaid
+flowchart TB
+    %% Nodes
+    start_node(["\_\_start\_\_"])
+    retrieve_context["Retrieve Relevant Context"]
+    generate_response["Generate Response"]
+    end_node(["\_\_end\_\_"])
+
+    %% Main Flow
+    start_node --> retrieve_context
+    retrieve_context --> generate_response
+    generate_response --> end_node
+```
+
+- **Retrieve Relevant Context**: Scans the vectorstore for passages related to the user's question and retrieves the most relevant document chunks.
+- **Generate Response**: Invokes the LLM with the **conversation history**, **prompt instructions**, and **retrieved context** as input, yielding a focused response.
 
 ### Limitations of Simple RAG
 
@@ -40,6 +58,8 @@ Simple Rag is the best choice when:
 
 The Pipeline RAG takes in multiple vectorstores per chat branch, allowing the chatbot to dynamically choose the most relevant vectorstore when answering a user's question.
 
+> **Note:** In almost all cases, [**Universal RAG**](#universal-rag) is a better option compared to Pipeline RAG.
+
 ### When to use Pipeline RAG
 
 Pipeline RAG is the best choice when:
@@ -47,16 +67,31 @@ Pipeline RAG is the best choice when:
 - Your application spans multiple knowledge bases—such as data from homework, labs, and textbooks.
 - Your chatbot needs to dynamically switch between knowledge bases depending on the question it is asked.
 
-### Pipeline RAG Workflow
+### Pipeline RAG Framework
 
-- **Domain Routing**: Classify the student’s question (e.g., “Is this a lab or homework question?”) to choose which vectorstore to query.
-- **Retrieval**: Scans the chosen vectorstore for passages related to the user's question and retrieves the most relevant document chunks.
-- **Prompt Construction**: Concatenates the **conversation history**, **prompt instructions**, and **retrieved context** as input for response generation.
-- **Generation**: Invokes the LLM with the composed prompt, yielding a focused response.
+```mermaid
+flowchart TB
+    %% Nodes
+    start_node(["\_\_start\_\_"])
+    determine_topic["Determine Most Relevant Topic"]
+    retrieve_context["Retrieve Relevant Context"]
+    generate_response["Generate Response"]
+    end_node(["\_\_end\_\_"])
+
+    %% Main Flow
+    start_node --> determine_topic
+    determine_topic --> retrieve_context
+    retrieve_context --> generate_response
+    generate_response --> end_node
+```
+
+- **Determine Most Relevant Topic**: Classifies the student’s question (e.g., “Is this a lab or homework question?”) to choose which vectorstore to query.
+- **Retrieve Relevant Context**: Scans the chosen vectorstore for passages related to the user's question and retrieves the most relevant document chunks.
+- **Generate Response**: Invokes the LLM with the **conversation history**, **prompt instructions**, and **retrieved context** as input, yielding a focused response.
 
 ### Limitations of Pipeline RAG
 
-- **More LLM Calls:** Invokes the LLM to identify most relevant vectorstore before retrieving context, resulting in a slightly higher cost and response time per message.
+- **More LLM Calls:** Invokes the LLM to identify most relevant vectorstore before retrieving context, resulting in a slightly higher cost and response time per message (compared to Simple RAG).
 - **One Vectorstore Per Message:** If the user asks a question relating to multiple vectorstores, the chatbot is limited to only using one of the vectorstores in its retrieval step. (Ex: If the user asks a question related to both the homework and the textbook, the chatbot can retrieve context from either the homework vectorstore or textbook vectorstore, but not both.)
 
 ---
@@ -65,8 +100,6 @@ Pipeline RAG is the best choice when:
 
 Like the Pipeline RAG, the Universal RAG takes in multiple vectorstores per chat branch, but unlike the Pipeline RAG, it can retrieve from multiple vectorstores simultaneously, allowing the chatbot to use as many vectorstores as needed to answer a user's question.
 
-In almost all cases, Universal RAG is a better option compared to Pipeline RAG.
-
 ### When to use Universal RAG
 
 Universal RAG is the best choice when:
@@ -74,18 +107,46 @@ Universal RAG is the best choice when:
 - Your application spans multiple knowledge bases—such as data from homework, labs, and textbooks.
 - Your chatbot needs to dynamically choose which knowledge bases to pull from depending on the question it is asked.
 
+### Universal RAG Workflow
+
+```mermaid
+flowchart TB
+    %% Nodes
+    start_node(["\_\_start\_\_"])
+    determine_topics["Determine Relevant Topics"]
+    summarize_chat["Summarize Chat History"]
+    retrieve_context["Retrieve Relevant Context"]
+    generate_response["Generate Response"]
+    end_node(["\_\_end\_\_"])
+
+    %% Main Flow
+    start_node --> determine_topics
+    determine_topics --> summarize_chat
+    summarize_chat --> |"One or More Relevant Topics"| retrieve_context
+    summarize_chat --> |"No Relevant Topics"| generate_response
+    retrieve_context --> generate_response
+    generate_response --> end_node
+```
+
+- **Determine Relevant Topics**: Classifies the student’s question and to create a list of the most relevant vectorstores to query.
+- **Summarize Chat History**: Summarizes the recent chat history to provide more relevant input during the Generate Response step.
+- **Retrieve Relevant Context**: Scans each vectorstore in the list provided for passages related to the user's question and retrieves the most relevant document chunks.
+- **Generate Response**: Invokes the LLM with the **summarized chat history**, **prompt instructions**, and **retrieved context** as input, yielding a focused response.
+
+### Limitations of Universal RAG
+
+- **More LLM Calls:** Invokes the LLM to identify most relevant vectorstores before retrieving context and summarizes chat before generating a response, resulting in a slightly higher cost and response time per message (compared to Simple RAG).
 
 ---
 
-## Detailed Comparison
+## RAG Graph Comparison Table
 
-| Feature            | Simple RAG                      | Pipeline RAG                             |
-| ------------------ | ------------------------------- | ---------------------------------------- |
-| Domains            | Single                          | Multiple (Homework, Labs, Lectures)      |
-| Routing            | N/A                             | Classify & route to most relevant domain |
-| Retrieval Steps    | 1                               | 1+ per domain                            |
-| Response Synthesis | One context                     | One context (chosen by relevance)        |
-| Use Case Examples  | Q&A on a specific course module | Comprehensive curricular support         |
+Feature | Simple RAG | Pipeline RAG | Universal RAG
+:---|:---|:---|:---
+Vectorstores | Single | Multiple | Multiple
+Context Synthesis | One context | One context (chosen by relevance) | Multiple contexts (one per relevant topic)
+Retrieval Steps | 1 | 1 | 1+ (1 per relevant topic)
+LLM Calls | 2 | 3 | 3 + Number of Relevant Topics/Contexts
 
 ---
 
