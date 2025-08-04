@@ -106,9 +106,16 @@ def register_branch(branch_name:str, course_id:str, bot_config_path:str):
 # --- Main Chat Handling Function (Unified Logic) ---
 
 def handle_message(user_id: str, course_id: str, message_text: str) -> str:
-    """
-    Handles a message from any interface, routing it to the correct Maeser session.
+    """Handles a message from any interface, routing it to the correct Maeser session.
     Manages bot registration and session creation for Maeser.
+
+    Args:
+        user_id (str): The unique string identifier for the user.
+        course_id (str): The string identifier corresponding to a configured course in `vec_store_path` (defined in `config.yaml`).
+        message_text (str): The user's question or input message.
+
+    Returns:
+        str: A string representing the chatbot's final response message.
     """
     # Verify bot config exists for the given course ID
     bot_config_path = f"{BOT_DATA_PATH}/{course_id}/bot.txt"

@@ -1,4 +1,3 @@
-
 # The Admin Portal
 
 The `admin_portal/` directory contains an update to the project in the form of a web-based editor for class data.
