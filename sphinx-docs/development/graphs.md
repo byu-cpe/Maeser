@@ -13,7 +13,7 @@ This guide provides a description for each RAG graph but does not provide exampl
 
 ---
 
-## Simple RAG (`get_simple_rag`)
+## Simple RAG
 
 The Simple RAG only takes in one vectorstore per **chat branch**, forcing the chatbot to stick to one topic per conversation.
 
@@ -23,12 +23,6 @@ Simple Rag is the best choice when:
 
 - Your application or centers around one domain or subject.
 - You want minimal complexity and fast responses.
-
-### Simple RAG Overview
-
-1. **Single‑Domain Focus**: You have one set of lecture notes, articles, and readings.
-2. **Retrieve & Answer**: Upon a student’s question, you quickly flip through your notes, pick the most relevant passages, and craft an answer.
-3. **Optional Memory**: If the student follows up, you recall the earlier parts of the conversation (if configured).
 
 ### Simple RAG Workflow
 
@@ -52,12 +46,6 @@ Pipeline RAG is the best choice when:
 
 - Your application spans multiple knowledge bases—such as data from homework, labs, and textbooks.
 - Your chatbot needs to dynamically switch between knowledge bases depending on the question it is asked.
-
-### Pipeline RAG Overview
-
-1. **Multi‑Domain**: Separate vectorstores for Homework, Labs, and Lecture Notes.
-2. **Routing & Aggregation**: Determine which domain to pull context from.
-3. **Relevant Answer**: Synthesize information from relevant domain into a coherent response.
 
 ### Pipeline RAG Workflow
 
