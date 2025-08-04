@@ -32,6 +32,8 @@ This guide explains how to use a Python script to embed your own documents into 
 
 This guide will walk you through building your own python script for storing your data into vectorstores. This code mirrors `embeddings_example.py` in the `example/tools/` directory. Feel free to use that code as a basis and modify it to your liking.
 
+> **Note:** The `example/tools/` directory also contains the scripts `create_byu_vectorstore.py` and `create_maeser_vectorstore.py`. These scripts were used to create the example `byu` and `maeser` vectorstores and can be a helpful reference to creating your own vectorstore script.
+
 Your script for storing data will consist of two parts:
 
 - **Chunking the documents** into smaller segments.
