@@ -23,7 +23,7 @@ Copy the example and set these fields:
 LOG_SOURCE_PATH: "path/to/chat_logs"
 # OpenAI API key for LLM calls
 OPENAI_API_KEY: "your-openai-key"
-# Directory with FAISS vectorstores
+# Directory with FAISS vector stores
 VEC_STORE_PATH: "path/to/vectorstores"
 # Path for chat history logs
 CHAT_HISTORY_PATH: "path/to/chat_history"
@@ -31,7 +31,7 @@ CHAT_HISTORY_PATH: "path/to/chat_history"
 LLM_MODEL_NAME: "gpt-4o"
 ```
 
-These settings ensure the script can load your vectorstores, persist logs, and authenticate with OpenAI.
+These settings ensure the script can load your vector stores, persist logs, and authenticate with OpenAI.
 
 ---
 

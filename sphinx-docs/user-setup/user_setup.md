@@ -98,11 +98,11 @@ LLM_MODEL_NAME: "gpt-4o"
 
 ---
 
-## A Note on the Example Vectorstores
+## A Note on the Example Vector Stores
 
-The Maeser chatbot uses pre-built databases called **vectorstores** to retrieve knowledge. Each vectorstore is a directory containing an `index.faiss` and an `index.pkl` file. The Maeser GitHub repository contains two example vectorstores, **Maeser** and **BYU**. The example applications in this project are already configured to use these two vectorstores (found in `resources/vectorstores`) when the chatbot interacts with users.
+The Maeser chatbot uses pre-built databases called **vector stores** to retrieve knowledge. Each vector store is a directory containing an `index.faiss` and an `index.pkl` file. The Maeser GitHub repository contains two example vector stores, **Maeser** and **BYU**. The example applications in this project are already configured to use these two vector stores (found in `resources/vectorstores`) when the chatbot interacts with users.
 
-> **Note:** To embed your own documents as vectorstores, follow the guide at [**Embedding New Content**](../development/embedding.md) (after setting up Maeser). You will need to download `example/tools` from the repository to use the scripts in that guide.
+> **Note:** To embed your own documents as vector stores, follow the guide at [**Embedding New Content**](../development/embedding.md) (after setting up Maeser). You will need to download `example/tools` from the repository to use the scripts in that guide.
 
 ---
 
@@ -110,9 +110,9 @@ The Maeser chatbot uses pre-built databases called **vectorstores** to retrieve 
 
 Maeser uses a program called [**Flask**](https://flask.palletsprojects.com/en/stable/) to render its web chat interface. There are several example Flask apps to choose from, and each type of application is organized into one of three directories based on chatbot behavior:
 
-- **`simple/`** contains scripts that separate each vectorstore into its own branch, forcing the chatbot to stick to one topic per conversation.
-- **`pipeline/`** contains scripts that combine all vectorstores into one chat branch, allowing the chatbot to dynamically choose the most relevant vectorstore when answering a user's question.
-- **`universal/`** contains scripts that combine all vectorstores into one chat branch, like the `pipeline/` scripts, but also allow the chatbot to pull from multiple vectorstores when answering a user's question.
+- **`simple/`** contains scripts that separate each vector store into its own branch, forcing the chatbot to stick to one topic per conversation.
+- **`pipeline/`** contains scripts that combine all vector stores into one chat branch, allowing the chatbot to dynamically choose the most relevant vector store when answering a user's question.
+- **`universal/`** contains scripts that combine all vector stores into one chat branch, like the `pipeline/` scripts, but also allow the chatbot to pull from multiple vector stores when answering a user's question.
 
 Pick the behavior of your choice, and choose one of the scripts to use for your application. If you are unsure which to choose, `universal/flask_universal.py` is recommended.
 
@@ -174,7 +174,7 @@ For quick, command‑line access without a web browser, **run one of the termina
 
 ## Customizing Your Experience
 
-- **Add Your Own Content:** Follow the guide at [**Embedding New Content**](../development/embedding.md) to embed your own documents as vectorstores. You will need to download `example/tools` from the repository to use the scripts in this guide.
+- **Add Your Own Content:** Follow the guide at [**Embedding New Content**](../development/embedding.md) to embed your own documents as vector stores. You will need to download `example/tools` from the repository to use the scripts in this guide.
 - **Customize the Web Interface:** Change the parameters of the **AppManager** in your Flask script to change the color and icons used by the web interface. (For more information on the AppManager class, refer to the source code documentation in the [**maeser.blueprints**](../autodoc/maeser/maeser.blueprints.rst) module.)
 - **Add Authentication:** Open one of the `flask_*_user_management.py` scripts to configure GitHub or LDAP authentication. See [**Configuring Authenticators**](../development/flask_example.md#configuring-authenticators) in the **Maeser Example (with Flask & User Management)** documentation page for instructions on how to configure authentication.
 

@@ -64,9 +64,9 @@ flowchart LR
 - **Class:** `ChatSessionManager` (`maeser/chat/chat_session_manager.py`)  
 - **Responsibilities:** Manages conversation sessions, routes messages to the appropriate RAG graph, and tracks session metadata.
 - **Subcomponents:**
-  - **Simple RAG** (`get_simple_rag`): Controls chatbot behavior by separating each vectorstore into its own branch, forcing the chatbot to stick to one topic per conversation.
-  - **Pipeline RAG** (`get_pipeline_rag`): Combines all vectorstores into one chat branch, allowing the chatbot to dynamically choose the most relevant vectorstore when answering a user's question.
-  - **Universal RAG** (`get_universal_rag`): Behaves similar to `get_pipeline_rag`, but also allows the chatbot to pull from multiple vectorstores when answering a user's question.
+  - **Simple RAG** (`get_simple_rag`): Controls chatbot behavior by separating each vector store into its own branch, forcing the chatbot to stick to one topic per conversation.
+  - **Pipeline RAG** (`get_pipeline_rag`): Combines all vector stores into one chat branch, allowing the chatbot to dynamically choose the most relevant vector store when answering a user's question.
+  - **Universal RAG** (`get_universal_rag`): Behaves similar to `get_pipeline_rag`, but also allows the chatbot to pull from multiple vector stores when answering a user's question.
 - **Controllers:**
   - `chat_interface.controller` (renders UI)
   - `new_session_api.controller` (creates sessions)

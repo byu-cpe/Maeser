@@ -104,7 +104,7 @@
 ### FAISS Index Errors
 - **Symptoms:** FAISS load failures on network-mounted volumes.
 - **Solutions:**
-  - **Local storage:** Place vectorstores on local SSD for performance and reliability.
+  - **Local storage:** Place vector stores on local SSD for performance and reliability.
   - **Avoid NFS:** Network filesystems can cause locking and latency issues.
 
 ---

@@ -143,7 +143,7 @@ universal_prompt: str = """You are speaking from the perspective of Karl G. Maes
 """
 ```
 
-> **Note:** The scripts in the `simple/` subdirectory have one prompt for each vectorstore, whereas the scripts in `universal/` and `pipeline/` share one prompt across all vectorstores.
+> **Note:** The scripts in the `simple/` subdirectory have one prompt for each vector store, whereas the scripts in `universal/` and `pipeline/` share one prompt across all vector stores.
 
 ### RAG Graph Construction
 
@@ -156,8 +156,8 @@ from langgraph.graph.graph import CompiledGraph
 # One for the history of BYU and one for the life of Karl G. Maeser.
 # Ensure that topics are all lower case and spaces between words
 vectorstore_config = {
-    "byu history": f"{VEC_STORE_PATH}/byu",      # Vectorstore for BYU history.
-    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
+    "byu history": f"{VEC_STORE_PATH}/byu",      # Vector Store for BYU history.
+    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vector Store for Karl G. Maeser.
 }
 
 byu_maeser_universal_rag: CompiledGraph = get_universal_rag(
@@ -172,7 +172,7 @@ byu_maeser_universal_rag: CompiledGraph = get_universal_rag(
 sessions_manager.register_branch(branch_name="universal", branch_label="BYU and Karl G. Maeser History", graph=byu_maeser_universal_rag)
 ```
 
-> **Note:** The scripts in the `simple/` subdirectory create and register one RAG graph for each individual vectorstore, whereas the scripts in `universal/` and `pipeline/` create one branch that accesses all vectorstores.
+> **Note:** The scripts in the `simple/` subdirectory create and register one RAG graph for each individual vector store, whereas the scripts in `universal/` and `pipeline/` create one branch that accesses all vector stores.
 
 ---
 
@@ -314,5 +314,5 @@ The configuration process for an LDAP Authenticator will vary depending on the a
 
 ## Next Steps
 
-- Follow the instruction in [**Embedding New Content**](./embedding.md) to create your own vectorstores and add them to your script of choice.
+- Follow the instruction in [**Embedding New Content**](./embedding.md) to create your own vector stores and add them to your script of choice.
 - Review one of the [**terminal examples**](./terminal_example.md) (`example/apps/*/terminal_*.py`) for a simple terminal interface.

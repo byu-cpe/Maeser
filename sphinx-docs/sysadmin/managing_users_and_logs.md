@@ -88,9 +88,9 @@ The response statistics are as follows:
 - **Time to Response:** The amount of time it took for the chatbot to generate a response.
 - **Feedback:** Either "Positive" or "Negative" depending on the feedback selected by the user. (**Note:** This statistic is only visible if the user left feedback on the chatbot's response.)
 
-> **Note: Vectorstore Context in Log File**
+> **Note: Vector Store Context in Log File**
 >
-> The chat log files also record the context pulled from the vectorstore(s) that was used by the chatbot to generate a relevant response. For brevity, this context is not exposed on the Chat Logs Management web view, but it can be accessed directly in your chat logs directory if desired.
+> The chat log files also record the context pulled from the vector store(s) that was used by the chatbot to generate a relevant response. For brevity, this context is not exposed on the Chat Logs Management web view, but it can be accessed directly in your chat logs directory if desired.
 
 The bottom of the Log page contains the link "Back to list", which will take you back to the **List of Log Files**.
 

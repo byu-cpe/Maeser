@@ -61,7 +61,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 
 ### Incorrect Paths in `config.yaml`
 
-- **Symptom:** `FileNotFoundError` for vectorstores or log directories.
+- **Symptom:** `FileNotFoundError` for vector stores or log directories.
 - **Solution:** Verify the following fields point to existing locations:
   - `vec_store_path`
   - `log_source_path`
@@ -70,13 +70,13 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 
 ---
 
-## Vectorstore & Embedding Issues
+## Vector Store & Embedding Issues
 
 ### Empty or Irrelevant Retrievals
 
 - **Symptom:** RAG returns unrelated or blank responses.
 - **Solution:**
-  1. In your `chat_logs/chat_history/`, check the `context` field in your chat logs and verify that context is being retrieved from your vectorstores.
+  1. In your `chat_logs/chat_history/`, check the `context` field in your chat logs and verify that context is being retrieved from your vector stores.
   2. Confirm your FAISS index directories are correct and contain `index.faiss` and `index.pkl` files.
   3. Check your embedding step (e.g. in your script for [**embedding new content**](embedding)):
 
@@ -92,7 +92,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 
 - **Symptom:** Errors loading FAISS index (`IOError`, `faiss` exceptions).
 - **Solution:**
-  - Ensure that your rag graphs (e.g. `get_universal_rag`) are configured with the correct paths to your FAISS vectorstores.
+  - Ensure that your rag graphs (e.g. `get_universal_rag`) are configured with the correct paths to your FAISS vector stores.
   - Confirm directory permissions: `chmod -R u+rw <vectorstore_folder>`.
 
 ---

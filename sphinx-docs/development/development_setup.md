@@ -140,7 +140,7 @@ OPENAI_API_KEY: "your-openai-key-here"
 # (Optional) GitHub OAuth Client ID/Secret if you plan to enable login
 GITHUB_CLIENT_ID: ""
 GITHUB_CLIENT_SECRET: ""
-# (Optional) Other settings (e.g., vectorstore paths, LDAP server details, etc.)
+# (Optional) Other settings (e.g., vector store path, LDAP server details, etc.)
 ```
 
 ---

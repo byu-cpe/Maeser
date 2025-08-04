@@ -58,7 +58,7 @@ LOG_SOURCE_PATH = config.get('logging', {}).get('log_source_path')
 # Web Resources
 STATIC_FOLDER = config.get('web_resources', {}).get('static_folder')
 
-# Vectorstore
+# Vector Store
 VEC_STORE_PATH = config.get('vectorstore', {}).get('vec_store_path')
 VEC_STORE_TYPE = config.get('vectorstore', {}).get('vec_store_type', 'faiss')
 

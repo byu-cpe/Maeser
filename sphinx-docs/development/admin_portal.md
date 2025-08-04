@@ -1,6 +1,6 @@
 # The Admin Portal: Generating and Modifying Course Models
 
-Recall that in order to give the Maeser chatbot resources to pull from, the resources must be converted to an LLM-friendly format called a **vectorstore**. Writing Python scripts to [**embed new content**](./embedding.md) in this way can be cumbersome. To simplify the process of creating new vectorstores and course models, the **Admin Portal** enables the ability to vectorize content and control chatbot behavior via a simple web client.
+Recall that in order to give the Maeser chatbot resources to pull from, the resources must be converted to an LLM-friendly format called a **vector store**. Writing Python scripts to [**embed new content**](./embedding.md) in this way can be cumbersome. To simplify the process of creating new vector stores and course models, the **Admin Portal** enables the ability to vectorize content and control chatbot behavior via a simple web client.
 
 The admin portal currently does the following:
 
@@ -23,7 +23,7 @@ The course ID will be used by students to select your course when interacting wi
 
 ### PDF Datasets
 
-A **dataset** is a set of PDFs that will be processed into a single vectorstore. It is best practice to make one dataset per type of resource (e.g. one dataset for your textbook, another dataset for your homework files, another dataset for your labs, etc.). The handlers in `dynamic_implementations/` will use the names of the datasets to identify the most relevant resources to pull from when interacting with a student.
+A **dataset** is a set of PDFs that will be processed into a single vector store. It is best practice to make one dataset per type of resource (e.g. one dataset for your textbook, another dataset for your homework files, another dataset for your labs, etc.). The handlers in `dynamic_implementations/` will use the names of the datasets to identify the most relevant resources to pull from when interacting with a student.
 
 To add a dataset, click "**Add Dataset**." You may add as many PDF files from a dataset as you would like using the dialog window, and you may add as many datasets as you would like using the "**Add Dataset**" button.
 

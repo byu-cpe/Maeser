@@ -68,7 +68,7 @@ def register_branch(branch_name:str, course_id:str, bot_config_path:str):
 
     Args:
         branch_name (str): The name to give the branch.
-        course_id (str): The ID for the course to be registered. This should match the name of the course's vectorstore directory
+        course_id (str): The ID for the course to be registered. This should match the name of the course's vector store directory
         bot_config_path (str): The path to `bot.txt` for the course's chatbot.
     """
     parsed_data = parse_data_from_bot_txt(bot_config_path)

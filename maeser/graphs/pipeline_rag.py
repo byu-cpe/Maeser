@@ -66,7 +66,7 @@ def get_pipeline_rag (
     """
 
     # initialize FAISS retrievers for each topic 
-    # (i.e load each vectorstore to be used when it is needed)
+    # (i.e load each vector store to be used when it is needed)
     retrievers = {}
     for topic, vstore_path in vectorstore_config.items():
         retrievers[topic] = FAISS.load_local(
