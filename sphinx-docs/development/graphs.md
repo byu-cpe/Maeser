@@ -146,7 +146,7 @@ Feature | Simple RAG | Pipeline RAG | Universal RAG
 Vectorstores | Single | Multiple | Multiple
 Context Synthesis | One context | One context (chosen by relevance) | Multiple contexts (one per relevant topic)
 Retrieval Steps | 1 | 1 | 1+ (1 per relevant topic)
-LLM Calls | 2 | 3 | 3 + Number of Relevant Topics/Contexts
+LLM Calls per Response | 2 | 3 | 3 + Number of Relevant Topics/Contexts
 
 ---
 
