@@ -8,7 +8,7 @@ This guide explores how to extend Maeser’s default pipelines by building **cus
 
 - A Maeser development environment set up ([Development Setup](development_setup)).
 - Python 3.10+ with Maeser and LangGraph installed (`pip install -e .` includes LangGraph).
-- Familiarity with Maeser's built-in RAG workflows. (Return to [**Graphs: Simple RAG vs. Pipeline RAG**](graphs) if you aren't familiar)
+- Familiarity with Maeser's built-in RAG workflows. (Return to [**Graphs: Simple RAG, Pipeline RAG, and Universal RAG**](graphs) if you aren't familiar)
 
 ---
 

@@ -1,4 +1,4 @@
-# Graphs: Simple RAG vs. Pipeline RAG
+# Graphs: Simple RAG, Pipeline RAG, and Universal RAG
 
 This guide provides a deep dive into Maeser’s Retrieval‑Augmented Generation (RAG) graphs—**Simple RAG**, **Pipeline RAG**, and **Universal RAG**—with guidance on when to use each graph. By the end of this guide, you’ll know when and how to choose each approach.
 
