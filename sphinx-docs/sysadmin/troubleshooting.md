@@ -62,13 +62,6 @@
 
 ## Database & Persistence
 
-### SQLite Corruption
-
-- **Symptoms:** `sqlite3` errors reading/writing to `users.db` or memory DBs.
-- **Fixes:**
-  - **Concurrency:** Avoid simultaneous writes; consider moving to PostgreSQL/MySQL for production.
-  - **Repair:** `sqlite3 users.db "REINDEX;"` or restore from backups.
-
 ### FAISS Index Errors
 
 - **Symptoms:** FAISS load failures on network-mounted volumes.
