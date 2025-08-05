@@ -24,6 +24,7 @@ Because there are several ways to accomplish these steps, this guide will not ex
 ## Configure Your App for Deployment
 
 Not much needs to be changed within the application itself; however, if you have been working on your app from the `example/` directory, it is recommended that you restructure your project to include only the files that your application needs and remove the `example_` prefix from any remaining files. If you follow this recommendation, keep in mind that `config.py` looks for these specific paths:
+
 ```python
     config_paths = [
         'config.yaml',
@@ -31,13 +32,17 @@ Not much needs to be changed within the application itself; however, if you have
         'example/config.yaml'
     ]
 ```
+
 These paths should be updated to match the path and name of your app's `config.yaml` file.
 
 Additionally, if you have created your Maeser project using the [**Development Setup Guide**](../development/development_setup.md), the Maeser package is located in the `maeser/` directory by default. Rather than having this package copied within your project, you should instead consider using the official Maeser PyPI package. Making this change is simple:
-1. In your project's virtual environment, execute the following command:  
-```bash
-pip install maeser
-```
+
+1. In your project's virtual environment, execute the following command:
+
+    ```bash
+    pip install maeser
+    ```
+
 2. Once the package is installed successfully, remove the `maeser/` directory from your project.
 3. All done! Your project should now reference Maeser functions from the PyPI package instead of from `maeser/`. Run your project locally to make sure these changes were successful.
 
@@ -80,7 +85,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/path/to/maeser/app
-ExecStart=/path/to/maeser/app/.venv/bin/gunicorn -w 16 --access-logfile=- 'gmtk_flask:app'
+ExecStart=/path/to/maeser/app/.venv/bin/gunicorn -w 16 --access-logfile=- 'my_maeser_app:app'
 Restart=always
 
 [Install]
@@ -108,7 +113,8 @@ The first command grants read-write-execute permissions for `www-data` for every
 > **Note:** You can use `getfacl` to check the permissions set for any file or directory.
 
 To start your service, run `sudo systemctl start my-maeser-app.service`, or equivalently, `sudo systemctl start my-maeser-app`. To confirm that it started successfully and is running, run `sudo systemctl status my-maeser-app.service`. If all is well, you should see something similar to the following:
-```
+
+```text
 ● my-maeser-app.service - My Maeser WSGI Server
      Loaded: loaded (/etc/systemd/system/my-maeser-app.service; enabled; preset: enabled)
      Active: active (running) since Tue 2025-07-08 16:59:05 MDT; 8s ago
@@ -116,25 +122,31 @@ To start your service, run `sudo systemctl start my-maeser-app.service`, or equi
 ```
 
 If your service is "**active (running)**", then you are all set! You should be able to access your server in a web browser just as before. Your web server will now run in the background and will automatically start up when your machine starts up. You can manage your service in the following ways:
+
 1. Start Service
-  ```bash
-  sudo systemctl start my-maeser-app.service
-  ```
+
+    ```bash
+    sudo systemctl start my-maeser-app.service
+    ```
 
 2. Stop Service
-  ```bash
-  sudo systemctl stop my-maeser-app.service
-  ```
+
+    ```bash
+    sudo systemctl stop my-maeser-app.service
+    ```
 
 3. Restart Service
-  ```bash
-  sudo systemctl restart my-maeser-app.service
-  ```
+
+    ```bash
+    sudo systemctl restart my-maeser-app.service
+    ```
 
 > **Note:** To see a live feed of your service's logs, you can use `journalctl`. Run the following command in its own terminal session:
+>
 > ```bash
 > sudo journalctl -fu my-maeser-app.service
 > ```
+>
 > The terminal window will now show the live output of your web server.
 
 ---
@@ -142,6 +154,7 @@ If your service is "**active (running)**", then you are all set! You should be a
 ## Deploy Your Server Publicly With a Domain Name
 
 There are three main things you will need to acquire to fully deploy your server:
+
 1. **A domain name**
 2. **An SSL/TLS certificate**
 3. **A private key**
@@ -157,6 +170,7 @@ Once you have acquired your domain name, SSL certificate, and private key, you w
 Lastly, be sure to update your OAuth settings once more (as described [above](#configure-a-wsgi-server-to-run-your-app)) since the web server is now accessed through your site's domain name.
 
 ## Resources
+
 - [**Deploying to Production**](https://flask.palletsprojects.com/en/stable/deploying/), Flask documentation
 - The section on directives for a `.service file` from [**this DigitalOcean article**](https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files#the-service-section)
 - Wikipedia article on [**Web Server Gateway Interface (WSGI)**](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface)
