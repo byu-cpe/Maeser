@@ -182,7 +182,7 @@ When the process finishes, open `sphinx-docs/_build/html/index.html` in your bro
 Several working example scripts can be found in the `example/apps/` directory. To run these examples locally, see [**Maeser Example (with Flask & User Management)**](flask_example.md).
 
 You’re all set!
-If you run into any issues, refer to the [**Dev Troubleshooting Guide**](dev-troubleshooting.md).
+If you run into any issues, refer to the [**Dev Troubleshooting Guide**](dev_troubleshooting.md).
 
 ---
 
