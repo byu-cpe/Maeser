@@ -19,7 +19,12 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 ---
 
-## Retrieval & Embeddings
+## LLM, Vector Store Retrieval, & Embedding APIs
+
+### [OpenAI Python SDK](https://platform.openai.com/docs/api-reference/introduction)
+
+- **Role:** Official client for chat completions & embeddings
+- **Use case:** Send prompts to GPT models (e.g., `gpt-3.5-turbo`, `gpt-4`) and retrieve embeddings when needed.
 
 ### [LangChain](https://python.langchain.com/docs/introduction/)
 
@@ -34,23 +39,10 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 - **Role:** High-performance nearest-neighbor search  
 - **Use case:** Index and query embedding vectors for both Simple and Pipeline RAG pipelines.
 
----
-
-## Workflow Orchestration
-
 ### [LangGraph](https://langchain-ai.github.io/langgraph/)
 
 - **Role:** Compose multi-step AI pipelines as directed graphs
-- **Use case:** Underpins `get_simple_rag` and `get_pipeline_rag`; foundation for advanced custom graphs.
-
----
-
-## LLM & Embedding APIs
-
-### [OpenAI Python SDK](https://platform.openai.com/docs/api-reference/introduction)
-
-- **Role:** Official client for chat completions & embeddings
-- **Use case:** Send prompts to GPT models (e.g., `gpt-3.5-turbo`, `gpt-4`) and retrieve embeddings when needed.
+- **Use case:** Underpins `get_simple_rag`, `get_pipeline_rag`, and `get_universal_rag`; foundation for advanced custom graphs.
 
 ---
 
@@ -75,16 +67,11 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 - **Role:** YAML parsing
 - **Use case:** Load `config.yaml` (API keys, paths, rate limits, auth settings).
 
-### [python-dotenv *(optional)*](https://www.dotenv.org/docs/)
-
-- **Role:** `.env` support for environment variables
-- **Use case:** Override sensitive settings outside of YAML or source control.
-
 ---
 
 ## Authentication & User Management
 
-### Github OAth (Handled in [`user_manager`](../autodoc/maeser/maeser.user_manager.rst))
+### GitHub OAuth (Handled in [`user_manager`](../autodoc/maeser/maeser.user_manager.rst))
 
 - **Role:** Support for Github login.
 - **Use case:** Provide users with the option to sign into the web application with github.
@@ -93,6 +80,20 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 
 - **Role:** LDAP directory client
 - **Use case:** `LDAPAuthenticator` for enterprise user login.
+
+---
+
+## Deployment
+
+### [Gunicorn](https://docs.gunicorn.org/en/stable/)
+
+- **Role:** Production-ready WSGI server that [integrates well with Flask](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/).
+- **Use case:** [**Deploying a Maeser Flask app**](../sysadmin/deployment.md) as a WSGI server.
+
+### [nginx](https://nginx.org/)
+
+- **Role:** Production-ready HTTP server that can act as a reverse-proxy for WSGI servers.
+- **Use case:** Connect with Gunicorn to deploy a Maeser Flask app as an HTTP server.
 
 ---
 
@@ -113,10 +114,7 @@ Understanding these dependencies empowers you to extend Maeser, debug quickly, a
 - **Role:** Documentation generator for RST & Markdown  
 - **Use case:** Builds the Maeser docs site (`sphinx-docs/`) with mixed-format support.
 
----
+### [Poetry](https://python-poetry.org/docs/)
 
-## Optional Integrations
-
-- **[Poetry](https://python-poetry.org/docs/):** Alternative dependency & venv management  
-- **[Gunicorn](https://docs.gunicorn.org/en/stable/):** Production-ready WSGI server that [integrates well with Flask.](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/)
-- **[Docker](https://docs.docker.com/get-started/):** Containerization for reproducible deployments
+- **Role:** Maeser package management
+- **Use case:** Installing all required dependencies and publishing the Maeser package to PyPI.
