@@ -10,7 +10,7 @@ This guide explains how to use a Python script to embed your own documents into 
 
 ## Prerequisites
 
-- A **Maeser development** or **user** environment set up (see [Development Setup](./development_setup.md)).
+- A **Maeser development** or **user** environment set up (see [**Development Setup**](./development_setup.md)).
 - Your documents in **plain text** format (e.g., `.txt`, Markdown `.md`, or PDF converted to text).
 
 ---
@@ -97,7 +97,7 @@ vectorstore = FAISS.from_texts(
 vectorstore.save_local("my_vectorstore")
 ```
 
-- `my_vectorstore/` will contain index files you can reuse in Maeser.
+- `my_vectorstore/` will contain index files (`index.faiss` and `index.pkl`) that you can reuse in Maeser.
 - Metadatas (`source` field) helps trace which document each vector store chunk originated from. This information will be passed to your chatbot when retrieving context from your vector store.
 
 > **Tip:** The code above assumes the **OPENAI_API_KEY environment variable** is defined like so:
@@ -156,8 +156,10 @@ sessions_manager.register_branch(branch_name="my_course", branch_label="My Cours
 If you are using one of the  **Universal RAG** or **Pipeline RAG** scripts, add  this to your flask script:
 
 ```python
-# Add rules in my_prompt for your chatbot to follow. Example:
-my_prompt: str = """You are a helpful professor.
+# NOTE: universal_prompt, vectorstore_config, and my_universal_rag already exist in your flask script and only need to be altered
+
+# Add rules in universal_prompt for your chatbot to follow. Example:
+universal_prompt: str = """You are a helpful professor.
     You will answer students' questions based on the context provided.
     If the question is unrelated to the context, politely inform the user that their question is outside the context of your resources.
 
@@ -167,17 +169,16 @@ my_prompt: str = """You are a helpful professor.
 # Add your vector store to vectorstore_config
 # Ensure that topics are all lower case and spaces between words
 vectorstore_config = {
-    # -- Other vector stores listed here --
+    # -- Other vector stores listed here -- #
     "my course": f"{VEC_STORE_PATH}/my_vectorstore", # Path to your vector store
 }
 
 # Register your RAG Graph and chat branch
-# NOTE: This already exists in your flask script and only needs to be altered
 my_universal_rag: CompiledGraph = get_universal_rag(
     vectorstore_config=vectorstore_config,
     memory_filepath=f"{LOG_SOURCE_PATH}/my_course.db",
     api_key=OPENAI_API_KEY,
-    system_prompt_text=(my_prompt),
+    system_prompt_text=universal_prompt,
     model=LLM_MODEL_NAME,
 )
 
@@ -194,5 +195,6 @@ sessions_manager.register_branch(branch_name="my_course", branch_label="My Cours
 
 ## Next Steps
 
+- Review the **example Flask scripts** in [**Maeser Example (with Flask & User Management)**](flask_example).
 - Explore **custom graph workflows** for advanced RAG pipelines in [**Graphs**](graphs).
-- Review the **example flask scripts** in [**Maeser Example (with Flask & User Management)**](flask_example).
+- Prepare your custom Maeser application for [**server deployment**](../sysadmin/deployment.md).
