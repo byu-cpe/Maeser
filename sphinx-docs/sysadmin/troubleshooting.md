@@ -1,68 +1,57 @@
 # SysAdmin Troubleshooting Guide
 
-*Quick reference for resolving common issues in Maeser production deployments.*
+This guide serves as a quick reference for resolving issues in Maeser production deployments.
+
+Since there are many different deployment setups, this guide is generalized and does not provide a comprehensive list of problems and solutions; for more detailed troubleshooting, refer to the documentation for your WSGI and HTTP server programs.
 
 ---
 
-## Gunicorn (WSGI Server) Issues
+## WSGI Server Issues
 
 ### Failing to Start
 
 - **Symptoms:** `ModuleNotFoundError` or `AttributeError` referencing your app.
-- **Checks & Fixes:**
-  1. **Module path:** Ensure you launch Gunicorn with the correct module notation (e.g., `example.flask_example_user_management:app`).
-  2. **Virtual environment:** Activate the same `.venv` where Maeser and Gunicorn are installed.
-  3. **Installation:** Verify Gunicorn is present (`pip show gunicorn`). Install if missing: `pip install gunicorn`.
-
-### Worker Timeouts & Hangs
-
-- **Symptoms:** Requests hang or time out after 30 seconds (default).
 - **Solutions:**
-  - **Increase timeout:** `--timeout 120` or higher.
-  - **Preload app:** Add `--preload` to reduce per-worker startup cost.
-  - **Error logs:** Specify `--error-logfile /path/to/error.log` and inspect stack traces.
+  1. **Module path:** Ensure you launch your WSGI server with the correct module notation (e.g., `example.flask_example_user_management:app`).
+  2. **Virtual environment:** Make sure the path to your WSGI program is in your project's virtual environment (e.g., `.venv/bin/...`).
 
 ### Port Binding Conflicts
 
 - **Symptoms:** `OSError: [Errno 98] Address already in use`.
 - **Solutions:**
-  - **Identify process:** `lsof -i :8000` or `netstat -tnlp | grep 8000`.
   - **Free port:** Stop the conflicting service or choose a different port.
-  - **Socket binding:** Use Unix socket for NGINX proxy: `--bind unix:/path/to/maeser.sock`.
 
 ---
 
-## NGINX (Reverse Proxy) Issues
+## HTTP/Reverse Proxy Issues
 
 ### 502 Bad Gateway
 
-- **Symptoms:** NGINX returns a 502 error when proxying.
-- **Checks & Fixes:**
-  - **Backend status:** Confirm Gunicorn is running and listening on the expected socket/port.
-  - **Proxy settings:** Match `proxy_pass` URL to Gunicorn bind (e.g., `http://127.0.0.1:8000` or `unix:/…`).
-  - **Socket permissions:** `chown www-data:www-data maeser.sock && chmod 660 maeser.sock`.
+- **Symptoms:** HTTP server returns a 502 error when proxying.
+- **Solutions:**
+  - **Backend status:** Confirm your WSGI program is running and listening on the expected port or socket.
+  - **Proxy settings:** Make sure that the proxy pass URL in the HTTP server (named `proxy_pass` in nginx) is assigned to the same port that the WSGI server is bound to (usually `http://127.0.0.1:8000/` by default).
+  - **Socket permissions:** If you are using a Unix socket to connect your WSGI and HTTP server, make sure that `www-data` is configured with proper permissions by executing the following: `chown www-data:www-data maeser.sock && chmod 660 maeser.sock`
 
 ### SSL/TLS Certificate Errors
 
 - **Symptoms:** Browser warnings about invalid or expired certificate.
 - **Solutions:**
-  - **Test renewal:** `sudo certbot renew --dry-run`.
-  - **Verify paths:** Ensure NGINX `ssl_certificate` and `ssl_certificate_key` point to the correct files under `/etc/letsencrypt/live/yourdomain.com/`.
+  - **Renew Certificates:** Verify the status of your certificates and renew them if necessary.
+  - **Verify paths:** Ensure HTTP server's config is up-to-date with correct paths to the `ssl_certificate` and `ssl_certificate_key`.
   - **Reload NGINX:** After renewal, run `sudo systemctl reload nginx`.
 
 ### Static Assets Not Loading
 
 - **Symptoms:** CSS/JS requests return 404.
 - **Solutions:**
-  - **Log rotation:** Configure `logrotate` for NGINX, Gunicorn, and chat logs.
-  - **Docker cleanup:** `docker system prune -a` (use with caution).
-  - **Archive data:** Periodically snapshot or purge old FAISS indexes and logs.
+  - **File permissions:** Ensure the HTTP user (`www-data`) can read static files (`chmod -R u+r /path/to/static`).
 
 ---
 
 ## Database & Persistence
 
-### FAISS Index Errors
+### Vector Store/FAISS Index Errors
 
 - **Symptoms:** FAISS load failures on network-mounted volumes.
 - **Solutions:**
@@ -71,4 +60,4 @@
 
 ---
 
-With these pointers, your Maeser deployment should run smoothly. If you encounter other issues, check the GitHub Issues board or open a topic for community support.
+If you encounter other issues, review the steps and resources in the [**Deployment Guide**](./deployment.md), or consider [**submitting an issue on GitHub**](https://github.com/byu-cpe/Maeser/issues).
