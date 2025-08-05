@@ -95,7 +95,9 @@ llm:
 
 ## Inspect the Example Scripts
 
-The following sections will go through `universal/flask_universal_user_management.py` section-by-section and explain how the code works. Most of the code can be left unchanged and should work as-is assuming that your `config.yaml` file is configured correctly. If your are using a different example script, pay attention to the notes at the bottom of each section explaining any differences.
+The following sections will go through `universal/flask_universal_user_management.py` section-by-section and explain how the code works. If you are only interested in running the script, then skip to [**User Management Setup**](#user-management-setup) (or go straight to [**Run the Application**](#run-the-application) if your example does not have user management).
+
+Most of the code can be left unchanged and should work as-is assuming that your `config.yaml` file is configured correctly. If your are using a different example script, pay attention to the notes at the bottom of each section explaining any differences.
 
 ### Configuration Imports & Environment Setup
 
@@ -186,7 +188,7 @@ If you are using one of the example scripts that does not use user management, t
 
 ### Initialize Authenticators
 
-Defines GitHub and LDAP authenticators for user login and request quotas. This is consistent across all `flask_*_user_management.py` scripts. The code blocks for either LDAP or GitHub can be commented out if you are not planning to use it as an authenticator.
+Defines GitHub and LDAP authenticators for user login and request quotas. This is consistent across all `flask_*_user_management.py` scripts. The code blocks for either LDAP or GitHub should be commented out if you are not planning to use it as an authenticator.
 
 ```python
 om maeser.user_manager import UserManager, GithubAuthenticator, LDAPAuthenticator
@@ -282,7 +284,7 @@ if __name__ == "__main__":
 
 ## Run the Application
 
-Activate your virtual environment and run your Flask script from the project root. Your terminal output should be similar to the following:
+[**Activate your virtual environment**](./development_setup.md#activating-the-virtual-environment) and run your Flask script from the project root. Your terminal output should be similar to the following:
 
 ```bash
 $ python example/apps/universal/flask_universal.py 
