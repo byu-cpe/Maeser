@@ -6,9 +6,8 @@ This guide explores how to extend Maeser’s default pipelines by building **cus
 
 ## Prerequisites
 
-- A Maeser development environment set up ([Development Setup](development_setup)).
-- Python 3.10+ with Maeser and LangGraph installed (`pip install -e .` includes LangGraph).
-- Familiarity with Maeser's built-in RAG workflows. (Return to [**Graphs: Simple RAG, Pipeline RAG, and Universal RAG**](graphs) if you aren't familiar)
+- A **Maeser development environment** set up ([**Development Setup**](./development_setup.md)).
+- **Familiarity with Maeser's built-in RAG workflows**. (Return to [**Graphs: Simple RAG, Pipeline RAG, and Universal RAG**](./graphs.md) if you aren't familiar.)
 
 ---
 
@@ -27,7 +26,7 @@ Custom graphs let you compose these behaviors into a coherent pipeline, giving y
 
 ## Building a Custom Graph with LangGraph
 
-The easiest way to build a **custom graph** is to use the web tool [LangGraph Builder](https://build.langchain.com/). We will try to explain a LangGraph here:
+The easiest way to build a **custom graph** is to use the web tool [**LangGraph Builder**](https://build.langchain.com/). We will try to explain a LangGraph here:
 
 ---
 
@@ -40,23 +39,34 @@ More technically:
 - A node is a function or a tool that takes some input, does something (like calling a model, running code, or checking a condition), and then returns an output.
 - You connect nodes together to form a graph — kind of like a flowchart — where each node passes its result to the next one.
 
-Let’s say you're building a chatbot that answers questions. You could make a LangGraph with nodes like this:
+Consider a simple AI chatbot that takes in a user's input and generates a response. A LangGraph for such a chatbot would look like the following:
 
-- Start Node – receives the user’s question.
-- LLM Node – uses GPT to come up with an answer.
-- Output Node – sends the answer back to the user.
+```mermaid
+flowchart TB
+    %% Nodes
+    start_node(["\_\_start\_\_"])
+    get_user_input
+    generate_response
+    end_node(["\_\_end\_\_"])
 
-Each of those steps is a node.
+    %% Main Flow
+    start_node --> get_user_input
+    get_user_input --> generate_response
+    generate_response --> end_node
+```
 
-This is an example of a node in python:
+- **get_user_input:** receives the user’s question.
+- **generate_response:** – passes the user's question to an LLM to generate a response.
+
+Here is how those nodes may be implemented in python:
 
 ```python
-def ask_question_node(input):
-    return {"question": input["user_input"]}
+def get_user_input(state):
+    return {"question": state["user_input"]}
 
-def llm_response_node(input):
-    # pretend this calls GPT
-    return {"answer": "This is a response to: " + input["question"]}
+def llm_response_node(state):
+    answer = llm.invoke(state["question"])
+    return {"answer": answer}
 ```
 
 ---
@@ -72,21 +82,41 @@ When a node finishes its job and returns some output, the edge decides what node
 
 There are two main types of edges:
 
-- Static Edges – Always go to the same next node, no matter the result.
-- Conditional Edges – Choose the next node based on some value in the output.
+- **Static Edges:** Always go to the same next node, no matter the result.
+- **Conditional Edges:** Choose the next node based on some value in the output. See [**Conditional Edges**](#conditional-edges) for more information.
 
 Let’s say you’re building a flow like this:
 
-- User types a message → (Start node)
-- Classify message as 'question' or 'command' → (Classifier node)
-- If it's a question, go to AnswerQuestion node
-- If it's a command, go to RunCommand node
+```mermaid
+flowchart TB
+    %% Nodes
+    start_node(["\_\_start\_\_"])
+    get_user_input
+    classifier
+    answer_question
+    run_command
+    end_node(["\_\_end\_\_"])
+
+    %% Main Flow
+    start_node --> get_user_input
+    get_user_input --> classifier
+    classifier --> |"question"| answer_question
+    classifier --> |"command"| run_command
+    answer_question --> end_node
+    run_command --> end_node
+```
+
+- User types a message (`get_user_input` node).
+- Classify message as 'question' or 'command' (`classifier` node).
+- If it's a question, go to `answer_question` node and answer the user's question.
+- If it's a command, go to `run_command` node and execute the command.
 
 Here’s what’s happening:
 
 - Each node does some work.
 - Each edge tells the system where to go next.
-- The edge from Classifier is a conditional edge — it chooses the next node based on the output.
+- The edge from `get_user_input` to `classifier` is a static edge — it always goes to `classifier`, no matter the output.
+- The edge from `classifier` is a conditional edge — it chooses the next node based on the output.
 
 ---
 
@@ -107,17 +137,25 @@ This is useful when:
 - You’re handling different types of tasks (e.g. questions vs commands).
 - You want to loop or exit based on a condition.
 
-For example, you may want to classify an input. You can do so in something like this:
+Let's take the example of classify a user's input from earlier. An implementation of this node and conditional edge may look like the following:
 
 ```python
-def classify_node(state):
+def classifier_node(state):
     text = state["user_input"]
     if "?" in text:
         return {"type": "question"}
     else:
         return {"type": "command"}
 
+def classifier_node_conditional_edge(state) -> str:
+    input_type = state["type"]
+    if input_type == "question":
+        return "answer_question"
+    else:
+        return "run_command"
 ```
+
+`classifier_node_conditional_edge()` handles the conditional edge logic and returns the string representation of the next node to traverse to.
 
 ---
 
@@ -138,9 +176,9 @@ Logic for this would look something like this:
 flowchart TB
     %% Nodes
     start_node(["\_\_start\_\_"])
-    get_input["get_input"]
-    check_done["check_done"]
-    process_input["process_input"]
+    get_input
+    check_done
+    process_input
     end_node(["\_\_end\_\_"])
 
     %% Main Flow
@@ -164,7 +202,7 @@ flowchart TB
 
 ## Next Steps
 
-- Read [Graphs](graphs) to learn more about Maeser's built‑in RAG graphs.
+- Read [**Graphs**](graphs) to learn more about Maeser's built‑in RAG graphs.
+- For more information on LangGraphs, you can [**find documentation here**](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.#).
 - Experiment with external tools (e.g., web search) by adding new states.
-- Share your custom graphs with the Maeser community via GitHub.
-- For more information on LangGraphs, you can [find documentation here](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.#).
+- Share your custom graphs with the Maeser community via [**GitHub**](https://github.com/byu-cpe/Maeser).
