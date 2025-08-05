@@ -2,61 +2,58 @@
 
 This document provides a detailed walkthrough of Maeser’s core architecture. At the center is the **AppManager**, which initializes and connects all major modules. Below is a graphical representation of the class hierarchy:
 
-```{mermaid}
+```mermaid
 flowchart LR
   %% Root Flask orchestrator
-  A0["Maeser Flask App"] --> A1["AppManager"]
+  flask_app["Maeser Flask App"] --> AppManager
 
   %% ChatSessionManager Module
   subgraph ChatModule["ChatSessionManager Module"]
-    direction TB
-    B0["ChatSessionManager"]
-    B0 --> B1["Simple RAG"]
-    B0 --> B2["Pipeline RAG"]
-    B0 --> B3["chat_interface"]
-    B0 --> B4["new_session_api"]
-    B0 --> B5["chat_api"]
-    B0 --> B6["conversation_history_api"]
+    CSM["ChatSessionManager"]
+    CSM --> simple_rag
+    CSM --> pipeline_rag
+    CSM --> universal_rag
+    CSM --> chat_interface
+    CSM --> new_session_api
+    CSM --> chat_api
+    CSM --> conversation_history_api
   end
-  A1 --> B0
+  AppManager --> CSM
 
   %% ChatLogsManager Module
   subgraph LogsModule["ChatLogsManager Module"]
-    direction TB
-    E0["ChatLogsManager"]
-    E0 --> E1["feedback_api"]
-    E0 --> E2["feedback_form_get"]
-    E0 --> E3["feedback_form_post"]
-    E0 --> E4["training"]
-    E0 --> E5["training_post"]
-    E0 --> E6["chat_logs_overview"]
-    E0 --> E7["display_chat_log"]
+    CLM["ChatLogsManager"]
+    CLM --> feedback_api
+    CLM --> feedback_form_get
+    CLM --> feedback_form_post
+    CLM --> training
+    CLM --> training_post
+    CLM --> chat_logs_overview
+    CLM --> display_chat_log
   end
-  A1 --> E0
+  AppManager --> CLM
 
   %% UserManager Module
   subgraph UserModule["UserManager Module"]
-    direction TB
-    C0["UserManager"]
-    C0 --> C1["GithubAuthenticator"]
-    C0 --> C2["LDAPAuthenticator"]
-    C0 --> C3["login_api.*"]
-    C0 --> C4["logout"]
-    C0 --> C5["manage_users_view"]
-    C0 --> C6["user_management_api"]
+    UM["UserManager"]
+    UM --> GithubAuthenticator
+    UM --> LDAPAuthenticator
+    UM --> login_api["login_api.*"]
+    UM --> logout
+    UM --> manage_users_view
+    UM --> user_management_api
   end
-  A1 --> C0
+  AppManager --> UM
 
   %% Jinja2 helpers
-  A1 --> D0["Jinja2 Render Helpers"]
-
+  AppManager --> jinja2["Jinja2 Render Helpers"]
 ```
 
 ## Core Components
 
 ### AppManager
 
-- **File:** `maeser/blueprints.py`  
+- **Class:** `AppManager` (`maeser/blueprints.py`)
 - **Role:** Bootstraps and configures the Flask app, registers routes via blueprints, applies theming, and initializes background tasks (e.g., message requests refresh).
 
 ### ChatSessionManager Module
@@ -104,9 +101,9 @@ flowchart LR
 
 ## Request Flow Summary
 
-1. **HTTP Request** arrives at the Flask app.  
-2. **AppManager** routes the request to the proper controller.  
-3. **Controllers** interact with **ChatSessionManager** or **UserManager** depending on the endpoint.  
-4. **ChatSessionManager** invokes RAG graphs or logs via **ChatLogsManager** for chat operations.  
-5. **UserManager** authenticates and manages user data for secure endpoints.  
-6. **Render Helpers** generate final HTML/CSS for web responses.
+1. **AppManager** configures all routes to their proper controllers.
+1. **HTTP Request** arrives at the Flask app and is routed to its proper controller.
+1. **Controllers** interact with **ChatSessionManager** or **UserManager** depending on the endpoint.  
+1. **ChatSessionManager** invokes RAG graphs or logs via **ChatLogsManager** for chat operations.  
+1. **UserManager** authenticates and manages user data for secure endpoints.  
+1. **Render Helpers** generate final HTML/CSS for web responses.
