@@ -7,13 +7,15 @@
 ## Gunicorn (WSGI Server) Issues
 
 ### Failing to Start
+
 - **Symptoms:** `ModuleNotFoundError` or `AttributeError` referencing your app.
 - **Checks & Fixes:**
-  1. **Module path:** Ensure you launch Gunicorn with the correct module notation (e.g., `example.flask_example_user_mangement:app`).
+  1. **Module path:** Ensure you launch Gunicorn with the correct module notation (e.g., `example.flask_example_user_management:app`).
   2. **Virtual environment:** Activate the same `.venv` where Maeser and Gunicorn are installed.
   3. **Installation:** Verify Gunicorn is present (`pip show gunicorn`). Install if missing: `pip install gunicorn`.
 
 ### Worker Timeouts & Hangs
+
 - **Symptoms:** Requests hang or time out after 30 seconds (default).
 - **Solutions:**
   - **Increase timeout:** `--timeout 120` or higher.
@@ -21,6 +23,7 @@
   - **Error logs:** Specify `--error-logfile /path/to/error.log` and inspect stack traces.
 
 ### Port Binding Conflicts
+
 - **Symptoms:** `OSError: [Errno 98] Address already in use`.
 - **Solutions:**
   - **Identify process:** `lsof -i :8000` or `netstat -tnlp | grep 8000`.
@@ -32,6 +35,7 @@
 ## NGINX (Reverse Proxy) Issues
 
 ### 502 Bad Gateway
+
 - **Symptoms:** NGINX returns a 502 error when proxying.
 - **Checks & Fixes:**
   - **Backend status:** Confirm Gunicorn is running and listening on the expected socket/port.
@@ -39,6 +43,7 @@
   - **Socket permissions:** `chown www-data:www-data maeser.sock && chmod 660 maeser.sock`.
 
 ### SSL/TLS Certificate Errors
+
 - **Symptoms:** Browser warnings about invalid or expired certificate.
 - **Solutions:**
   - **Test renewal:** `sudo certbot renew --dry-run`.
@@ -46,6 +51,7 @@
   - **Reload NGINX:** After renewal, run `sudo systemctl reload nginx`.
 
 ### Static Assets Not Loading
+
 - **Symptoms:** CSS/JS requests return 404.
 - **Checks & Fixes:**
   - **Alias config:** Confirm `location /static/ { alias /path/to/maeser/controllers/common/static/; }` matches your file structure.
@@ -56,18 +62,21 @@
 ## Docker & Container Issues
 
 ### Build Failures
+
 - **Symptoms:** `docker build` errors due to missing files or dependencies.
 - **Fixes:**
   - **Verify COPY:** Check your `Dockerfile` and `.dockerignore` to include required files.
   - **Base image:** Use `python:3.10-slim` or similar with necessary build tools.
 
 ### Networking Problems
+
 - **Symptoms:** Cannot access service on mapped ports.
 - **Solutions:**
   - **Port mapping:** Ensure `docker-compose.yml` or `docker run -p 8000:8000` is correct.
   - **Network mode:** For advanced setups, consider `network_mode: host` (Linux only).
 
 ### Volume & Permission Errors
+
 - **Symptoms:** Containers cannot read/write volume-mounted directories.
 - **Fixes:**
   - **UID/GID alignment:** Run container as your host user: `user: "$(id -u):$(id -g)"` in Compose.
@@ -78,6 +87,7 @@
 ## Resource & Performance
 
 ### High CPU / Memory Usage
+
 - **Symptoms:** Gunicorn workers or containers consume excessive resources.
 - **Investigate:** Profile endpoints with APM (New Relic, Datadog) or `top`/`htop`.
 - **Mitigate:**
@@ -85,6 +95,7 @@
   - **Worker recycling:** `--max-requests 1000 --max-requests-jitter 50` to avoid memory bloat.
 
 ### Disk Space Issues
+
 - **Symptoms:** Deployment fails or disk fills up quickly.
 - **Solutions:**
   - **Log rotation:** Configure `logrotate` for NGINX, Gunicorn, and chat logs.
@@ -96,12 +107,14 @@
 ## Database & Persistence
 
 ### SQLite Corruption
+
 - **Symptoms:** `sqlite3` errors reading/writing to `users.db` or memory DBs.
 - **Fixes:**
   - **Concurrency:** Avoid simultaneous writes; consider moving to PostgreSQL/MySQL for production.
   - **Repair:** `sqlite3 users.db "REINDEX;"` or restore from backups.
 
 ### FAISS Index Errors
+
 - **Symptoms:** FAISS load failures on network-mounted volumes.
 - **Solutions:**
   - **Local storage:** Place vector stores on local SSD for performance and reliability.
@@ -127,4 +140,3 @@
 ---
 
 With these pointers, your Maeser deployment should run smoothly. If you encounter other issues, check the GitHub Issues board or open a topic for community support.
-
