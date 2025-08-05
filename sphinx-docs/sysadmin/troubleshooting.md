@@ -71,12 +71,4 @@
 
 ---
 
-## Logging & Debugging
-
-- **Central logging:** Aggregate Gunicorn, NGINX, and app logs to ELK/EFK or cloud logging.  
-- **Debug mode:** Never use `debug=True` in production—only in local development.  
-- **Verbose logs:** Temporarily increase log level: `--log-level debug` in Gunicorn or Flask for deeper insights.
-
----
-
 With these pointers, your Maeser deployment should run smoothly. If you encounter other issues, check the GitHub Issues board or open a topic for community support.
