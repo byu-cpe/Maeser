@@ -59,31 +59,6 @@
 
 ---
 
-## Docker & Container Issues
-
-### Build Failures
-
-- **Symptoms:** `docker build` errors due to missing files or dependencies.
-- **Fixes:**
-  - **Verify COPY:** Check your `Dockerfile` and `.dockerignore` to include required files.
-  - **Base image:** Use `python:3.10-slim` or similar with necessary build tools.
-
-### Networking Problems
-
-- **Symptoms:** Cannot access service on mapped ports.
-- **Solutions:**
-  - **Port mapping:** Ensure `docker-compose.yml` or `docker run -p 8000:8000` is correct.
-  - **Network mode:** For advanced setups, consider `network_mode: host` (Linux only).
-
-### Volume & Permission Errors
-
-- **Symptoms:** Containers cannot read/write volume-mounted directories.
-- **Fixes:**
-  - **UID/GID alignment:** Run container as your host user: `user: "$(id -u):$(id -g)"` in Compose.
-  - **Host permissions:** `chown -R 1000:1000 ./data` or appropriate user/group.
-
----
-
 ## Resource & Performance
 
 ### High CPU / Memory Usage
