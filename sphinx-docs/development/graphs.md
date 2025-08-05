@@ -13,8 +13,8 @@ This guide provides a description for each RAG graph but does not provide exampl
 
 ## Prerequisites
 
-- A Maeser development environment configured (see [**Development Setup**](./development_setup.md)).
-- At least one prebuilt vector store (for Simple RAG) or multiple vector stores (for Pipeline or Universal RAG). Two example vector stores—`byu` and `maeser`—are provided in `example/resources/vectorstores/`. To create a vector store with your own content, see [**Embedding New Content**](./embedding.md).
+- A **Maeser development environment** configured (see [**Development Setup**](./development_setup.md)).
+- At least one **pre-built vector store** (for Simple RAG) or multiple vector stores (for Pipeline or Universal RAG). Two example vector stores—`byu` and `maeser`—are provided in `example/resources/vectorstores/`. To create a vector store with your own content, see [**Embedding New Content**](./embedding.md).
 
 ---
 
@@ -26,7 +26,7 @@ The Simple RAG only takes in one vector store per **chat branch**, forcing the c
 
 Simple Rag is the best choice when:
 
-- Your application or centers around one domain or subject.
+- Your application centers around one domain or subject.
 - You want minimal complexity and fast responses.
 
 ### Simple RAG Framework
@@ -128,14 +128,14 @@ flowchart TB
     generate_response --> end_node
 ```
 
-- **Determine Relevant Topics**: Classifies the student’s question and to create a list of the most relevant vector stores to query.
+- **Determine Relevant Topics**: Classifies the student’s question and creates a list of the most relevant vector stores to query.
 - **Summarize Chat History**: Summarizes the recent chat history to provide more relevant input during the Generate Response step.
 - **Retrieve Relevant Context**: Scans each vector store in the list provided for passages related to the user's question and retrieves the most relevant document chunks.
 - **Generate Response**: Invokes the LLM with the **summarized chat history**, **prompt instructions**, and **retrieved context** as input, yielding a focused response.
 
 ### Limitations of Universal RAG
 
-- **More LLM Calls:** Invokes the LLM to identify most relevant vector stores before retrieving context and summarizes chat before generating a response, resulting in a slightly higher cost and response time per message (compared to Simple RAG).
+- **More LLM Calls:** Invokes the LLM to identify most relevant vector stores before retrieving context and summarizes chat history before generating a response, resulting in a slightly higher cost and response time per message (compared to Simple RAG).
 
 ---
 
@@ -145,12 +145,12 @@ Feature | Simple RAG | Pipeline RAG | Universal RAG
 :---|:---|:---|:---
 Vector Store Capacity | Single | Multiple | Multiple
 Context Synthesis | One context | One context (chosen by relevance) | Multiple contexts (one per relevant topic)
-Retrieval Steps | 1 | 1 | 1+ (1 per relevant topic)
-LLM Calls per Response | 2 | 3 | 3 + Number of Relevant Topics/Contexts
+Retrieval Steps | 1 | 1 | 0 or more (1 per relevant topic)
+LLM Calls per Response | 2 | 3 | 3 plus number of relevant topics/contexts
 
 ---
 
 ## Next Steps
 
 - Review the scripts in `example/apps/` and [**Maeser Example (with Flask & User Management)**](./flask_example.md) for implementations of each RAG graph.
-- Explore **Custom Graphs** for tool integration (e.g., calculators) in [Custom Graphs: Advanced RAG Workflows](custom_graphs).
+- Explore **Custom Graphs** for tool integration (e.g., calculators) in [**Custom Graphs: Advanced RAG Workflows**](./custom_graphs.md).
