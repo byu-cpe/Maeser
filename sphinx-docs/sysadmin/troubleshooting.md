@@ -71,15 +71,6 @@
 
 ---
 
-## Monitoring & Alerts
-
-- **Gunicorn exporter:** Use a Prometheus exporter for Gunicorn metrics.  
-- **NGINX stub_status:** Enable basic metrics endpoint.  
-- **Docker HEALTHCHECK:** Define health checks in your `Dockerfile`.  
-- **Alerts:** Configure thresholds for error rates, CPU usage, and latency in your monitoring system.
-
----
-
 ## Logging & Debugging
 
 - **Central logging:** Aggregate Gunicorn, NGINX, and app logs to ELK/EFK or cloud logging.  
