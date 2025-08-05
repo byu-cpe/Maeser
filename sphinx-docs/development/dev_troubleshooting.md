@@ -12,7 +12,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 - **Solution:** Ensure you activate correctly:
   - macOS/Linux: `source .venv/bin/activate`
   - Windows PowerShell: `.venv\Scripts\Activate.ps1`
-  - Verify with `which python` (Unix), `Get-Command python` (Windows PowerShell), or `where.exe python` (Windows CMD).
+  - Verify with `which python` (Unix), `Get-Command python` (Windows PowerShell), or `where.exe python` (Windows CMD). See also [**Check if the Virtual Environment is Active**](./development_setup.md#check-if-the-virtual-environment-is-active).
 
 ### Dependency Conflicts
 
@@ -38,23 +38,47 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 
 - **Symptom:** `InvalidRequestError` or LLM calls fail silently.
 - **Solution:**
-  - For scripts that use `config.py` verify that OpenAPI key is set in `config.yaml`, like so: `OPENAI_API_KEY: "<your-key>"`
-  - For scripts that do not use `config.py` verify that OpenAPI key is set as an environment variable:
+  - For scripts that use `config.py` (such as the examples in `example/apps/`) verify that OpenAPI key is set in `config.yaml`, like so: `OPENAI_API_KEY: "<your-key>"`
+  - For scripts that do not use `config.py` (such as `example/tools/embeddings_example.py`), set your OpenAPI key as an environment variable.
+    Linux/MacOS:
 
     ```bash
-    export OPENAI_API_KEY="<your-key>"
+    # Set the environment variable
+    $ export OPENAI_API_KEY="<your-key>"
+
+    # Confirm it was properly assigned
+    $ $echo $OPENAI_API_KEY
+    <your-key>
     ```
 
-  Confirm with `echo $OPENAI_API_KEY` (Unix) or `echo %OPENAI_API_KEY%` (Windows).
+    Windows (Powershell):
+
+    ```powershell
+    # Set the environment variable
+    PS> $Env:OPENAI_API_KEY = '<your-key>'
+    
+    # Confirm it was properly assigned
+    PS> echo $Env:OPENAI_API_KEY
+     <your-key>
+    ```
 
 ### Incorrect Paths in `config.yaml`
 
 - **Symptom:** `FileNotFoundError` for vector stores or log directories.
-- **Solution:** Verify the following fields point to existing locations:
-  - `vec_store_path`
-  - `log_source_path`
-  - `chat_history_path`
-  - `accounts_db_path`
+- **Solution:**
+  1. Look for the following line in your terminal that prints when you start your Maeser application:
+  
+    ```text
+    Using configuration at path/to/config.yaml (Priority 0)
+    ```
+
+    Ensure that `path/to/config.yaml` is the expected path for your `config.yaml` file. If the path is incorrect, open `config.py` and ensure your `config.yaml` file is located at one of the `config_paths`.
+
+  1. Verify the following fields point to existing locations:
+      - `vec_store_path`
+      - `log_source_path`
+      - `chat_history_path`
+      - `accounts_db_path`
 
 ---
 
@@ -65,8 +89,9 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 - **Symptom:** RAG returns unrelated or blank responses.
 - **Solution:**
   1. In your `chat_logs/chat_history/`, check the `context` field in your chat logs and verify that context is being retrieved from your vector stores.
-  2. Confirm your FAISS index directories are correct and contain `index.faiss` and `index.pkl` files.
-  3. Check your embedding step (e.g. in your script for [**embedding new content**](embedding)):
+  1. If your application is using **Universal RAG**, the chatbot skip context retrieval if no vectorstores are relevant. Check the names of your vectorstores and make sure they are descriptive to their respective topics to ensure that they are properly retrieved.
+  1. Confirm your vector store directories are correct and contain `index.faiss` and `index.pkl` files.
+  1. Check your embedding step (e.g. in your script for [**embedding new content**](embedding)):
 
      ```python
      from langchain.embeddings.openai import OpenAIEmbeddings
@@ -74,9 +99,9 @@ This page helps you diagnose and resolve common issues encountered during Maeser
      ```
 
      Ensure embeddings have completed without errors.
-  4. Experiment with `chunk_size` / `chunk_overlap` in `RecursiveCharacterTextSplitter`.
+  1. Experiment with `chunk_size` / `chunk_overlap` in `RecursiveCharacterTextSplitter`.
 
-### Index Load Failures
+### FAISS Index/Vector Store Load Failures
 
 - **Symptom:** Errors loading FAISS index (`IOError`, `faiss` exceptions).
 - **Solution:**
@@ -107,7 +132,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 
 - **Symptom:** Building the documentation yields one or more warnings that say, `WARNING: document isn't included in any toctree`.
 - **Solution:**
-  - Check `index.rst` and make sure that the file has been included in the table of contents.
+  - Check `index.rst` and make sure that the document has been included in the table of contents.
 
 ---
 
@@ -117,7 +142,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 
 - **Symptom:** `Address already in use` or `ModuleNotFoundError` for controllers.
 - **Solution:**
-  - Change port: in `app.run(port=...)` or export `FLASK_RUN_PORT`.
+  - Change port: in `app.run(port=...)`.
   - Verify `example/flask_example_user_management.py` uses correct imports and path.
 
 ### Authentication Failures
@@ -133,18 +158,18 @@ This page helps you diagnose and resolve common issues encountered during Maeser
 
 ---
 
-## WSL & Docker Troubleshooting
+## WSL Troubleshooting
 
 ### WSL File Permissions
 
 - **Symptom:** Permission denied when accessing Windows files.
 - **Solution:**
-  - Access project via the Linux filesystem (`~/projects/Maeser`), not `/mnt/c/...`.
   - Use `chmod` to grant permissions.
+  - If your project is set up in the Windows file system (`mnt/c/...`), consider moving it to the Linux file system (`~/projects/...`). Be sure to run `make clean_venv` and `make setup` after you do this to reconfigure your virtual environment.
 
 ---
 
 ## Getting Help
 
-- **GitHub Issues:** Check for issues on the [Maeser repository](https://github.com/byu-cpe/Maeser/issues) or open a new one.
+- **GitHub Issues:** Check for issues on the [**Maeser repository**](https://github.com/byu-cpe/Maeser/issues) or open a new one.
 - **Community Contributions:** Submit documentation fixes or feature requests via a Pull Request.
