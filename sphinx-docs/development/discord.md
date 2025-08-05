@@ -2,7 +2,7 @@
 
 While the Maeser package primarily supports creating flask web apps, you can use `dynamic_implementations/discord_handler.py` to create a **Discord bot** that interfaces with students on a discord server with the same functionality. This guide provides instructions on setting up your own Maeser Discord bot.
 
-> **Note:** The `dynamic_implementations` directory contains [**examples of handlers**](./handler_usage.md#dynamic-implementations-of-generate_responsepy) that interface with maeser using the external [**`dynamic_implementations/generate_response.py` module**](./handler_usage.md). In the future, `generate_response.py` and certain popular handlers will be added directly to the maeser package, but for now, these scripts are provided externally as working examples.
+> **Note:** The `dynamic_implementations` directory contains [**examples of handlers**](./handler_usage.md#dynamic-implementations-of-generate_responsepy) that interface with maeser using the external [**`dynamic_implementations/generate_response.py` module**](./handler_usage.md). In the future, `generate_response.py` and certain popular handlers will be added directly to the Maeser package, but for now, these scripts are provided externally as working examples.
 
 ---
 
