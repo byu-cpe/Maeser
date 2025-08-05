@@ -1,6 +1,6 @@
-# Resources
+# Helpful Resources
 
-This guide provides a few helpful resources for working with Large-Language Models and deploying web servers.
+This guide provides a few optional but helpful resources for working with Large-Language Models and deploying web servers.
 
 ## General Resources
 
