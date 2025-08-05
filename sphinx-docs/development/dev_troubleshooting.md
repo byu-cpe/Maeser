@@ -28,19 +28,7 @@ This page helps you diagnose and resolve common issues encountered during Maeser
      pip install -e .
      ```
 
-  2. Run `poetry lock` then `poetry install` to re-install dependencies.
-
-### FAISS Installation Errors
-
-- **Symptom:** Errors compiling FAISS on Windows or macOS.
-- **Solution:**
-  - **Windows:** Use WSL2 or install `faiss-cpu` via Conda:
-
-    ```bash
-    conda install -c conda-forge faiss-cpu
-    ```
-
-  - **macOS/Linux:** Ensure you have `cmake` & `gcc` installed (`sudo apt install build-essential cmake`).
+  2. Run `poetry lock` then `poetry install --all-extras` to re-install dependencies.
 
 ---
 
