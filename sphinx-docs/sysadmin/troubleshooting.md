@@ -53,25 +53,6 @@
 ### Static Assets Not Loading
 
 - **Symptoms:** CSS/JS requests return 404.
-- **Checks & Fixes:**
-  - **Alias config:** Confirm `location /static/ { alias /path/to/maeser/controllers/common/static/; }` matches your file structure.
-  - **File permissions:** Ensure the NGINX user (`www-data`) can read static files (`chmod -R u+r /path/to/static`).
-
----
-
-## Resource & Performance
-
-### High CPU / Memory Usage
-
-- **Symptoms:** Gunicorn workers or containers consume excessive resources.
-- **Investigate:** Profile endpoints with APM (New Relic, Datadog) or `top`/`htop`.
-- **Mitigate:**
-  - **Horizontal scaling:** Increase replicas behind a load balancer.
-  - **Worker recycling:** `--max-requests 1000 --max-requests-jitter 50` to avoid memory bloat.
-
-### Disk Space Issues
-
-- **Symptoms:** Deployment fails or disk fills up quickly.
 - **Solutions:**
   - **Log rotation:** Configure `logrotate` for NGINX, Gunicorn, and chat logs.
   - **Docker cleanup:** `docker system prune -a` (use with caution).
