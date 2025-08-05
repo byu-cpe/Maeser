@@ -90,8 +90,7 @@ Once WSL is set up on your machine, the process for setting up Maeser is identic
 
 ## Accessing Windows Files
 
-- Windows drives are mounted under `/mnt`, e.g., your `C:` drive at `/mnt/c`.  
-- To edit files on Windows from WSL, navigate to `/mnt/c/path/to/file` and open them with Linux editors or VS Code.
+Windows drives are mounted under `/mnt`, e.g., your `C:` drive at `/mnt/c`. In general, however, you should create and manage Linux projects within the WSL file system (e.g. in `~/projects/...`) for best file I/O performance and system permissions.
 
 ---
 
