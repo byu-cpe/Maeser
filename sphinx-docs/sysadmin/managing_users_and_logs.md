@@ -6,7 +6,7 @@ The Maeser Flask app comes with a built-in web interface for [**User Management*
 
 ## Prerequisites
 
-- **Administrator Privileges**: You must be an administrator to access the User Management and Chat Logs Management pages. For instructions on how to acquire administrator privileges, see [**Obtaining Administrator Privileges**](#obtaining-administrator-privileges).
+- **Administrator Privileges**: You must be an administrator in your Maeser application to access the User Management and Chat Logs Management pages. For instructions on how to acquire administrator privileges, see [**Obtaining Administrator Privileges**](#obtaining-administrator-privileges).
 
 ## User Management Page
 
@@ -80,7 +80,8 @@ The top of the log file contains statistics for the entire conversation thread:
 
 The rest of the log file consists of the conversation history, following this general form:
 
-```text
+```{code-block} text
+:class: no-copybutton
 ────────────────────────
 <user_question>
 ────────────────────────
@@ -96,8 +97,7 @@ The response statistics are as follows:
 - **Time to Response:** The amount of time it took for the chatbot to generate a response.
 - **Feedback:** Either "Positive" or "Negative" depending on the feedback selected by the user. (**Note:** This statistic is only visible if the user left feedback on the chatbot's response.)
 
-> **Note: Vector Store Context in Log File**
->
+> **Note: Vector Store Context in Log File**  
 > The chat log files also record the context pulled from the vector store(s) that was used by the chatbot to generate a relevant response. For brevity, this context is not exposed on the Chat Logs Management web view, but it can be accessed directly in your chat logs directory if desired.
 
 The bottom of the Log page contains the link "Back to list", which will take you back to the **List of Log Files**.
