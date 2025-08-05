@@ -1,5 +1,7 @@
 # Resources
 
+This guide provides a few helpful resources for working with Large-Language Models and deploying web servers.
+
 ## General Resources
 
 - [Prompt Engineering Guide](https://www.promptingguide.ai/)
