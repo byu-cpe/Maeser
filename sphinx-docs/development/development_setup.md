@@ -29,6 +29,8 @@ This gives you the latest `main` branch of the Maeser source code and examples.
 
 Python comes with a module named **venv** that provides support for creating and activating virtual environments. **Maeser's top-level Makefile will create a new virtual environment if one does not exist, so this step can be skipped;** however, some basic information about virtual environments is provided if you choose to create one manually or are unfamiliar with venv.
 
+> **Note:** `make setup` creates the virtual environment but does not activate it. You will still need to activate and deactivate the virtual environment manually within the project.
+
 ### Creating the Virtual Environment
 
 To create the virtual environment, execute this command (at the root directory of your project):
