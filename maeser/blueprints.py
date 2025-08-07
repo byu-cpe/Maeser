@@ -352,7 +352,6 @@ class AppManager:
             def feedback_form():
                 """Route for getting the feedback form."""
                 return feedback_form_get.controller(
-                    main_logo_login=self.main_logo_login,
                     main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name,
