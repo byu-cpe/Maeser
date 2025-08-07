@@ -5,16 +5,19 @@ This module contains decorators for rate limiting and admin access control
 in a Flask application.
 """
 
+from maeser.user_manager import UserManager, User
 from functools import wraps
 from flask import abort
 
-def rate_limited(auth_manager, current_user):
+def rate_limited(auth_manager: UserManager, current_user: User):
     """
     Decorator to rate limit an endpoint based on user's remaining requests.
 
+    Aborts endpoint with code 429 if the user is out of requests.
+
     Args:
-        auth_manager: The authentication manager to handle request limits.
-        current_user: The user object containing request information.
+        auth_manager (UserManager): The authentication manager to handle request limits.
+        current_user (User): The user object containing request information.
 
     Returns:
         A wrapped endpoint function that checks for rate limits.
@@ -39,12 +42,14 @@ def rate_limited(auth_manager, current_user):
         return rate_limited_wrapper
     return decorator
 
-def admin_required(current_user):
+def admin_required(current_user: User):
     """
     Decorator to ensure that an endpoint can only be accessed by an admin.
 
+    Aborts endpoint with code 403 if user does not have admin access.
+
     Args:
-        current_user: The user object to check for admin privileges.
+        current_user (User): The user object to check for admin privileges.
 
     Returns:
         A wrapped endpoint function that checks for admin access.
