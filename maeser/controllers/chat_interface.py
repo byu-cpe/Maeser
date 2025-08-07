@@ -22,7 +22,7 @@ def controller(
         main_logo_chat: str | None = None,
         chat_head: str | None = None,
         favicon: str | None = None,        
-    ):
+):
     """
     Renders the chat interface template with relevant data.
 
@@ -41,6 +41,7 @@ def controller(
             - max_requests_remaining: The maximum number of requests allowed
             - requests_remaining_interval_ms: The interval in milliseconds for rate limiting requests (rate_limit_interval * 1000 / 3)
     """
+
     # Get chat log path and branches from chat sessions
     log_manager: BaseChatLogsManager | None = chat_sessions_manager.chat_logs_manager
     chat_branches: dict = chat_sessions_manager.branches

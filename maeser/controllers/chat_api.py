@@ -22,6 +22,7 @@ def controller(chat_sessions_manager: ChatSessionManager, chat_session: str):
     Returns:
         dict: Response containing the HTML representation of the response.
     """
+
     posty = request.get_json()
 
     try:
