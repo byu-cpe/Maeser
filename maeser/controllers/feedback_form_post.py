@@ -11,6 +11,13 @@ def controller(chat_sessions_manager: ChatSessionManager):
     """
     Controller function to handle the feedback form submission.
 
+    Uses flask.request and expects a post request with the following fields:
+
+    - "**name**": The name of the form respondent.
+    - "**feedback**": The text content of the feedback submitted by the respondent.
+    - "**role**": The role/position of the respondent. Expected values are "Undergraduate Student", "Graduate Student", "Faculty", or "Other".
+    - "**category**": The category of the feedback. Expected values are "General Feedback", "Bug Report", "Feature Request", "Content Issue", or "Other".
+
     Args:
         chat_sessions_manager (ChatSessionManager): The manager for chat sessions.
 
