@@ -18,10 +18,13 @@ def controller(
     favicon: str | None = None
 ) -> str:
     """
-    Render the home page with log files and aggregate token and cost data.
+    Renders the home page with log files and aggregate token and cost data.
 
     Args:
         chat_sessions_manager (ChatSessionManager): An instance of ChatSessionManager to manage chat sessions.
+        app_name (str): The name of the app. This will be populated in the page's title element and header.
+        main_logo_chat (str): The path to the logo that should appear in the page header.
+        favicon (str): The path to the page's favicon.
 
     Returns:
         str: Rendered home template with log file list.
