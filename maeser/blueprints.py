@@ -242,10 +242,6 @@ class AppManager:
                 return login_api.github_auth_callback_controller(
                     current_user,
                     self.user_manager,
-                    main_logo_login=self.main_logo_login,
-                    main_logo_chat=self.main_logo_chat,
-                    favicon=self.favicon,
-                    app_name=self.app_name,
                 )
 
             @maeser_blueprint.route("/logout")

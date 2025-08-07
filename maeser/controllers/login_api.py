@@ -4,11 +4,12 @@
 Module for handling login and GitHub OAuth2 authorization controllers.
 """
 
+from maeser.user_manager import UserManager, User, GithubAuthenticator
 from flask import render_template, redirect, url_for, request, session
 from flask_login import login_user, current_user
 from urllib.parse import urljoin, urlparse
 
-def is_safe_url(target):
+def is_safe_url(target: str) -> bool:
     """Checks if a URL is safe for redirection.
 
     Args:
@@ -21,14 +22,28 @@ def is_safe_url(target):
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
-def login_controller(auth_manager, app_name: str | None = None, main_logo_login: str | None = None, main_logo_chat: str | None = None, favicon: str | None = None):
+def login_controller(
+    auth_manager: UserManager,
+    app_name: str | None = None,
+    main_logo_login: str | None = None,
+    main_logo_chat: str | None = None,
+    favicon: str | None = None,
+):
     """Handles user login.
 
     Args:
-        auth_manager (AuthManager): The authentication manager to handle user authentication.
+        auth_manager (UserManager): The authentication manager to handle user authentication.
+        app_name (str | None): The display name of the Maeser application.
+            This will be populated into the page's title element. Defaults to None.
+        main_logo_login (str | None): The main logo to display on the login page.
+            Defaults to None, in which case it will use maeser/data/static/maeser.png.
+        main_logo_chat (str | None): Currently unused. This logo would populate into the page header,
+            but the login page currently does not have a page header. This may change in the future.
+        favicon (str | None): The favicon for the page. Defaults to None, in which case it will
+            use maeser/data/static/maeser.png.
 
     Returns:
-        Response: The response object to render the login page or redirect.
+        str: The rendered login page.
     """
     if current_user is not None and current_user.is_authenticated:
         return redirect('/')
@@ -91,8 +106,11 @@ def login_controller(auth_manager, app_name: str | None = None, main_logo_login:
         authenticators=auth_manager.authenticators,
     )
 
-def github_authorize_controller(current_user, github_authenticator):
+def github_authorize_controller(current_user: User, github_authenticator: GithubAuthenticator):
     """Handles GitHub OAuth2 authorization.
+
+    Updates '**oauth2_state**' in the Flask session and redirects the user to the
+    GitHub authorization url.
 
     Args:
         current_user (User): The currently logged-in user.
@@ -111,7 +129,20 @@ def github_authorize_controller(current_user, github_authenticator):
     # Redirect the user to the OAuth2 provider authorization URL
     return redirect(provider_url)
 
-def github_auth_callback_controller(current_user, auth_manager, app_name: str | None = None, main_logo_login: str | None = None, main_logo_chat: str | None = None, favicon: str | None = None, login_redirect: str = 'maeser.login'):
+def github_auth_callback_controller(current_user: User, auth_manager: UserManager, login_redirect: str = 'maeser.login'):
+    """Redirects the user after authentication is complete. Handles cases where authentication is unsuccessful.
+
+    Redirects the user back to the login page if authentication fails or the home page if authentication is successful.
+
+    Args:
+        current_user (User): The user being authenticated.
+        auth_manager (UserManager): The user manager for the Maeser application.
+        login_redirect (str, optional): The URL to redirect to if authentication fails. Defaults to 'maeser.login'.
+
+    Returns:
+        Response: The corresponding URL to redirect to.
+    """
+
     if not current_user.is_anonymous:
         return redirect('/')
 
