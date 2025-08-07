@@ -13,14 +13,22 @@ from flask import request
 
 def controller(session_handler: ChatSessionManager):
     """
-    Handle feedback for messages.
+    Handles feedback for messages.
+
+    Uses flask.request and expects a post request with the following fields:
+    
+    - "**branch**" (*str*): The chat branch of the session.
+    - "**session_id**" (*str*): The ID of the chat session.
+    - "**message**" (*str*): The text content of the message that received feedback.
+    - "**like**" (*bool*): *True* if the feedback was a like; *False* if the feedback was a dislike.
+    - "**index**" (*int*): The index of the message in the conversation history.
 
     Args:
         session_handler (ChatSessionManager): The session handler to
             manage chat sessions and feedback.
 
     Returns:
-        dict: Status of the feedback submission.
+        dict: Status of the feedback submission. Returns `{'status': 'success'}` if the feedback submission was successful.
     """
     data = request.get_json()
     branch = data.get('branch')
