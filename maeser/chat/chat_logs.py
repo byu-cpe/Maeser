@@ -122,13 +122,14 @@ class BaseChatLogsManager(ABC):
         pass
 
     @abstractmethod
-    def get_log_file_template(self, filename: str, branch: str) -> str:
+    def get_log_file_template(self, filename: str, branch: str, app_name: str) -> str:
         """
         Abstract method to get the jinja template for a log file.
 
         Args:
             filename (str): The name of the log file.
             branch (str): The branch the log file is in.
+            app_name (str): The display name of the Maeser application.
 
         Returns:
             str: The rendered template for the log file.
@@ -387,13 +388,15 @@ class ChatLogsManager(BaseChatLogsManager):
             chat_history = yaml.safe_load(file)
         return chat_history
 
-    def get_log_file_template(self, filename: str, branch: str) -> str:
+    def get_log_file_template(self, filename: str, branch: str, app_name: str) -> str:
         """
         Gets the Jinja template for a log file.
 
         Args:
             filename (str): The name of the log file.
             branch (str): The branch the log file is in.
+            app_name (str): The display name of the Maeser application.
+                This name and the name of the branch will be populated into the page's title element.
 
         Returns:
             str: The rendered template for the log file.
@@ -442,7 +445,7 @@ class ChatLogsManager(BaseChatLogsManager):
                 total_cost=total_cost,
                 total_tokens=total_tokens,
                 messages=messages,
-                app_name=branch,
+                app_name=f"{branch} - {app_name}",
             )
         except FileNotFoundError:
             abort(404, description="Log file not found")

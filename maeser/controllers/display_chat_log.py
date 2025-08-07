@@ -18,7 +18,7 @@ def controller(chat_sessions_manager: ChatSessionManager, branch: str, filename:
         chat_sessions_manager (ChatSessionManager): The chat sessions manager instance.
         branch (str): The branch where the log file is located.
         filename (str): The name of the log file.
-        app_name (str): The display name of the Maeser application. This is currently unused but may be rendered in the future.
+        app_name (str): The display name of the Maeser application.
     
     Returns:
         str: Rendered template with log file content.
@@ -29,4 +29,4 @@ def controller(chat_sessions_manager: ChatSessionManager, branch: str, filename:
     """
     chat_logs_manager = chat_sessions_manager.chat_logs_manager
     
-    return chat_logs_manager.get_log_file_template(filename, branch) if chat_logs_manager else abort(404)
+    return chat_logs_manager.get_log_file_template(filename, branch, app_name) if chat_logs_manager else abort(404)
