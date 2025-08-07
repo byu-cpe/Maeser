@@ -14,32 +14,34 @@ from langgraph.graph.graph import CompiledGraph
 class ChatSessionManager:
     """
     Manages and directs sessions for multiple chat interfaces.
+
+    Args:
+        chat_logs_manager (BaseChatLogsManager | None):
+            The chat logs manager to use for logging chat data.
+            This can be a ChatLogsManager object or a custom chat logs manager
+            that inherits from BaseChatLogsManager.
+
+    Returns:
+        None
     """
     
     def __init__(
         self,
         chat_logs_manager: BaseChatLogsManager | None = None,
     ) -> None:
-        """
-        Initializes the chat session manager.
-
-        Args:
-            chat_logs_manager (BaseChatLogsManager | None): The chat logs manager to use for logging chat data.
-
-        Returns:
-            None
-        """
         self.chat_logs_manager: BaseChatLogsManager | None = chat_logs_manager
         self.graphs: dict = {}
 
     def register_branch(self, branch_name: str, branch_label: str, graph: CompiledGraph) -> None:
         """
-        Registers a branch with its information and graph.
+        Registers a new chat branch with its name, label, and compiled RAG graph.
+
+        See maeser.graphs for built-in RAG graphs.
 
         Args:
             branch_name (str): The name of the branch.
             branch_label (str): The label of the branch.
-            graph (CompiledGraph): The graph for the branch.
+            graph (CompiledGraph): The compiled RAG graph for the branch.
         
         Returns:
             None
@@ -51,8 +53,10 @@ class ChatSessionManager:
 
     def get_new_session_id(self, branch_name: str, user: User | None = None) -> str:
         """
-        Creates a new chat session for the given branch action.
+        Creates a new chat session for the given branch and user.
         Includes creating a new log file for the session.
+
+        If no user is provided, "anon" will be used in place of `authenticator.user_id`.
 
         Args:
             branch_name (str): The action of the branch to create a session for.
@@ -79,7 +83,7 @@ class ChatSessionManager:
 
         Args:
             message (str): The question to ask.
-            branch_name (str): The action of the branch to ask the question in.
+            branch_name (str): The chat branch to ask the question in.
             sess_id (str): The session ID to ask the question in.
 
         Returns:
@@ -141,20 +145,10 @@ class ChatSessionManager:
     
     @property
     def branches(self) -> dict:
-        """
-        Returns the list of branches available for chat.
-
-        Returns:
-            dict: The list of branches available for chat.
-        """
+        """dict: The list of branches available for chat."""
         return self.graphs
     
     @property
     def chat_log_path(self) -> str | None:
-        """
-        Returns the path to the logs directory.
-
-        Returns:
-            str | None: The path to the logs directory.
-        """
+        """str | None: The path to the logs directory."""
         return self.chat_logs_manager.chat_log_path if self.chat_logs_manager else None
