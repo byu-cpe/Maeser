@@ -8,15 +8,6 @@ from flask import render_template, redirect, url_for, request, session
 from flask_login import login_user, current_user
 from urllib.parse import urljoin, urlparse
 
-def controller():
-    """Raises NotImplementedError for unimplemented controllers.
-
-    This function should be replaced with a specific login controller 
-    implementation, such as 'login_controller', 'github_authorize_controller', 
-    or 'github_auth_callback_controller'.
-    """
-    raise NotImplementedError('Please import specify the login controller you want ("login_controller", "github_authorize_controller", "github_auth_callback_controller")')
-
 def is_safe_url(target):
     """Checks if a URL is safe for redirection.
 
