@@ -11,7 +11,9 @@ from flask import request, abort
 from openai import RateLimitError
 
 def controller(chat_sessions_manager: ChatSessionManager, chat_session: str):
-    """Handle incoming messages for a chat session.
+    """Handles incoming messages for a chat session.
+
+    Asks the chatbot a question and retrieves the chatbot's response (in HTML format converted from markdown).
 
     Args:
         chat_sessions_manager (ChatSessionManager): The manager for chat sessions.
