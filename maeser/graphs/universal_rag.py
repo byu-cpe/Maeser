@@ -43,7 +43,18 @@ def format_topic_keys(topics: Dict[str, str]) -> str:
     else:
         return ", ".join(f"'{key}'" for key in keys[:-1]) + f", or '{keys[-1]}'"
 
-def get_universal_rag(vectorstore_config: Dict[str, str], memory_filepath: str, api_key: str | None = None, system_prompt_text: str = 'You are a helpful teacher helping a student with course material.\nYou will answer a question based on the context provided:\nDon\'t answer questions about other things.\n\n{context}\n', model: str = 'gpt-4o-mini') -> CompiledGraph:
+def get_universal_rag(
+    vectorstore_config: Dict[str, str],
+    memory_filepath: str, api_key: str | None = None,
+    system_prompt_text: str = (
+        'You are a helpful teacher helping a student with course material.\n'
+        'You will answer a question based on the context provided:\n'
+        'If the question is unrelated to the topic or the context, '
+        'politely inform the user that their question is outside the context of your resources.\n\n'
+        '{context}\n'
+    ),
+    model: str = 'gpt-4o-mini'
+) -> CompiledGraph:
     retrievers = {
 
         topic: FAISS.load_local(

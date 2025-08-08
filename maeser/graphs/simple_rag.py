@@ -25,7 +25,8 @@ def get_simple_rag(
     system_prompt_text: str = (
         'You are a helpful teacher helping a student with course material.\n'
         'You will answer a question based on the context provided:\n'
-        'Don\'t answer questions about other things.\n\n'
+        'If the question is unrelated to the topic or the context, '
+        'politely inform the user that their question is outside the context of your resources.\n\n'
         '{context}\n'
     ),
     model: str = 'gpt-4o-mini'
