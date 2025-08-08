@@ -11,16 +11,21 @@ from maeser.chat.chat_session_manager import ChatSessionManager
 from flask import request
 from flask_login import current_user
 
-def controller(session_handler: ChatSessionManager, user_management: bool = False):
+def controller(session_handler: ChatSessionManager, user_management: bool = False) -> dict[str, str]:
     """
-    Handle session requests.
+    Handle session requests and return the response from **session_handler**.
+
+    The response is formatted like so:
+
+    - `{'response': '<response>'}`, if successful.
+    - `{'response': 'invalid', 'details': 'Requested session type is not valid'}` if unsuccessful.
 
     Args:
         session_handler (ChatSessionManager): The session handler instance.
         user_management (bool): Flag to indicate if user management is enabled.
 
     Returns:
-        dict: Response confirming session action or an error message.
+        dict: The response from **session_handler**.
     """
     posty = request.get_json()
     branch_action = posty['action']
