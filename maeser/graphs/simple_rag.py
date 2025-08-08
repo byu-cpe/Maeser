@@ -19,12 +19,25 @@ from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 
-def _add_messages(left: list, right: list):
-    """Add-don't-overwrite."""
+def _add_messages(left: list, right: list) -> None:
+    """Ensures that items assigned to a list with this annotation are added instead of directly assigned.
+
+    Args:
+        left (list): The old list.
+        right (list): The new list containing the new item.
+
+    Returns:
+        None
+    """
     return left + right
 
 class _GraphState(TypedDict):
-    """Represents the state of the graph."""
+    """Represents the state of the graph.
+
+    Attributes:
+        retrieved_context (List[Document]): The context retrieved from the vector store.
+        messages (Annotated[list, _add_messages]): The messages in the conversation.
+    """
     retrieved_context: List[Document]
     messages: Annotated[list, _add_messages]
 
@@ -42,13 +55,24 @@ def get_simple_rag(
     ),
     model: str = 'gpt-4o-mini'
 ) -> CompiledGraph:
-    """Create a simple retrieval-augmented generation (RAG) graph.
+    """Creates a simple **Retrieval-Augmented Generation (RAG)** graph.
+
+    This RAG Graph accepts only one vector store, forcing the chatbot to stick to one topic per conversation.
+
+    The following system prompt is used if none is provided:
+
+        \"\"\"You are a helpful teacher helping a student with course material.
+        You will answer a question based on the context provided:
+        If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
+        {context}
+        \"\"\"
     
     Args:
         vectorstore_path (str): Path to the vector store.
         vectorstore_index (str): Index name for the vector store.
         memory_filepath (str): Filepath for the memory checkpoint.
-        api_key (str | None): API key for the language model. Defaults to None.
+        api_key (str | None): API key for the language model. Defaults to None,
+            in which case it will use the `OPENAI_API_KEY` environment variable.
         system_prompt_text (str): Prompt text for the system message. Defaults to a helpful teacher prompt.
         model (str): Model name for the language model. Defaults to 'gpt-4o-mini'.
     
