@@ -20,11 +20,11 @@ from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 
-def add_messages(left: List[str], right: List[str]) -> List[str]:
+def _add_messages(left: List[str], right: List[str]) -> List[str]:
     return left + right
 
 class _GraphState (TypedDict):
-    messages: Annotated[list, add_messages]
+    messages: Annotated[list, _add_messages]
     current_topic: str
     retrieved_context: List[Document]
     first_messsage: bool
