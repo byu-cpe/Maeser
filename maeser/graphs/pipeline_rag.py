@@ -6,6 +6,8 @@ Module for creating a pipeline **Retrieval-Augmented Generation (RAG) graph** us
 This RAG graph accepts multiple vector stores, allowing the chatbot to dynamically choose the
 most relevant vector store when answering a user's question. However, only one vector store can
 be accessed per response.
+
+    **Note:** In almost all cases, **universal_rag** is a better option compared to **pipeline_rag**.
 """
 
 from langchain_core.documents.base import Document
@@ -85,9 +87,17 @@ def get_pipeline_rag (
     model: str = 'gpt-4o-mini'
 ) -> CompiledGraph:
     """
-    Create a dynamic retrieval-augmented generation (RAG) graph that includes topic extraction,
+    Creates a pipeline **Retrieval-Augmented Generation (RAG)** graph.
+
+        **Note:** In almost all cases, **universal_rag.get_universal_rag()** is a better option compared to **pipeline_rag.get_pipeline_rag()**.
+
+    A pipeline RAG graph is a dynamic **Retrieval-Augmented Generation (RAG)** graph that includes topic extraction,
     conditional routing to retrieval nodes, and answer generation. The returned object is a
-    compiled graph (with memory checkpoint) that you can run by providing an initial state.
+    compiled graph (with memory checkpoint).
+
+    This RAG graph accepts multiple vector stores, allowing the chatbot to dynamically choose the
+    most relevant vector store when answering a user's question. However, only one vector store can
+    be accessed per response.
     
     Args:
         vectorstore_config (Dict[str, Tuple[str, str]]): Mapping of topic to (vectorstore_path, index name) *WARNING* TOPIC MUST BE ALL LOWER CASE
@@ -97,7 +107,7 @@ def get_pipeline_rag (
         model (str): Model name to use.
     
     Returns:
-        CompiledGraph: A compiled state graph ready for execution.
+        CompiledGraph: A compiled state graph (with memory checkpoint) ready for execution.
     """
 
     # initialize FAISS retrievers for each topic 
