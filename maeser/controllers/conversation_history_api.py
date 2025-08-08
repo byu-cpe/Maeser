@@ -12,7 +12,7 @@ from flask import jsonify, request
 from maeser.chat.chat_session_manager import ChatSessionManager
 from maeser.render import get_response_html
 
-def controller(session_handler: ChatSessionManager):
+def controller(session_handler: ChatSessionManager) -> dict:
     """
     Retrieves the conversation history for a given session and branch.
 

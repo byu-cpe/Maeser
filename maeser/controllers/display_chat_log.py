@@ -10,7 +10,7 @@ the content of a specified log file.
 from maeser.chat.chat_session_manager import ChatSessionManager
 from flask import abort
 
-def controller(chat_sessions_manager: ChatSessionManager, branch: str, filename: str, app_name: str | None = None):
+def controller(chat_sessions_manager: ChatSessionManager, branch: str, filename: str, app_name: str | None = None) -> str:
     """
     Display the content of a specified log file.
 

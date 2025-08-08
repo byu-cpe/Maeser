@@ -11,7 +11,7 @@ of the message.
 from maeser.chat.chat_session_manager import ChatSessionManager
 from flask import request
 
-def controller(session_handler: ChatSessionManager):
+def controller(session_handler: ChatSessionManager) -> dict:
     """
     Handles feedback for messages.
 
