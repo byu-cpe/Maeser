@@ -5,6 +5,9 @@ Module for creating a universal **Retrieval-Augmented Generation (RAG) graph** u
 
 This RAG graph accepts multiple vector stores, like **pipeline_rag**, but also pulls from
 as many vector stores as needed (or none at all) per response.
+
+Attributes:
+    recommended_topics (List[str]): The list of recommended topics/vectorstores from the last user request.
 """
 
 from langchain_core.documents.base import Document
