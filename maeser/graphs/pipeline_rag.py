@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
 """
-Module for creating a simple retrieval-augmented generation (RAG) graph using LangChain.
+Module for creating a pipeline **Retrieval-Augmented Generation (RAG) graph** using LangChain.
+This RAG graph accepts multiple vector stores, allowing the chatbot to dynamically choose the
+most relevant vector store when answering a user's question. However, only one vector store can
+be accessed per response.
 """
 from langchain_core.documents.base import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder

@@ -1,5 +1,11 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
+"""
+Module for creating a universal **Retrieval-Augmented Generation (RAG) graph** using LangChain.
+This RAG graph accepts multiple vector stores, like the `pipeline/` scripts, but also pulls from
+as many vector stores as needed (or none at all) per response.
+"""
+
 from langchain_core.documents.base import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import StateGraph, START, END
