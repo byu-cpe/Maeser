@@ -9,7 +9,7 @@ from maeser.user_manager import UserManager
 
 def controller(
     user_manager: UserManager,
-    app_name: str | None = None,
+    app_name: str = 'Maeser',
     main_logo_chat: str | None = None,
     favicon: str | None = None,
 ) -> str:
@@ -18,11 +18,11 @@ def controller(
 
     Args:
         user_manager (UserManager): The user manager instance.
-        app_name (str | None, optional): The name of the application. Defaults to None.
-        main_logo_login (str | None, optional): The light version of the main logo. Defaults to None.
-        main_logo_chat (str | None, optional): The dark version of the main logo. Defaults to None.
-        chat_head (str | None, optional): The chat head image URL. Defaults to None.
-        favicon (str | None, optional): The favicon image URL. Defaults to None.
+        app_name (str): The name of the application. Defaults to 'Maeser'.
+        main_logo_chat (str | None): The dark version of the main logo.
+            Defaults to None, in which case maeser/data/static/maeser-dark-header.png is used.
+        favicon (str | None): The favicon image URL. Defaults to None, in which case
+            maeser/data/static/maeser.png is used.
 
     Returns:
         str: The rendered HTML for the user management page.
@@ -33,7 +33,7 @@ def controller(
         users=user_manager.list_users(),
         main_logo_chat=main_logo_chat,
         favicon=favicon,
-        app_name=app_name if app_name else 'Maeser',
+        app_name=app_name,
         # Builtin functions not normally in Jinja templates
         len=len,
     )
