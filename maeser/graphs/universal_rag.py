@@ -55,7 +55,7 @@ def get_universal_rag(
     memory_filepath: str, api_key: str | None = None,
     system_prompt_text: str = (
         'You are a helpful teacher helping a student with course material.\n'
-        'You will answer a question based on the context provided:\n'
+        'You will answer a question based on the context provided.\n'
         'If the question is unrelated to the topic or the context, '
         'politely inform the user that their question is outside the context of your resources.\n\n'
         '{context}\n'

@@ -79,7 +79,7 @@ def get_pipeline_rag (
     api_key: str | None = None,
     system_prompt_text: str = (
         'You are a helpful teacher helping a student with course material.\n'
-        'You will answer a question based on the context provided:\n'
+        'You will answer a question based on the context provided.\n'
         'If the question is unrelated to the topic or the context, '
         'politely inform the user that their question is outside the context of your resources.\n\n'
         '{context}\n'
@@ -102,7 +102,7 @@ def get_pipeline_rag (
     The following system prompt is used if none is provided:
 
         \"\"\"You are a helpful teacher helping a student with course material.
-        You will answer a question based on the context provided:
+        You will answer a question based on the context provided.
         If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
         {context}
         \"\"\"
