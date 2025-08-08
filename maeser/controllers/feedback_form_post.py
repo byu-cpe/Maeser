@@ -5,9 +5,9 @@ Module for handling feedback form submissions.
 """
 
 from maeser.chat.chat_session_manager import ChatSessionManager
-from flask import request, redirect
+from flask import request, redirect, Response
 
-def controller(chat_sessions_manager: ChatSessionManager):
+def controller(chat_sessions_manager: ChatSessionManager) -> Response:
     """
     Controller function to handle the feedback form submission.
 
