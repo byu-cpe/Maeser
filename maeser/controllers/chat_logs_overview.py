@@ -13,7 +13,7 @@ from flask import render_template, request
 
 def controller(
     chat_sessions_manager: ChatSessionManager,
-    app_name: str | None = None,
+    app_name: str = "Maeser",
     main_logo_chat: str | None = None,
     favicon: str | None = None
 ) -> str:
@@ -22,9 +22,11 @@ def controller(
 
     Args:
         chat_sessions_manager (ChatSessionManager): An instance of ChatSessionManager to manage chat sessions.
-        app_name (str): The name of the app. This will be populated in the page's title element and header.
-        main_logo_chat (str): The path to the logo that should appear in the page header.
-        favicon (str): The path to the page's favicon.
+        app_name (str): The name of the app. This will be populated in the page's title element and header. Defaults to 'Maeser'.
+        main_logo_chat (str | None): The dark version of the main logo.
+            Defaults to None, in which case maeser/data/static/maeser-dark-header.png is used.
+        favicon (str | None): The favicon image URL. Defaults to None, in which case
+            maeser/data/static/maeser.png is used.
 
     Returns:
         str: Rendered home template with log file list.
@@ -55,5 +57,5 @@ def controller(
         users=users,
         main_logo_chat = main_logo_chat,
         favicon=favicon,
-        app_name=app_name if app_name else "Maeser",
+        app_name=app_name,
     )
