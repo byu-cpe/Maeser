@@ -196,5 +196,5 @@ sessions_manager.register_branch(branch_name="my_course", branch_label="My Cours
 ## Next Steps
 
 - Review the **example Flask scripts** in [**Maeser Example (with Flask & User Management)**](flask_example).
-- Explore **custom graph workflows** for advanced RAG pipelines in [**Graphs**](graphs).
+- Explore **custom graph workflows** for advanced RAG pipelines in [**Graphs**](./graphs.md).
 - Prepare your custom Maeser application for [**server deployment**](../sysadmin/deployment.md).

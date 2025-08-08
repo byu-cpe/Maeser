@@ -202,7 +202,7 @@ flowchart TB
 
 ## Next Steps
 
-- Read [**Graphs**](graphs) to learn more about Maeser's built‑in RAG graphs.
+- Read [**Graphs**](./graphs.md) to learn more about Maeser's built‑in RAG graphs.
 - For more information on LangGraphs, you can [**find documentation here**](https://langchain-ai.github.io/langgraph/?_gl=1*1a1ptos*_ga*MTA4OTcxNDQ3OS4xNzQ3NzUyMzU1*_ga_47WX3HKKY2*czE3NDc3NTIzNTQkbzEkZzEkdDE3NDc3NTIzNjgkajAkbDAkaDA.#).
 - Experiment with external tools (e.g., web search) by adding new states.
 - Share your custom graphs with the Maeser community via [**GitHub**](https://github.com/byu-cpe/Maeser).
