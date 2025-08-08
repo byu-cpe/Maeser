@@ -23,19 +23,19 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 def add_messages(left: List[str], right: List[str]) -> List[str]:
     return left + right
 
-class GraphState (TypedDict):
+class _GraphState (TypedDict):
     messages: Annotated[list, add_messages]
     current_topic: str
     retrieved_context: List[Document]
     first_messsage: bool
 
-def normalize_topic(topic: str) -> str:
+def _normalize_topic(topic: str) -> str:
     """
     Converts the input topic string to lowercase.
     """
     return topic.lower()
 
-def remove_context_placeholder(prompt: str) -> str:
+def _remove_context_placeholder(prompt: str) -> str:
     """
     Remove the '{context}' placeholder from a prompt string.
     """
@@ -99,13 +99,13 @@ def get_pipeline_rag (
         else:
             return ", ".join(f"'{key}'" for key in keys[:-1]) + f", or '{keys[-1]}'"
 
-    def determine_topic_node(state: GraphState, vectorstore_config: Dict) -> dict:
+    def determine_topic_node(state: _GraphState, vectorstore_config: Dict) -> dict:
         # Prepare the list of valid topics plus "off topic"
         formatted_topics = format_topic_keys(vectorstore_config)
         current_topic = state.get("current_topic")
 
         # Build a prompt that includes the current topic (if any) and the user message.
-        clean_system_prompt = remove_context_placeholder(system_prompt_text)
+        clean_system_prompt = _remove_context_placeholder(system_prompt_text)
         prompt_template = ChatPromptTemplate.from_messages([
             ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. Here is the Current Topic: {current_topic}."
                         f"For context, a separate AI who will be answering the users questions and using your topics has been given the following prompt:"
@@ -127,7 +127,7 @@ def get_pipeline_rag (
         formatted_prompt = prompt_template.format(question=question, current_topic=current_topic if current_topic else "None")
         llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
         result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
-        topic = normalize_topic(result.content)
+        topic = _normalize_topic(result.content)
 
         # Edge case handling
         topic = topic if topic in vectorstore_config.keys() else current_topic # Case where topic is not in in list of topics
@@ -137,7 +137,7 @@ def get_pipeline_rag (
     
     # Create a factory for retrieval nodes to return relevant information
     def make_retrieval_node(topic: str):
-        def retrieval_node(state: GraphState) -> dict:
+        def retrieval_node(state: _GraphState) -> dict:
             question = state["messages"][-1]
             documents: List[Document] = retrievers[topic].invoke(question)
             return {"retrieved_context": documents}
@@ -150,7 +150,7 @@ def get_pipeline_rag (
         vectorstore_nodes[topic] = node_name
 
     # Node: answer generation.
-    def generate_node(state: GraphState) -> dict:
+    def generate_node(state: _GraphState) -> dict:
         messages = state["messages"]
         documents = state.get("retrieved_context", [])
         generation = chain.invoke({
@@ -162,7 +162,7 @@ def get_pipeline_rag (
         return {"messages": messages + [generation]}
     
     # Build the state graph.
-    graph = StateGraph(GraphState)
+    graph = StateGraph(_GraphState)
     graph.add_node("determine_topic", lambda state: determine_topic_node(state, vectorstore_config))    
 
     # Set up conditional branching based on the determined topic.
