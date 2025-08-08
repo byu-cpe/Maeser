@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 Utility to auto-discover and import all submodules/subpackages into a package.
 
