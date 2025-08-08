@@ -98,6 +98,14 @@ def get_pipeline_rag (
     This RAG graph accepts multiple vector stores, allowing the chatbot to dynamically choose the
     most relevant vector store when answering a user's question. However, only one vector store can
     be accessed per response.
+
+    The following system prompt is used if none is provided:
+
+        \"\"\"You are a helpful teacher helping a student with course material.
+        You will answer a question based on the context provided:
+        If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
+        {context}
+        \"\"\"
     
     Args:
         vectorstore_config (Dict[str, Tuple[str, str]]): Mapping of topic to (vectorstore_path, index name) *WARNING* TOPIC MUST BE ALL LOWER CASE
