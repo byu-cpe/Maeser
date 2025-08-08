@@ -2,6 +2,7 @@
 
 """
 Module for creating a pipeline **Retrieval-Augmented Generation (RAG) graph** using LangChain.
+
 This RAG graph accepts multiple vector stores, allowing the chatbot to dynamically choose the
 most relevant vector store when answering a user's question. However, only one vector store can
 be accessed per response.

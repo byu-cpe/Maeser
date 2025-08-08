@@ -8,7 +8,7 @@ Maeser's RAG graphs and their functionality are as follows:
 
 - **simple_rag**: Accepts only one vector store, forcing the chatbot to stick to one topic per conversation.
 - **pipeline_rag**: Accepts multiple vector stores, allowing the chatbot to dynamically choose the most relevant vector store when answering a user's question. However, only one vector store can be accessed per response.
-- **universal_rag**: Accepts multiple vector stores, like the `pipeline/` scripts, but also pulls from as many vector stores as needed (or none at all) per response.
+- **universal_rag**: Accepts multiple vector stores, like **pipeline_rag**, but also pulls from as many vector stores as needed (or none at all) per response.
 """
 
 from maeser._utils.pkg_utils import autoimport_all

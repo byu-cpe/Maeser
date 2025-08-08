@@ -2,6 +2,7 @@
 
 """
 Module for creating a simple **Retrieval-Augmented Generation (RAG) graph** using LangChain.
+
 This RAG Graph accepts only one vector store, forcing the chatbot to stick to one topic per conversation.
 """
 

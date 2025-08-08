@@ -2,7 +2,8 @@
 
 """
 Module for creating a universal **Retrieval-Augmented Generation (RAG) graph** using LangChain.
-This RAG graph accepts multiple vector stores, like the `pipeline/` scripts, but also pulls from
+
+This RAG graph accepts multiple vector stores, like **pipeline_rag**, but also pulls from
 as many vector stores as needed (or none at all) per response.
 """
 
