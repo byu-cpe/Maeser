@@ -154,3 +154,4 @@ LLM Calls per Response | 2 | 3 | 3 plus number of relevant topics/contexts
 
 - Review the scripts in `example/apps/` and [**Maeser Example (with Flask & User Management)**](./flask_example.md) for implementations of each RAG graph.
 - Explore **Custom Graphs** for tool integration (e.g., calculators) in [**Custom Graphs: Advanced RAG Workflows**](./custom_graphs.md).
+- Explore the source documentation for the [**maeser.graphs**](../autodoc/maeser/maeser.graphs.rst) subpackage.
