@@ -7,6 +7,7 @@ This RAG graph accepts multiple vector stores, allowing the chatbot to dynamical
 most relevant vector store when answering a user's question. However, only one vector store can
 be accessed per response.
 """
+
 from langchain_core.documents.base import Document
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langgraph.graph import StateGraph, START, END
@@ -21,9 +22,26 @@ from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 def _add_messages(left: List[str], right: List[str]) -> List[str]:
+    """Ensures that items assigned to a list with this annotation are added instead of directly assigned.
+
+    Args:
+        left (list): The old list.
+        right (list): The new list containing the new item.
+
+    Returns:
+        None
+    """
     return left + right
 
 class _GraphState (TypedDict):
+    """Represents the state of the graph.
+
+    Attributes:
+        messages (Annotated[list, _add_messages]): The messages in the conversation.
+        current_topic (str): The last topic/vector store that was used for context retrieval.
+        retrieved_context (List[Document]): The context retrieved from the vector store.
+        first_message (bool): Whether or not this is the first message being generated.
+    """
     messages: Annotated[list, _add_messages]
     current_topic: str
     retrieved_context: List[Document]
@@ -32,12 +50,24 @@ class _GraphState (TypedDict):
 def _normalize_topic(topic: str) -> str:
     """
     Converts the input topic string to lowercase.
+
+    Args:
+        topic (str): The topic to be normalized.
+
+    Returns:
+        str: The normalized topic.
     """
     return topic.lower()
 
 def _remove_context_placeholder(prompt: str) -> str:
     """
     Remove the '{context}' placeholder from a prompt string.
+
+    Args:
+        prompt (str): The prompt to be formatted.
+
+    Returns:
+        str: The prompt with '{context}' removed.
     """
     return prompt.replace("{context}", "").strip()
 
