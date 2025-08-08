@@ -23,17 +23,17 @@ from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 import tiktoken
 
-enc = tiktoken.encoding_for_model("gpt-4o")
+_enc = tiktoken.encoding_for_model("gpt-4o")
 
-def add_messages(left: List[Any], right: List[Any]) -> List[Any]:
+def _add_messages(left: List[Any], right: List[Any]) -> List[Any]:
     return left + right
 
-def combine_documents(left: List[Document], right: List[Document]) -> List[Document]:
+def _combine_documents(left: List[Document], right: List[Document]) -> List[Document]:
     return left + right
 
-class GraphState(TypedDict):
-    messages: Annotated[list, add_messages]
-    retrieved_context: Annotated[List[Document], combine_documents]
+class _GraphState(TypedDict):
+    messages: Annotated[list, _add_messages]
+    retrieved_context: Annotated[List[Document], _combine_documents]
     recommended_topics: List[str]
     current_retrieval_index: int
     first_message: bool
@@ -41,10 +41,10 @@ class GraphState(TypedDict):
     previous_topics: List[str]
     chat_summary: str
 
-def normalize_topic(topic: str) -> str:
+def _normalize_topic(topic: str) -> str:
     return topic.lower().strip()
 
-def format_topic_keys(topics: Dict[str, str]) -> str:
+def _format_topic_keys(topics: Dict[str, str]) -> str:
     keys = list(topics.keys())
     if not keys:
         return ""
@@ -83,12 +83,12 @@ def get_universal_rag(
         ('human', '{input}')
     ]) | llm | StrOutputParser()
 
-    def determine_relevant_topics_node(state: GraphState) -> Dict[str, Any]:
+    def determine_relevant_topics_node(state: _GraphState) -> Dict[str, Any]:
         user_question = state["messages"][-1]
         question_content = getattr(user_question, "content", user_question)
 
         available_topics = vectorstore_config.keys()
-        formatted_topics = format_topic_keys(vectorstore_config)
+        formatted_topics = _format_topic_keys(vectorstore_config)
 
         topic_prompt = ChatPromptTemplate.from_messages([
             ("system", f"You are an assistant that identifies relevant topics for information retrieval. Given a user's question, identify 1 to 3 topics from the following list that are most relevant. Respond with a comma-separated list. Available topics: {formatted_topics}."),
@@ -100,7 +100,7 @@ def get_universal_rag(
         response = llm.invoke(topic_prompt.format_messages(question=question_content))
         raw_topics = response.content.split(',')
         global recommended_topics
-        recommended_topics = [normalize_topic(t) for t in raw_topics if normalize_topic(t) in available_topics and normalize_topic(t) != "none"]
+        recommended_topics = [_normalize_topic(t) for t in raw_topics if _normalize_topic(t) in available_topics and _normalize_topic(t) != "none"]
 
         print("Recommended topics:", recommended_topics)  # Print recommended topics to console
 
@@ -112,7 +112,7 @@ def get_universal_rag(
             "previous_topics": recommended_topics[:3]
         }
 
-    def retrieve_and_accumulate_node(state: GraphState) -> Dict[str, Any]:
+    def retrieve_and_accumulate_node(state: _GraphState) -> Dict[str, Any]:
         topics = state.get("recommended_topics", [])
         idx = state.get("current_retrieval_index", 0)
         if not state["messages"]:
@@ -135,7 +135,7 @@ def get_universal_rag(
             "current_retrieval_index": idx + 1
         }
 
-    def generate_node(state: GraphState) -> Dict[str, Any]:
+    def generate_node(state: _GraphState) -> Dict[str, Any]:
         if not state["messages"]:
             print("No messages found in generate_node")
             return {"messages": []}
@@ -160,13 +160,13 @@ def get_universal_rag(
             content = ""
             for m in msgs:
                 content += getattr(m, "content", str(m))
-            return len(enc.encode(content))
+            return len(_enc.encode(content))
 
         print(f"📦 Token count for latest 10 messages: {count_tokens(trimmed_messages)}")
         return {"messages": trimmed_messages}
 
 
-    def summarize_chat_history_node(state: GraphState) -> Dict[str, Any]:
+    def summarize_chat_history_node(state: _GraphState) -> Dict[str, Any]:
         messages = state.get("messages", [])
         if len(messages) < 3:
             return {"chat_summary": ""}
@@ -181,7 +181,7 @@ def get_universal_rag(
         summary = llm.invoke(prompt.format_messages())
         return {"chat_summary": summary.content}
 
-    def is_message_related_to_previous_node(state: GraphState) -> Dict[str, Any]:
+    def is_message_related_to_previous_node(state: _GraphState) -> Dict[str, Any]:
         if not state["messages"]:
             print("No messages found in is_message_related_to_previous_node")
             return {
@@ -213,10 +213,10 @@ def get_universal_rag(
                 "retrieved_context": []
             }
 
-    def route_retrieval(state: GraphState) -> str:
+    def route_retrieval(state: _GraphState) -> str:
         return "retrieve_and_accumulate" if state.get("current_retrieval_index", 0) < len(state.get("recommended_topics", [])) else "generate"
 
-    graph = StateGraph(GraphState)
+    graph = StateGraph(_GraphState)
 
     graph.add_node("check_related", is_message_related_to_previous_node)
     graph.add_node("determine_relevant_topics", determine_relevant_topics_node)
