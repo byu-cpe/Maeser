@@ -3,7 +3,7 @@
 """
 This is the graphs subpackage for the Maeser package.
 
-This package contains Retrieval-Augmented Generation (RAG) graphs that affect the workflow and behavior of the chatbot.
+This package contains **Retrieval-Augmented Generation (RAG) graphs** that affect the workflow and behavior of the chatbot.
 Maeser's RAG graphs and their functionality are as follows:
 
 - **simple_rag**: Accepts only one vector store, forcing the chatbot to stick to one topic per conversation.
