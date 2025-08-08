@@ -19,6 +19,15 @@ from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 
+def _add_messages(left: list, right: list):
+    """Add-don't-overwrite."""
+    return left + right
+
+class _GraphState(TypedDict):
+    """Represents the state of the graph."""
+    retrieved_context: List[Document]
+    messages: Annotated[list, _add_messages]
+
 def get_simple_rag(
     vectorstore_path: str,
     vectorstore_index: str,
@@ -47,15 +56,6 @@ def get_simple_rag(
         CompiledGraph: The compiled state graph.
     """
 
-    def add_messages(left: list, right: list):
-        """Add-don't-overwrite."""
-        return left + right
-
-    class GraphState(TypedDict):
-        """Represents the state of the graph."""
-        retrieved_context: List[Document]
-        messages: Annotated[list, add_messages]
-
     llm: ChatOpenAI = ChatOpenAI(model=model) if api_key is None else ChatOpenAI(api_key=api_key, model=model)  # type: ignore
 
     retriever: VectorStoreRetriever = FAISS.load_local(
@@ -73,13 +73,13 @@ def get_simple_rag(
 
     chain = system_prompt | llm | StrOutputParser()
 
-    def retrieve_node(state: GraphState) -> dict:
+    def retrieve_node(state: _GraphState) -> dict:
         """Retrieve context documents based on the latest question."""
         question = state['messages'][-1]
         documents: List[Document] = retriever.invoke(question)
         return {'retrieved_context': documents}
 
-    def generate_node(state: GraphState) -> dict:
+    def generate_node(state: _GraphState) -> dict:
         """Generate a response based on the context and messages."""
         messages = state['messages']
         documents: List[Document] = state['retrieved_context']
@@ -90,7 +90,7 @@ def get_simple_rag(
         })
         return {'messages': [generation]}
 
-    graph = StateGraph(GraphState)
+    graph = StateGraph(_GraphState)
 
     graph.add_node('retrieve', retrieve_node)
     graph.add_node('generate', generate_node)
