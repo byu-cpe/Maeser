@@ -5,7 +5,8 @@ Module for handling login and GitHub OAuth2 authorization controllers.
 """
 
 from maeser.user_manager import UserManager, User, GithubAuthenticator
-from flask import render_template, redirect, url_for, request, session
+from flask import render_template, redirect, url_for, request, session, Response
+from typing import Union
 from flask_login import login_user, current_user
 from urllib.parse import urljoin, urlparse
 
@@ -28,7 +29,7 @@ def login_controller(
     main_logo_login: str | None = None,
     main_logo_chat: str | None = None,
     favicon: str | None = None,
-):
+) -> Union[Response, str]:
     """Handles user login.
 
     Args:
@@ -43,7 +44,7 @@ def login_controller(
             use maeser/data/static/maeser.png.
 
     Returns:
-        str: The rendered login page.
+        Response | str: A redirect to home if the user is authenticated, or the rendered login page if the user is not authenticated.
     """
     if current_user is not None and current_user.is_authenticated:
         return redirect('/')
@@ -106,7 +107,7 @@ def login_controller(
         authenticators=auth_manager.authenticators,
     )
 
-def github_authorize_controller(current_user: User, github_authenticator: GithubAuthenticator):
+def github_authorize_controller(current_user: User, github_authenticator: GithubAuthenticator) -> Response:
     """Handles GitHub OAuth2 authorization.
 
     Updates '**oauth2_state**' in the Flask session and redirects the user to the
@@ -129,7 +130,7 @@ def github_authorize_controller(current_user: User, github_authenticator: Github
     # Redirect the user to the OAuth2 provider authorization URL
     return redirect(provider_url)
 
-def github_auth_callback_controller(current_user: User, auth_manager: UserManager, login_redirect: str = 'maeser.login'):
+def github_auth_callback_controller(current_user: User, auth_manager: UserManager, login_redirect: str = 'maeser.login') -> Response:
     """Redirects the user after authentication is complete. Handles cases where authentication is unsuccessful.
 
     Redirects the user back to the login page if authentication fails or the home page if authentication is successful.
