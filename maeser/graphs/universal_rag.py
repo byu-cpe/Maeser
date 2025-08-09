@@ -65,6 +65,36 @@ def get_universal_rag(
     ),
     model: str = 'gpt-4o-mini'
 ) -> CompiledGraph:
+    """Creates a universal **Retrieval-Augmented Generation (RAG)** graph.
+
+    This RAG graph pulls from as many vector stores as needed (or none at all) to generate a response.
+    The vector stores are chosen based on relevance to the user's input, and context from these
+    vectorstores are used along with a summary of recent chat history as input for response generation.
+
+    The following system prompt is used if none is provided:
+
+        \"\"\"You are a helpful teacher helping a student with course material.
+        You will answer a question based on the context provided.
+        If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
+        
+        {context}
+        \"\"\"
+
+    Args:
+        vectorstore_config (Dict[str, str]):
+            Mapping of topic name to vector store path.
+
+                > **WARNING:** The topic name must be **all lower case** due to limitations with the current implementation.
+
+        memory_filepath (str): Path for the memory checkpoint (SQLite database).
+        api_key (str | None): API key for the language model. Defaults to None,
+            in which case it will use the `OPENAI_API_KEY` environment variable.
+        system_prompt_text (str): System prompt template for answer generation. Defaults to a helpful teacher prompt.
+        model (str): Model name to use. Defaults to 'gpt-4o-mini'.
+
+    Returns:
+        CompiledGraph: _description_
+    """
     retrievers = {
 
         topic: FAISS.load_local(
