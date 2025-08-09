@@ -156,17 +156,45 @@ class User:
 
 
 class LoginStyle:
-    
+    """Configures the style of the login form for an authenticator.
+
+    If needed, custom html for the authenticator form (i.e. a username and password input) can
+    be assigned to the **form_html** property (as long as **direct_submit** is set to False).
+    Only assign label and input elements to this property.
+
+    Args:
+        icon (str): The icon for the login form.
+        login_submit (str): The Flask route to assign to the form submission. Not a url, but a
+            controller name for **flask.url_for()**. i.e. 'maeser.github_authorize' or 'localauth'.
+        direct_submit (bool, optional): Whether selecting the login option directly submits to the authenticator
+            or selecting the login option should expose a form to fill out before submission. Defaults to False.
+    """
     def __init__(self, icon: str, login_submit: str, direct_submit: bool=False):
         # Not a url, but a controller name for url_for. i.e. 'maeser.github_authorize' or 'localauth'
         self.login_submit = login_submit
         self.direct_submit = direct_submit
         # HTML for a custom form (labels and inputs only)
-        self._custom_form: str = '<label for="username" class="form-label">Username</label><input type="text" id="username" name="username" class="form-input" required><label for="password" class="form-label">Password</label><input type="password" id="password" name="password" class="form-input" required>'
+        self._custom_form: str = (
+            '<label for="username" class="form-label">Username</label>'
+            '<input type="text" id="username" name="username" class="form-input" required>'
+            '<label for="password" class="form-label">Password</label>'
+            '<input type="password" id="password" name="password" class="form-input" required>'
+        )
         self.icon_html = f'<i class="bi bi-{icon}"></i>'
 
     @property
     def form_html(self) -> str:
+        """str: The html for the authenticator form. This is only used if **direct_submit** is set to False.
+        
+        Only assign label and input elements to this property.
+
+        When a LoginStyle object is initialized, **form_html** is set to the following by default:
+        
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" name="username" class="form-input" required>
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" class="form-input" required>
+        """
         if self.direct_submit:
             raise ValueError("Cannot use form_html with direct_submit=True")
         return self._custom_form
