@@ -24,27 +24,35 @@ import requests
 class User:
     """
     Provides default implementations for the methods that Flask-Login expects user objects to have.
+
+    Args:
+        ident (str): The user's identifier.
+        blacklisted (bool, optional): Whether the user is blacklisted. Defaults to False.
+        admin (bool, optional): Whether the user is an admin. Defaults to False.
+        realname (str, optional): The user's real name. Defaults to 'Student'.
+        usergroup (str, optional): The user's group. Defaults to 'b\'guest\''.
+        authmethod (str, optional): The authentication method. Defaults to 'invalid'.
+        requests_left (int, optional): The number of requests left. Defaults to 10.
+        max_requests (int, optional): The maximum number of requests. Defaults to 10.
+        aka (list[str], optional): A list of alternate names. Defaults to an empty list.
     """
 
     # Python 3 implicitly sets __hash__ to None if we override __eq__
     # We set it back to its default implementation
     __hash__ = object.__hash__
 
-    def __init__(self, ident: str, blacklisted=False, admin=False, realname='Student', usergroup='b\'guest\'', authmethod='invalid', requests_left=10, max_requests=10, aka=[]):
-        """
-        Initialize a User object.
-
-        Args:
-            ident (str): The user's identifier.
-            blacklisted (bool, optional): Whether the user is blacklisted. Defaults to False.
-            admin (bool, optional): Whether the user is an admin. Defaults to False.
-            realname (str, optional): The user's real name. Defaults to 'Student'.
-            usergroup (str, optional): The user's group. Defaults to 'b\'guest\''.
-            authmethod (str, optional): The authentication method. Defaults to 'invalid'.
-            requests_left (int, optional): The number of requests left. Defaults to 10.
-            max_requests (int, optional): The maximum number of requests. Defaults to 10.
-            aka (list, optional): A list of alternate names. Defaults to an empty list.
-        """
+    def __init__(
+    self,
+    ident: str,
+    blacklisted: bool=False,
+    admin: bool=False,
+    realname: str='Student',
+    usergroup: str='b\'guest\'',
+    authmethod: str='invalid',
+    requests_left: int=10,
+    max_requests: int=10,
+    aka: list[str]=[],
+    ) -> None:
         self.ident = ident
         self.is_active = not blacklisted
         self.admin = admin
@@ -66,6 +74,7 @@ class User:
         
     @property
     def json(self) -> dict[str, Any]:
+        """dict[str, Any]: The json representation of the user."""
         return {
             'ident': self.ident,
             'is_active': self.is_active,
@@ -79,37 +88,38 @@ class User:
         }
 
     @property
-    def is_authenticated(self):
-        """Return True if the user is authenticated."""
+    def is_authenticated(self) -> bool:
+        """bool: True if the user is authenticated; False if otherwise."""
         return self.is_active
 
     @property
-    def is_anonymous(self):
-        """Return False, as anonymous users are not supported."""
+    def is_anonymous(self) -> bool:
+        """bool: Always False, as anonymous users are not supported."""
         return False
 
-    def get_id(self):
-        """Return the user's full identifier name including authentication method."""
+    def get_id(self) -> str:
+        """Return the user's full identifier name including authentication method,
+        formatted as `authenticator.user_id`.
+        
+        Returns:
+            str: the user's full ID.
+        """
         return self.full_id_name
 
     @property
-    def full_id_name(self):
-        """Return the user's full identifier name including authentication method."""
+    def full_id_name(self) -> str:
+        """str: The user's full identifier name including authentication method,
+        formatted as `authenticator.user_id`.
+        """
         return f'{self.auth_method}.{self.ident}'
 
     @property
-    def requests_remaining(self):
-        """Return the number of requests remaining for the user."""
+    def requests_remaining(self) -> int:
+        """The number of requests remaining for the user."""
         return self._requests_remaining
 
     @requests_remaining.setter
     def requests_remaining(self, num: int):
-        """
-        Set the number of requests remaining for the user.
-
-        Args:
-            num (int): The new number of requests remaining.
-        """
         if num >= self._max_requests:
             self._requests_remaining = self._max_requests
         elif num <= 0:
