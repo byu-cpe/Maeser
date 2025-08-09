@@ -108,9 +108,14 @@ def get_pipeline_rag (
         \"\"\"
     
     Args:
-        vectorstore_config (Dict[str, Tuple[str, str]]): Mapping of topic to (vectorstore_path, index name) *WARNING* TOPIC MUST BE ALL LOWER CASE
+        vectorstore_config (Dict[str, str]):
+            Mapping of topic name to vector store path.
+
+                > **WARNING:** The topic name must be **all lower case** due to limitations with the current implementation.
+
         memory_filepath (str): Path for the memory checkpoint (SQLite database).
-        api_key (Optional[str]): API key for language models and embeddings.
+        api_key (str | None): API key for the language model. Defaults to None,
+            in which case it will use the `OPENAI_API_KEY` environment variable.
         system_prompt_text (str): System prompt template for answer generation.
         model (str): Model name to use.
     
