@@ -252,12 +252,7 @@ class BaseAuthenticator(ABC):
     @property
     @abstractmethod
     def style(self) -> LoginStyle:
-        """
-        Get the login style for the authenticator.
-
-        Returns:
-            LoginStyle: The login style object.
-        """
+        """LoginStyle: The login style for the authenticator."""
         pass
 
 
