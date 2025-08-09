@@ -259,17 +259,16 @@ class BaseAuthenticator(ABC):
 class GithubAuthenticator(BaseAuthenticator):
     """
     Handles authentication with GitHub OAuth.
+
+    Args:
+        client_id (str): The GitHub client ID.
+        client_secret (str): The GitHub client secret.
+        auth_callback_uri (str): The callback URI for GitHub authentication.
+        timeout (int): The time before authentication fails. Defaults to 10.
+        max_requests (int): The maximum number of requests to the authenticator. Defaults to 10.
     """
 
     def __init__(self, client_id: str, client_secret: str, auth_callback_uri: str, timeout: int = 10, max_requests: int = 10):
-        """
-        Initialize the GitHub authenticator.
-
-        Args:
-            client_id (str): The GitHub client ID.
-            client_secret (str): The GitHub client secret.
-            auth_callback_uri (str): The callback URI for GitHub authentication.
-        """
         self.client_id = client_id
         self.client_secret = client_secret
         # Generally this should be set from your Flask app as this will differ between applications
@@ -284,11 +283,17 @@ class GithubAuthenticator(BaseAuthenticator):
     
     @property
     def style(self) -> LoginStyle:
+        """LoginStyle: Returns the LoginStyle for GitHub (`LoginStyle('github', 'maeser.github_authorize', direct_submit=True)`)."""
         return self._login_style
 
     def authenticate(self, request_args: dict, oauth_state: str) -> Union[tuple, None]:
         """
         Authenticate a user with GitHub OAuth.
+
+        **requests_args** should contain the following arguments:
+
+        - "**code**": The authorization code.
+        - "**state**": The OAuth state. This needs to be the same as **oauth_state** for authentication to pass.
 
         Args:
             request_args (dict): The request arguments containing the authorization code and state.
