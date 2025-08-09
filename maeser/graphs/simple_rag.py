@@ -64,6 +64,7 @@ def get_simple_rag(
         \"\"\"You are a helpful teacher helping a student with course material.
         You will answer a question based on the context provided.
         If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
+        
         {context}
         \"\"\"
     
