@@ -135,30 +135,30 @@ class AppManager:
 
         # The following functions with no code are work in progress and will be added soon
 
-    def template_styles_css(self):
-        """
-        Template the styles.css file using Jinja2 templating
-        """
+    # def template_styles_css(self):
+    #     """
+    #     Template the styles.css file using Jinja2 templating
+    #     """
 
-    def template_chat_interface(self):
-        """
-        Template the chat_interface.html file using Jinja2 templating
-        """
+    # def template_chat_interface(self):
+    #     """
+    #     Template the chat_interface.html file using Jinja2 templating
+    #     """
 
-    def template_login(self):
-        """
-        Template the login.html file using Jinja2 templating
-        """
+    # def template_login(self):
+    #     """
+    #     Template the login.html file using Jinja2 templating
+    #     """
 
-    def template_training(self):
-        """
-        Template the training.html file using Jinja2 templating
-        """
+    # def template_training(self):
+    #     """
+    #     Template the training.html file using Jinja2 templating
+    #     """
 
-    def template_feedback(self):
-        """
-        Template the feedback_form.html file using Jinja2 templating
-        """
+    # def template_feedback(self):
+    #     """
+    #     Template the feedback_form.html file using Jinja2 templating
+    #     """
 
     def add_flask_blueprint(self) -> Flask:
         """
