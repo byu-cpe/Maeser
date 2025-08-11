@@ -99,7 +99,7 @@ class User:
 
     def get_id(self) -> str:
         """Return the user's full identifier name including authentication method,
-        formatted as `authenticator.user_id`.
+        formatted as ``authenticator.user_id``.
         
         Returns:
             str: the user's full ID.
@@ -109,7 +109,7 @@ class User:
     @property
     def full_id_name(self) -> str:
         """str: The user's full identifier name including authentication method,
-        formatted as `authenticator.user_id`.
+        formatted as ``authenticator.user_id``.
         """
         return f'{self.auth_method}.{self.ident}'
 

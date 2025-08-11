@@ -20,7 +20,7 @@ def controller(user_manager: UserManager) -> list[dict[str, Any]] | dict[str, st
     
     - "**type**" (*str*): The type of command to run.
     - "**user_auth**" (*str*): The ID of the user authenticator. Defaults to an empty string if the field is not provided.
-    - "**user_id**" (*str*): The ID of the user. (**Note:** While the full ID of a user is `authenticator.user_ident`, "**user_id**" is just `user_ident`.) Defaults to an empty string if the field is not provided.
+    - "**user_id**" (*str*): The ID of the user. (**Note:** While the full ID of a user is ``authenticator.user_ident``, "**user_id**" is just ``user_ident``.) Defaults to an empty string if the field is not provided.
 
     The behavior of this controller depends on the command in "**type**":
 
@@ -28,7 +28,7 @@ def controller(user_manager: UserManager) -> list[dict[str, Any]] | dict[str, st
         Checks if "**user_auth**" is a registered authentication method.
 
         **Returns:**
-            `{'is_auth_registered': True | False}`
+            ``{'is_auth_registered': True | False}``
 
     "**get-user**":
         Get's the User object (given "**user_auth**" and "**user_id**").
@@ -49,51 +49,51 @@ def controller(user_manager: UserManager) -> list[dict[str, Any]] | dict[str, st
     
     "**toggle-admin**":
         Checks the post request for "**new_status**" and updates the user's admin status accordingly.
-        "**new_status**" is a required field and should be either `true` or `false`.
+        "**new_status**" is a required field and should be either 'true' or 'false'.
 
         **Returns:**
-            `{'response': 'Made <auth_method>.<user_ident> an admin' | 'Made <auth_method>.<user_ident> no longer an admin'}`
+            ``{'response': 'Made <auth_method>.<user_ident> an admin' | 'Made <auth_method>.<user_ident> no longer an admin'}``
     
     "**toggle-ban**":
         Checks the post request for "**new_status**" and updates the user's admin status accordingly.
-        "**new_status**" is a required field and should be either `true` or `false`.
+        "**new_status**" is a required field and should be either 'true' or 'false'.
 
         **Returns:**
-            `{'response': 'Made <auth_method>.<user_ident> banned' | 'Made <auth_method>.<user_ident> no longer banned'}`
+            ``{'response': 'Made <auth_method>.<user_ident> banned' | 'Made <auth_method>.<user_ident> no longer banned'}``
 
     "**update-requests**":
         Checks the post request for "**action**" and adds or removes a message request from the user according to the action.
         If "**action**" is "add", a request will be added; If "**action**" is "remove", a request will be removed.
 
         **Returns:**
-            `{'response': 'Updated <auth_method>.<user_ident> requests'}`
+            ``{'response': 'Updated <auth_method>.<user_ident> requests'}``
 
     "**remove-user**":
         Removes the user from the user database.
-        If the post request provides "**force_remove**" and "**force_remove**" is set to `true`, then the controller will attempt
+        If the post request provides "**force_remove**" and "**force_remove**" is set to 'true', then the controller will attempt
         to remove the user even if the user's authenticator is not currently registered. This may be helpful in removing users
         from authenticators that were once supported by the application but are no longer registered.
 
         **Returns:**
-            `{'response': 'Removed <auth_method>.<user_ident> from the cache'}`
+            ``{'response': 'Removed <auth_method>.<user_ident> from the cache'}``
 
     "**fetch-user**":
         Fetches a user from the authentication source and adds them to the cache without modifying their admin or banned status.
 
         **Returns:**
-            `{'response': 'Fetched <auth_method>.<user_ident>'}`
+            ``{'response': 'Fetched <auth_method>.<user_ident>'}``
 
     "**list-cleanables**":
         Lists all non-banned and non-admin users in the cache/database.
 
         **Returns:**
-            list of user identifiers in the format `auth_method:user_id`.
+            list of user identifiers in the format ``auth_method:user_id``.
 
     "**clean-cache**":
         Cleans the cache by removing all non-banned and non-admin users.
 
         **Returns:**
-            `{'response': 'Cleaned user cache'}`
+            ``{'response': 'Cleaned user cache'}``
 
     Args:
         user_manager (UserManager): User Manager object to interact with the user database.

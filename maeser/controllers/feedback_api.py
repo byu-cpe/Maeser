@@ -28,7 +28,7 @@ def controller(session_handler: ChatSessionManager) -> dict:
             manage chat sessions and feedback.
 
     Returns:
-        dict: Status of the feedback submission. Returns `{'status': 'success'}` if the feedback submission was successful.
+        dict: Status of the feedback submission. Returns ``{'status': 'success'}`` if the feedback submission was successful.
     """
     data = request.get_json()
     branch = data.get('branch')

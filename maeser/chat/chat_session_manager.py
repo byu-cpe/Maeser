@@ -56,7 +56,7 @@ class ChatSessionManager:
         Creates a new chat session for the given branch and user.
         Includes creating a new log file for the session.
 
-        If no user is provided, "anon" will be used in place of `authenticator.user_id`.
+        If no user is provided, "anon" will be used in place of ``authenticator.user_id``.
 
         Args:
             branch_name (str): The action of the branch to create a session for.

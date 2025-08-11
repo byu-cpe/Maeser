@@ -19,7 +19,7 @@ def controller(session_handler: ChatSessionManager) -> dict:
     The function uses flask.request and expects a post request that contains 'session' and 'branch' keys,
     which are used to retrieve the conversation history from **session_handler**.
     If the conversation history contains 'messages', it iterates through them and processes
-    the content of system messages using the `get_response_html` function. Finally, it
+    the content of system messages using **maeser.render.get_response_html()**. Finally, it
     returns the conversation history as a JSON response.
 
     Args:
@@ -27,7 +27,7 @@ def controller(session_handler: ChatSessionManager) -> dict:
 
     Returns:
         dict: A dictionary containing the conversation history, with system
-            messages having their content processed by the `get_response_html` function.
+            messages having their content processed by **get_response_html()**.
     """
     data = request.get_json()
 

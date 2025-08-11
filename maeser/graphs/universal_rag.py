@@ -88,7 +88,7 @@ def get_universal_rag(
 
         memory_filepath (str): Path for the memory checkpoint (SQLite database).
         api_key (str | None): API key for the language model. Defaults to None,
-            in which case it will use the `OPENAI_API_KEY` environment variable.
+            in which case it will use the ``OPENAI_API_KEY`` environment variable.
         system_prompt_text (str): System prompt template for answer generation. Defaults to a helpful teacher prompt.
         model (str): Model name to use. Defaults to 'gpt-4o-mini'.
 

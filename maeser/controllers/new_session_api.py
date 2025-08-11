@@ -17,8 +17,8 @@ def controller(session_handler: ChatSessionManager, user_management: bool = Fals
 
     The response is formatted like so:
 
-    - `{'response': '<response>'}`, if successful.
-    - `{'response': 'invalid', 'details': 'Requested session type is not valid'}` if unsuccessful.
+    - ``{'response': '<response>'}``, if successful.
+    - ``{'response': 'invalid', 'details': 'Requested session type is not valid'}`` if unsuccessful.
 
     Args:
         session_handler (ChatSessionManager): The session handler instance.

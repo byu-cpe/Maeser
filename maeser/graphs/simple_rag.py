@@ -73,7 +73,7 @@ def get_simple_rag(
         vectorstore_index (str): Index name for the vector store.
         memory_filepath (str): Filepath for the memory checkpoint.
         api_key (str | None): API key for the language model. Defaults to None,
-            in which case it will use the `OPENAI_API_KEY` environment variable.
+            in which case it will use the ``OPENAI_API_KEY`` environment variable.
         system_prompt_text (str): Prompt text for the system message. Defaults to a helpful teacher prompt.
         model (str): Model name for the language model. Defaults to 'gpt-4o-mini'.
     

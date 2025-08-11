@@ -366,7 +366,7 @@ class ChatLogsManager(BaseChatLogsManager):
         - "**time**": The creation time of the session/chat log.
         - "**total_cost**": The aggregate cost of all messages in the chat.
         - "**total_tokens**": The aggregate number of tokens of all messages in the chat.
-        - "**user**": The full ID of the user, formatted like `authenticator.user_id`.
+        - "**user**": The full ID of the user, formatted like ``authenticator.user_id``.
         - "**messages**":
             A list containing the chat message history, including the messages from both the user and the chatbot.
             
@@ -521,7 +521,7 @@ class ChatLogsManager(BaseChatLogsManager):
             Uses subprocess to run the shell command corresponding to the operating system
             for creation time retrieval.
 
-            Currently only supports the `stat` command for macOS and Linux.
+            Currently only supports the ``stat`` command for macOS and Linux.
 
             Args:
                 file_path (str): The path to the file.
@@ -558,7 +558,7 @@ class ChatLogsManager(BaseChatLogsManager):
             - "**has_feedback**" (*bool*): Whether the user has submitted feedback in this chat.
             - "**first_message**" (*str*): The first message in the chat. This is used as the 
             header/title of the chat in the web view.
-            - "**user**" (*str*): The full ID of the user, formatted like `authenticator.user_id`.
+            - "**user**" (*str*): The full ID of the user, formatted like ``authenticator.user_id``.
             - "**real_name**" (*str*): The real name of the user.
             
             Args:
