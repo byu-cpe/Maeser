@@ -7,7 +7,6 @@ This module provides classes and utilities for managing users,
 including authentication methods, database operations, and request tracking.
 """
 
-
 import secrets
 import sqlite3
 from abc import ABC, abstractmethod
@@ -16,7 +15,12 @@ from urllib.parse import urlencode
 import os
 import ssl
 from ldap3 import Server, Connection, ALL, SUBTREE, Tls
-from ldap3.core.exceptions import LDAPException, LDAPAttributeError, LDAPBindError, LDAPSocketReceiveError
+from ldap3.core.exceptions import (
+    LDAPException,
+    LDAPAttributeError,
+    LDAPBindError,
+    LDAPSocketReceiveError,
+)
 
 import requests
 
@@ -42,16 +46,16 @@ class User:
     __hash__ = object.__hash__
 
     def __init__(
-    self,
-    ident: str,
-    blacklisted: bool=False,
-    admin: bool=False,
-    realname: str='Student',
-    usergroup: str='b\'guest\'',
-    authmethod: str='invalid',
-    requests_left: int=10,
-    max_requests: int=10,
-    aka: list[str]=[],
+        self,
+        ident: str,
+        blacklisted: bool = False,
+        admin: bool = False,
+        realname: str = "Student",
+        usergroup: str = "b'guest'",
+        authmethod: str = "invalid",
+        requests_left: int = 10,
+        max_requests: int = 10,
+        aka: list[str] = [],
     ) -> None:
         self.ident = ident
         self.is_active = not blacklisted
@@ -62,29 +66,29 @@ class User:
         self._requests_remaining = requests_left
         self._max_requests = max_requests
         self.aka: list = aka
-    
+
     def __str__(self) -> str:
         return f"""User Information for {self.ident}:
         Authentication Method: {self.auth_method}
         Real Name: {self.realname}
-        Admin: {'Yes' if self.admin else 'No'}
-        Banned: {'Yes' if not self.is_active else 'No'}
+        Admin: {"Yes" if self.admin else "No"}
+        Banned: {"Yes" if not self.is_active else "No"}
         User Group: {self.usergroup}
         Requests Remaining: {self.requests_remaining}/{self._max_requests}"""
-        
+
     @property
     def json(self) -> dict[str, Any]:
         """dict[str, Any]: The json representation of the user."""
         return {
-            'ident': self.ident,
-            'is_active': self.is_active,
-            'admin': self.admin,
-            'realname': self.realname,
-            'usergroup': self.usergroup,
-            'auth_method': self.auth_method,
-            'requests_remaining': self.requests_remaining,
-            'max_requests': self._max_requests,
-            'aka': self.aka
+            "ident": self.ident,
+            "is_active": self.is_active,
+            "admin": self.admin,
+            "realname": self.realname,
+            "usergroup": self.usergroup,
+            "auth_method": self.auth_method,
+            "requests_remaining": self.requests_remaining,
+            "max_requests": self._max_requests,
+            "aka": self.aka,
         }
 
     @property
@@ -100,7 +104,7 @@ class User:
     def get_id(self) -> str:
         """Return the user's full identifier name including authentication method,
         formatted as ``authenticator.user_id``.
-        
+
         Returns:
             str: the user's full ID.
         """
@@ -111,7 +115,7 @@ class User:
         """str: The user's full identifier name including authentication method,
         formatted as ``authenticator.user_id``.
         """
-        return f'{self.auth_method}.{self.ident}'
+        return f"{self.auth_method}.{self.ident}"
 
     @property
     def requests_remaining(self) -> int:
@@ -169,7 +173,8 @@ class LoginStyle:
         direct_submit (bool, optional): Whether selecting the login option directly submits to the authenticator
             or selecting the login option should expose a form to fill out before submission. Defaults to False.
     """
-    def __init__(self, icon: str, login_submit: str, direct_submit: bool=False):
+
+    def __init__(self, icon: str, login_submit: str, direct_submit: bool = False):
         # Not a url, but a controller name for url_for. i.e. 'maeser.github_authorize' or 'localauth'
         self.login_submit = login_submit
         self.direct_submit = direct_submit
@@ -185,11 +190,11 @@ class LoginStyle:
     @property
     def form_html(self) -> str:
         """str: The html for the authenticator form. This is only used if **direct_submit** is set to False.
-        
+
         Only assign label and input elements to this property.
 
         When a LoginStyle object is initialized, **form_html** is set to the following by default:
-        
+
             <label for="username" class="form-label">Username</label>
             <input type="text" id="username" name="username" class="form-input" required>
             <label for="password" class="form-label">Password</label>
@@ -198,7 +203,7 @@ class LoginStyle:
         if self.direct_submit:
             raise ValueError("Cannot use form_html with direct_submit=True")
         return self._custom_form
-    
+
     @form_html.setter
     def form_html(self, html: str):
         self._custom_form = html
@@ -248,7 +253,7 @@ class BaseAuthenticator(ABC):
                 ENSURE THAT YOU SET max_requests TO THE CORRECT VALUE FOR THE USER!
         """
         pass
-    
+
     @property
     @abstractmethod
     def style(self) -> LoginStyle:
@@ -268,7 +273,14 @@ class GithubAuthenticator(BaseAuthenticator):
         max_requests (int): The maximum number of requests to the authenticator. Defaults to 10.
     """
 
-    def __init__(self, client_id: str, client_secret: str, auth_callback_uri: str, timeout: int = 10, max_requests: int = 10):
+    def __init__(
+        self,
+        client_id: str,
+        client_secret: str,
+        auth_callback_uri: str,
+        timeout: int = 10,
+        max_requests: int = 10,
+    ):
         self.client_id = client_id
         self.client_secret = client_secret
         # Generally this should be set from your Flask app as this will differ between applications
@@ -276,11 +288,13 @@ class GithubAuthenticator(BaseAuthenticator):
         self._max_requests = max_requests
         self.auth_callback_uri = auth_callback_uri
         self.timeout = timeout
-        self._login_style = LoginStyle('github', 'maeser.github_authorize', direct_submit=True)
+        self._login_style = LoginStyle(
+            "github", "maeser.github_authorize", direct_submit=True
+        )
 
     def __str__(self) -> str:
-        return 'GitHub'
-    
+        return "GitHub"
+
     @property
     def style(self) -> LoginStyle:
         """LoginStyle: The LoginStyle for GitHub (``LoginStyle('github', 'maeser.github_authorize', direct_submit=True)``)."""
@@ -308,44 +322,58 @@ class GithubAuthenticator(BaseAuthenticator):
         Returns:
             (tuple | None): A tuple containing the user's username, real name, and user group if authentication is successful; otherwise None.
         """
-        if request_args['state'] != oauth_state or 'code' not in request_args:
-            print(request_args['state'], oauth_state, 'ERROR') 
+        if request_args["state"] != oauth_state or "code" not in request_args:
+            print(request_args["state"], oauth_state, "ERROR")
             return None
 
-        token_url = 'https://github.com/login/oauth/access_token'
-        user_info_url = 'https://api.github.com/user'
+        token_url = "https://github.com/login/oauth/access_token"
+        user_info_url = "https://api.github.com/user"
 
         # exchange the authorization code for an access token
-        response = requests.post(token_url, data={
-            'client_id': self.client_id,
-            'client_secret': self.client_secret,
-            'code': request_args['code'],
-            'grant_type': 'authorization_code',
-            'redirect_uri': self.auth_callback_uri
-        }, headers={'Accept': 'application/json'},
-        timeout=self.timeout)
+        response = requests.post(
+            token_url,
+            data={
+                "client_id": self.client_id,
+                "client_secret": self.client_secret,
+                "code": request_args["code"],
+                "grant_type": "authorization_code",
+                "redirect_uri": self.auth_callback_uri,
+            },
+            headers={"Accept": "application/json"},
+            timeout=self.timeout,
+        )
 
         if response.status_code != 200:
-            print(f'GitHub authentication failed during token exchange: {response.status_code}', 'ERROR')
+            print(
+                f"GitHub authentication failed during token exchange: {response.status_code}",
+                "ERROR",
+            )
             return None
 
-        oauth2_token = response.json().get('access_token')
+        oauth2_token = response.json().get("access_token")
         if not oauth2_token:
-            print('GitHub authentication failed: No access token received', 'ERROR')
+            print("GitHub authentication failed: No access token received", "ERROR")
             return None
 
-        response = requests.get(user_info_url, headers={
-            'Authorization': 'Bearer ' + oauth2_token,
-            'Accept': 'application/json',
-        }, timeout=self.timeout)
+        response = requests.get(
+            user_info_url,
+            headers={
+                "Authorization": "Bearer " + oauth2_token,
+                "Accept": "application/json",
+            },
+            timeout=self.timeout,
+        )
 
         if response.status_code != 200:
-            print(f'GitHub authentication failed when fetching user info: {response.status_code}', 'ERROR')
+            print(
+                f"GitHub authentication failed when fetching user info: {response.status_code}",
+                "ERROR",
+            )
             return None
 
         json_response = response.json()
         print(json_response)
-        return json_response['login'], json_response['name'], 'b\'guest\''
+        return json_response["login"], json_response["name"], "b'guest'"
 
     def fetch_user(self, ident: str) -> Union[User, None]:
         """
@@ -357,11 +385,17 @@ class GithubAuthenticator(BaseAuthenticator):
         Returns:
             (User | None): The fetched user object or None if the user is not found.
         """
-        user_info_url = f'https://api.github.com/users/{ident}'
+        user_info_url = f"https://api.github.com/users/{ident}"
         response = requests.get(user_info_url)
         if response.status_code == 200:
             json_response = response.json()
-            return User(json_response['login'], realname=json_response.get('name', ''), usergroup='b\'guest\'', authmethod='github', max_requests=self._max_requests)
+            return User(
+                json_response["login"],
+                realname=json_response.get("name", ""),
+                usergroup="b'guest'",
+                authmethod="github",
+                max_requests=self._max_requests,
+            )
         print(f'WARNING: No GitHub user "{ident}" found')
         return None
 
@@ -372,21 +406,23 @@ class GithubAuthenticator(BaseAuthenticator):
         Returns:
             tuple: A tuple containing the OAuth state and provider URL.
         """
-        authorize_url = 'https://github.com/login/oauth/authorize'
-        scopes = ['user:email']
+        authorize_url = "https://github.com/login/oauth/authorize"
+        scopes = ["user:email"]
 
         # generate a random string for the state parameter
         oauth_state = secrets.token_urlsafe(16)
 
-        query_string = urlencode({
-            'client_id': self.client_id,
-            'redirect_uri': self.auth_callback_uri,
-            'response_type': 'code',
-            'scope': ' '.join(scopes),
-            'state': oauth_state,
-        })
+        query_string = urlencode(
+            {
+                "client_id": self.client_id,
+                "redirect_uri": self.auth_callback_uri,
+                "response_type": "code",
+                "scope": " ".join(scopes),
+                "state": oauth_state,
+            }
+        )
 
-        provider_url = authorize_url + '?' + query_string
+        provider_url = authorize_url + "?" + query_string
 
         return oauth_state, provider_url
 
@@ -397,30 +433,31 @@ class LDAPAuthenticator(BaseAuthenticator):
 
     Args:
         name (str): A human-readable identifier for this authenticator instance.
-        ldap_server_urls (list): List of LDAP server URLs to connect to (e.g., 
+        ldap_server_urls (list): List of LDAP server URLs to connect to (e.g.,
             ["ldap://example.com", "ldaps://secure.example.com"]).
         ldap_base_dn (str): The base Distinguished Name (DN) used as the search root in LDAP queries.
         attribute_name (str): The LDAP attribute used to match the username (e.g., "uid", "cn").
-        search_filter (str): An LDAP search filter string, which may include placeholders 
+        search_filter (str): An LDAP search filter string, which may include placeholders
             for dynamic values (e.g., "(uid={username})").
         object_class (str): The LDAP objectClass to filter entries (e.g., "inetOrgPerson").
         attributes (list): List of LDAP attributes to retrieve from search results.
-        ca_cert_path (str, optional): Path to the directory or file containing trusted 
+        ca_cert_path (str, optional): Path to the directory or file containing trusted
             Certificate Authority (CA) certificates for LDAPS connections. Defaults to '/etc/ssl/certs'.
-        connection_timeout (int, optional): Timeout in seconds for establishing an LDAP 
+        connection_timeout (int, optional): Timeout in seconds for establishing an LDAP
             connection. Defaults to 5.
     """
+
     def __init__(
-    self, 
-    name: str,
-    ldap_server_urls: list, 
-    ldap_base_dn: str, 
-    attribute_name: str, 
-    search_filter: str, 
-    object_class: str, 
-    attributes: list, 
-    ca_cert_path: str = '/etc/ssl/certs', 
-    connection_timeout: int = 5,
+        self,
+        name: str,
+        ldap_server_urls: list,
+        ldap_base_dn: str,
+        attribute_name: str,
+        search_filter: str,
+        object_class: str,
+        attributes: list,
+        ca_cert_path: str = "/etc/ssl/certs",
+        connection_timeout: int = 5,
     ):
         self.name = name
         self.ldap_server_urls = ldap_server_urls
@@ -434,13 +471,15 @@ class LDAPAuthenticator(BaseAuthenticator):
 
         # Ensure certificate directory exists
         if not os.path.exists(self.ca_cert_path):
-            raise FileNotFoundError('Path to CA Certificates directory does not exist')
+            raise FileNotFoundError("Path to CA Certificates directory does not exist")
 
         # Initialize LDAP server instances
         self.ldap_servers = self._initialize_ldap_servers()
         self.ldap_usable_servers = self._test_ldap_anonymous_bind()
         self._next_server_index = 0
-        self._login_style = LoginStyle('envelope-fill', 'maeser.login', direct_submit=False)
+        self._login_style = LoginStyle(
+            "envelope-fill", "maeser.login", direct_submit=False
+        )
 
     def __str__(self):
         return self.name
@@ -449,15 +488,17 @@ class LDAPAuthenticator(BaseAuthenticator):
     def style(self):
         """The LoginStyle for an LDAP server (``LoginStyle('envelope-fill', 'maeser.login', direct_submit=False)``)."""
         return self._login_style
-    
+
     @property
-    def next_ldap_server(self)-> Union[Server, None]:
+    def next_ldap_server(self) -> Union[Server, None]:
         """The next available LDAP server, returned in a round-robin fashion."""
         if len(self.ldap_usable_servers) == 0:
             print("NO REACHABLE LDAP SERVER!")
             return None
         server_to_use = self.ldap_usable_servers[self._next_server_index]
-        self._next_server_index = (self._next_server_index + 1) % len(self.ldap_usable_servers)
+        self._next_server_index = (
+            (self._next_server_index + 1) % len(self.ldap_usable_servers)
+        )
         return server_to_use
 
     def _initialize_ldap_servers(self) -> list[Server]:
@@ -470,15 +511,19 @@ class LDAPAuthenticator(BaseAuthenticator):
         servers: list[Server] = []
         for server_url in self.ldap_server_urls:
             try:
-                servers.append(Server(
-                    server_url,
-                    use_ssl=True,
-                    get_info=ALL,
-                    connect_timeout=self.connection_timeout,
-                    tls=Tls(validate=ssl.CERT_REQUIRED, ca_certs_path=self.ca_cert_path)
-                ))
+                servers.append(
+                    Server(
+                        server_url,
+                        use_ssl=True,
+                        get_info=ALL,
+                        connect_timeout=self.connection_timeout,
+                        tls=Tls(
+                            validate=ssl.CERT_REQUIRED, ca_certs_path=self.ca_cert_path
+                        ),
+                    )
+                )
             except LDAPException as e:
-                print(f'Unable to initialize LDAP server {server_url}: {type(e)}, {e}')
+                print(f"Unable to initialize LDAP server {server_url}: {type(e)}, {e}")
         return servers
 
     def _test_ldap_anonymous_bind(self) -> list:
@@ -491,12 +536,19 @@ class LDAPAuthenticator(BaseAuthenticator):
         usable_servers = []
         for ldap_server in self.ldap_servers:
             try:
-                test_connection = Connection(ldap_server, receive_timeout=self.connection_timeout)
+                test_connection = Connection(
+                    ldap_server, receive_timeout=self.connection_timeout
+                )
                 if test_connection.bind():
                     usable_servers.append(ldap_server)
                 test_connection.unbind()
-            except (LDAPException, LDAPAttributeError, LDAPBindError, LDAPSocketReceiveError) as e:
-                print(f'Failed to bind to LDAP server {ldap_server}: {type(e)}, {e}')
+            except (
+                LDAPException,
+                LDAPAttributeError,
+                LDAPBindError,
+                LDAPSocketReceiveError,
+            ) as e:
+                print(f"Failed to bind to LDAP server {ldap_server}: {type(e)}, {e}")
         return usable_servers
 
     def authenticate(self, ident: str, password: str) -> Union[tuple, None]:
@@ -520,14 +572,19 @@ class LDAPAuthenticator(BaseAuthenticator):
         try:
             conn = Connection(
                 self.next_ldap_server,
-                user=f'{self.attribute_name}={ident},{self.ldap_base_dn}',
+                user=f"{self.attribute_name}={ident},{self.ldap_base_dn}",
                 password=password,
                 auto_bind=True,
                 read_only=True,
-                receive_timeout=self.connection_timeout
+                receive_timeout=self.connection_timeout,
             )
-        except (LDAPException, LDAPAttributeError, LDAPBindError, LDAPSocketReceiveError) as e:
-            print(f'{self.name} user {ident} failed to authenticate: {type(e)}: {e}')
+        except (
+            LDAPException,
+            LDAPAttributeError,
+            LDAPBindError,
+            LDAPSocketReceiveError,
+        ) as e:
+            print(f"{self.name} user {ident} failed to authenticate: {type(e)}: {e}")
             return None
 
         try:
@@ -536,20 +593,24 @@ class LDAPAuthenticator(BaseAuthenticator):
                 self.search_filter.format(ident=ident),
                 SUBTREE,
                 attributes=self.attributes,
-                time_limit=int(self.connection_timeout)
+                time_limit=int(self.connection_timeout),
             )
-            
+
             if conn.entries:
                 display_name = conn.entries[0].displayName.value
-                user_group = conn.entries[0].memberOf.value if 'memberOf' in self.attributes else None
+                user_group = (
+                    conn.entries[0].memberOf.value
+                    if "memberOf" in self.attributes
+                    else None
+                )
                 return ident, display_name, user_group
-            
+
         except LDAPSocketReceiveError as e:
-            print(f'LDAP search timed out for user {ident}: {e}')
-            
+            print(f"LDAP search timed out for user {ident}: {e}")
+
         finally:
             conn.unbind()
-        
+
         return None
 
     def fetch_user(self, ident: str) -> Union[User, None]:
@@ -567,27 +628,45 @@ class LDAPAuthenticator(BaseAuthenticator):
         if self.next_ldap_server is None:
             return None
         try:
-            conn = Connection(self.next_ldap_server, auto_bind=True, receive_timeout=self.connection_timeout)
-        except (LDAPException, LDAPAttributeError, LDAPBindError, LDAPSocketReceiveError) as e:
-            print(f'LDAP fetch for user {ident} failed: {type(e)}, {e}')
+            conn = Connection(
+                self.next_ldap_server,
+                auto_bind=True,
+                receive_timeout=self.connection_timeout,
+            )
+        except (
+            LDAPException,
+            LDAPAttributeError,
+            LDAPBindError,
+            LDAPSocketReceiveError,
+        ) as e:
+            print(f"LDAP fetch for user {ident} failed: {type(e)}, {e}")
             return None
-        
+
         try:
             search_filter = self.search_filter.format(ident=ident)
             conn.search(
-                self.ldap_base_dn, 
-                search_filter, 
-                SUBTREE, 
+                self.ldap_base_dn,
+                search_filter,
+                SUBTREE,
                 attributes=self.attributes,
-                time_limit=int(self.connection_timeout)
+                time_limit=int(self.connection_timeout),
             )
-            
+
             if conn.entries:
                 display_name = conn.entries[0].displayName.value
-                user_group = conn.entries[0].memberOf.value if 'memberOf' in self.attributes else None
-                return User(ident, realname=display_name, usergroup=user_group, authmethod=self.name)
+                user_group = (
+                    conn.entries[0].memberOf.value
+                    if "memberOf" in self.attributes
+                    else None
+                )
+                return User(
+                    ident,
+                    realname=display_name,
+                    usergroup=user_group,
+                    authmethod=self.name,
+                )
         except LDAPSocketReceiveError as e:
-            print(f'LDAP search timed out for user {ident}: {e}')
+            print(f"LDAP search timed out for user {ident}: {e}")
         finally:
             conn.unbind()
 
@@ -605,7 +684,10 @@ class UserManager:
         rate_limit_interval (int, optional): The interval at which user message requests should be
             refreshed, in seconds. defaults to 180.
     """
-    def __init__(self, db_file_path: str, max_requests: int = 10, rate_limit_interval: int = 180):
+
+    def __init__(
+        self, db_file_path: str, max_requests: int = 10, rate_limit_interval: int = 180
+    ):
         self.db_file_path = db_file_path
         self.authenticators: dict[str, BaseAuthenticator] = {}
         self.max_requests = max_requests
@@ -624,7 +706,9 @@ class UserManager:
             ValueError: If the provided name is invalid or the authenticator is already registered.
         """
         if not name.isalpha():
-            raise ValueError(f"Invalid authenticator name: {name}, must only contain letters!")
+            raise ValueError(
+                f"Invalid authenticator name: {name}, must only contain letters!"
+            )
         self.authenticators[name] = authenticator
         with self.db_connection as db:
             self._create_table(db, name)
@@ -717,14 +801,24 @@ class UserManager:
         with self.db_connection as db:
             cursor: sqlite3.Cursor = db.execute(
                 f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}" WHERE user_id=?',
-                (ident,)
+                (ident,),
             )
             row = cursor.fetchone()
             if row:
-                return User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method, max_requests=self.max_requests)
+                return User(
+                    row[0],
+                    bool(row[1]),
+                    bool(row[2]),
+                    realname=row[3],
+                    usergroup=str(row[4]),
+                    requests_left=row[5],
+                    authmethod=auth_method,
+                    max_requests=self.max_requests,
+                )
         return None
 
-    def list_users(self,
+    def list_users(
+        self,
         auth_filter: str | None = None,
         admin_filter: str | None = None,
         banned_filter: str | None = None,
@@ -748,21 +842,35 @@ class UserManager:
             ValueError: If the provided **auth_method** is invalid or if **admin_filter** or
                 **banned_filter** have invalid values.
         """
-        if auth_filter is not None and auth_filter != 'all' and not auth_filter.isalnum():
+        if (
+            auth_filter is not None
+            and auth_filter != "all"
+            and not auth_filter.isalnum()
+        ):
             raise ValueError(
                 f"Invalid authenticator name: {auth_filter}. Authenticator names must be alphanumeric."
             )
 
-        if admin_filter is not None and admin_filter not in ['all', 'admin', 'non-admin']:
+        if admin_filter is not None and admin_filter not in [
+            "all",
+            "admin",
+            "non-admin",
+        ]:
             raise ValueError(f"Invalid admin_filter value: {admin_filter}")
 
-        if banned_filter is not None and banned_filter not in ['all', 'banned', 'non-banned']:
+        if banned_filter is not None and banned_filter not in [
+            "all",
+            "banned",
+            "non-banned",
+        ]:
             raise ValueError(f"Invalid banned_filter value: {banned_filter}")
 
         users: list[User] = []
         with self.db_connection as db:
-            if auth_filter is None or auth_filter == 'all':
-                cursor: sqlite3.Cursor = db.execute("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%Users'")
+            if auth_filter is None or auth_filter == "all":
+                cursor: sqlite3.Cursor = db.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%Users'"
+                )
                 tables = [table_name[0] for table_name in cursor.fetchall()]
             else:
                 tables = [f"{auth_filter}Users"]
@@ -770,28 +878,41 @@ class UserManager:
             for table_name in tables:
                 query = f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}"'
                 conditions = []
-                
-                if admin_filter == 'admin':
+
+                if admin_filter == "admin":
                     conditions.append("admin = 1")
-                elif admin_filter == 'non-admin':
+                elif admin_filter == "non-admin":
                     conditions.append("admin = 0")
 
-                if banned_filter == 'banned':
+                if banned_filter == "banned":
                     conditions.append("blacklisted = 1")
-                elif banned_filter == 'non-banned':
+                elif banned_filter == "non-banned":
                     conditions.append("blacklisted = 0")
-                
+
                 if conditions:
                     query += " WHERE " + " AND ".join(conditions)
 
                 cursor = db.execute(query)
                 for row in cursor.fetchall():
                     auth_method_from_table = table_name.replace("Users", "")
-                    users.append(User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method_from_table, max_requests=self.max_requests))
+                    users.append(
+                        User(
+                            row[0],
+                            bool(row[1]),
+                            bool(row[2]),
+                            realname=row[3],
+                            usergroup=str(row[4]),
+                            requests_left=row[5],
+                            authmethod=auth_method_from_table,
+                            max_requests=self.max_requests,
+                        )
+                    )
 
         return users
 
-    def authenticate(self, auth_method: str, *args: Any, **kwargs: Any) -> Union[User, None]:
+    def authenticate(
+        self, auth_method: str, *args: Any, **kwargs: Any
+    ) -> Union[User, None]:
         """
         Authenticates a user using the specified authentication method.
 
@@ -816,7 +937,9 @@ class UserManager:
         print(auth_result)
         if auth_result:
             user_id, display_name, user_group = auth_result
-            return self._create_or_update_user(auth_method, user_id, display_name, user_group)
+            return self._create_or_update_user(
+                auth_method, user_id, display_name, user_group
+            )
         return None
 
     def _create_or_update_user(
@@ -847,18 +970,42 @@ class UserManager:
             )
         with self.db_connection as db:
             table_name = f"{auth_method}Users"
-            cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}" WHERE user_id=?', (user_id,))
+            cursor = db.execute(
+                f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}" WHERE user_id=?',
+                (user_id,),
+            )
             row = cursor.fetchone()
 
             if row:
-                user = User(row[0], bool(row[1]), bool(row[2]), realname=row[3], requests_left=row[5], authmethod=auth_method, max_requests=self.max_requests)
+                user = User(
+                    row[0],
+                    bool(row[1]),
+                    bool(row[2]),
+                    realname=row[3],
+                    requests_left=row[5],
+                    authmethod=auth_method,
+                    max_requests=self.max_requests,
+                )
             else:
                 db.execute(
                     f'INSERT INTO "{table_name}" (user_id, blacklisted, admin, realname, usertype, requests_left) VALUES (?, ?, ?, ?, ?, ?)',
-                    (str(user_id), False, False, str(display_name), str(user_group), int(self.max_requests))
+                    (
+                        str(user_id),
+                        False,
+                        False,
+                        str(display_name),
+                        str(user_group),
+                        int(self.max_requests),
+                    ),
                 )
                 db.commit()
-                user = User(user_id, realname=display_name, usergroup=user_group, authmethod=auth_method, max_requests=self.max_requests)
+                user = User(
+                    user_id,
+                    realname=display_name,
+                    usergroup=user_group,
+                    authmethod=auth_method,
+                    max_requests=self.max_requests,
+                )
 
         return user
 
@@ -881,7 +1028,9 @@ class UserManager:
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
-            db.execute(f'UPDATE "{table_name}" SET admin=? WHERE user_id=?', (is_admin, ident))
+            db.execute(
+                f'UPDATE "{table_name}" SET admin=? WHERE user_id=?', (is_admin, ident)
+            )
             db.commit()
 
     def update_banned_status(self, auth_method: str, ident: str, is_banned: bool):
@@ -903,7 +1052,10 @@ class UserManager:
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
-            db.execute(f'UPDATE "{table_name}" SET blacklisted=? WHERE user_id=?', (is_banned, ident))
+            db.execute(
+                f'UPDATE "{table_name}" SET blacklisted=? WHERE user_id=?',
+                (is_banned, ident),
+            )
             db.commit()
 
     def refresh_requests(self, inc_by: int = 1):
@@ -916,10 +1068,13 @@ class UserManager:
         with self.db_connection as db:
             for auth_method in self.authenticators:
                 table_name = f"{auth_method}Users"
-                db.execute(f'''
+                db.execute(
+                    f'''
                     UPDATE "{table_name}"
                     SET requests_left = MIN(?, MAX(0, requests_left + ?))
-                ''', (self.max_requests, inc_by))
+                ''',
+                    (self.max_requests, inc_by),
+                )
             db.commit()
 
     def decrease_requests(self, auth_method: str, user_id: str, dec_by: int = 1):
@@ -938,16 +1093,19 @@ class UserManager:
             raise ValueError(
                 f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
             )
-        
+
         dec_by = min(dec_by, self.max_requests)
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
-            db.execute(f'''
+            db.execute(
+                f'''
                 UPDATE "{table_name}"
                 SET requests_left = MAX(0, requests_left - ?)
                 WHERE user_id = ?
-            ''', (dec_by, user_id))
+            ''',
+                (dec_by, user_id),
+            )
             db.commit()
 
     def increase_requests(self, auth_method: str, user_id: str, inc_by: int = 1):
@@ -966,18 +1124,23 @@ class UserManager:
             raise ValueError(
                 f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
             )
-        
+
         inc_by = min(inc_by, self.max_requests)
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
-            db.execute(f'''
+            db.execute(
+                f'''
                 UPDATE "{table_name}"
                 SET requests_left = MIN(?, MAX(0, requests_left + ?))
                 WHERE user_id = ?
-            ''', (self.max_requests, inc_by, user_id))
+            ''',
+                (self.max_requests, inc_by, user_id),
+            )
 
-    def get_requests_remaining(self, auth_method: str, user_id: str) -> Union[int, None]:
+    def get_requests_remaining(
+        self, auth_method: str, user_id: str
+    ) -> Union[int, None]:
         """
         Gets the number of requests remaining for a user.
 
@@ -998,7 +1161,7 @@ class UserManager:
 
         user = self.get_user(auth_method, user_id)
         return user.requests_remaining if user else None
-    
+
     def fetch_user(self, auth_method: str, ident: str) -> bool:
         """
         Fetches a user from the authentication source and add them to the user database without
@@ -1019,14 +1182,18 @@ class UserManager:
             raise ValueError(
                 f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
             )
-        
+
         user = self.authenticators[auth_method].fetch_user(ident)
         if user:
-            self._create_or_update_user(auth_method, user.ident, user.realname, user.usergroup)
+            self._create_or_update_user(
+                auth_method, user.ident, user.realname, user.usergroup
+            )
             return True
         return False
-        
-    def remove_user_from_cache(self, auth_method: str, ident: str, force_remove: bool = False) -> bool:
+
+    def remove_user_from_cache(
+        self, auth_method: str, ident: str, force_remove: bool = False
+    ) -> bool:
         """
         Removes a user from the cache.
 
@@ -1046,20 +1213,20 @@ class UserManager:
                 f"Unsupported authentication method: {auth_method}. "
                 f"Authenticator is not registered to this user manager. "
                 f"If you are trying to remove an authenticator that is in the database "
-                    f"but not registered to this user manager, call remove_user_from_cache() "
-                    f"with `force_remove=True`."
+                f"but not registered to this user manager, call remove_user_from_cache() "
+                f"with `force_remove=True`."
             )
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
-            cursor = db.execute(f'DELETE FROM "{table_name}" WHERE user_id=?', (ident, ))
+            cursor = db.execute(f'DELETE FROM "{table_name}" WHERE user_id=?', (ident,))
             db.commit()
             return bool(cursor.rowcount)
-        
+
     def list_cleanables(self) -> list[str]:
         """
         Lists non-banned and non-admin users in the cache/database.
-        
+
         Returns:
             list[str]: A list of user identifiers in the format "auth_method:user_id".
         """
@@ -1067,8 +1234,12 @@ class UserManager:
         with self.db_connection as db:
             for auth_method in self.authenticators:
                 table_name = f"{auth_method}Users"
-                cursor = db.execute(f'SELECT user_id FROM "{table_name}" WHERE blacklisted=0 AND admin=0')
-                cleanables.extend([f'{auth_method}:{row[0]}' for row in cursor.fetchall()])
+                cursor = db.execute(
+                    f'SELECT user_id FROM "{table_name}" WHERE blacklisted=0 AND admin=0'
+                )
+                cleanables.extend(
+                    [f"{auth_method}:{row[0]}" for row in cursor.fetchall()]
+                )
         return cleanables
 
     def clean_cache(self) -> int:
@@ -1082,6 +1253,8 @@ class UserManager:
         with self.db_connection as db:
             for auth_method in self.authenticators:
                 table_name = f"{auth_method}Users"
-                removed = db.execute(f'DELETE FROM "{table_name}" WHERE blacklisted=0 AND admin=0').rowcount
+                removed = db.execute(
+                    f'DELETE FROM "{table_name}" WHERE blacklisted=0 AND admin=0'
+                ).rowcount
                 removed_count += removed
         return removed_count
