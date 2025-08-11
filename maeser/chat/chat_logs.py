@@ -88,7 +88,12 @@ class BaseChatLogsManager(ABC):
 
     @abstractmethod
     def get_chat_logs_overview(
-        self, sort_by: str, order: str, branch_filter: str, user_filter: str, feedback_filter: str
+        self,
+        sort_by: str,
+        order: str,
+        branch_filter: str,
+        user_filter: str,
+        feedback_filter: str,
     ) -> tuple[list[dict], int, float, set[str]]:
         """
         Abstract method to get an overview of chat logs.
@@ -177,7 +182,7 @@ class ChatLogsManager(BaseChatLogsManager):
         """
         Logs a user's message and chatbot's response with corresponding statistics to the session's chat log (in YAML format).
 
-        This function should be called every time the user submits a new  message and receives 
+        This function should be called every time the user submits a new  message and receives
         a response from the chatbot.
 
         The **log_data** dictionary should contain the following key-value pairs:
@@ -268,12 +273,17 @@ class ChatLogsManager(BaseChatLogsManager):
         return overview
 
     def get_chat_logs_overview(
-        self, sort_by: str, order: str, branch_filter: str, user_filter: str, feedback_filter: str
+        self,
+        sort_by: str,
+        order: str,
+        branch_filter: str,
+        user_filter: str,
+        feedback_filter: str,
     ) -> tuple[list[dict], int, float, set[str]]:
         """
         Gets an overview of chat logs.
 
-        Retrieves information about individual chat logs that match the specified filters as well as 
+        Retrieves information about individual chat logs that match the specified filters as well as
         the total tokens and cost aggregated from these logs.
 
         Details for individual chat logs include the following:
@@ -294,7 +304,7 @@ class ChatLogsManager(BaseChatLogsManager):
             branch_filter (str): The branch to filter by.
             feedback_filter (str):
                 The feedback to filter by:
-            
+
                 - 'true' for logs with feedback.
                 - 'false' for logs without feedback.
 
@@ -316,9 +326,7 @@ class ChatLogsManager(BaseChatLogsManager):
             ]
 
         if user_filter:
-            log_files = [
-                f for f in log_files if user_filter == f["user"]
-            ]
+            log_files = [f for f in log_files if user_filter == f["user"]]
 
         if feedback_filter:
             feedback_filter_bool = feedback_filter.lower() == "true"
@@ -334,19 +342,19 @@ class ChatLogsManager(BaseChatLogsManager):
         total_cost = 0.0
         for file in log_files:
             with open(
-                f'{self.chat_log_path}/chat_history/{file["branch"]}/{file["name"]}',
+                f"{self.chat_log_path}/chat_history/{file['branch']}/{file['name']}",
                 "r",
             ) as f:
                 log = yaml.safe_load(f)
                 if log.get("total_tokens") is None:
                     print(
-                        f"\x1b[33mWarning: \"total_tokens\" key is missing from log for file {file['name']}, defaulting value to 0.\x1b[0m"
+                        f'\x1b[33mWarning: "total_tokens" key is missing from log for file {file["name"]}, defaulting value to 0.\x1b[0m'
                     )
                 else:
                     total_tokens += log.get("total_tokens", 0)
                 if log.get("total_cost") is None:
                     print(
-                        f"\x1b[33mWarning: \"total_cost\" key is missing from log for file {file['name']}, defaulting value to 0.\x1b[0m"
+                        f'\x1b[33mWarning: "total_cost" key is missing from log for file {file["name"]}, defaulting value to 0.\x1b[0m'
                     )
                 else:
                     total_cost += log.get("total_cost", 0.0)
@@ -369,7 +377,7 @@ class ChatLogsManager(BaseChatLogsManager):
         - "**user**": The full ID of the user, formatted like ``authenticator.user_id``.
         - "**messages**":
             A list containing the chat message history, including the messages from both the user and the chatbot.
-            
+
             - The "**content**" field contains the actual text content of the message.
             - The "**role**" field indicates whether the message came from the user ('user') or the chatbot ('system').
             - Messages from the chatbot ("role: system") also contain the context retrieved from vector stores ("**context**"), the total cost and tokens ("**cost**" and "**tokens_used**"), and the execution time ("**execution_time**").
@@ -510,7 +518,7 @@ class ChatLogsManager(BaseChatLogsManager):
         - "**created**" (*int*): The creation time and date of the log file.
         - "**modified**" (*int*): The time and date the log file was last modified.
         - "**branch**" (*str*): The chat branch of the conversation.
-        
+
         Returns:
             list[dict]: List of all log files.
         """
@@ -556,11 +564,11 @@ class ChatLogsManager(BaseChatLogsManager):
 
             This information includes the following:
             - "**has_feedback**" (*bool*): Whether the user has submitted feedback in this chat.
-            - "**first_message**" (*str*): The first message in the chat. This is used as the 
+            - "**first_message**" (*str*): The first message in the chat. This is used as the
             header/title of the chat in the web view.
             - "**user**" (*str*): The full ID of the user, formatted like ``authenticator.user_id``.
             - "**real_name**" (*str*): The real name of the user.
-            
+
             Args:
                 file_path (str): The path to the file.
 
