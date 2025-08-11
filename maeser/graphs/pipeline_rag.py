@@ -23,6 +23,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langgraph.checkpoint.sqlite import SqliteSaver
 
+
 def _add_messages(left: List[str], right: List[str]) -> List[str]:
     """Ensures that items assigned to a list with this annotation are added instead of directly assigned.
 
@@ -35,7 +36,8 @@ def _add_messages(left: List[str], right: List[str]) -> List[str]:
     """
     return left + right
 
-class _GraphState (TypedDict):
+
+class _GraphState(TypedDict):
     """Represents the state of the graph.
 
     Attributes:
@@ -44,10 +46,12 @@ class _GraphState (TypedDict):
         retrieved_context (List[Document]): The context retrieved from the vector store.
         first_message (bool): Whether or not this is the first message being generated.
     """
+
     messages: Annotated[list, _add_messages]
     current_topic: str
     retrieved_context: List[Document]
     first_messsage: bool
+
 
 def _normalize_topic(topic: str) -> str:
     """
@@ -61,6 +65,7 @@ def _normalize_topic(topic: str) -> str:
     """
     return topic.lower()
 
+
 def _remove_context_placeholder(prompt: str) -> str:
     """
     Remove the '{context}' placeholder from a prompt string.
@@ -73,18 +78,19 @@ def _remove_context_placeholder(prompt: str) -> str:
     """
     return prompt.replace("{context}", "").strip()
 
-def get_pipeline_rag (
+
+def get_pipeline_rag(
     vectorstore_config: Dict[str, str],
     memory_filepath: str,
     api_key: str | None = None,
     system_prompt_text: str = (
-        'You are a helpful teacher helping a student with course material.\n'
-        'You will answer a question based on the context provided.\n'
-        'If the question is unrelated to the topic or the context, '
-        'politely inform the user that their question is outside the context of your resources.\n\n'
-        '{context}\n'
+        "You are a helpful teacher helping a student with course material.\n"
+        "You will answer a question based on the context provided.\n"
+        "If the question is unrelated to the topic or the context, "
+        "politely inform the user that their question is outside the context of your resources.\n\n"
+        "{context}\n"
     ),
-    model: str = 'gpt-4o-mini'
+    model: str = "gpt-4o-mini",
 ) -> CompiledGraph:
     """
     Creates a pipeline **Retrieval-Augmented Generation (RAG)** graph.
@@ -104,10 +110,10 @@ def get_pipeline_rag (
         \"\"\"You are a helpful teacher helping a student with course material.
         You will answer a question based on the context provided.
         If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
-        
+
         {context}
         \"\"\"
-    
+
     Args:
         vectorstore_config (Dict[str, str]):
             Mapping of topic name to vector store path.
@@ -119,31 +125,39 @@ def get_pipeline_rag (
             in which case it will use the ``OPENAI_API_KEY`` environment variable.
         system_prompt_text (str): System prompt template for answer generation. Defaults to a helpful teacher prompt.
         model (str): Model name to use. Defaults to 'gpt-4o-mini'.
-    
+
     Returns:
         CompiledGraph: A compiled state graph (with memory checkpoint) ready for execution.
     """
 
-    # initialize FAISS retrievers for each topic 
+    # initialize FAISS retrievers for each topic
     # (i.e load each vector store to be used when it is needed)
     retrievers = {}
     for topic, vstore_path in vectorstore_config.items():
         retrievers[topic] = FAISS.load_local(
             vstore_path,
-            OpenAIEmbeddings() if api_key is None else OpenAIEmbeddings(api_key=api_key),
-            allow_dangerous_deserialization=True
+            OpenAIEmbeddings()
+            if api_key is None
+            else OpenAIEmbeddings(api_key=api_key),
+            allow_dangerous_deserialization=True,
         ).as_retriever()
 
     # Build the Chain for the generate node
-    system_prompt = ChatPromptTemplate.from_messages([
-        ('system', system_prompt_text),
-        MessagesPlaceholder('messages'),
-        ('human', "{input}")
-    ])
-    llm = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
+    system_prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt_text),
+            MessagesPlaceholder("messages"),
+            ("human", "{input}"),
+        ]
+    )
+    llm = (
+        ChatOpenAI(model=model, temperature=0)
+        if api_key is None
+        else ChatOpenAI(api_key=api_key, model=model, temperature=0)
+    )
     chain = system_prompt | llm | StrOutputParser()
 
-    #format topics for later topic extraction
+    # format topics for later topic extraction
     def format_topic_keys(topics):
         keys = list(topics.keys())  # Get dictionary keys as a list
         if not keys:
@@ -160,43 +174,58 @@ def get_pipeline_rag (
 
         # Build a prompt that includes the current topic (if any) and the user message.
         clean_system_prompt = _remove_context_placeholder(system_prompt_text)
-        prompt_template = ChatPromptTemplate.from_messages([
-            ("system", f"You are an assistant who extracts a concise topic label from a user's explanation. Here is the Current Topic: {current_topic}."
-                        f"For context, a separate AI who will be answering the users questions and using your topics has been given the following prompt:"
-                            f"===== CONTEXT ====="
-                            f"{clean_system_prompt}."
-                            f"==================="
-                        f"Use the prompt above as context, but ignore the response instructions. Instead, follow these response guidelines:"
-                        f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates that the topic should change, "
-                        f"output the new topic." 
-                        f"If the Current Topic is None, please choose a valid topic."
-                        f"If none of the topics match, choose the first topic."
-                        f"In any other case, repeat the current topic."
-                        f"In all cases, your topic should exactly match one of the topics listed."
-            ),
-            ("human", "User message: {question}\nExtract the topic:")
-        ])
+        prompt_template = ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    f"You are an assistant who extracts a concise topic label from a user's explanation. Here is the Current Topic: {current_topic}."
+                    f"For context, a separate AI who will be answering the users questions and using your topics has been given the following prompt:"
+                    f"===== CONTEXT ====="
+                    f"{clean_system_prompt}."
+                    f"==================="
+                    f"Use the prompt above as context, but ignore the response instructions. Instead, follow these response guidelines:"
+                    f"Using these topics exactly ({formatted_topics}), if the user's latest message indicates that the topic should change, "
+                    f"output the new topic."
+                    f"If the Current Topic is None, please choose a valid topic."
+                    f"If none of the topics match, choose the first topic."
+                    f"In any other case, repeat the current topic."
+                    f"In all cases, your topic should exactly match one of the topics listed.",
+                ),
+                ("human", "User message: {question}\nExtract the topic:"),
+            ]
+        )
 
         question = state["messages"][-1]
-        formatted_prompt = prompt_template.format(question=question, current_topic=current_topic if current_topic else "None")
-        llm_topic = ChatOpenAI(model=model, temperature=0) if api_key is None else ChatOpenAI(api_key=api_key, model=model, temperature=0)
+        formatted_prompt = prompt_template.format(
+            question=question, current_topic=current_topic if current_topic else "None"
+        )
+        llm_topic = (
+            ChatOpenAI(model=model, temperature=0)
+            if api_key is None
+            else ChatOpenAI(api_key=api_key, model=model, temperature=0)
+        )
         result = llm_topic.invoke([SystemMessage(content=formatted_prompt)])
         topic = _normalize_topic(result.content)
 
         # Edge case handling
-        topic = topic if topic in vectorstore_config.keys() else current_topic # Case where topic is not in in list of topics
-        topic = topic if topic is not None else list(vectorstore_config.keys())[0] # Case where topic is none (may happen on first response)
+        topic = (
+            topic if topic in vectorstore_config.keys() else current_topic
+        )  # Case where topic is not in in list of topics
+        topic = (
+            topic if topic is not None else list(vectorstore_config.keys())[0]
+        )  # Case where topic is none (may happen on first response)
 
         return {"current_topic": topic}
-    
+
     # Create a factory for retrieval nodes to return relevant information
     def make_retrieval_node(topic: str):
         def retrieval_node(state: _GraphState) -> dict:
             question = state["messages"][-1]
             documents: List[Document] = retrievers[topic].invoke(question)
             return {"retrieved_context": documents}
+
         return retrieval_node
-    
+
     # Map topics with retrieval node names
     vectorstore_nodes = {}
     for topic in vectorstore_config.keys():
@@ -207,39 +236,45 @@ def get_pipeline_rag (
     def generate_node(state: _GraphState) -> dict:
         messages = state["messages"]
         documents = state.get("retrieved_context", [])
-        generation = chain.invoke({
-            "context": documents,
-            "input": messages[-1],
-            "messages": messages[:-1],
-        })
+        generation = chain.invoke(
+            {
+                "context": documents,
+                "input": messages[-1],
+                "messages": messages[:-1],
+            }
+        )
         # Update conversation history with the generated answer.
         return {"messages": messages + [generation]}
-    
+
     # Build the state graph.
     graph = StateGraph(_GraphState)
-    graph.add_node("determine_topic", lambda state: determine_topic_node(state, vectorstore_config))    
+    graph.add_node(
+        "determine_topic", lambda state: determine_topic_node(state, vectorstore_config)
+    )
 
     # Set up conditional branching based on the determined topic.
     # Mapping: if "off topic", go to off_topic_response; if valid topic, go to its retrieval node.
     mapping = {}
     for topic in vectorstore_config.keys():
         mapping[topic] = f"retrieve_{topic}"
-    graph.add_conditional_edges("determine_topic", lambda state: state["current_topic"], mapping)
-    
+    graph.add_conditional_edges(
+        "determine_topic", lambda state: state["current_topic"], mapping
+    )
+
     # Add retrieval nodes for each valid topic.
     for topic in vectorstore_config.keys():
         node_name = f"retrieve_{topic}"
         graph.add_node(node_name, make_retrieval_node(topic))
         graph.add_edge(node_name, "generate")
-    
+
     # Add answer generation node.
     graph.add_node("generate", generate_node)
-    
+
     # Define the overall flow.
     graph.add_edge(START, "determine_topic")
     graph.add_edge("generate", END)
-    
+
     # Set up memory checkpoint using SQLite.
-    memory = SqliteSaver.from_conn_string(f'{memory_filepath}')
+    memory = SqliteSaver.from_conn_string(f"{memory_filepath}")
     compiled_graph: CompiledGraph = graph.compile(checkpointer=memory)
     return compiled_graph
