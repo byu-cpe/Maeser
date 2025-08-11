@@ -598,16 +598,14 @@ class LDAPAuthenticator(BaseAuthenticator):
 class UserManager:
     """
     Manages user operations including authentication, database interactions, and request tracking.
+
+    Args:
+        db_file_path (str): The file path to the SQLite database.
+        max_requests (int, optional): The maximum number of requests a user can have. Defaults to 10.
+        rate_limit_interval (int, optional): The interval at which user message requests should be
+            refreshed, in seconds. defaults to 180.
     """
-
     def __init__(self, db_file_path: str, max_requests: int = 10, rate_limit_interval: int = 180):
-        """
-        Initialize the UserManager.
-
-        Args:
-            db_file_path (str): The file path to the SQLite database.
-            max_requests (int, optional): The maximum number of requests a user can have. Defaults to 10.
-        """
         self.db_file_path = db_file_path
         self.authenticators: dict[str, BaseAuthenticator] = {}
         self.max_requests = max_requests
@@ -616,7 +614,7 @@ class UserManager:
 
     def register_authenticator(self, name: str, authenticator: BaseAuthenticator):
         """
-        Register a new authentication method.
+        Registers a new authentication method.
 
         Args:
             name (str): The shorthand name of the authentication method. Must only contain letters.
@@ -634,10 +632,7 @@ class UserManager:
     @property
     def db_connection(self) -> sqlite3.Connection:
         """
-        Open a connection to the SQLite database.
-
-        Returns:
-            sqlite3.Connection: The database connection.
+        sqlite3.Connection: The connection to the SQLite database.
 
         Raises:
             sqlite3.OperationalError: If the database cannot be opened.
@@ -651,13 +646,27 @@ class UserManager:
             return sqlite3.connect(":memory:")
 
     def _create_tables(self):
+        """Creates tables for all authenticators in the user database."""
         with self.db_connection as db:
             for auth_method in self.authenticators:
                 self._create_table(db, auth_method)
 
     def _create_table(self, db: sqlite3.Connection, auth_method: str):
+        """Creates a table for a specific authenticator in the user database.
+
+        **Note:** The authenticator name must be alphanumeric.
+
+        Args:
+            db (sqlite3.Connection): The user database.
+            auth_method (str): The authenticator to add to the database.
+
+        Raises:
+            ValueError: If the authenticator name is not alphanumeric.
+        """
         if not auth_method.isalnum():
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Invalid authenticator name: {auth_method}. Authenticator names must be alphanumeric."
+            )
 
         table_name = f"{auth_method}Users"
         db.execute(f'''
@@ -673,11 +682,21 @@ class UserManager:
         ''')
 
     def check_user_auth(self, auth_method: str) -> bool:
+        """Checks if a user authenticator is registered in the user manager.
+
+        Args:
+            auth_method (str): The name of the authenticator.
+
+        Returns:
+            bool: True if the authenticator is registered in the user manager; False otherwise.
+        """
         return auth_method in self.authenticators
 
     def get_user(self, auth_method: str, ident: str) -> Union[User, None]:
         """
         Retrieve a user from the database.
+
+        **Note:** The authenticator name must be alphanumeric.
 
         Args:
             auth_method (str): The authentication method used.
@@ -687,10 +706,12 @@ class UserManager:
             User: The user object, or None if not found.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the authenticator name is not alphanumeric.
         """
         if not auth_method.isalnum():
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Invalid authenticator name: {auth_method}. Authenticator names must be alphanumeric."
+            )
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
@@ -703,23 +724,34 @@ class UserManager:
                 return User(row[0], bool(row[1]), bool(row[2]), realname=row[3], usergroup=str(row[4]), requests_left=row[5], authmethod=auth_method, max_requests=self.max_requests)
         return None
 
-    def list_users(self, auth_filter: str | None = None, admin_filter: str | None = None, banned_filter: str | None = None) -> list[User]:
+    def list_users(self,
+        auth_filter: str | None = None,
+        admin_filter: str | None = None,
+        banned_filter: str | None = None,
+    ) -> list[User]:
         """
-        List all users in the database, optionally filtered by authentication method, admin status, and banned status.
+        Lists all users in the database, optionally filtered by authentication method, admin
+        status, and banned status.
 
         Args:
-            auth_filter (str, optional): The authentication method to list users for. If None or 'all', list users from all authentication methods.
-            admin_filter (str, optional): Filter users by admin status. Can be 'all', 'admin', or 'non-admin'.
-            banned_filter (str, optional): Filter users by banned status. Can be 'all', 'banned', or 'non-banned'.
+            auth_filter (str | None, optional): The authentication method to list users for.
+                If None or 'all', lists users from all authentication methods.
+            admin_filter (str | None, optional): Filter users by admin status. Can be 'all',
+                'admin', or 'non-admin'. Defaults to None.
+            banned_filter (str | None, optional): Filter users by banned status. Can be 'all',
+                'banned', or 'non-banned'. Defaults to None.
 
         Returns:
             list[User]: A list of user objects.
 
         Raises:
-            ValueError: If the provided auth_method is invalid or if admin_filter or banned_filter have invalid values.
+            ValueError: If the provided **auth_method** is invalid or if **admin_filter** or
+                **banned_filter** have invalid values.
         """
         if auth_filter is not None and auth_filter != 'all' and not auth_filter.isalnum():
-            raise ValueError(f"Invalid authenticator name: {auth_filter}")
+            raise ValueError(
+                f"Invalid authenticator name: {auth_filter}. Authenticator names must be alphanumeric."
+            )
 
         if admin_filter is not None and admin_filter not in ['all', 'admin', 'non-admin']:
             raise ValueError(f"Invalid admin_filter value: {admin_filter}")
@@ -761,7 +793,7 @@ class UserManager:
 
     def authenticate(self, auth_method: str, *args: Any, **kwargs: Any) -> Union[User, None]:
         """
-        Authenticate a user using the specified authentication method.
+        Authenticates a user using the specified authentication method.
 
         Args:
             auth_method (str): The authentication method to use.
@@ -769,14 +801,16 @@ class UserManager:
             **kwargs: Keyword arguments for the authentication method.
 
         Returns:
-            User: The authenticated user object, or None if authentication fails.
+            (User | None): The authenticated user object, or None if authentication fails.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided **auth_method** is not registered to the user manager.
         """
         authenticator = self.authenticators.get(auth_method)
         if not authenticator:
-            raise ValueError(f"Unsupported authentication method: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
+            )
 
         auth_result = authenticator.authenticate(*args, **kwargs)
         print(auth_result)
@@ -785,9 +819,15 @@ class UserManager:
             return self._create_or_update_user(auth_method, user_id, display_name, user_group)
         return None
 
-    def _create_or_update_user(self, auth_method: str, user_id: str, display_name: str, user_group: str) -> User:
+    def _create_or_update_user(
+        self,
+        auth_method: str,
+        user_id: str,
+        display_name: str,
+        user_group: str,
+    ) -> User:
         """
-        Create or update a user in the database.
+        Creates or update a user in the database.
 
         Args:
             auth_method (str): The authentication method used.
@@ -799,10 +839,12 @@ class UserManager:
             User: The user object.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided **auth_method** is not registered to the user manager.
         """
         if auth_method not in self.authenticators:
-            raise ValueError(f"Unsupported authentication method: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
+            )
         with self.db_connection as db:
             table_name = f"{auth_method}Users"
             cursor = db.execute(f'SELECT user_id, blacklisted, admin, realname, usertype, requests_left FROM "{table_name}" WHERE user_id=?', (user_id,))
@@ -822,7 +864,7 @@ class UserManager:
 
     def update_admin_status(self, auth_method: str, ident: str, is_admin: bool):
         """
-        Update the admin status of a user.
+        Updates the admin status of a user.
 
         Args:
             auth_method (str): The authentication method used.
@@ -830,10 +872,12 @@ class UserManager:
             is_admin (bool): Whether the user should be an admin or not.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided **auth_method** is not registered to the user manager.
         """
         if auth_method not in self.authenticators:
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
+            )
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
@@ -842,7 +886,7 @@ class UserManager:
 
     def update_banned_status(self, auth_method: str, ident: str, is_banned: bool):
         """
-        Update the banned status of a user.
+        Updates the banned status of a user.
 
         Args:
             auth_method (str): The authentication method used.
@@ -850,10 +894,12 @@ class UserManager:
             is_banned (bool): Whether the user should be banned or not.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided **auth_method** is not registered to the user manager.
         """
         if auth_method not in self.authenticators:
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
+            )
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
@@ -862,7 +908,7 @@ class UserManager:
 
     def refresh_requests(self, inc_by: int = 1):
         """
-        Refresh the number of requests for all users by the given amount.
+        Refreshes the number of requests for all users by the given amount.
 
         Args:
             inc_by (int, optional): The amount to increase the requests by. Defaults to 1.
@@ -878,7 +924,7 @@ class UserManager:
 
     def decrease_requests(self, auth_method: str, user_id: str, dec_by: int = 1):
         """
-        Decrease the number of requests remaining for a user.
+        Decreases the number of requests remaining for a user.
 
         Args:
             auth_method (str): The authentication method used.
@@ -886,10 +932,12 @@ class UserManager:
             dec_by (int, optional): The amount to decrease the requests by. Defaults to 1.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided **auth_method** is not registered to the user manager.
         """
         if auth_method not in self.authenticators:
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
+            )
         
         dec_by = min(dec_by, self.max_requests)
 
@@ -904,7 +952,7 @@ class UserManager:
 
     def increase_requests(self, auth_method: str, user_id: str, inc_by: int = 1):
         """
-        Increase the number of requests remaining for a user.
+        Increases the number of requests remaining for a user.
 
         Args:
             auth_method (str): The authentication method used.
@@ -912,10 +960,12 @@ class UserManager:
             inc_by (int, optional): The amount to increase the requests by. Defaults to 1.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided **auth_method** is not registered to the user manager.
         """
         if auth_method not in self.authenticators:
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
+            )
         
         inc_by = min(inc_by, self.max_requests)
 
@@ -929,7 +979,7 @@ class UserManager:
 
     def get_requests_remaining(self, auth_method: str, user_id: str) -> Union[int, None]:
         """
-        Get the number of requests remaining for a user.
+        Gets the number of requests remaining for a user.
 
         Args:
             auth_method (str): The authentication method used.
@@ -939,28 +989,36 @@ class UserManager:
             (int | None): The number of requests remaining, or None if the user is not found.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided **auth_method** is not registered to the user manager.
         """
         if auth_method not in self.authenticators:
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
+            )
 
         user = self.get_user(auth_method, user_id)
         return user.requests_remaining if user else None
     
     def fetch_user(self, auth_method: str, ident: str) -> bool:
         """
-        Fetch a user from the authentication source and add them to the cache
-        without modifying their admin or banned status.
+        Fetches a user from the authentication source and add them to the user database without
+        modifying their admin or banned status.
 
         Args:
             auth_method (str): The authentication method.
             ident (str): The user's identifier.
 
         Returns:
-            bool: True if the user was successfully fetched and cached, False otherwise.
+            bool: True if the user was successfully fetched and added to the database; False
+            otherwise.
+
+        Raises:
+            ValueError: If the provided **auth_method** is not registered to the user manager.
         """
         if auth_method not in self.authenticators:
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. Authenticator is not registered to this user manager."
+            )
         
         user = self.authenticators[auth_method].fetch_user(ident)
         if user:
@@ -970,7 +1028,7 @@ class UserManager:
         
     def remove_user_from_cache(self, auth_method: str, ident: str, force_remove: bool = False) -> bool:
         """
-        Remove a user from the cache.
+        Removes a user from the cache.
 
         Args:
             auth_method (str): The authentication method used.
@@ -980,10 +1038,17 @@ class UserManager:
             bool: True if the user was removed, False otherwise.
 
         Raises:
-            ValueError: If the provided auth_method is invalid.
+            ValueError: If the provided **auth_method** is not registered to the user manager
+                and **force_remove** is set to False.
         """
         if not force_remove and auth_method not in self.authenticators:
-            raise ValueError(f"Invalid authenticator name: {auth_method}")
+            raise ValueError(
+                f"Unsupported authentication method: {auth_method}. "
+                f"Authenticator is not registered to this user manager. "
+                f"If you are trying to remove an authenticator that is in the database "
+                    f"but not registered to this user manager, call remove_user_from_cache() "
+                    f"with `force_remove=True`."
+            )
 
         table_name = f"{auth_method}Users"
         with self.db_connection as db:
@@ -991,9 +1056,9 @@ class UserManager:
             db.commit()
             return bool(cursor.rowcount)
         
-    def list_cleanables(self):
+    def list_cleanables(self) -> list[str]:
         """
-        List non-banned and non-admin users in the cache/database.
+        Lists non-banned and non-admin users in the cache/database.
         
         Returns:
             list[str]: A list of user identifiers in the format "auth_method:user_id".
@@ -1008,10 +1073,10 @@ class UserManager:
 
     def clean_cache(self) -> int:
         """
-        Clean the cache by removing non-banned and non-admin users.
+        Cleans the cache/user database by removing non-banned and non-admin users.
 
         Returns:
-            int: The number of users removed from the cache.
+            int: The number of users removed from the cache/database.
         """
         removed_count = 0
         with self.db_connection as db:
