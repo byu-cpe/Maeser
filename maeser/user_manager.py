@@ -386,17 +386,36 @@ class GithubAuthenticator(BaseAuthenticator):
 
 
 class LDAPAuthenticator(BaseAuthenticator):
-    def __init__(self, 
-                 name: str,
-                 ldap_server_urls: list, 
-                 ldap_base_dn: str, 
-                 attribute_name: str, 
-                 search_filter: str, 
-                 object_class: str, 
-                 attributes: list, 
-                 ca_cert_path: str = '/etc/ssl/certs', 
-                 connection_timeout: int = 5):
-        
+    """
+    Handles authentication with an LDAP server.
+
+    Args:
+        name (str): A human-readable identifier for this authenticator instance.
+        ldap_server_urls (list): List of LDAP server URLs to connect to (e.g., 
+            ["ldap://example.com", "ldaps://secure.example.com"]).
+        ldap_base_dn (str): The base Distinguished Name (DN) used as the search root in LDAP queries.
+        attribute_name (str): The LDAP attribute used to match the username (e.g., "uid", "cn").
+        search_filter (str): An LDAP search filter string, which may include placeholders 
+            for dynamic values (e.g., "(uid={username})").
+        object_class (str): The LDAP objectClass to filter entries (e.g., "inetOrgPerson").
+        attributes (list): List of LDAP attributes to retrieve from search results.
+        ca_cert_path (str, optional): Path to the directory or file containing trusted 
+            Certificate Authority (CA) certificates for LDAPS connections. Defaults to '/etc/ssl/certs'.
+        connection_timeout (int, optional): Timeout in seconds for establishing an LDAP 
+            connection. Defaults to 5.
+    """
+    def __init__(
+    self, 
+    name: str,
+    ldap_server_urls: list, 
+    ldap_base_dn: str, 
+    attribute_name: str, 
+    search_filter: str, 
+    object_class: str, 
+    attributes: list, 
+    ca_cert_path: str = '/etc/ssl/certs', 
+    connection_timeout: int = 5,
+    ):
         self.name = name
         self.ldap_server_urls = ldap_server_urls
         self.ldap_base_dn = ldap_base_dn
@@ -422,11 +441,12 @@ class LDAPAuthenticator(BaseAuthenticator):
 
     @property
     def style(self):
+        """The LoginStyle for an LDAP server (``LoginStyle('envelope-fill', 'maeser.login', direct_submit=False)``)."""
         return self._login_style
     
     @property
     def next_ldap_server(self)-> Union[Server, None]:
-        """Return the next available LDAP server in a round-robin fashion."""
+        """The next available LDAP server, returned in a round-robin fashion."""
         if len(self.ldap_usable_servers) == 0:
             print("NO REACHABLE LDAP SERVER!")
             return None
@@ -474,6 +494,21 @@ class LDAPAuthenticator(BaseAuthenticator):
         return usable_servers
 
     def authenticate(self, ident: str, password: str) -> Union[tuple, None]:
+        """Authenticate a user with LDAP authentication.
+
+        The data returned after a successful authentication is as follows:
+
+        - **ident**: The user ID (same as **ident** passed into the function).
+        - **display_name**: The display name of the user, as determined by the LDAP authenticator.
+        - **user_group** The group the user belongs to, as determined by the LDAP authenticator.
+
+        Args:
+            ident (str): The user ID.
+            password (str): The user's password.
+
+        Returns:
+            (tuple | None): A tuple containing the user's username, real name, and user group if authentication is successful; otherwise None.
+        """
         if self.next_ldap_server is None:
             return None
         try:
@@ -521,7 +556,7 @@ class LDAPAuthenticator(BaseAuthenticator):
             ident (str): The user's identifier.
 
         Returns:
-            Union[User, None]: The User object if found, None otherwise.
+            (User | None): The User object if found; None otherwise.
         """
         if self.next_ldap_server is None:
             return None
