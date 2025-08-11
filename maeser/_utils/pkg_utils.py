@@ -15,7 +15,7 @@ from types import ModuleType
 def autoimport_all(pkg: ModuleType, include_packages: bool = False) -> list[str]:
     """Discovers and import all modules (and optionally subpackages) in the given package.
 
-    To use this in a subpackage, add the following line of code to your submodule's __init__.py:
+    To use this in a subpackage, add the following lines of code to your submodule's __init__.py:
 
     ```python
     __all__ = autoimport_all(sys.modules[__name__], include_packages=False)
