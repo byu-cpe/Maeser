@@ -231,7 +231,7 @@ class BaseAuthenticator(ABC):
             **kwargs: Keyword arguments for authentication.
 
         Returns:
-            tuple or None: A tuple containing the user's username, real name, and user group if authentication is successful, otherwise None.
+            (tuple | None): A tuple containing the user's username, real name, and user group if authentication is successful; otherwise None.
         """
         pass
 
@@ -244,7 +244,7 @@ class BaseAuthenticator(ABC):
             ident (str): The identifier of the user to fetch.
 
         Returns:
-            User or None: The fetched user object or None if not found.
+            (User | None): The fetched user object or None if not found.
                 ENSURE THAT YOU SET max_requests TO THE CORRECT VALUE FOR THE USER!
         """
         pass
@@ -295,12 +295,18 @@ class GithubAuthenticator(BaseAuthenticator):
         - "**code**": The authorization code.
         - "**state**": The OAuth state. This needs to be the same as **oauth_state** for authentication to pass.
 
+        The data returned after a successful authentication is as follows:
+
+        - **ident**: The user ID (same as **ident** passed into the function).
+        - **display_name**: The display name of the user, as determined by the LDAP authenticator.
+        - **user_group** The group the user belongs to, as determined by the LDAP authenticator.
+
         Args:
             request_args (dict): The request arguments containing the authorization code and state.
             oauth_state (str): The state value used to prevent CSRF attacks.
 
         Returns:
-            tuple or None: A tuple containing the user's username, real name, and user group if authentication is successful, otherwise None.
+            (tuple | None): A tuple containing the user's username, real name, and user group if authentication is successful; otherwise None.
         """
         if request_args['state'] != oauth_state or 'code' not in request_args:
             print(request_args['state'], oauth_state, 'ERROR') 
@@ -349,7 +355,7 @@ class GithubAuthenticator(BaseAuthenticator):
             ident (str): The username of the user to fetch.
 
         Returns:
-            User or None: The fetched user object or None if the user is not found.
+            (User | None): The fetched user object or None if the user is not found.
         """
         user_info_url = f'https://api.github.com/users/{ident}'
         response = requests.get(user_info_url)
@@ -930,7 +936,7 @@ class UserManager:
             user_id (str): The identifier of the user.
 
         Returns:
-            Union[int, None]: The number of requests remaining, or None if the user is not found.
+            (int | None): The number of requests remaining, or None if the user is not found.
 
         Raises:
             ValueError: If the provided auth_method is invalid.
