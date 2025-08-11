@@ -11,6 +11,14 @@ The admin portal currently has the following functionality:
 
 The admin portal is relatively new and is still a work in progress; ideally, there will be more functions in the future, like being able launch different handlers (such as [**Discord**](./discord.md)).
 
+> **Note:** The admin portal requires extra dependencies that are not installed with Maeser. To install these dependencies, run:
+>
+> ```bash
+> pip install maeser[admin_portal]
+> ```
+>
+> If you set up Maeser using the [**Development Setup Guide**](./development_setup.md), then you can skip this step (these dependencies were installed when `poetry install --all-extras` was run).
+
 ---
 
 ## Creating a Course

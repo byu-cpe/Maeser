@@ -103,7 +103,7 @@ This will:
 
 1. **Verify that a venv exists.** If no virtual environment is found, a new one will be created in the `venv/` directory.
 2. **Install poetry** (used for package management).
-3. **Install Maeser's dependencies** using poetry.
+3. **Install Maeser's dependencies** using poetry. This includes Maeser's main dependencies as well as all extra dependency groups (`maeser[admin_portal]` and `maeser[discord]`).
 4. **Install development dependencies** (including Sphinx, pytest, etc.).
 5. **Install the editable Maeser package** (`pip install -e .`).
 6. **Run the pytests** to verify everything is working.

@@ -8,8 +8,16 @@ While the Maeser package primarily supports creating flask web apps, you can use
 
 ## Prerequisites
 
-- **The Maeser Repository:** cloned locally and set up using the [**Development Setup Guide**](./development_setup.md).
+- **The Maeser Repository:** set up locally, either using the [**Development Setup Guide**](./development_setup.md) (recommended) or using the [**User Setup Guide**](../user-setup/user_setup.md) and downloading the `dynamic_implementations/` directory from the repository.
 - **One or More Chatbot Course Models:** created manually or using the [**Admin Portal**](./admin_portal.md) (recommended). If created manually, be sure to follow the [**Required Files and Directory Structure**](./handler_usage.md#required-files-and-directory-structure).
+
+> **Note:** The discord handler requires extra dependencies that are not installed with Maeser. To install these dependencies, run:
+>
+> ```bash
+> pip install maeser[discord]
+> ```
+>
+> If you set up Maeser using the [**Development Setup Guide**](./development_setup.md), then you can skip this step (these dependencies were installed when `poetry install --all-extras` was run).
 
 ---
 
