@@ -6,6 +6,7 @@ This module provides a controller for fetching the remaining requests for a user
 
 from maeser.user_manager import UserManager, User
 
+
 def controller(user_manager: UserManager, current_user: User) -> dict[str, int | None]:
     """Fetch the remaining requests for the current user.
 
@@ -20,4 +21,8 @@ def controller(user_manager: UserManager, current_user: User) -> dict[str, int |
     Returns:
         dict: A dictionary containing the number of requests remaining for the user.
     """
-    return {'requests_remaining': user_manager.get_requests_remaining(current_user.auth_method, current_user.ident)}
+    return {
+        "requests_remaining": user_manager.get_requests_remaining(
+            current_user.auth_method, current_user.ident
+        )
+    }
