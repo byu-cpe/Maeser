@@ -283,7 +283,7 @@ class GithubAuthenticator(BaseAuthenticator):
     
     @property
     def style(self) -> LoginStyle:
-        """LoginStyle: Returns the LoginStyle for GitHub (`LoginStyle('github', 'maeser.github_authorize', direct_submit=True)`)."""
+        """LoginStyle: The LoginStyle for GitHub (``LoginStyle('github', 'maeser.github_authorize', direct_submit=True)``)."""
         return self._login_style
 
     def authenticate(self, request_args: dict, oauth_state: str) -> Union[tuple, None]:
