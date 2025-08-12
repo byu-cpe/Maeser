@@ -206,10 +206,6 @@ def get_universal_rag(
             }
         )
 
-        # Append result and trim to last 10 messages
-        new_messages = messages + [result]
-        trimmed_messages = new_messages[-10:]
-
         # Log token usage
         def count_tokens(msgs):
             content = ""
@@ -217,10 +213,7 @@ def get_universal_rag(
                 content += getattr(m, "content", str(m))
             return len(_enc.encode(content))
 
-        print(
-            f"📦 Token count for latest 10 messages: {count_tokens(trimmed_messages)}"
-        )
-        return {"messages": trimmed_messages}
+        return {"messages": [result]}
 
     def summarize_chat_history_node(state: _GraphState) -> Dict[str, Any]:
         messages = state.get("messages", [])
