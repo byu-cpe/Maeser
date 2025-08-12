@@ -21,7 +21,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
 documents = text_splitter.create_documents([text])
 
-# Save the vectorized text to a local FAISS vectorstore
+# Save the vectorized text to a local FAISS vector store
 
 from langchain_community.vectorstores import FAISS
 

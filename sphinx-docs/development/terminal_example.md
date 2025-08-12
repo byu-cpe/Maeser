@@ -1,173 +1,176 @@
 # Terminal Example: Interactive CLI with Maeser
 
-This guide illustrates how to use the official CLI example (`example/terminal_example.py`) to run Maeser in a terminal-based chat interface. You’ll inspect the script, configure settings, launch the example, and learn how to customize your own command‑line tutor.
+This guide illustrates how to use the terminal example scripts to run Maeser in a command-line interface.
+
+The `example/apps/` directory contains three terminal examples:
+
+- `simple/terminal_simple.py`
+- `pipeline/terminal_pipeline.py`
+- `universal/terminal_universal.py`
+
+For more information on the simple, pipeline, and universal examples, see [**Maeser Example (with Flask & User Management)**](./flask_example.md). This guide will demonstrate the terminal interface using `universal/terminal_universal.py`. However, you may follow along with any of the example terminal scripts.
 
 ---
 
 ## Prerequisites
 
-- **Maeser development environment** set up (see `development_setup.md`).
-- **Python 3.10+** virtual environment activated.
-- **Maeser** installed in editable mode (`pip install -e .` or `make setup`).
-- **Required FAISS vectorstores** built and available (via `embedding.md`).
-- **`config.yaml`** configured with your OpenAI API key and file paths (see below).
+- **Maeser development environment** (see [**Development Setup**](development_setup)).
+- **Pre-built FAISS Vector Stores** at the paths referenced in your `config.yaml` file. The example scripts use the pre-built `byu` and `maeser` vector stores found in `example/resources/vectorstores`. See [**Embedding New Content**](embedding) for instructions on how to build and add your own vector stores.
 
 ---
 
 ## Configuring `config.yaml`
 
-Copy the example and set these fields:
+Maeser uses a simple config file for API keys and directories. To set up configuration, **make a copy of `example/apps/config_template.yaml`** and name it **`config.yaml`**.
 
-```yaml
-# RAG memory storage path (SQLite files)
-LOG_SOURCE_PATH: "path/to/chat_logs"
-# OpenAI API key for LLM calls
-OPENAI_API_KEY: "your-openai-key"
-# Directory with FAISS vectorstores
-VEC_STORE_PATH: "path/to/vectorstores"
-# Path for chat history logs
-CHAT_HISTORY_PATH: "path/to/chat_history"
-# LLM model (e.g., gpt-4o)
-LLM_MODEL_NAME: "gpt-4o"
+Configure the following fields in your `config.yaml` file:
+
+```{code-block} yaml
+:class: no-copybutton
+### An OpenAI API key is required for LLM calls ###
+
+api_keys:
+  openai_api_key: '<openai_api_key_here>'
+
+# ---Other configuration options found here--- #
+
+### Configure the LLM and text embedding models ###
+
+llm:
+  llm_model_name: gpt-4o-mini
+  llm_provider: openai
+  token_limit: 400
 ```
 
-These settings ensure the script can load your vectorstores, persist logs, and authenticate with OpenAI.
+**Field Descriptions**:
+
+- **openai_api_key**: Key to authenticate with OpenAI’s API.
+- **llm_** entries: Configuration for your LLM.
+
+> **Note:** Feel free to change other fields in `config.yaml` according to your needs (such as `vec_store_path` or `max_requests`). Since the terminal examples do not have user management, you can skip the GitHub and LDAP fields.
 
 ---
 
-## Inspect `terminal_example.py`
+## Inspect The Terminal Example Scripts
 
-Open **`example/terminal_example.py`** and explore its main sections:
+The following sections will go through `universal/terminal_universal.py` section-by-section and explain how the code works. If you are only interested in running the script, then skip to [**Run the Terminal Example**](#run-the-terminal-example).
+
+Most of the code can be left unchanged and should work as-is assuming that your `config.yaml` file is configured correctly. If your are using a different example script, pay attention to the notes at the bottom of each section explaining any differences.
 
 ### Imports & Environment Setup
+
+Imports necessary Maeser modules and config variables and sets the OpenAI API key in the environment.
+
 ```python
 from maeser.chat.chat_logs import ChatLogsManager
 from maeser.chat.chat_session_manager import ChatSessionManager
-from config import (
-    LOG_SOURCE_PATH, OPENAI_API_KEY,
-    VEC_STORE_PATH, CHAT_HISTORY_PATH,
-    LLM_MODEL_NAME
+from example.apps.config import (
+    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 import os
+
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 ```
-- **ChatLogsManager** records all messages.  
-- **ChatSessionManager** orchestrates branches and sessions.  
-- **Config imports** supply file paths and keys.
 
-### Prompt Definitions
-* These are useful definitions for the bot to work off as a prompt. The code splits this into two examples--multigroup and pipeline.
+### Chat Logs & Session Manager Setup
+
+Initializes **chat log management** and **session management** to track conversations and user queries.
+
 ```python
-# This is a Multigroup Example
-maeser_prompt: str = """
-You are speaking from the perspective of Karl G. Maeser.
-Answer questions about your life history only. {context}
-"""
-
-byu_prompt: str = """
-You are speaking about the history of BYU.
-Answer questions about BYU history only. {context}
-"""
+chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
+sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
 ```
 
+### Prompt Definitions
+
+Defines system prompts that give the chatbot its rules and personality.
+
 ```python
-# This is a pipeline example
-pipeline_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+# The prompt for a Universal RAG is a generalized prompt, often for providing answers across larger datasets,
+# but still specific to relevant course information.
+universal_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
     You will answer a question about your own life history or the history of BYU based on 
     the context provided.
-    Don't answer questions about other things.
-
+    If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
+    
     {context}
 """
 ```
-This Defines how the LLM should frame responses.
 
-### Pipeline Registration
-Pipelines are comprised of multiple RAGs. You may read up on Pipeline RAGs in [Graphs: Simple RAG vs Pipeline RAG](graphs)
+The `{context}` text is required and will be replaced with actual context from the vector stores when the chatbot is generating a response.
+
+> **Note:** The `simple/terminal_simple.py` script has one prompt for each vector store, whereas the scripts in `universal/` and `pipeline/` share one prompt across all vector stores.
+
+### RAG Graph Construction
+
+Creates a **Retrieval Augmented Generation (RAG) graph** for the chatbot to follow and registers the graph with the sessions manager.
+
 ```python
-from maeser.graphs.simple_rag import get_simple_rag
-from maeser.graphs.pipeline_rag import get_pipeline_rag
-from langgraph.graph.graph import CompiledGraph
+# One for the history of BYU and one for the life of Karl G. Maeser.
+# Ensure that topics are all lower case and spaces between words
+vectorstore_config = {
+    "byu history": f"{VEC_STORE_PATH}/byu",      # Vector store for BYU history.
+    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vector store for Karl G. Maeser.
+}
 
-# Simple RAG: Karl G. Maeser
-a_graph = get_simple_rag(
-    vectorstore_path=f"{VEC_STORE_PATH}/maeser",
-    memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db",
-    system_prompt_text=maeser_prompt,
-    model=LLM_MODEL_NAME
-)
-sessions_manager.register_branch(
-    branch_name="maeser",
-    branch_label="Karl G. Maeser History",
-    graph=a_graph
-)
-
-# Simple RAG: BYU History
-b_graph = get_simple_rag(
-    vectorstore_path=f"{VEC_STORE_PATH}/byu",
-    memory_filepath=f"{LOG_SOURCE_PATH}/byu.db",
-    system_prompt_text=byu_prompt,
-    model=LLM_MODEL_NAME
-)
-sessions_manager.register_branch(
-    branch_name="byu",
-    branch_label="BYU History",
-    graph=b_graph
-)
-
-# Pipeline RAG: combine both domains
-pipeline = get_pipeline_rag(
-    vectorstore_config={
-        "byu history": f"{VEC_STORE_PATH}/byu",
-        "karl g maeser": f"{VEC_STORE_PATH}/maeser"
-    },
-    memory_filepath=f"{LOG_SOURCE_PATH}/pipeline_memory.db",
+byu_maeser_universal_rag: CompiledGraph = get_universal_rag(
+    vectorstore_config=vectorstore_config,
+    memory_filepath=f"{LOG_SOURCE_PATH}/universal_memory.db",
     api_key=OPENAI_API_KEY,
-    system_prompt_text=(
-        "You are a combined tutor for Maeser & BYU history. Use contexts: {context}"
-    ),
-    model=LLM_MODEL_NAME
+    system_prompt_text=(universal_prompt),
+    model=LLM_MODEL_NAME,
 )
-sessions_manager.register_branch(
-    branch_name="pipeline",
-    branch_label="Pipeline",
-    graph=pipeline
-)
+
+sessions_manager.register_branch(branch_name="universal", branch_label="BYU and Karl G. Maeser History", graph=byu_maeser_universal_rag)
 ```
-- **Registers three branches** for selection at runtime.
+
+> **Note:** The `simple/terminal_simple.py` script creates and registers one RAG graph for each individual vector store, whereas the scripts in `universal/` and `pipeline/` create one branch that accesses all vector stores.
 
 ### CLI Menu & Session Loop
-This is your way of interfacing with the model, in the absence of a more standard GUI.
-```python
-import pyinputplus as pyip
 
-print("Welcome to the Maeser terminal example!")
+This is your way of interfacing with the model, in the absence of a more standard GUI.
+
+```python
 while True:
-    # Build menu of branch labels
-    choices = {v['label']: k for k, v in sessions_manager.branches.items()}
-    choices["Exit terminal session"] = "exit"
-    branch_label = pyip.inputMenu(
-        list(choices.keys()), prompt="Select a branch:\n", numbered=True
+    # structure branches dictionary for input menu
+    label_to_key = {value['label']: key for key, value in sessions_manager.branches.items()}
+    label_to_key["Exit terminal session"] = "exit"
+
+    # select a branch
+    branch = pyip.inputMenu(
+        list(label_to_key.keys()),
+        prompt="Select a branch: \n",
+        numbered=True
     )
-    if branch_label == "Exit terminal session":
+
+    # get the key for the selected branch
+    if branch != "Exit terminal session":
+        branch = label_to_key[branch]
+    else:
         print("Exiting terminal session.")
         break
-    branch = choices[branch_label]
 
-    # Start a new conversation session
-    sess = sessions_manager.get_new_session_id(branch)
-    print(f"Session {sess} created for branch '{branch}'.")
-    print("Type 'exit' or 'quit' to end the session.\n")
+    # create a new session
+    session = sessions_manager.get_new_session_id(branch)
+    print(f"\nSession {session} created for branch {branch}.")
+    print("Type 'exit' to end the session.\n")
 
-    # Converse until exit
+    # loop for conversation
     while True:
-        user_input = input("User > ")
-        if user_input.lower() in ("exit", "quit"):
+        # get user input
+        user_input = input("User:\n> ")
+
+        # check for exit
+        if user_input == "exit" or user_input == 'quit':
             print("Session ended.\n")
             break
-        response = sessions_manager.ask_question(user_input, branch, sess)
-        print(f"System > {response['messages'][-1]}\n")
+
+        # get response
+        response = sessions_manager.ask_question(user_input, branch, session)
+
+        print(f"\nSystem:\n{response['messages'][-1]}\n")
 ```
+
 - **pyinputplus** creates a numbered menu for branch selection.  
 - **get_new_session_id** initializes a fresh context.  
 - **ask_question** sends user input to the chosen graph and returns the answer.
@@ -176,29 +179,21 @@ while True:
 
 ## Run the Terminal Example
 
-Activate your venv and run:
+[**Activate your venv**](./development_setup.md#activating-the-virtual-environment) and run:
+
 ```bash
 python example/terminal_example.py
 ```
-1. **Select** a branch (e.g., "Karl G. Maeser History").  
-2. **Ask** questions and receive AI responses.  
+
+1. **Select a branch** (e.g., "Karl G. Maeser History").
+2. **Ask questions** and receive AI responses.
 3. Type **`exit`** or **`quit`** to end the session.
-
----
-
-## Customization
-
-- **Add Branches:** Register your own `CompiledGraph` before the loop.
-- **Modify Prompts:** Tweak `maeser_prompt` and `byu_prompt` for tone and detail.
-- **Change Menu Behavior:** Use `pyinputplus.inputMenu` parameters (e.g., `limit`, `timeout`).
-- **Logging:** Adjust `ChatLogsManager` settings or paths for audit/analysis.
 
 ---
 
 ## Next Steps
 
-- Explore the **Flask example** (`flask_example_user_mangement.py`) for web UI.
-- Embed new knowledge bases via **`embedding.md`**.
-- Design advanced workflows in **`custom_graphs.md`**.
-- Review Maeser’s system architecture in **`architecture.md`**.
-
+- Explore the [**Flask examples**](./flask_example.md) for web UI.
+- Embed new knowledge bases for use with Maeser (see [**Embedding New Content**](./embedding.md)).
+- Learn more about the Simple, Pipeline, and Universal RAG in [**Graphs**](./graphs.md).
+- Review Maeser’s system architecture in [**Architecture Overview**](./architecture.md).

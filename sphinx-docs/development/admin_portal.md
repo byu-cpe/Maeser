@@ -1,15 +1,23 @@
 # The Admin Portal: Generating and Modifying Course Models
 
-Recall that in order to give the Maeser chatbot resources to pull from, the resources must be converted to an LLM-friendly format called a **vectorstore**. Writing Python scripts to [**embed new content**](./embedding.md) in this way can be cumbersome. To simplify the process of creating new vectorstores and course models, the **Admin Portal** enables the ability to vectorize content and control chatbot behavior via a simple web client.
+Recall that in order to give the Maeser chatbot resources to pull from, the resources must be converted to an LLM-friendly format called a **vector store**. Writing Python scripts to [**embed new content**](./embedding.md) in this way can be cumbersome. To simplify the process of creating new vector stores and course models, the **Admin Portal** vectorizes content and controls chatbot behavior via a simple web client.
 
-The admin portal currently does the following:
+The admin portal currently has the following functionality:
 
 - **Create a New Course**
 - **Manage Courses**
 - **Modify a Course**
 - **Delete a Course**
 
-The admin portal is relatively new and is still a work in progress; ideally, there will be more functions in the future, like being able launch different handlers (like [**Discord**](./discord.md)).
+The admin portal is relatively new and is still a work in progress; ideally, there will be more functions in the future, like being able launch different handlers (such as [**Discord**](./discord.md)).
+
+> **Note:** The admin portal requires extra dependencies that are not installed with Maeser. To install these dependencies, run:
+>
+> ```bash
+> pip install maeser[admin_portal]
+> ```
+>
+> If you set up Maeser using the [**Development Setup Guide**](./development_setup.md), then you can skip this step (these dependencies were installed when `poetry install --all-extras` was run).
 
 ---
 
@@ -23,7 +31,7 @@ The course ID will be used by students to select your course when interacting wi
 
 ### PDF Datasets
 
-A **dataset** is a set of PDFs that will be processed into a single vectorstore. It is best practice to make one dataset per type of resource (e.g. one dataset for your textbook, another dataset for your homework files, another dataset for your labs, etc.). The handlers in `dynamic_implementations/` will use the names of the datasets to identify the most relevant resources to pull from when interacting with a student.
+A **dataset** is a set of PDFs that will be processed into a single vector store. It is best practice to make one dataset per type of resource (e.g. one dataset for your textbook, another dataset for your homework files, another dataset for your labs, etc.). The handlers in `dynamic_implementations/` will use the names of the datasets to identify the most relevant resources to pull from when interacting with a student.
 
 To add a dataset, click "**Add Dataset**." You may add as many PDF files from a dataset as you would like using the dialog window, and you may add as many datasets as you would like using the "**Add Dataset**" button.
 
@@ -39,7 +47,7 @@ To add a rule, click "**Add Rule**." If you are unsure what rules to give your c
 
 ### Submit Model
 
-When you are done, click "**Submit Model**" (in "**Design Model**") or "Update Model" (in "**Update Model**"). The webpage will hold while the data is being processed, and progress will be printed to the terminal. If the process completes successfully, the model will be saved to your bot store path (`dynamic_implementations/bot_data` by default) and you will be redirected to the "**Manage Models**" page.
+When you are done, click "Submit Model" (in "**Design New Model**") or "Update Model" (in "**Edit Model**"). The webpage will hold while the data is being processed, and progress will be printed to the terminal. If the process completes successfully, the model will be saved to your bot store path (`dynamic_implementations/bot_data` by default) and you will be redirected to the "**Manage Models**" page.
 
 ---
 
@@ -71,6 +79,6 @@ USER = {
 }
 ```
 
-After you have set up rules and such, you will need to set up your handlers, found in `dynamic_implementations/`. Currently, this directory only has handlers for a simple web server and for Discord.
+After you have set up rules and such, you will need to set up your handlers, found in [**`dynamic_implementations/`**](./handler_usage.md#dynamic-implementations-of-generate_responsepy). Currently, this directory only has handlers for a simple web server and for Discord.
 
 Follow the guide at [**Setting Up a Discord Bot**](discord.md) to integrate your chatbot with Discord.

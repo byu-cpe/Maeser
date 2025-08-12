@@ -104,6 +104,10 @@ requests = "^2.32.3"
 
 # Declare your project's development dependencies here
 [tool.poetry.group.dev.dependencies]
+# Libraries used by scripts in example directory
+Wikipedia-API = "^0.8.1"
+PyInputPlus = "^0.2.12"
+
 # Pytest for testing Maeser
 pytest = "^8.2"
 

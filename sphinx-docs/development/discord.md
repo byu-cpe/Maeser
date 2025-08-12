@@ -2,14 +2,22 @@
 
 While the Maeser package primarily supports creating flask web apps, you can use `dynamic_implementations/discord_handler.py` to create a **Discord bot** that interfaces with students on a discord server with the same functionality. This guide provides instructions on setting up your own Maeser Discord bot.
 
-> **Note:** The `dynamic_implementations` directory contains examples of handlers that interface with maeser using `dynamic_implementations/generate_response.py`. In the future, `generate_response.py` and certain popular handlers will be added directly to the maeser package, but for now, these scripts are provided externally as working examples.
+> **Note:** The `dynamic_implementations` directory contains [**examples of handlers**](./handler_usage.md#dynamic-implementations-of-generate_responsepy) that interface with Maeser using the external [**`dynamic_implementations/generate_response.py` module**](./handler_usage.md). In the future, `generate_response.py` and certain popular handlers will be added directly to the Maeser package, but for now, these scripts are provided externally as working examples.
 
 ---
 
 ## Prerequisites
 
-- **The Maeser Repository:** cloned locally and set up using the [**Development Setup Guide**](./development_setup.md).
-- **One or More Chatbot Course Models:** created manually or using the [**Admin Portal**](./admin_portal.md) (recommended).
+- **The Maeser Repository:** set up locally, either using the [**Development Setup Guide**](./development_setup.md) (recommended) or using the [**User Setup Guide**](../user-setup/user_setup.md) and downloading the `dynamic_implementations/` directory from the repository.
+- **One or More Chatbot Course Models:** created manually or using the [**Admin Portal**](./admin_portal.md) (recommended). If created manually, be sure to follow the [**Required Files and Directory Structure**](./handler_usage.md#required-files-and-directory-structure).
+
+> **Note:** The discord handler requires extra dependencies that are not installed with Maeser. To install these dependencies, run:
+>
+> ```bash
+> pip install maeser[discord]
+> ```
+>
+> If you set up Maeser using the [**Development Setup Guide**](./development_setup.md), then you can skip this step (these dependencies were installed when `poetry install --all-extras` was run).
 
 ---
 
@@ -58,7 +66,7 @@ Be sure to save your changes before leaving this page.
 
 ### OAuth2
 
-This is a key part of the setup process. Scroll down to "OAuth2 URL Generator" and select `bot`; a new menu labeled "Bot Permissions" will appear below the OAuth2 URL Generator. The following options (all under "Text Permissions") must be ticked enabled in order for the bot to run properly. **It will not work if these are not marked.**
+This is a key part of the setup process. Scroll down to "OAuth2 URL Generator" and select `bot`; a new menu labeled "Bot Permissions" will appear below the OAuth2 URL Generator. The following options (all under "Text Permissions") must be ticked enabled in order for the bot to run properly. **It will not work if these are not marked:**
 
 - Send Messages
 - Send Messages in Threads
@@ -101,3 +109,5 @@ To use your Discord Bot, you may message the bot within a server or directly mes
 - `!start` to begin a new conversation at any time, in any course.
 - `!end` to end a conversation.
 - Type in a course code from any set up courses. If the course you type is unavailable, it will give you a list of courses and prompt you for a course ID again.
+- Ask it questions just like you would in the web application. It's status will update to "typing..." while it is generating a response.
+- The Discord bot has some functionality for pulling figures from the course textbook/resources if figures are present in the course's vector store/dataset folders. However, the figure extraction script used by the Admin Portal is rudimentary and can use much improvement.

@@ -11,7 +11,6 @@ The **Windows Subsystem for Linux (WSL)** is a compatibility layer that allows y
 **Why use WSL for Maeser development?**
 
 - **Unified Environment**: Use Linux-based tooling (bash, Python, make) directly on Windows.  
-- **Consistency**: Mirror Linux production setups used by the project's Makefiles.
 - **Integration**: Access Windows files from Linux and vice versa, and use [VS Code’s WSL extension](#using-vscode-with-wsl) for a seamless IDE experience.
 
 ---
@@ -25,7 +24,7 @@ The **Windows Subsystem for Linux (WSL)** is a compatibility layer that allows y
    wsl --install
    ```
 
-   This single command enables required features, downloads the Linux kernel, sets WSL 2 as default, and installs Ubuntu ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/install)).
+   This single command enables required features, downloads the Linux kernel, and installs Ubuntu ([learn.microsoft.com](https://learn.microsoft.com/en-us/windows/wsl/install)).
 
 3. **Restart** your machine when prompted.
 4. On reboot, **complete the Ubuntu setup** by opening Ubuntu (via the Windows Start Menu) and creating your Linux user account and password.
@@ -72,7 +71,7 @@ This file is automatically applied on WSL restarts ([en.wikipedia.org](https://e
 
 ## Clone & Set Up Maeser in WSL
 
-Once WSL is set up on your machine, the process for setting up Maeser is identical to setting up the project for Linux. Follow the setup guide at [**Development Setup**](development_setup.md) to get Maeser up and running.
+Once WSL is set up on your machine, the process for setting up Maeser is identical to setting up the project for Linux. Follow the instructions for Linux users at [**Development Setup**](development_setup.md) to get Maeser up and running. Make sure to do this in your **Ubuntu shell** (or equivalent WSL Distribution), **not in Powershell**.
 
 ---
 
@@ -91,8 +90,7 @@ Once WSL is set up on your machine, the process for setting up Maeser is identic
 
 ## Accessing Windows Files
 
-- Windows drives are mounted under `/mnt`, e.g., your `C:` drive at `/mnt/c`.  
-- To edit files on Windows from WSL, navigate to `/mnt/c/path/to/file` and open them with Linux editors or VS Code.
+Windows drives are mounted under `/mnt`, e.g., your `C:` drive at `/mnt/c`. In general, however, you should create and manage Linux projects within the WSL file system (e.g. in `~/projects/...`) for best file I/O performance and system permissions.
 
 ---
 
@@ -101,4 +99,4 @@ Once WSL is set up on your machine, the process for setting up Maeser is identic
 - [**Microsoft’s WSL Install Guide:**](https://learn.microsoft.com/en-us/windows/wsl/install) Detailed walkthrough for various Windows versions.
 - [**VS Code: Developing in WSL:**](https://code.visualstudio.com/docs/remote/wsl) Helpful information on integrating WSL with VS Code.
 - [**WSL Overview & Tutorials:**](https://learn.microsoft.com/en-us/windows/wsl/) In-depth docs on WSL features and GUI support.  
-- [**WSL FAQ**](https://learn.microsoft.com/en-us/windows/wsl/faq): Answers to common questions about WSL usage.
+- [**WSL FAQ:**](https://learn.microsoft.com/en-us/windows/wsl/faq) Answers to common questions about WSL usage.

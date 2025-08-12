@@ -1,6 +1,6 @@
 # Using Maeser with External Handlers
 
-The `dynamic_implementations/generate_response.py` module provides a unified interface for routing user input to Maeser’s RAG-powered chatbot sessions. It is designed to be handler-agnostic, allowing seamless integration with various interfaces such as Discord, Microsoft Teams, Flask-based UIs, and more.
+The `dynamic_implementations/generate_response.py` module provides a unified interface for routing user input to Maeser’s RAG-powered chatbot sessions. It is designed to be handler-agnostic, allowing seamless integration with various interfaces such as Discord, Microsoft Teams, Flask-based UIs, and more. A few implementations of this workflow can be found [**in the `dynamic_implementations/` directory**](#dynamic-implementations-of-generate_responsepy).
 
 This script encapsulates the following:
 
@@ -84,6 +84,13 @@ dataset3
 ```
 
 - The names ("course1", "rule1", "dataset1") are placeholders, and there is no limit to the number of rules and datasets in a course.
-- Due to a file reading bug, there must be no empty lines in the bot.txt file for it to read.
+- **WARNING:** Due to a file reading bug, there must be no empty lines in the bot.txt file for it to read.
 
 While `bot.txt` can be altered manually, you should edit your courses using the [**Admin Portal**](./admin_portal.md) to update `bot.txt` automatically.
+
+## Dynamic Implementations of `generate_response.py`
+
+A few simple implementations of `generate_response.py` can be found in the `dynamic_implementations/` directory:
+
+- **`discord_handler.py`:** Integrates Maeser with the Discord API to create custom Discord chatbots. For instructions on setting up your own discord bot, see [**Setting Up a Discord Bot**](./discord.md).
+- **`webapp_handler.py`:** An implementation of Maeser using only `generate_response.py`. This is simply a proof-of-concept for how a more generalized Maeser API could interact with a web interface.

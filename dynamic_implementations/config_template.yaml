@@ -38,7 +38,7 @@ rate_limit:
   rate_limit_interval_seconds: 180      # The time interval in seconds that the rate limit is enforced
 
 
-### Configure the logging path and vectorstore path ###
+### Configure the logging path and vector store path ###
 
 logging:
   log_source_path: dynamic_implementations/chat_logs

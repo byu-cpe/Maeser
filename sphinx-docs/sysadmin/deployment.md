@@ -1,6 +1,6 @@
 # Deployment Guide
 
-While Flask makes it easy to test your Maeser project locally, deploying your Flask app publicly is a layered process. Flask handles the functionality of your application, but it is not a server in and of itself. For full functionality, a [WSGI](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface) server program is needed to serve your application. A typical Flask-based server connects a Flask app to a WSGI server, which communicates with an HTTP server by a "reverse proxy" protocol. See [Deploying to Production](https://flask.palletsprojects.com/en/stable/deploying/) from Flask's official documentation for more information.
+While Flask makes it easy to test your Maeser project locally, deploying your Flask app publicly is a layered process. Flask handles the functionality of your application, but it is not a server in and of itself. For full functionality, a [**WSGI**](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface) server program is needed to serve your application. A typical Flask-based server connects a Flask app to a WSGI server, which communicates with an HTTP server by a "reverse proxy" protocol. See [**Deploying to Production**](https://flask.palletsprojects.com/en/stable/deploying/) from Flask's official documentation for more information.
 
 **By following this guide, you will:**
 
@@ -24,6 +24,7 @@ Because there are several ways to accomplish these steps, this guide will not ex
 ## Configure Your App for Deployment
 
 Not much needs to be changed within the application itself; however, if you have been working on your app from the `example/` directory, it is recommended that you restructure your project to include only the files that your application needs and remove the `example_` prefix from any remaining files. If you follow this recommendation, keep in mind that `config.py` looks for these specific paths:
+
 ```python
     config_paths = [
         'config.yaml',
@@ -31,13 +32,17 @@ Not much needs to be changed within the application itself; however, if you have
         'example/config.yaml'
     ]
 ```
+
 These paths should be updated to match the path and name of your app's `config.yaml` file.
 
 Additionally, if you have created your Maeser project using the [**Development Setup Guide**](../development/development_setup.md), the Maeser package is located in the `maeser/` directory by default. Rather than having this package copied within your project, you should instead consider using the official Maeser PyPI package. Making this change is simple:
-1. In your project's virtual environment, execute the following command:  
-```bash
-pip install maeser
-```
+
+1. In your project's virtual environment, execute the following command:
+
+    ```bash
+    pip install maeser
+    ```
+
 2. Once the package is installed successfully, remove the `maeser/` directory from your project.
 3. All done! Your project should now reference Maeser functions from the PyPI package instead of from `maeser/`. Run your project locally to make sure these changes were successful.
 
@@ -61,7 +66,7 @@ Keep in mind that if you are using GitHub authentication, you will need to updat
 
 Running your WSGI server with a **reverse proxy** is standard for Flask apps and is relatively straightforward. [**nginx**](https://flask.palletsprojects.com/en/stable/deploying/nginx/) is one of the most commonly used HTTP servers and has been tested to work with Maeser. The official Flask guide recommends using either [**nginx**](https://flask.palletsprojects.com/en/stable/deploying/nginx/) or [**Apache httpd**](https://flask.palletsprojects.com/en/stable/deploying/apache-httpd/) for setting up the reverse proxy, so follow the guide for either service and you should have a functioning HTTP server in no time.
 
-Once your HTTP server is configured, follow the guide to [**Tell Flask it is Behind a Proxy**](https://flask.palletsprojects.com/en/stable/deploying/proxy_fix/). This will involve making a slight modification to your project's main Python script. Be sure to update your OAuth settings (as described [above](#configure-a-wsgi-server-to-run-your-app)) since the web server is now accessed through the HTTP server. Your Flask app should now be fully functional and accessible via reverse proxy.
+Once your HTTP server is configured, follow the guide to [**Tell Flask it is Behind a Proxy**](https://flask.palletsprojects.com/en/stable/deploying/proxy_fix/). This will involve making a slight modification to your project's main Python script. Be sure to update your GitHub OAuth settings ([**as described above**](#configure-a-wsgi-server-to-run-your-app)) since the web server is now accessed through the HTTP server. Your Flask app should now be fully functional and accessible via reverse proxy.
 
 ---
 
@@ -80,7 +85,7 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/path/to/maeser/app
-ExecStart=/path/to/maeser/app/.venv/bin/gunicorn -w 16 --access-logfile=- 'gmtk_flask:app'
+ExecStart=/path/to/maeser/app/.venv/bin/gunicorn -w 16 --access-logfile=- 'my_maeser_app:app'
 Restart=always
 
 [Install]
@@ -89,7 +94,7 @@ WantedBy=multi-user.target
 
 > **Note:** If you have configured your server with a different WSGI server program or with different arguments, update the `ExecStart=...` line accordingly, making sure that `/path/to/maeser/app/.venv/bin/gunicorn` is the path to your WSGI server program within your virtual environment's directory.
 
-Save this to your `my-maeser-app.service` file, and run `sudo systemctl daemon-reload`. This will reload the configurations for all daemons on your machine, which will allow systemctl to recognize the new maeser service.
+Save this to your `my-maeser-app.service` file, and run `sudo systemctl daemon-reload`. This will reload the configurations for all daemons on your machine, which will allow systemctl to recognize the new Maeser service.
 
 > **Note:** If you make changes to your service file in the future, always be sure to run `sudo systemctl daemon-reload` afterward.
 
@@ -108,7 +113,8 @@ The first command grants read-write-execute permissions for `www-data` for every
 > **Note:** You can use `getfacl` to check the permissions set for any file or directory.
 
 To start your service, run `sudo systemctl start my-maeser-app.service`, or equivalently, `sudo systemctl start my-maeser-app`. To confirm that it started successfully and is running, run `sudo systemctl status my-maeser-app.service`. If all is well, you should see something similar to the following:
-```
+
+```text
 ● my-maeser-app.service - My Maeser WSGI Server
      Loaded: loaded (/etc/systemd/system/my-maeser-app.service; enabled; preset: enabled)
      Active: active (running) since Tue 2025-07-08 16:59:05 MDT; 8s ago
@@ -116,25 +122,31 @@ To start your service, run `sudo systemctl start my-maeser-app.service`, or equi
 ```
 
 If your service is "**active (running)**", then you are all set! You should be able to access your server in a web browser just as before. Your web server will now run in the background and will automatically start up when your machine starts up. You can manage your service in the following ways:
+
 1. Start Service
-  ```bash
-  sudo systemctl start my-maeser-app.service
-  ```
+
+    ```bash
+    sudo systemctl start my-maeser-app.service
+    ```
 
 2. Stop Service
-  ```bash
-  sudo systemctl stop my-maeser-app.service
-  ```
+
+    ```bash
+    sudo systemctl stop my-maeser-app.service
+    ```
 
 3. Restart Service
-  ```bash
-  sudo systemctl restart my-maeser-app.service
-  ```
+
+    ```bash
+    sudo systemctl restart my-maeser-app.service
+    ```
 
 > **Note:** To see a live feed of your service's logs, you can use `journalctl`. Run the following command in its own terminal session:
+>
 > ```bash
 > sudo journalctl -fu my-maeser-app.service
 > ```
+>
 > The terminal window will now show the live output of your web server.
 
 ---
@@ -142,11 +154,12 @@ If your service is "**active (running)**", then you are all set! You should be a
 ## Deploy Your Server Publicly With a Domain Name
 
 There are three main things you will need to acquire to fully deploy your server:
+
 1. **A domain name**
 2. **An SSL/TLS certificate**
 3. **A private key**
 
-A **domain name** will need to be acquired from a [**domain name registrar**](https://en.wikipedia.org/wiki/Domain_name_registrar) — a company that registers domain names for a price (like [**Cloudflare**](https://www.cloudflare.com/products/registrar/), just as an example). Several registrars exist, so it is encouraged that you **do your own research** to find a domain name registrar that best fits your needs.
+A **domain name** will need to be acquired from a [**domain name registrar**](https://en.wikipedia.org/wiki/Domain_name_registrar) — a company that registers domain names for a price (like [**Cloudflare**](https://www.cloudflare.com/products/registrar/)). Several registrars exist, so it is encouraged that you **do your own research** to find a domain name registrar that best fits your needs.
 
 An **SSL/TLS certificate** and a **private key** are needed to upgrade your web server from HTTP to HTTPS, which encrypts messages between the user's web browser and the web server for added security. This certificate and key must be acquired from a **Certificate Authority (CA)**, such as [**Let's Encrypt**](https://letsencrypt.org/). There are many Certificate Authorities, and some offer certificates for free while others charge for them, so **do your own research** to find a Certificate Authority that best fits your needs.
 
@@ -154,9 +167,10 @@ An **SSL/TLS certificate** and a **private key** are needed to upgrade your web 
 
 Once you have acquired your domain name, SSL certificate, and private key, you will need to configure your web server to work with them. For an nginx server, refer to its [documentation](https://nginx.org/en/docs/http/configuring_https_servers.html) on how to configure your HTTP server with SSL. Configuration will vary for other HTTP server applications.
 
-Lastly, be sure to update your OAuth settings once more (as described [above](#configure-a-wsgi-server-to-run-your-app)) since the web server is now accessed through your site's domain name.
+Lastly, be sure to update your OAuth settings once more ([**as described above**](#configure-a-wsgi-server-to-run-your-app)) since the web server is now accessed through your site's domain name.
 
 ## Resources
+
 - [**Deploying to Production**](https://flask.palletsprojects.com/en/stable/deploying/), Flask documentation
 - The section on directives for a `.service file` from [**this DigitalOcean article**](https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files#the-service-section)
 - Wikipedia article on [**Web Server Gateway Interface (WSGI)**](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface)

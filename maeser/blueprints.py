@@ -3,7 +3,7 @@
 """
 Blueprint definitions for the Maeser application.
 
-This module sets up the Flask blueprint and associated routes for the Maeser
+This module sets up the **Flask blueprint** and associated routes for the Maeser
 application. It includes route handlers for chat interfaces, user management,
 feedback, and training functionalities.
 """
@@ -41,6 +41,12 @@ from .controllers import (
 class AppManager:
     """
     Manages the Maeser App and its configurations.
+
+    Takes in configuration for the Maeser application and applies the configuration when
+    adding the Flask blueprint.
+
+    Running **add_flask_blueprint()** after initializing an AppManager object will return
+    a Flask object with the blueprint added.
 
     Args:
         app (Flask): The Flask application instance.
@@ -135,34 +141,37 @@ class AppManager:
 
         # The following functions with no code are work in progress and will be added soon
 
-    def template_styles_css(self):
-        """
-        Template the styles.css file using Jinja2 templating
-        """
+    # def template_styles_css(self):
+    #     """
+    #     Template the styles.css file using Jinja2 templating
+    #     """
 
-    def template_chat_interface(self):
-        """
-        Template the chat_interface.html file using Jinja2 templating
-        """
+    # def template_chat_interface(self):
+    #     """
+    #     Template the chat_interface.html file using Jinja2 templating
+    #     """
 
-    def template_login(self):
-        """
-        Template the login.html file using Jinja2 templating
-        """
+    # def template_login(self):
+    #     """
+    #     Template the login.html file using Jinja2 templating
+    #     """
 
-    def template_training(self):
-        """
-        Template the training.html file using Jinja2 templating
-        """
+    # def template_training(self):
+    #     """
+    #     Template the training.html file using Jinja2 templating
+    #     """
 
-    def template_feedback(self):
-        """
-        Template the feedback_form.html file using Jinja2 templating
-        """
+    # def template_feedback(self):
+    #     """
+    #     Template the feedback_form.html file using Jinja2 templating
+    #     """
 
     def add_flask_blueprint(self) -> Flask:
         """
-        Add the Maeser blueprint to the Flask application.
+        Adds the Maeser blueprint to the Flask application.
+
+        This function does not mutate the AppManager instance itself but rather returns
+        a new Flask instance with the blueprint added.
 
         Returns:
             Flask: The Flask application instance with the blueprint registered.
@@ -242,10 +251,6 @@ class AppManager:
                 return login_api.github_auth_callback_controller(
                     current_user,
                     self.user_manager,
-                    main_logo_login=self.main_logo_login,
-                    main_logo_chat=self.main_logo_chat,
-                    favicon=self.favicon,
-                    app_name=self.app_name,
                 )
 
             @maeser_blueprint.route("/logout")
@@ -336,7 +341,6 @@ class AppManager:
             def train():
                 """Route for training."""
                 return training.controller(
-                    main_logo_login=self.main_logo_login,
                     main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name,
@@ -352,7 +356,6 @@ class AppManager:
             def feedback_form():
                 """Route for getting the feedback form."""
                 return feedback_form_get.controller(
-                    main_logo_login=self.main_logo_login,
                     main_logo_chat=self.main_logo_chat,
                     favicon=self.favicon,
                     app_name=self.app_name,

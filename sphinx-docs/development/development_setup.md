@@ -1,6 +1,6 @@
 # Development Setup
 
-This guide walks you through setting up a Maeser development environment from scratch. You’ll learn how to clone the repository, configure your Python environment, install dependencies, run tests, build the docs, and (optionally) set up on Windows via WSL.
+This guide walks you through setting up a Maeser development environment from scratch. You’ll learn how to clone the repository, configure your Python environment, install dependencies, run tests, and build the docs.
 
 ---
 
@@ -28,6 +28,8 @@ This gives you the latest `main` branch of the Maeser source code and examples.
 ## Create and Activate a Virtual Environment
 
 Python comes with a module named **venv** that provides support for creating and activating virtual environments. **Maeser's top-level Makefile will create a new virtual environment if one does not exist, so this step can be skipped;** however, some basic information about virtual environments is provided if you choose to create one manually or are unfamiliar with venv.
+
+> **Note:** `make setup` creates the virtual environment but does not activate it. You will still need to activate and deactivate the virtual environment manually within the project.
 
 ### Creating the Virtual Environment
 
@@ -99,11 +101,11 @@ make setup
 
 This will:
 
-1. **Verify that venv is set up.** If it isn't, a new virtual environment will be created.
+1. **Verify that a venv exists.** If no virtual environment is found, a new one will be created in the `venv/` directory.
 2. **Install poetry** (used for package management).
-3. **Install Maeser's dependencies** using poetry.
+3. **Install Maeser's dependencies** using poetry. This includes Maeser's main dependencies as well as all extra dependency groups (`maeser[admin_portal]` and `maeser[discord]`).
 4. **Install development dependencies** (including Sphinx, pytest, etc.).
-5. **Install the editable package** (`pip install -e .`).
+5. **Install the editable Maeser package** (`pip install -e .`).
 6. **Run the pytests** to verify everything is working.
 
 If you are having issues, try running each line from the Makefile's setup individually in your terminal:
@@ -140,7 +142,7 @@ OPENAI_API_KEY: "your-openai-key-here"
 # (Optional) GitHub OAuth Client ID/Secret if you plan to enable login
 GITHUB_CLIENT_ID: ""
 GITHUB_CLIENT_SECRET: ""
-# (Optional) Other settings (e.g., vectorstore paths, LDAP server details, etc.)
+# (Optional) Other settings (e.g., vector store path, LDAP server details, etc.)
 ```
 
 ---
@@ -171,7 +173,7 @@ Maeser’s documentation uses **Sphinx** (with **MyST** for Markdown support). T
 make html
 ```
 
-When the process finishes, open `sphinx-docs/_build/html/index.html` in your browser to view the built documentation.
+When the process finishes, open `sphinx-docs/_build/html/index.html` in your browser to view the documentation.
 
 ---
 
@@ -180,13 +182,13 @@ When the process finishes, open `sphinx-docs/_build/html/index.html` in your bro
 Several working example scripts can be found in the `example/apps/` directory. To run these examples locally, see [**Maeser Example (with Flask & User Management)**](flask_example.md).
 
 You’re all set!
-If you run into any issues, refer to the [**Dev Troubleshooting Guide**](dev-troubleshooting.md).
+If you run into any issues, refer to the [**Dev Troubleshooting Guide**](dev_troubleshooting.md).
 
 ---
 
 ## Windows Setup (WSL)
 
-If you’re on Windows, we recommend using [**WSL (Windows Subsystem for Linux)**](https://learn.microsoft.com/en-us/windows/wsl/install) for a smoother experience. WSL enables you to run the Maeser project in a Linux-powered shell, ensuring the best compatibility with the project's Makefiles and dependencies. For instructions on how to set up Maeser in WSL, read [**Development Setup with WSL (Windows Subsystem for Linux)**](wsl_development) in the documentation.
+If you’re on Windows, we recommend using [**WSL (Windows Subsystem for Linux)**](https://learn.microsoft.com/en-us/windows/wsl/install) for a smoother experience. WSL enables you to run the Maeser project in a Linux-powered shell, ensuring the best compatibility with the project's Makefiles and dependencies. For instructions on how to set up Maeser in WSL, see [**Development Setup with WSL (Windows Subsystem for Linux)**](wsl_development).
 
 ---
 
@@ -194,5 +196,3 @@ If you’re on Windows, we recommend using [**WSL (Windows Subsystem for Linux)*
 
 - **Hot-reload during development**: Run the Flask example in [**debug mode**](flask_example.md#enable-debug-mode-optional) to auto-restart on code changes.
 - **IDE integration**: Point your IDE’s interpreter to the `.venv` for linting and Intellisense.
-- **Keep your branches tidy**: Create a feature branch for each change and open a PR against `main`.
-- **Update docs as you code**: If you add or modify functionality, update the corresponding `.md` file in `sphinx-docs/`.

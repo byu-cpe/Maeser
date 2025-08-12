@@ -43,7 +43,7 @@ def vectorize_data(output_dir: str):
         metadatas=metadatas,
     )
 
-    # Save the vectorized text to a local FAISS vectorstore
+    # Save the vectorized text to a local FAISS vector store
     db = FAISS.from_documents(documents, OpenAIEmbeddings())
     db.save_local(output_dir)
 

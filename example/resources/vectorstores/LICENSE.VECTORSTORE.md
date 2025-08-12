@@ -1,4 +1,4 @@
-All vectorstores for Maeser are made available under this license.
+All vector stores for Maeser are made available under this license.
 See [here](https://en.wikipedia.org/wiki/Wikipedia:Copyrights) for additional information, as these vector stores are derived from Wikipedia pages.
 
 # Creative Commons Attribution-ShareAlike 4.0 International

@@ -53,7 +53,7 @@ RATE_LIMIT_INTERVAL = config.get('rate_limit', {}).get('rate_limit_interval_seco
 # Logging
 LOG_SOURCE_PATH = config.get('logging', {}).get('log_source_path')
 
-# Vectorstore
+# Vector Store
 VEC_STORE_PATH = config.get('vectorstore', {}).get('vec_store_path')
 VEC_STORE_TYPE = config.get('vectorstore', {}).get('vec_store_type', 'faiss')
 

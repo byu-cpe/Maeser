@@ -36,8 +36,8 @@ from langgraph.graph.graph import CompiledGraph
 # One for the history of BYU and one for the life of Karl G. Maeser.
 # Ensure that topics are all lower case and spaces between words
 vectorstore_config = {
-    "byu history": f"{VEC_STORE_PATH}/byu",      # Vectorstore for BYU history.
-    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vectorstore for Karl G. Maeser.
+    "byu history": f"{VEC_STORE_PATH}/byu",      # Vector store for BYU history.
+    "karl g maeser": f"{VEC_STORE_PATH}/maeser"  # Vector store for Karl G. Maeser.
 }
 
 byu_maeser_universal_rag: CompiledGraph = get_universal_rag(
