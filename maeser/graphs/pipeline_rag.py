@@ -244,7 +244,7 @@ def get_pipeline_rag(
             }
         )
         # Update conversation history with the generated answer.
-        return {"messages": messages + [generation]}
+        return {"messages": [generation]}
 
     # Build the state graph.
     graph = StateGraph(_GraphState)
