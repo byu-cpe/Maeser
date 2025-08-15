@@ -4,7 +4,7 @@ import discord
 import os
 import re
 from generate_response import handle_message, get_valid_course_ids, BOT_DATA_PATH
-from config import DISCORD_BOT_TOKEN, COURSE_ID
+from config import COURSE_ID, DISCORD_BOT_TOKEN, DISCORD_INTRO
 import shlex
 
 import maeser.graphs.universal_rag as RAG_VARS
@@ -97,6 +97,10 @@ async def command_say(
     """
     await channel.send(content)
 
+async def command_intro(channel: discord.abc.Messageable) -> None:
+    intro_content: str = DISCORD_INTRO.replace("@self", client.user.mention)
+    await channel.send(intro_content)
+
 
 @client.event
 async def on_ready():
@@ -130,6 +134,8 @@ async def on_message(message: discord.Message):
                         return
                     say_text: str = "\n".join(command_args[1:])
                     await command_say(message.channel, say_text)
+                case "!intro":
+                    await command_intro(message.channel)
 
         return
 

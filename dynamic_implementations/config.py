@@ -32,8 +32,8 @@ def load_config():
 config = load_config()
 
 # API Keys
-OPENAI_API_KEY = config.get("api_keys", {}).get("openai_api_key")
-GITHUB_CLIENT_SECRET = config.get("api_keys", {}).get("github_client_secret")
+OPENAI_API_KEY: str = config.get("api_keys", {}).get("openai_api_key")
+GITHUB_CLIENT_SECRET: str = config.get("api_keys", {}).get("github_client_secret")
 
 # Course ID
 COURSE_ID: str = config.get("course_id")
@@ -81,7 +81,8 @@ USERS_DB_PATH: str = config.get("user_management", {}).get("accounts_db_path")
 CHAT_HISTORY_PATH: str = config.get("user_management", {}).get("chat_history_path")
 
 # Discord
-DISCORD_BOT_TOKEN = config.get("discord", {}).get("discord_token")
+DISCORD_BOT_TOKEN: str = config.get("discord", {}).get("discord_token")
+DISCORD_INTRO: str = config.get("discord", {}).get("intro")
 
 # Teams Bot Credentials (Obtain from Azure Bot Service)
 TEAMS_APP_ID: str = os.getenv("TEAMS_APP_ID", "")
