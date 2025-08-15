@@ -71,6 +71,7 @@ This is a key part of the setup process. Scroll down to "OAuth2 URL Generator" a
 - Send Messages
 - Send Messages in Threads
 - Send TTS Messages
+- Manage Messages
 - Embed Links
 - Attach Files
 - Read Message History
