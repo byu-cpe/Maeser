@@ -97,9 +97,10 @@ async def command_say(
     """
     await channel.send(content)
 
+
 async def command_intro(channel: discord.abc.Messageable) -> None:
     """Sends the default intro message into **channel**.
-    
+
     This message can be configured in the "discord:intro" field in `config.yaml`.
 
     Args:
