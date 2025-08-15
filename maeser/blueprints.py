@@ -120,26 +120,26 @@ class AppManager:
         self.chat_head = chat_head
         self.favicon = favicon
 
-        self.login_text = login_text
-        self.changelog = changelog
-        self.chat_greeting = chat_greeting
-        self.branch_response = branch_response
+        self.login_text = login_text # TODO: Not implemented
+        self.changelog = changelog # TODO: Not implemented
+        self.chat_greeting = chat_greeting # TODO: Not implemented
+        self.branch_response = branch_response # TODO: Not implemented
 
-        self.animation = animation
+        self.animation = animation # TODO: Not implemented
 
-        self.primary_color = primary_color
-        self.secondary_color = secondary_color
-        self.button_color = button_color
-        self.button_color_active = button_color_active
-        self.button_color_inactive = button_color_inactive
-        self.fafa_button = fafa_button
-        self.logout_button = logout_button
-        self.new_chat_button = new_chat_button
-        self.help_train_button = help_train_button
+        self.primary_color = primary_color # TODO: Not implemented
+        self.secondary_color = secondary_color # TODO: Not implemented
+        self.button_color = button_color # TODO: Not implemented
+        self.button_color_active = button_color_active # TODO: Not implemented
+        self.button_color_inactive = button_color_inactive # TODO: Not implemented
+        self.fafa_button = fafa_button # TODO: Not implemented
+        self.logout_button = logout_button # TODO: Not implemented
+        self.new_chat_button = new_chat_button # TODO: Not implemented
+        self.help_train_button = help_train_button # TODO: Not implemented
 
         self.current_dir = os.path.dirname(os.path.abspath(__file__ + "/."))
 
-        # The following functions with no code are work in progress and will be added soon
+    # The following functions with no code are work in progress and will be added soon
 
     # def template_styles_css(self):
     #     """
