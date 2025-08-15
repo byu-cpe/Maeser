@@ -58,20 +58,6 @@ class AppManager:
         main_logo_chat (str | None, optional): URL or path to the chat logo. Defaults to None.
         chat_head (str | None, optional): URL or path to the chat header image. Defaults to None.
         favicon (str | None, optional): URL or path to the favicon. Defaults to None.
-        login_text (str | None, optional): Text to display on the login page. Defaults to None.
-        changelog (str | None, optional): Text to display as the changelog. Defaults to None.
-        chat_greeting (str, optional): Greeting message to display in the chat. Defaults to "Hello, how can I help you today?".
-        branch_response (str, optional): Response message to display when a branch is selected. Defaults to "Okay, I'll help you with ${action}!".
-        animation (bool, optional): Whether to enable toggle animations. Defaults to False.
-        primary_color (str, optional): Primary color of the application. Defaults to "#333".
-        secondary_color (str, optional): Secondary color of the application. Defaults to "#ccc".
-        button_color (str, optional): Color of the buttons. Defaults to "#0084ff".
-        button_color_active (str, optional): Color of the active buttons. Defaults to "#009e15".
-        button_color_inactive (str, optional): Color of the inactive buttons. Defaults to "#ddd".
-        fafa_button (str, optional): Color of the fafa buttons. Defaults to "#eee".
-        logout_button (str, optional): Color of the logout button. Defaults to "#333".
-        new_chat_button (str, optional): Color of the new chat button. Defaults to "#333".
-        help_train_button (str, optional): Color of the help train button. Defaults to "#eee".
     """
 
     def __init__(
