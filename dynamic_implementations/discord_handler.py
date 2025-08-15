@@ -112,6 +112,27 @@ async def command_intro(channel: discord.abc.Messageable) -> None:
     await channel.send(intro_content)
 
 
+async def run_admin_command(message: discord.Message, command_args: list[str]) -> None:
+    channel = message.channel
+    argc: int = len(command_args)
+    match command_args[0]:
+        case "!say":
+            if argc < 2:
+                await channel.send(
+                    "Usage: `!say [CONTENT]`\n"
+                    'Use quotes around CONTENT (e.g. `!say "Hello World!"`)\n'
+                    "Additional arguments will be sent on a new line."
+                )
+                return
+            say_text: str = "\n".join(command_args[1:])
+            await command_say(channel, say_text)
+            await message.delete()
+
+        case "!intro":
+            await command_intro(channel)
+            await message.delete()
+
+
 @client.event
 async def on_ready():
     print(f"✅ Discord Bot connected as {client.user}")
@@ -129,37 +150,23 @@ async def on_message(message: discord.Message):
         return
 
     # Only run admin commands if message is not a DM
-    if not isinstance(message.channel, discord.DMChannel):
+    if not isinstance(channel, discord.DMChannel):
         if is_admin_message(message):
             command_args = shlex.split(msg_text)
-            argc: int = len(command_args)
-            match command_args[0]:
-                case "!say":
-                    if argc < 2:
-                        await channel.send(
-                            "Usage: `!say [CONTENT]`\n"
-                            'Use quotes around CONTENT (e.g. `!say "Hello World!"`)\n'
-                            "Additional arguments will sent on a new line."
-                        )
-                        return
-                    say_text: str = "\n".join(command_args[1:])
-                    await command_say(message.channel, say_text)
-                case "!intro":
-                    await command_intro(message.channel)
-
+            await run_admin_command(message, command_args)
         return
 
     # -- MESSAGE PROCESSING --
-    async with message.channel.typing():
+    async with channel.typing():
         try:
             reply = handle_message(user_id, COURSE_ID, msg_text)
             # Send text reply
             if len(reply) > 1999:
                 chunks = split_string(reply)
                 for chunk in chunks:
-                    await message.channel.send(chunk)
+                    await channel.send(chunk)
             else:
-                await message.channel.send(reply)
+                await channel.send(reply)
 
             try:
                 # Extract and send figures if referenced
@@ -177,12 +184,12 @@ async def on_message(message: discord.Message):
                         print(f"[WARN] Figure not found: {image_path}")
 
                 if files:
-                    await message.channel.send(files=files)
+                    await channel.send(files=files)
             except Exception:
                 print("❌ There was an issue sending figures.")
 
         except Exception as e:
-            await message.channel.send(f"❌ Error: {e}")
+            await channel.send(f"❌ Error: {e}")
 
 
 if __name__ == "__main__":
