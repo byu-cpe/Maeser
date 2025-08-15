@@ -89,23 +89,6 @@ class AppManager:
         main_logo_chat: str | None = None,
         chat_head: str | None = None,
         favicon: str | None = None,
-        # text
-        login_text: str | None = None,
-        changelog: str | None = None,
-        chat_greeting: str = "Hello, how can I help you today?",
-        branch_response: str = "Okay, I'll help you with ${action}!",
-        # toggle animations
-        animation: bool = False,
-        # colors
-        primary_color: str = "#f5f5f5",
-        secondary_color: str = "#ccc",
-        button_color: str = "#0084ff",
-        button_color_active: str = "#009e15",
-        button_color_inactive: str = "#e9e9e9",
-        fafa_button: str = "#b8b8b8",
-        logout_button: str = "#000000",
-        new_chat_button: str = "#000000",
-        help_train_button: str = "#a8a8a8",
     ):
         self.app = app
         self.app_name = app_name
@@ -120,22 +103,23 @@ class AppManager:
         self.chat_head = chat_head
         self.favicon = favicon
 
-        self.login_text = login_text # TODO: Not implemented
-        self.changelog = changelog # TODO: Not implemented
-        self.chat_greeting = chat_greeting # TODO: Not implemented
-        self.branch_response = branch_response # TODO: Not implemented
+        # NOTE: The commented-out variables below are unimplemented.
+        # self.login_text = login_text # TODO: Not implemented
+        # self.changelog = changelog # TODO: Not implemented
+        # self.chat_greeting = chat_greeting # TODO: Not implemented
+        # self.branch_response = branch_response # TODO: Not implemented
 
-        self.animation = animation # TODO: Not implemented
+        # self.animation = animation # TODO: Not implemented
 
-        self.primary_color = primary_color # TODO: Not implemented
-        self.secondary_color = secondary_color # TODO: Not implemented
-        self.button_color = button_color # TODO: Not implemented
-        self.button_color_active = button_color_active # TODO: Not implemented
-        self.button_color_inactive = button_color_inactive # TODO: Not implemented
-        self.fafa_button = fafa_button # TODO: Not implemented
-        self.logout_button = logout_button # TODO: Not implemented
-        self.new_chat_button = new_chat_button # TODO: Not implemented
-        self.help_train_button = help_train_button # TODO: Not implemented
+        # self.primary_color = primary_color # TODO: Not implemented
+        # self.secondary_color = secondary_color # TODO: Not implemented
+        # self.button_color = button_color # TODO: Not implemented
+        # self.button_color_active = button_color_active # TODO: Not implemented
+        # self.button_color_inactive = button_color_inactive # TODO: Not implemented
+        # self.fafa_button = fafa_button # TODO: Not implemented
+        # self.logout_button = logout_button # TODO: Not implemented
+        # self.new_chat_button = new_chat_button # TODO: Not implemented
+        # self.help_train_button = help_train_button # TODO: Not implemented
 
         self.current_dir = os.path.dirname(os.path.abspath(__file__ + "/."))
 
