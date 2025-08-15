@@ -5,6 +5,7 @@ import os
 import re
 from generate_response import handle_message, get_valid_course_ids, BOT_DATA_PATH
 from config import DISCORD_BOT_TOKEN, COURSE_ID
+import shlex
 
 import maeser.graphs.universal_rag as RAG_VARS
 
@@ -18,13 +19,37 @@ client = discord.Client(intents=intents)
 
 
 # Helper: Extract figure references like "1_page3_fig2"
-def extract_figures_from_text(text):
+def extract_figures_from_text(text: str) -> list[str]:
+    """Finds all references to figures in **text** and returns a list of figure IDs.
+
+    The reference to the figure should be formated like "Figure X.X".
+    Only "X.X" (the figure ID) will be extracted and added to the resulting list.
+
+    Args:
+        text (str): The text containing figure references.
+
+    Returns:
+        list[str]: A list of figure IDs.
+    """
     # Finds "Figure 13.2" and extracts just "13.2"
     pattern = r"Figure (\d+\.\d+)"
     return re.findall(pattern, text)
 
 
-def split_string(text: str, max_length=1999):
+def split_string(text: str, max_length=1999) -> list[str]:
+    """Splits one strings into multiple strings so that all resultant chunks are shorter
+    than **max_length**.
+
+    Checks for a semantically clean place to split the text first (e.g. at a whitespace).
+    If a clean place to split is not found, force-splits at **max_length**.
+
+    Args:
+        text (str): The text to split.
+        max_length (int, optional): The maximum length any chunk can be after splitting. Defaults to 1999.
+
+    Returns:
+        list[str]: The list of text chunks that make up the original **text**.
+    """
     chunks = []
     while len(text) > max_length:
         # Try to split at the last newline before max_length
@@ -45,6 +70,34 @@ def split_string(text: str, max_length=1999):
     return chunks
 
 
+def is_admin_message(message: discord.Message) -> bool:
+    """Checks to see if a message was sent by a channel administrator.
+
+    Args:
+        message (discord.Message): The message to check administrator privileges for.
+
+    Returns:
+        bool: True if the message sender is an administrator for the channel the message was sent in.
+    """
+    return (
+        message.guild is not None
+        and message.channel.permissions_for(message.author).administrator
+    )
+
+
+async def command_say(
+    channel: discord.abc.Messageable,
+    content: str,
+) -> None:
+    """Say **content** in **channel**.
+
+    Args:
+        channel (discord.abc.Messageable): The channel to send the message in.
+        content (str): The content of the message.
+    """
+    await channel.send(content)
+
+
 @client.event
 async def on_ready():
     print(f"✅ Discord Bot connected as {client.user}")
@@ -52,11 +105,33 @@ async def on_ready():
 
 @client.event
 async def on_message(message: discord.Message):
-    if message.author.bot or not isinstance(message.channel, discord.DMChannel):
-        return
-
+    # Get data from message
     user_id = str(message.author.id)
     msg_text = message.content.strip()
+    channel = message.channel
+
+    # Ignore if message is from bot or if message is blank
+    if message.author.bot or len(msg_text) == 0:
+        return
+
+    # Only run admin commands if message is not a DM
+    if not isinstance(message.channel, discord.DMChannel):
+        if is_admin_message(message):
+            command_args = shlex.split(msg_text)
+            argc: int = len(command_args)
+            match command_args[0]:
+                case "!say":
+                    if argc < 2:
+                        await channel.send(
+                            "Usage: `!say [CONTENT]`\n"
+                            'Use quotes around CONTENT (e.g. `!say "Hello World!"`)\n'
+                            "Additional arguments will sent on a new line."
+                        )
+                        return
+                    say_text: str = "\n".join(command_args[1:])
+                    await command_say(message.channel, say_text)
+
+        return
 
     # -- MESSAGE PROCESSING --
     async with message.channel.typing():
