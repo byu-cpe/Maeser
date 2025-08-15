@@ -69,7 +69,7 @@ user_management:
 discord:
   discord_token: "..."
   intro: |
-    👋 Hi there!
-    I'm @self, your digital assistant for this course.
+    ## 👋 Hi there! I'm @self
+    I'm your digital assistant for this course!
     I have access to the course textbook and materials, so I can help you with explanations, examples, and guidance whenever you need it.
     Let's get started! Just send me a DM by clicking my name 👉 @self 👈
