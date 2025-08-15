@@ -58,20 +58,6 @@ class AppManager:
         main_logo_chat (str | None, optional): URL or path to the chat logo. Defaults to None.
         chat_head (str | None, optional): URL or path to the chat header image. Defaults to None.
         favicon (str | None, optional): URL or path to the favicon. Defaults to None.
-        login_text (str | None, optional): Text to display on the login page. Defaults to None.
-        changelog (str | None, optional): Text to display as the changelog. Defaults to None.
-        chat_greeting (str, optional): Greeting message to display in the chat. Defaults to "Hello, how can I help you today?".
-        branch_response (str, optional): Response message to display when a branch is selected. Defaults to "Okay, I'll help you with ${action}!".
-        animation (bool, optional): Whether to enable toggle animations. Defaults to False.
-        primary_color (str, optional): Primary color of the application. Defaults to "#333".
-        secondary_color (str, optional): Secondary color of the application. Defaults to "#ccc".
-        button_color (str, optional): Color of the buttons. Defaults to "#0084ff".
-        button_color_active (str, optional): Color of the active buttons. Defaults to "#009e15".
-        button_color_inactive (str, optional): Color of the inactive buttons. Defaults to "#ddd".
-        fafa_button (str, optional): Color of the fafa buttons. Defaults to "#eee".
-        logout_button (str, optional): Color of the logout button. Defaults to "#333".
-        new_chat_button (str, optional): Color of the new chat button. Defaults to "#333".
-        help_train_button (str, optional): Color of the help train button. Defaults to "#eee".
     """
 
     def __init__(
@@ -89,23 +75,6 @@ class AppManager:
         main_logo_chat: str | None = None,
         chat_head: str | None = None,
         favicon: str | None = None,
-        # text
-        login_text: str | None = None,
-        changelog: str | None = None,
-        chat_greeting: str = "Hello, how can I help you today?",
-        branch_response: str = "Okay, I'll help you with ${action}!",
-        # toggle animations
-        animation: bool = False,
-        # colors
-        primary_color: str = "#f5f5f5",
-        secondary_color: str = "#ccc",
-        button_color: str = "#0084ff",
-        button_color_active: str = "#009e15",
-        button_color_inactive: str = "#e9e9e9",
-        fafa_button: str = "#b8b8b8",
-        logout_button: str = "#000000",
-        new_chat_button: str = "#000000",
-        help_train_button: str = "#a8a8a8",
     ):
         self.app = app
         self.app_name = app_name
@@ -120,26 +89,27 @@ class AppManager:
         self.chat_head = chat_head
         self.favicon = favicon
 
-        self.login_text = login_text
-        self.changelog = changelog
-        self.chat_greeting = chat_greeting
-        self.branch_response = branch_response
+        # NOTE: The commented-out variables below are unimplemented.
+        # self.login_text = login_text # TODO: Not implemented
+        # self.changelog = changelog # TODO: Not implemented
+        # self.chat_greeting = chat_greeting # TODO: Not implemented
+        # self.branch_response = branch_response # TODO: Not implemented
 
-        self.animation = animation
+        # self.animation = animation # TODO: Not implemented
 
-        self.primary_color = primary_color
-        self.secondary_color = secondary_color
-        self.button_color = button_color
-        self.button_color_active = button_color_active
-        self.button_color_inactive = button_color_inactive
-        self.fafa_button = fafa_button
-        self.logout_button = logout_button
-        self.new_chat_button = new_chat_button
-        self.help_train_button = help_train_button
+        # self.primary_color = primary_color # TODO: Not implemented
+        # self.secondary_color = secondary_color # TODO: Not implemented
+        # self.button_color = button_color # TODO: Not implemented
+        # self.button_color_active = button_color_active # TODO: Not implemented
+        # self.button_color_inactive = button_color_inactive # TODO: Not implemented
+        # self.fafa_button = fafa_button # TODO: Not implemented
+        # self.logout_button = logout_button # TODO: Not implemented
+        # self.new_chat_button = new_chat_button # TODO: Not implemented
+        # self.help_train_button = help_train_button # TODO: Not implemented
 
         self.current_dir = os.path.dirname(os.path.abspath(__file__ + "/."))
 
-        # The following functions with no code are work in progress and will be added soon
+    # The following functions with no code are work in progress and will be added soon
 
     # def template_styles_css(self):
     #     """
