@@ -152,8 +152,15 @@ async def on_message(message: discord.Message):
     # Only run admin commands if message is not a DM
     if not isinstance(channel, discord.DMChannel):
         if is_admin_message(message):
-            command_args = shlex.split(msg_text)
-            await run_admin_command(message, command_args)
+            msg_args = shlex.split(
+                msg_text
+            )  # Gets list of args as if msg_text was a terminal command
+
+            # Bot must be mentioned first
+            # and message must contain a command (not just a bot mention)
+            if msg_args[0] == client.user.mention and len(msg_args) > 1:
+                command_args = msg_args[1:]  # remove chatbot mention
+                await run_admin_command(message, command_args)
         return
 
     # -- MESSAGE PROCESSING --
