@@ -102,6 +102,8 @@ async def command_intro(channel: discord.abc.Messageable) -> None:
     """Sends the default intro message into **channel**.
 
     This message can be configured in the "discord:intro" field in `config.yaml`.
+    All instances of "@self" in the text will be replaced with a mention to the
+    Discord bot (e.g. "@BotName").
 
     Args:
         channel (discord.abc.Messageable): The channel to send the intro message in.
