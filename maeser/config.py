@@ -14,7 +14,7 @@ Attributes:
         This should be the same application referenced in OPENAI_API_KEY
     GITHUB_AUTH_CALLBACK_URI (str): the callback route/URL that the user should be sent when GitHub Authentication is complete.
         This should follow the format "http://www.example.com/login/github_callback".
-    GITHUB_TIMEOUT (int): The amount of time before a GitHub Authentication attempt should time out.
+    GITHUB_TIMEOUT (int): The amount of time before a GitHub Authentication attempt should time out. Defaults to 10.
 
     LDAP3_NAME (str): The name of the LDAP server.
     LDAP_SERVER_URLS (list[str]): The URLs associated with the LDAP server.
@@ -24,21 +24,21 @@ Attributes:
     LDAP_OBJECT_CLASS (str): The object class of the LDAP server.
     LDAP_ATTRIBUTES (list): The attributes of the LDAP server.
     LDAP_CA_CERT_PATH (str): The path to the LDAP server's CA certification.
-    LDAP_CONNECTION_TIMEOUT (int): The amount of time before an LDAP Authentication attempt should time out.
+    LDAP_CONNECTION_TIMEOUT (int): The amount of time before an LDAP Authentication attempt should time out. Defaults to 5.
 
-    MAX_REQUESTS (int): The maximum number of requests a user can send before being rate-limited.
-    RATE_LIMIT_INTERVAL (int): The interval in which requests are granted to a user.
+    MAX_REQUESTS (int): The maximum number of requests a user can send before being rate-limited. Defaults to 5.
+    RATE_LIMIT_INTERVAL (int): The interval in which requests are granted to a user. Defaults to 180.
     LOG_SOURCE_PATH (str): The path to the chat logs directory.
 
     VEC_STORE_PATH (str): The path to the courses/vector stores.
-    VEC_STORE_TYPE (str): The type of vector store.
+    VEC_STORE_TYPE (str): The type of vector store. Defaults to "faiss".
 
-    LLM_MODEL_NAME (str): The name of the LLM.
-    LLM_PROVIDER (str): The provider of the LLM.
-    LLM_TOKEN_LIMIT (int): The max number of tokens the LLM should process.
+    LLM_MODEL_NAME (str): The name of the LLM. Defaults to "gpt-4o-mini"
+    LLM_PROVIDER (str): The provider of the LLM. Defaults to "openai"
+    LLM_TOKEN_LIMIT (int): The max number of tokens the LLM should process. Defaults to 400.
 
-    EMBED_MODEL (str): The model used to embed user inputs.
-    EMBED_PROVIDER (str): The provider of the embeddings model.
+    EMBED_MODEL (str): The model used to embed user inputs. Defaults to "text-embedding-3-large"
+    EMBED_PROVIDER (str): The provider of the embeddings model. Defaults to "openai"
 
     USERS_DB_PATH (str): The path to the file used to manage the user database.
     CHAT_HISTORY_PATH (str): The path to the chat history logs.
@@ -85,7 +85,7 @@ GITHUB_AUTH_CALLBACK_URI: str = config.get("github", {}).get("github_callback_ur
 GITHUB_TIMEOUT: int = config.get("github", {}).get("timeout", 10)
 
 # LDAP3 Auth
-LDAP3_NAME: str = config.get("ldap3", {}).get("name", "CAEDM")
+LDAP3_NAME: str = config.get("ldap3", {}).get("name")
 LDAP_SERVER_URLS: list[str] = config.get("ldap3", {}).get("ldap_server_urls", [])
 LDAP_BASE_DN: str = config.get("ldap3", {}).get("ldap_base_dn")
 LDAP_ATTRIBUTE_NAME: str = config.get("ldap3", {}).get("attribute_name")
