@@ -1,15 +1,22 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
 from flask import Flask, render_template, request, redirect, url_for, session
-from config import UPLOAD_ROOT
+from maeser.config import VEC_STORE_PATH as UPLOAD_ROOT, OPENAI_API_KEY
 import os
-import subprocess
+import functools
 from werkzeug.utils import secure_filename
 from design_model import (
     get_model_config, save_model,
     delete_datasets, remove_class_model,
     load_rules, load_datasets
 )
+
+if UPLOAD_ROOT == "" or UPLOAD_ROOT == "...":
+    print(f'\033[0;31mERROR: vec_store_path ("{UPLOAD_ROOT}") cannot be unassigned.')
+    exit(1)
+if OPENAI_API_KEY == "" or OPENAI_API_KEY == "...":
+    print(f'\033[0;31mERROR: openai_api_key ("{OPENAI_API_KEY}") cannot be unassigned.')
+    exit(1)
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # In production, use a secure and secret value!
@@ -29,7 +36,6 @@ rules = []
 contexts = []
 
 # decorator for login checking
-import functools
 def require_login(func):
     @functools.wraps(func) # updates metadata so that check_login.__name__ == func.__name__
     def check_login(*args, **kwargs):
@@ -76,7 +82,7 @@ def design_model():
             print(f"Unable to generate model: {e}")
             return redirect(url_for('design_model'))
         finally:
-            print("Model generated successfully!")
+            print("Model generation complete. Please check the terminal output to ensure no errors were thrown.")
             return redirect(url_for('manage_models'))
 
     return render_template('design_model.html', username=session['user'])
@@ -128,7 +134,7 @@ def edit_model(course_id):
             print(f"Unable to generate model: {e}")
             return redirect(url_for(f'/edit_model/{course_id}'))
         finally:
-            print("Model generated successfully!")
+            print("Model generation complete. Please check the terminal output to ensure no errors were thrown.")
             return redirect(url_for('manage_models'))
 
     # Get rules and datasets

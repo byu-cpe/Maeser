@@ -43,10 +43,10 @@ rate_limit:
 ### Configure the logging path and vector store path ###
 
 logging:
-  log_source_path: dynamic_implementations/chat_logs
+  log_source_path: /chat_logs
 
 vectorstore:
-  vec_store_path: dynamic_implementations/bot_data
+  vec_store_path: /bot_data
   vec_store_type: faiss
 
 ### Configure the LLM and text embedding models ###
@@ -63,15 +63,15 @@ llm:
 ### Configure the user management ###
 
 user_management:
-  accounts_db_path: dynamic_implementations/chat_logs/users.db
-  chat_history_path: dynamic_implementations/chat_logs
+  accounts_db_path: /chat_logs/users.db
+  chat_history_path: /chat_logs
 
 discord:
   discord_token: "..."
 
   # The introduction message your chatbot should send in your server.
   # All instances of "@self" will be replaced with a mention to the discord bot
-  # (e.g. "@BotName")
+  # (e.g. `@BotName`)
   intro: |
     ## 👋 Hi there! I'm @self
     I'm your digital assistant for this course!

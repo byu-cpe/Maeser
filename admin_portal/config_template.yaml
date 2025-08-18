@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+### NOTICE ###
+# `config_template.yaml` should NOT be modified directly. Please create a copy of this file and name it `config.yaml`.
+# Use `config.yaml` to edit the configuration for your Maeser app handlers.
+
+### An API key is required for OpenAI ###
+
+api_keys:
+  openai_api_key: "..."
+
+### Configure the bot data path, stored in vec_store_path ###
+
+vectorstore:
+  vec_store_path: ../example_handlers/bot_data
