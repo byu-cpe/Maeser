@@ -6,6 +6,7 @@ This is the discord subpackage for the Maeser package.
 This package provides a handler for interfacing Maeser with the discord API.
 """
 
+# Only export "run_discord_handler" to the package
 from ._discord_handler import run_discord_handler as run_discord_handler
 
 __all__ = ["run_discord_handler"]
