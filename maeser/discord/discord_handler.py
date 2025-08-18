@@ -199,9 +199,13 @@ async def on_message(message: discord.Message):
             await channel.send(f"❌ Error: {e}")
 
 
-if __name__ == "__main__":
-    if COURSE_ID not in get_valid_course_ids():
-        print(f"ERROR: Course ID {COURSE_ID} not a valid course ID.")
+def run_discord_handler(course_id: str = COURSE_ID, bot_token: str = DISCORD_BOT_TOKEN):
+    if course_id not in get_valid_course_ids():
+        print(f"ERROR: Course ID {course_id} not a valid course ID.")
         exit(1)
 
-    client.run(DISCORD_BOT_TOKEN)
+    client.run(bot_token)
+
+
+if __name__ == "__main__":
+    run_discord_handler(COURSE_ID, DISCORD_BOT_TOKEN)
