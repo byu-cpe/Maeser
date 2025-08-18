@@ -199,7 +199,14 @@ async def on_message(message: discord.Message):
             await channel.send(f"❌ Error: {e}")
 
 
-def run_discord_handler(course_id: str = COURSE_ID, bot_token: str = DISCORD_BOT_TOKEN):
+def run_discord_handler(course_id: str = COURSE_ID, bot_token: str = DISCORD_BOT_TOKEN) -> None:
+    """Runs the discord handler by setting up a RAG Graph with **course_id** and connecting
+    it to a discord bot with **bot_token**.
+
+    Args:
+        course_id (str, optional): The course ID the RAG Graph should use for context. Defaults to maeser.config.COURSE_ID.
+        bot_token (str, optional): _description_. Defaults to maeser.config.DISCORD_BOT_TOKEN.
+    """
     if course_id not in get_valid_course_ids():
         print(f"ERROR: Course ID {course_id} not a valid course ID.")
         exit(1)
