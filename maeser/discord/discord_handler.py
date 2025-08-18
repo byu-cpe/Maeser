@@ -4,7 +4,7 @@ import discord
 import os
 import re
 from maeser.generate_response import handle_message, get_valid_course_ids, BOT_DATA_PATH
-from config import COURSE_ID, DISCORD_BOT_TOKEN, DISCORD_INTRO
+from maeser.config import COURSE_ID, DISCORD_BOT_TOKEN, DISCORD_INTRO
 import shlex
 
 import maeser.graphs.universal_rag as RAG_VARS
