@@ -12,7 +12,7 @@ api_keys:
 
 ### The course to which the chatbot will be assigned ##
 
-course_id: "cs121"
+course_id: "..."
 
 ### Other application configurations ###
 
