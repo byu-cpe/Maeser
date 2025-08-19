@@ -9,9 +9,9 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 import os
 import shutil
-from extract_figures import extract_all_figures
-from extract_text import extract_all_pdf_texts
-from vector_store_operator import vectorize_data
+from maeser.admin_portal.extract_figures import extract_all_figures
+from maeser.admin_portal.extract_text import extract_all_pdf_texts
+from maeser.admin_portal.vector_store_operator import vectorize_data
 
 def get_model_config(upload_root: str) -> tuple[
     str, str, str, list[str], dict[str, list[FileStorage]]

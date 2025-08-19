@@ -1,13 +1,5 @@
 # The Admin Portal
 
-The `admin_portal/` directory contains an update to the project in the form of a web-based editor for class data.
+The `admin_portal/` directory utilizes **maeser.admin_portal.run_admin_portal** to expose the **Admin Portal** for creating course models.
 
-When fully flushed out, this would be implemented as more than a editor alone, but also a way to set up keys for different services, like discord.
-
-The folder is comprised of a few files:
-
-- `Flask_admin_portal.py` is the main executable python file. This runs the Flask web app. This should be executed while in the `admin_portal/` directory.
-- `config_template.yaml` contains configuration for the bot data directory and OpenAI API key used by the admin portal. This should not be modified directly; a copy named `config.yaml` should be created to set up this configuration.
-- `static` & `templates` are used for the Flask app display to the user. These come with all standard Flask based projects.
-- `design_model.py` contains the code that handles generating and editing class models.
-- `extract_text.py`, `extract_figures.py`, and `vector_store_operator.py` are necessary for file modification and manipulation. They are used by `design_model.py`, intended to manipulate files that are uploaded and store them in the `bot_data` directory.
+The Admin Portal can be used to create course models with vectorized datasets and custom rules. See [**The Admin Portal**](../sphinx-docs/development/admin_portal.md) in the documentation for instructions on how to use it.

@@ -4,13 +4,12 @@
 This is the Maeser package, which provides a set of classes and
 functions for managing a chat application.
 
-The package is organized as follows:
+The following modules and subpackages are included with Maeser by default:
 
 :maeser.chat: This subpackage contains classes and functions related to chat functionality, such as
     sending and receiving messages.
 :maeser.controllers: This subpackage contains classes and functions for managing Flask controllers,
     which handle the logic for handling incoming requests.
-:maeser.discord_handler: This subpackage integrates Maeser with Discord.
 :maeser.graphs: This subpackage contains Retrieval-Augmented Generation (RAG) graphs that affect the
     workflow and behavior of the chatbot.
 :maeser.blueprints: This module sets up the Flask blueprint and associated routes for the Maeser application.
@@ -20,28 +19,41 @@ The package is organized as follows:
     registration and session management behind the scenes, simplifying the interface with Maeser.
 :maeser.render: This module contains classes and functions for rendering the user interface of the chat application.
 :maeser.user_manager: This module contains classes and functions for managing users in the chat application.
+
+The following subpackages are optional and require additional dependencies:
+
+:maeser.admin_portal: This subpackage provides access to the **Admin Portal**, a web applet that is useful
+    for automatically vectorizing data and creating courses for use with other Maeser handlers, such as
+        **maeser.discord_handler**. Requires the ``maeser[admin_portal]`` dependency group
+        (`pip install maeser[admin_portal]`).
+:maeser.discord_handler: This subpackage integrates Maeser with Discord. Requires the ``maeser[discord]``
+    dependency group (`pip install maeser[discord]`).
 """
 
 from . import (
     chat,
     controllers,
-    discord_handler,
     graphs,
     blueprints,
     config,
     generate_response,
     user_manager,
     render,
+    # Keep optional modules/packages commented out
+    # admin_portal,
+    # discord_handler,
 )
 
 __all__ = [
-    'chat',
-    'controllers',
-    'discord_handler',
-    'graphs',
-    'blueprints',
-    'config',
-    'generate_response',
-    'user_manager',
-    'render'
+    "chat",
+    "controllers",
+    "graphs",
+    "blueprints",
+    "config",
+    "generate_response",
+    "user_manager",
+    "render",
+    # Keep optional modules/packages commented out
+    # "admin_portal",
+    # "discord_handler",
 ]
