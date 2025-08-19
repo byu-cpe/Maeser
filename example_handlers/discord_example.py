@@ -1,5 +1,5 @@
 # Import the run_discord_handler function
-from maeser.discord import run_discord_handler
+from maeser.discord_handler import run_discord_handler
 
 # Run the handler.
 # Optional course_id and bot_token parameters can be provided, but these

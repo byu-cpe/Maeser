@@ -10,7 +10,7 @@ The package is organized as follows:
     sending and receiving messages.
 :maeser.controllers: This subpackage contains classes and functions for managing Flask controllers,
     which handle the logic for handling incoming requests.
-:maeser.discord: This subpackage integrates Maeser with Discord.
+:maeser.discord_handler: This subpackage integrates Maeser with Discord.
 :maeser.graphs: This subpackage contains Retrieval-Augmented Generation (RAG) graphs that affect the
     workflow and behavior of the chatbot.
 :maeser.blueprints: This module sets up the Flask blueprint and associated routes for the Maeser application.
@@ -25,7 +25,7 @@ The package is organized as follows:
 from . import (
     chat,
     controllers,
-    discord,
+    discord_handler,
     graphs,
     blueprints,
     config,
@@ -37,7 +37,7 @@ from . import (
 __all__ = [
     'chat',
     'controllers',
-    'discord',
+    'discord_handler',
     'graphs',
     'blueprints',
     'config',
