@@ -6,8 +6,8 @@ When fully flushed out, this would be implemented as more than a editor alone, b
 
 The folder is comprised of a few files:
 
-- `flask_admin_portal.py` is the main executable python file. This runs the flask web app. This should be executed while in the `admin_portal/` directory.
-- `config.py` is used to locate `config.yaml` and expose its values for use by the web server. It looks for `config.yaml` in `../dynamic_implementations/config.yaml` by default.
-- `static` & `templates` are used for the flask app display to the user. These come with all standard flask based projects.
+- `Flask_admin_portal.py` is the main executable python file. This runs the Flask web app. This should be executed while in the `admin_portal/` directory.
+- `config_template.yaml` contains configuration for the bot data directory and OpenAI API key used by the admin portal. This should not be modified directly; a copy named `config.yaml` should be created to set up this configuration.
+- `static` & `templates` are used for the Flask app display to the user. These come with all standard Flask based projects.
 - `design_model.py` contains the code that handles generating and editing class models.
-- `extract_text.py`, `extract_figures.py`, and `vector_store_operator.py` are necessary for file modification and manipulation. They are used by the local `design_model.py`, intended to manipulate files that are uploaded and store them in the `bot_data` directory.
+- `extract_text.py`, `extract_figures.py`, and `vector_store_operator.py` are necessary for file modification and manipulation. They are used by `design_model.py`, intended to manipulate files that are uploaded and store them in the `bot_data` directory.
