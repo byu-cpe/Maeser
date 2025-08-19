@@ -49,7 +49,7 @@ autodoc_mock_imports = [
     # maeser[discord] dependencies
     'discord',
     # maeser[admin_portal] dependencies
-    "PyMuPDF",
+    "pymupdf",
     "pymupdf4llm",
 ]
 
