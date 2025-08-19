@@ -46,7 +46,11 @@ autodoc_mock_imports = [
     'flask_login',
     'pytest',
     'ldap3',
+    # maeser[discord] dependencies
     'discord',
+    # maeser[admin_portal] dependencies
+    "PyMuPDF",
+    "pymupdf4llm",
 ]
 
 # -- Project information -----------------------------------------------------
