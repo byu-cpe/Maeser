@@ -24,8 +24,8 @@ The following subpackages are optional and require additional dependencies:
 
 :maeser.admin_portal: This subpackage provides access to the **Admin Portal**, a web applet that is useful
     for automatically vectorizing data and creating courses for use with other Maeser handlers, such as
-        **maeser.discord_handler**. Requires the ``maeser[admin_portal]`` dependency group
-        (`pip install maeser[admin_portal]`).
+    **maeser.discord_handler**. Requires the ``maeser[admin_portal]`` dependency group
+    (`pip install maeser[admin_portal]`).
 :maeser.discord_handler: This subpackage integrates Maeser with Discord. Requires the ``maeser[discord]``
     dependency group (`pip install maeser[discord]`).
 """
