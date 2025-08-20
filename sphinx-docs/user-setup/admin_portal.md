@@ -115,6 +115,8 @@ The "**Managing Courses**" page lists all course models in your bot store path. 
 
 ---
 
-## Next Steps
+## Set Up Handlers With Your Course Models
 
-- **Set Up Handlers:** After you have set up rules and such, you will need to set up your handlers, found in [**`example_handlers/`**](../development/handler_usage.md#dynamic-implementations-of-generate_responsepy). Currently, this directory only has a handler for Discord. Follow the guide at [**Setting Up a Discord Bot**](discord.md) to integrate your chatbot with Discord.
+After you have set up course models, you will need to set up handlers to use your course models. Currently, Maeser only has a built-in handler for Discord. Follow the guide at [**Setting Up a Discord Bot**](discord.md) to integrate your chatbot with Discord.
+
+If you wish to implement your own handler with Maeser, Maeser's **generate_response** module may be helpful. See [**Using Maeser with External Handlers**](../development/handler_usage.md) for more information.
