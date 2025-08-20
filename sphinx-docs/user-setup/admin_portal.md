@@ -89,7 +89,7 @@ The course ID will be used by students to select your course when interacting wi
 
 ### PDF Datasets
 
-A **dataset** is a set of PDFs that will be processed into a single vector store. It is best practice to make one dataset per type of resource (e.g. one dataset for your textbook, another dataset for your homework files, another dataset for your labs, etc.). The handlers in `dynamic_implementations/` will use the names of the datasets to identify the most relevant resources to pull from when interacting with a student.
+A **dataset** is a set of PDFs that will be processed into a single vector store. It is best practice to make one dataset per type of resource (e.g. one dataset for your textbook, another dataset for your homework files, another dataset for your labs, etc.). The handlers in `example_handlers/` will use the names of the datasets to identify the most relevant resources to pull from when interacting with a student.
 
 To add a dataset, click "**Add Dataset**." You may add as many PDF files from a dataset as you would like using the dialog window, and you may add as many datasets as you would like using the "**Add Dataset**" button.
 
@@ -105,7 +105,7 @@ To add a rule, click "**Add Rule**." If you are unsure what rules to give your c
 
 ### Submit Model
 
-When you are done, click "Submit Model" (in "**Design New Model**") or "Update Model" (in "**Edit Model**"). The webpage will hold while the data is being processed, and progress will be printed to the terminal. If the process completes successfully, the model will be saved to your bot store path (`dynamic_implementations/bot_data` by default) and you will be redirected to the "**Manage Models**" page.
+When you are done, click "Submit Model" (in "**Design New Model**") or "Update Model" (in "**Edit Model**"). The webpage will hold while the data is being processed, and progress will be printed to the terminal. If the process completes successfully, the model will be saved to your bot store path (pulled from the **`vectorstore:vec_store_path`** field in `config.yaml`) and you will be redirected to the "**Manage Models**" page.
 
 ---
 

@@ -33,7 +33,7 @@ admin_portal = [
     "PyMuPDF>=1.26.3,<2.0.0",
     "pymupdf4llm>=0.0.27,<1.0.0",
 ]
-# For dynamic_implementations/discord_handler.py
+# For example_handlers/discord_handler.py
 discord = [
     "discord.py>=2.5.2,<3.0.0",
 ]

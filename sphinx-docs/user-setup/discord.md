@@ -116,8 +116,8 @@ A URL will be generated at the bottom of this menu that allows your bot to be in
 Once your bot is configured on the Discord website and `config.yaml` is configured, run `discord_example.py` within the directory of your `config.yaml` file. Your command output should look like the following:
 
 ```text
-$ python dynamic_implementations/discord_handler.py
-Using configuration at dynamic_implementations/config.yaml (Priority 0)
+$ python discord_example.py
+Using configuration at config.yaml (Priority 0)
 2025-07-30 10:29:44 INFO     discord.client logging in using static token
 2025-07-30 10:29:44 INFO     discord.gateway Shard ID None has connected to Gateway (Session ID: <...>).
 ✅ Discord Bot connected as BotName#1984
