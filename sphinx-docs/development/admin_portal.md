@@ -27,7 +27,7 @@ A **course model** (or simply "course") takes in a **course ID**, **PDF Datasets
 
 ### Course ID
 
-The course ID will be used by students to select your course when interacting with the chatbot. This identifier should be short and descriptive, like "ECEN320".
+The course ID will be used by students to select your course when interacting with the chatbot. This identifier should be short and descriptive, like "CS101".
 
 ### PDF Datasets
 
