@@ -28,7 +28,7 @@ If you set up Maeser using the [**Development Setup Guide**](./development_setup
 The Maeser GitHub repository contains the `example_handlers/` directory, which provides the following files:
 
 - **`config_template.yaml`**: Configuration options used to set up the Discord handler with Maeser
-- **`discord_example.py`**: A simple script demonstrating how to run Maeser's discord handler.
+- **`discord_example.py`**: A simple script demonstrating how to run Maeser's Discord handler.
 
 If you have cloned the Maeser repository, simply navigate to this directory. Otherwise, copy these files to your project. To set up a Maeser Discord bot with these files, simply follow the instructions in this guide and run `discord_example.py` in the same directory as your `config.yaml` file.
 
