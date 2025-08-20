@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 # Import the run_discord_handler function
 from maeser.discord_handler import run_discord_handler
 
