@@ -38,7 +38,7 @@ If you have cloned the Maeser repository, simply navigate to this directory. Oth
 
 If you have not already done so, make a copy of `config_template.yaml`, name it `config.yaml`, and update the following fields:
 
-- **`openai_api_key`**: Place your OpenAI API key here.
+- **`api_keys:openai_api_key`**: Place your OpenAI API key here.
 - **`course_id`**: Populate this with the ID of the course that your Discord handler should use (see [**Creating and Modifying Courses**](#creating-and-modifying-courses)).
 - **`vectorstore:vec_store_path`**: The Discord handler will look for course models in the directory declared by this field (see [**Creating and Modifying Courses**](#creating-and-modifying-courses)). By default, this directory is set to `bot_data/`, but you may update it with a different directory of your choice if desired.
 - **`discord:intro`**: If desired, replace the default intro message with a custom message of your choice. This message will appear when you send your Discord bot the `!intro` command (see [**Administrator Commands**](#administrator-commands)).
