@@ -19,6 +19,8 @@ sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../maeser'))
 sys.path.insert(0, os.path.abspath('../tests'))
 
+# Add all maeser dependencies that autodoc should pretend to import here.
+# If autodoc fails because "module 'foo' has no attribute 'bar'", try adding it below.
 autodoc_mock_imports = [
     'langchain',
     'langchain_core',
@@ -44,6 +46,11 @@ autodoc_mock_imports = [
     'flask_login',
     'pytest',
     'ldap3',
+    # maeser[discord] dependencies
+    'discord',
+    # maeser[admin_portal] dependencies
+    "pymupdf",
+    "pymupdf4llm",
 ]
 
 # -- Project information -----------------------------------------------------

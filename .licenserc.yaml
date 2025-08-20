@@ -9,7 +9,7 @@ header:
     - maeser
     - example
     - admin_portal
-    - dynamic_implementations
+    - example_handlers
     - tests/**/*.py
     - .github/**/*.py
     - .github/**/Makefile

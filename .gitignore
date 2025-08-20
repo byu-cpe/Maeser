@@ -1,32 +1,39 @@
 # Ignore virtual environment
 .venv*
+
 # Ignore Keys
 Keys.txt
+
 # Ignore config files
 config.yaml
+
 # Ignore IDE specific configuration
 .vscode
+
 # Ignore Python cache
 *__pycache__
 tests/.pytest_cache
+
 # Ignore built docs
 sphinx-docs/_build
+
 # Ignore auto generated docs
 sphinx-docs/autodoc/src
 sphinx-docs/autodoc/scripts
 sphinx-docs/autodoc/maeser
+
 # Ignore local logs and runtime data
 logs
 chat_logs
+
 # Ignore package build
 dist
+
 #Ignore poetry.lock files
 poetry.lock
 
-# Ignore pipeline memory
-example/vectorstores/pipeline_memory.db
 # Ignore MAC .DS_Store
 .DS_Store
 
 # Ignore Bot Data
-dynamic_implementations/bot_data/*
+**/bot_data/*

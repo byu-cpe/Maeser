@@ -9,7 +9,7 @@ from maeser.graphs.universal_rag import get_universal_rag
 from langgraph.graph.graph import CompiledGraph
 
 # Import configuration
-from config import (
+from maeser.config import (
     LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
 )
 

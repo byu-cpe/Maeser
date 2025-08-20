@@ -12,7 +12,7 @@ import sys
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from config import OPENAI_API_KEY as key
+from maeser.config import OPENAI_API_KEY as key
 
 os.environ["OPENAI_API_KEY"] = key # Modify this line to open it from a cloud based file
 

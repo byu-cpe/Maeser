@@ -4,7 +4,7 @@ In order for the Maeser chatbot to use your documents, they must first be conver
 
 This guide explains how to use a Python script to embed your own documents into a vector store, enabling Retrieval‑Augmented Generation (RAG) over custom knowledge bases.
 
-> **Note:** You can also use the [**Admin Portal**](./admin_portal.md) to create vector stores without any coding required.
+> **Note:** You can also use the [**Admin Portal**](../user-setup/admin_portal.md) to create vector stores without any coding required.
 
 ---
 
