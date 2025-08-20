@@ -45,7 +45,7 @@ If you have not already done so, make a copy of `config_template.yaml`, name it 
 
 In order to connect your Discord bot to the Maeser Discord handler, you need to have a Discord bot token. You will add your Discord bot token to the **`discord:discord_token`** file after you [**set up the Discord bot on the Discord website**](#set-up-the-discord-bot-on-the-discord-website).
 
-> **Note:** The `config.yaml` located in `example_handlers/` is separate from the `config.yaml` used in `example/apps/`. Be careful not to confuse these two files when updating your config.
+> **Note:** The `config.yaml` located in `example_handlers/` is separate from the `config.yaml` files used in `example/apps/` and in `admin_portal/`. Be careful not to confuse these files when updating your config.
 
 Future plans may include entering the token details in the [**Admin Portal**](./admin_portal.md), but for now, it must be entered manually.
 
