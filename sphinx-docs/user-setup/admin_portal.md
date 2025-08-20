@@ -1,6 +1,6 @@
 # The Admin Portal: Generate and Modify Course Models
 
-In order to give the Maeser chatbot resources to pull from, the resources must be converted to an LLM-friendly format called a **vector store**. Writing Python scripts to [**embed new content**](./embedding.md) in this way can be cumbersome. To simplify the process of creating new vector stores and course models, the **maeser.admin_portal** package provides the **Admin Portal**, which vectorizes content and controls chatbot behavior via a simple web client.
+In order to give the Maeser chatbot resources to pull from, the resources must be converted to an LLM-friendly format called a **vector store**. Writing Python scripts to [**embed new content**](../development/embedding.md) in this way can be cumbersome. To simplify the process of creating new vector stores and course models, the **maeser.admin_portal** package provides the **Admin Portal**, which vectorizes content and controls chatbot behavior via a simple web client.
 
 The Admin Portal currently has the following functionalities:
 
@@ -15,7 +15,7 @@ The Admin Portal is relatively new and is still a work in progress; ideally, the
 
 ## Prerequisites
 
-- **The Maeser Package:** set up either in a development environment (see [**Development Setup Guide**](./development_setup.md)) or using `pip install maeser`.
+- **The Maeser Package:** set up either in a development environment (see [**Development Setup Guide**](../development/development_setup.md)) or using `pip install maeser`.
 
 ---
 
@@ -27,7 +27,7 @@ The Admin Portal requires extra dependencies that are not installed with Maeser.
 pip install maeser[admin_portal]
 ```
 
-If you set up Maeser using the [**Development Setup Guide**](./development_setup.md), then you can skip this step (these dependencies were installed when `poetry install --all-extras` was run).
+If you set up Maeser using the [**Development Setup Guide**](../development/development_setup.md), then you can skip this step (these dependencies were installed when `poetry install --all-extras` was run).
 
 ---
 
@@ -47,7 +47,7 @@ If you have cloned the Maeser repository, simply navigate to this directory. Oth
 If you have not already done so, make a copy of `config_template.yaml`, name it `config.yaml`, and update the following fields:
 
 - **`api_keys:openai_api_key`**: Place your OpenAI API key here.
-- **`vectorstore:vec_store_path`**: The Admin Portal will look for course models in the directory declared by this field. Update this field to a directory of your choice. If you are running the Admin Portal [**in the Maeser development environment**](./development_setup.md), then this field can be left as-is.
+- **`vectorstore:vec_store_path`**: The Admin Portal will look for course models in the directory declared by this field. Update this field to a directory of your choice. If you are running the Admin Portal [**in the Maeser development environment**](../development/development_setup.md), then this field can be left as-is.
 
 > **Note:** The `config.yaml` located in `admin_portal/` is separate from the `config.yaml` files used in `example/apps/` and in `example_handlers/`. Be careful not to confuse these files when updating your config.
 
@@ -117,4 +117,4 @@ The "**Managing Courses**" page lists all course models in your bot store path. 
 
 ## Next Steps
 
-- **Set Up Handlers:** After you have set up rules and such, you will need to set up your handlers, found in [**`example_handlers/`**](./handler_usage.md#dynamic-implementations-of-generate_responsepy). Currently, this directory only has a handler for Discord. Follow the guide at [**Setting Up a Discord Bot**](discord.md) to integrate your chatbot with Discord.
+- **Set Up Handlers:** After you have set up rules and such, you will need to set up your handlers, found in [**`example_handlers/`**](../development/handler_usage.md#dynamic-implementations-of-generate_responsepy). Currently, this directory only has a handler for Discord. Follow the guide at [**Setting Up a Discord Bot**](discord.md) to integrate your chatbot with Discord.

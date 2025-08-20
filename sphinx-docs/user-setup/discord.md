@@ -6,8 +6,8 @@ Using the **maeser.discord_handler** package, you can create a **Discord bot** t
 
 ## Prerequisites
 
-- **The Maeser Package:** set up either in a development environment (see [**Development Setup Guide**](./development_setup.md)) or using `pip install maeser`.
-- **One or More Chatbot Course Models:** created manually or using the [**Admin Portal**](./admin_portal.md) (recommended). If created manually, be sure to follow the [**Required Files and Directory Structure**](./handler_usage.md#required-files-and-directory-structure).
+- **The Maeser Package:** set up either in a development environment (see [**Development Setup Guide**](../development/development_setup.md)) or using `pip install maeser`.
+- **One or More Chatbot Course Models:** created manually or using the [**Admin Portal**](./admin_portal.md) (recommended). If created manually, be sure to follow the [**Required Files and Directory Structure**](../development/handler_usage.md#required-files-and-directory-structure).
 
 ---
 
@@ -19,7 +19,7 @@ The Discord handler requires extra dependencies that are not installed with Maes
 pip install maeser[discord]
 ```
 
-If you set up Maeser using the [**Development Setup Guide**](./development_setup.md), then you can skip this step (these dependencies were installed when `poetry install --all-extras` was run).
+If you set up Maeser using the [**Development Setup Guide**](../development/development_setup.md), then you can skip this step (these dependencies were installed when `poetry install --all-extras` was run).
 
 ---
 
@@ -55,7 +55,7 @@ Future plans may include entering the token details in the [**Admin Portal**](./
 
 The Discord handler will look for the **course model** declared in `config.yaml`. **Course models** can be configured and modified using the [**Admin Portal**](./admin_portal.md). The course model you use with your Discord bot should be located in the directory defined by `vectorstore:vec_store_path` in `config.yaml`.
 
-> **Note:** Your course must have a configured `bot.txt` file to be recognized by the Discord handler. For more information, see [**Required Files and Directory Structure**](./handler_usage.md#required-files-and-directory-structure) and [**bot.txt Syntax**](./handler_usage.md#bottxt-syntax) in the Handler Usage Guide.
+> **Note:** Your course must have a configured `bot.txt` file to be recognized by the Discord handler. For more information, see [**Required Files and Directory Structure**](../development/handler_usage.md#required-files-and-directory-structure) and [**bot.txt Syntax**](../development/handler_usage.md#bottxt-syntax) in the Handler Usage Guide.
 
 ---
 

@@ -60,7 +60,7 @@ dynamic_implementations/
 ...
 ```
 
-While courses can be created manually, you should use the [**Admin Portal**](./admin_portal.md) to build and modify course in `bot_data/` automatically.
+While courses can be created manually, you should use the [**Admin Portal**](../user-setup/admin_portal.md) to build and modify course in `bot_data/` automatically.
 
 <!-- Note from Adam:
 - It may be a good idea in the future to supply a path to bot data path universally in the config file.
@@ -86,11 +86,11 @@ dataset3
 - The names ("course1", "rule1", "dataset1") are placeholders, and there is no limit to the number of rules and datasets in a course.
 - **WARNING:** Due to a file reading bug, there must be no empty lines in the bot.txt file for it to read.
 
-While `bot.txt` can be altered manually, you should edit your courses using the [**Admin Portal**](./admin_portal.md) to update `bot.txt` automatically.
+While `bot.txt` can be altered manually, you should edit your courses using the [**Admin Portal**](../user-setup/admin_portal.md) to update `bot.txt` automatically.
 
 ## Dynamic Implementations of `generate_response.py`
 
 A few simple implementations of `generate_response.py` can be found in the `dynamic_implementations/` directory:
 
-- **`discord_handler.py`:** Integrates Maeser with the Discord API to create custom Discord chatbots. For instructions on setting up your own discord bot, see [**Setting Up a Discord Bot**](./discord.md).
+- **`discord_handler.py`:** Integrates Maeser with the Discord API to create custom Discord chatbots. For instructions on setting up your own discord bot, see [**Setting Up a Discord Bot**](../user-setup/discord.md).
 - **`webapp_handler.py`:** An implementation of Maeser using only `generate_response.py`. This is simply a proof-of-concept for how a more generalized Maeser API could interact with a web interface.
