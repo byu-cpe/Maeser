@@ -18,7 +18,7 @@ import time
 from maeser.chat.chat_session_manager import ChatSessionManager
 from maeser.controllers.common.decorators import admin_required, rate_limited
 from maeser.user_manager import UserManager
-from ..controllers import (
+from maeser.controllers import (
     chat_api,
     chat_interface,
     chat_logs_overview,
