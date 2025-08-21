@@ -12,7 +12,8 @@ The following modules and subpackages are included with Maeser by default:
     which handle the logic for handling incoming requests.
 :maeser.graphs: This subpackage contains Retrieval-Augmented Generation (RAG) graphs that affect the
     workflow and behavior of the chatbot.
-:maeser.blueprints: This module sets up the Flask blueprint and associated routes for the Maeser application.
+:maeser.flask_app: This module integrates Maeser with Flask, setting up the Flask blueprint and associated
+    routes for the Maeser application.
 :maeser.config: This module reads in `config.yaml` from the working directory and exposes its fields to
     other modules in the package.
 :maeser.generate_response: This module provides a function named **handle_message** which handles branch
