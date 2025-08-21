@@ -33,8 +33,8 @@ The following subpackages are optional and require additional dependencies:
 from . import (
     chat,
     controllers,
+    flask_app,
     graphs,
-    blueprints,
     config,
     generate_response,
     user_manager,
@@ -47,8 +47,8 @@ from . import (
 __all__ = [
     "chat",
     "controllers",
+    "flask_app",
     "graphs",
-    "blueprints",
     "config",
     "generate_response",
     "user_manager",

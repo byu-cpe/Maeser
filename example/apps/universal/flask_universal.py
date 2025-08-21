@@ -55,7 +55,7 @@ base_app = Flask(
     static_folder=os.path.relpath(STATIC_FOLDER, app_dir),
 )
 
-from maeser.blueprints import AppManager
+from maeser.flask_app.blueprints import AppManager
 
 app_manager = AppManager(
     app=base_app,
