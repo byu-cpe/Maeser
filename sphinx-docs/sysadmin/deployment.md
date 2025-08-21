@@ -1,4 +1,4 @@
-# Deployment Guide
+# Flask Deployment Guide
 
 While Flask makes it easy to test your Maeser project locally, deploying your Flask app publicly is a layered process. Flask handles the functionality of your application, but it is not a server in and of itself. For full functionality, a [**WSGI**](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface) server program is needed to serve your application. A typical Flask-based server connects a Flask app to a WSGI server, which communicates with an HTTP server by a "reverse proxy" protocol. See [**Deploying to Production**](https://flask.palletsprojects.com/en/stable/deploying/) from Flask's official documentation for more information.
 
@@ -16,7 +16,7 @@ Because there are several ways to accomplish these steps, this guide will not ex
 
 ## Prerequisites
 
-- A Maeser application that is set up and working locally. See either the [**User Setup**](../user-setup/user_setup.md) or [**Development Setup**](../development/development_setup.md) workflows.
+- A Maeser application that is set up and working locally. See either the [**User Setup**](../user-setup/flask_setup.md) or [**Development Setup**](../development/development_setup.md) workflows.
 - A domain name and SSL/TLS certificate (explained in [**Deploy Your Server Publicly With a Domain Name**](#deploy-your-server-publicly-with-a-domain-name)).
 
 ---

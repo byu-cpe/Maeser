@@ -34,7 +34,7 @@ Maeser is a modular framework for building RAG-powered tutoring chatbots. This d
    development/handler_usage
 
 .. toctree::
-   :caption: SysAdmin Guide
+   :caption: SysAdmin Guide (Flask)
    :numbered:
    :maxdepth: 1
 
