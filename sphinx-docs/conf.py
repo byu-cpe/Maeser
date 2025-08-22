@@ -38,6 +38,7 @@ autodoc_mock_imports = [
     'seaborn',
     'datasets',
     'langgraph',
+    'tiktoken',
     'PIL',
     'pydantic',
     'markdownify',
