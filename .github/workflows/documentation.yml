@@ -11,15 +11,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-      - name: Install dependencies
+
+      - name: Cache documentation dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pypoetry
+            poetry.lock
+          key: ${{ runner.os }}-poetry-docs-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-docs-
+            ${{ runner.os }}-poetry-
+
+      - name: Install documentation dependencies
         run: |
           pip install poetry
           poetry lock
           poetry install --only docs
+
       - name: Sphinx build
         run: |
           cd sphinx-docs
           SPHINXOPTS="-W" poetry run make html # The -W flag throws all warnings as errors
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
