@@ -32,8 +32,7 @@ jobs:
       - name: Sphinx build
         run: |
           cd sphinx-docs
-          SPHINXOPTS="-W" # The -W flag throws all warnings as errors
-          poetry run make html
+          SPHINXOPTS="-W" poetry run make html # The -W flag throws all warnings as errors
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
