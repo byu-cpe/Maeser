@@ -18,9 +18,5 @@ jobs:
           pip install poetry
           poetry lock
           poetry install --all-extras
-    #   - name: Install pytest
-    #     run: pip install pytest
-    #   - name: Set PYTHONPATH using GITHUB_ENV
-    #     run: echo "PYTHONPATH=${{ github.workspace }}/maeser:$PYTHONPATH" >> $GITHUB_ENV
       - name: Run pytest
         run: poetry run pytest tests/
