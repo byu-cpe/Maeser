@@ -14,7 +14,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: pip install -r requirements/requirements.txt
+        run: |
+          pip install poetry
+          poetry lock
+          poetry install --all-extras
       - name: Install pytest
         run: pip install pytest
       - name: Set PYTHONPATH using GITHUB_ENV
