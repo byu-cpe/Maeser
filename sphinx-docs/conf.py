@@ -42,6 +42,7 @@ autodoc_mock_imports = [
     'PIL',
     'pydantic',
     'markdownify',
+    'werkzeug',
     'flask',
     'flask-login',
     'flask_login',
