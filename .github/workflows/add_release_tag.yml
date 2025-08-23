@@ -2,7 +2,7 @@ name: Add Release Tag to Release Commit
 on:
   push:
     branches:
-      - action-release-tag
+      - main
 
 permissions:
     contents: write
