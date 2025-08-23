@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - action-release-tag
+
+permissions:
+    contents: write
+
 jobs:
   build:
     name: Add release tag
@@ -18,12 +22,9 @@ jobs:
           echo "release_version=$(python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])")" >> $GITHUB_OUTPUT
 
       - name: Commit release version tag
-        uses: EndBug/add-and-commit@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ steps.get_release_version.outputs.release_version }}
-        with:
-          author_name: Tag Bot
-          author_email: tag_bot@github.com
-          message: 'Apply tag "v${{ env.RELEASE_VERSION }}" to release.'
-          tag: 'v${{ env.RELEASE_VERSION }}'
+          RELEASE_VERSION: 'v${{ steps.get_release_version.outputs.release_version }}'
+        run: |
+          git tag ${{ env.RELEASE_VERSION }}
+          git push origin ${{ env.RELEASE_VERSION }}
+          echo 'Applied tag "${{ env.RELEASE_VERSION }}" to release commit.'
