@@ -1,0 +1,29 @@
+name: Add Release Tag to Release Commit
+on:
+  push:
+    branches:
+      - action-release-tag
+jobs:
+  build:
+    name: Add release tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+
+      - name: Get release version
+        id: get_release_version
+        run: |
+          pip install toml
+          echo "release_version=$(python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])")" >> $GITHUB_OUTPUT
+
+      - name: Commit release version tag
+        uses: EndBug/add-and-commit@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.get_release_version.outputs.release_version }}
+        with:
+          author_name: Tag Bot
+          author_email: tag_bot@github.com
+          message: 'Apply tag "v${{ env.RELEASE_VERSION }}" to release.'
+          tag: 'v${{ env.RELEASE_VERSION }}'
