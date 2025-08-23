@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  add_release_tag:
     name: Add release tag
     runs-on: ubuntu-latest
     strategy:
