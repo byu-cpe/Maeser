@@ -22,8 +22,8 @@ header:
     - '**/*.md'
     - '**/*.txt'
     - '**/*.json'
-    - 'maeser/flask_app/data/static/bootstrap-icons'
-    - 'maeser/flask_app/data/static/normalize.css'
+    - 'maeser/data/static/bootstrap-icons'
+    - 'maeser/data/static/normalize.css'
     - 'example/resources/vectorstores'
 
   comment: on-failure
