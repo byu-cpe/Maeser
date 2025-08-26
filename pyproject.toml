@@ -114,7 +114,8 @@ pytest = "^8.2"
 # Unit testing
 ragas = "^0.1.10"
 
-# Documentation
+# Documentation Dependencies
+[tool.poetry.group.docs.dependencies]
 sphinx = "^7.2.6"
 sphinx_rtd_theme = "^2.0.0"
 sphinx-book-theme = "^1.1.3"

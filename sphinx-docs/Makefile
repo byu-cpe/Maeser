@@ -31,9 +31,6 @@ tidy: Makefile
 clean: tidy
 	rm -rf $(PACKAGE_DOC_DIR)
 
-deps:
-	$(PIP) install sphinx sphinx_rtd_theme myst_parser sphinx-book-theme sphinx-copybutton sphinxcontrib-mermaid
-
 .PHONY: help apidoc tidy clean Makefile $(SPHINX_TARGETS)
 
 # Catch-all target: route all unknown targets to Sphinx using the new
