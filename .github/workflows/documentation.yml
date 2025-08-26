@@ -21,7 +21,6 @@ jobs:
           key: ${{ runner.os }}-poetry-docs-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             ${{ runner.os }}-poetry-docs-
-            ${{ runner.os }}-poetry-
 
       - name: Install documentation dependencies
         run: |
