@@ -1,7 +1,7 @@
 name: SkyWalking Eyes License Headers
 on: push
 jobs:
-  build:
+  license_headers:
     name: Apply SPDX headers
     runs-on: ubuntu-latest
     steps:
