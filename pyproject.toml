@@ -4,7 +4,7 @@
 
 [project]
 name = "maeser"
-version = "0.2.1"
+version = "1.0.0"
 description = "A package for building RAG chatbot applications for educational contexts."
 authors = [
     { name = "Ayden Bales", email = "aydenmb@byu.edu" },
@@ -114,7 +114,8 @@ pytest = "^8.2"
 # Unit testing
 ragas = "^0.1.10"
 
-# Documentation
+# Documentation Dependencies
+[tool.poetry.group.docs.dependencies]
 sphinx = "^7.2.6"
 sphinx_rtd_theme = "^2.0.0"
 sphinx-book-theme = "^1.1.3"
