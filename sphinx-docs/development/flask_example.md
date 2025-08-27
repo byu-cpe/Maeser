@@ -236,7 +236,7 @@ user_manager.register_authenticator(name=LDAP3_NAME, authenticator=ldap3_authent
 
 ## Flask Application Setup
 
-**Initializes the Flask app** with both chat session and user managers, then registers all routes via [**Maeser's Flask Blueprints**](../autodoc/maeser/maeser.blueprints.rst).
+**Initializes the Flask app** with both chat session and user managers, then registers all routes via [**Maeser's Flask Blueprint**](../autodoc/maeser/maeser.flask_app.blueprints.rst).
 
 ```python
 from flask import Flask
