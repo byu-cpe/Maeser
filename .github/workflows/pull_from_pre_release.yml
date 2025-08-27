@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  require-pre-release-branch:
+  require_pre_release_branch:
     runs-on: ubuntu-latest
 
     steps:

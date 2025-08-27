@@ -1,4 +1,4 @@
-name: documentation
+name: Documentation
 
 on: [push, workflow_dispatch]
 
@@ -8,9 +8,14 @@ permissions:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
       - name: Cache documentation dependencies
         uses: actions/cache@v3
