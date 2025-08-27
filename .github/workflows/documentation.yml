@@ -17,18 +17,30 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Cache documentation dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pypoetry
+            poetry.lock
+          key: ${{ runner.os }}-poetry-docs-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-docs-
+
+      - name: Install documentation dependencies
         run: |
-          pip install -e .
-          cd sphinx-docs
-          make deps
+          pip install poetry
+          poetry lock
+          poetry install --only docs
+
       - name: Sphinx build
         run: |
           cd sphinx-docs
-          SPHINXOPTS="-W" make html # The -W flag throws all warnings as errors
+          SPHINXOPTS="-W" poetry run make html # The -W flag throws all warnings as errors
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
