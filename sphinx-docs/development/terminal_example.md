@@ -196,4 +196,3 @@ python example/terminal_example.py
 - Explore the [**Flask examples**](./flask_example.md) for web UI.
 - Embed new knowledge bases for use with Maeser (see [**Embedding New Content**](./embedding.md)).
 - Learn more about the Simple, Pipeline, and Universal RAG in [**Graphs**](./graphs.md).
-- Review Maeser’s system architecture in [**Architecture Overview**](./architecture.md).
