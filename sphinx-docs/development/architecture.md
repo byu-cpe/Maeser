@@ -53,7 +53,7 @@ flowchart LR
 
 ### AppManager
 
-- **Class:** `AppManager` (`maeser/blueprints.py`)
+- **Class:** `AppManager` (`maeser/flask_app/blueprints.py`)
 - **Role:** Bootstraps and configures the Flask app, registers routes via blueprints, applies theming, and initializes background tasks (e.g., message requests refresh).
 
 ### ChatSessionManager Module
