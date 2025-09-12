@@ -1,0 +1,670 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>maeser.discord_handler._discord_handler &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=2d4f5009"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/maeser/discord_handler/_discord_handler';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../../../_static/js/mermaid-theme-switch.js?v=09a92c9e"></script>
+    <script src="../../../_static/js/dynamic-footer-disclaimers.js?v=7d45cba9"></script>
+    <link rel="icon" href="../../../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../../../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user-setup/flask_setup.html">1. Getting Started with Maeser’s Flask Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-setup/admin_portal.html">2. The Admin Portal: Generate and Modify Course Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-setup/discord.html">3. Setting Up a Discord Bot</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../development/development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/flask_example.html">3. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/terminal_example.html">4. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/embedding.html">5. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/graphs.html">6. Graphs: Simple RAG, Pipeline RAG, and Universal RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/custom_graphs.html">7. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/libraries.html">8. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/dev_troubleshooting.html">9. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/resources.html">10. Helpful Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/handler_usage.html">11. Using Maeser with External Handlers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide (Flask)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/deployment.html">1. Flask Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/managing_users_and_logs.html">2. Managing Users and Chat Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/troubleshooting.html">3. SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.html">maeser.admin_portal package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.design_model.html">maeser.admin_portal.design_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.extract_figures.html">maeser.admin_portal.extract_figures module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.extract_text.html">maeser.admin_portal.extract_text module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.vector_store_operator.html">maeser.admin_portal.vector_store_operator module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.discord_handler.html">maeser.discord_handler package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.flask_app.html">maeser.flask_app package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.flask_app.blueprints.html">maeser.flask_app.blueprints module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.graphs.html">maeser.graphs package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.graphs.pipeline_rag.html">maeser.graphs.pipeline_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.graphs.simple_rag.html">maeser.graphs.simple_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.graphs.universal_rag.html">maeser.graphs.universal_rag module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.config.html">maeser.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.generate_response.html">maeser.generate_response module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for maeser.discord_handler._discord_handler</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">discord</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maeser.generate_response</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_message</span><span class="p">,</span> <span class="n">get_valid_course_ids</span><span class="p">,</span> <span class="n">BOT_DATA_PATH</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maeser.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">COURSE_ID</span><span class="p">,</span> <span class="n">DISCORD_BOT_TOKEN</span><span class="p">,</span> <span class="n">DISCORD_INTRO</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shlex</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">maeser.graphs.universal_rag</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">RAG_VARS</span>
+
+<span class="c1"># Setup intents</span>
+<span class="n">intents</span> <span class="o">=</span> <span class="n">discord</span><span class="o">.</span><span class="n">Intents</span><span class="o">.</span><span class="n">default</span><span class="p">()</span>
+<span class="n">intents</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">intents</span><span class="o">.</span><span class="n">message_content</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">intents</span><span class="o">.</span><span class="n">dm_messages</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">discord</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">intents</span><span class="o">=</span><span class="n">intents</span><span class="p">)</span>
+
+
+<span class="c1"># Helper: Extract figure references like &quot;1_page3_fig2&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_figures_from_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds all references to figures in **text** and returns a list of figure IDs.</span>
+
+<span class="sd">    The reference to the figure should be formated like &quot;Figure X.X&quot;.</span>
+<span class="sd">    Only &quot;X.X&quot; (the figure ID) will be extracted and added to the resulting list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): The text containing figure references.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: A list of figure IDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Finds &quot;Figure 13.2&quot; and extracts just &quot;13.2&quot;</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;Figure (\d+\.\d+)&quot;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">split_string</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">1999</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Splits one strings into multiple strings so that all resultant chunks are shorter</span>
+<span class="sd">    than **max_length**.</span>
+
+<span class="sd">    Checks for a semantically clean place to split the text first (e.g. at a whitespace).</span>
+<span class="sd">    If a clean place to split is not found, force-splits at **max_length**.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): The text to split.</span>
+<span class="sd">        max_length (int, optional): The maximum length any chunk can be after splitting. Defaults to 1999.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: The list of text chunks that make up the original **text**.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_length</span><span class="p">:</span>
+        <span class="c1"># Try to split at the last newline before max_length</span>
+        <span class="n">split_index</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_length</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">split_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Try to split at the last space before max_length</span>
+            <span class="n">split_index</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_length</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">split_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># No good split point; force split</span>
+            <span class="n">split_index</span> <span class="o">=</span> <span class="n">max_length</span>
+
+        <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="n">split_index</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">split_index</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">chunks</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_admin_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">discord</span><span class="o">.</span><span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks to see if a message was sent by a channel administrator.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        message (discord.Message): The message to check administrator privileges for.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the message sender is an administrator for the channel the message was sent in.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">guild</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">message</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">permissions_for</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">author</span><span class="p">)</span><span class="o">.</span><span class="n">administrator</span>
+    <span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">command_say</span><span class="p">(</span>
+    <span class="n">channel</span><span class="p">:</span> <span class="n">discord</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Messageable</span><span class="p">,</span>
+    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Say **content** in **channel**.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        channel (discord.abc.Messageable): The channel to send the message in.</span>
+<span class="sd">        content (str): The content of the message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">command_intro</span><span class="p">(</span><span class="n">channel</span><span class="p">:</span> <span class="n">discord</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Messageable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sends the default intro message into **channel**.</span>
+
+<span class="sd">    This message can be configured in the &quot;discord:intro&quot; field in `config.yaml`.</span>
+<span class="sd">    All instances of &quot;@self&quot; in the text will be replaced with a mention to the</span>
+<span class="sd">    Discord bot (e.g. &quot;@BotName&quot;).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        channel (discord.abc.Messageable): The channel to send the intro message in.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intro_content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DISCORD_INTRO</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;@self&quot;</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">mention</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">intro_content</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_admin_command</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">discord</span><span class="o">.</span><span class="n">Message</span><span class="p">,</span> <span class="n">command_args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">channel</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">channel</span>
+    <span class="n">argc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">command_args</span><span class="p">)</span>
+    <span class="k">match</span> <span class="n">command_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">case</span> <span class="s2">&quot;!say&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                    <span class="s2">&quot;Usage: `!say [CONTENT]`</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s1">&#39;Use quotes around CONTENT (e.g. `!say &quot;Hello World!&quot;`)</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s2">&quot;Additional arguments will be sent on a new line.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span>
+            <span class="n">say_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">command_args</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">await</span> <span class="n">command_say</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">say_text</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+        <span class="k">case</span> <span class="s2">&quot;!intro&quot;</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">command_intro</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+
+<span class="nd">@client</span><span class="o">.</span><span class="n">event</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_ready</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Discord Bot connected as </span><span class="si">{</span><span class="n">client</span><span class="o">.</span><span class="n">user</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@client</span><span class="o">.</span><span class="n">event</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">discord</span><span class="o">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="c1"># Get data from message</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">msg_text</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">channel</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">channel</span>
+
+    <span class="c1"># Ignore if message is from bot or if message is blank</span>
+    <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">bot</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg_text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Only run admin commands if message is not a DM</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">discord</span><span class="o">.</span><span class="n">DMChannel</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_admin_message</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+            <span class="n">msg_args</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+                <span class="n">msg_text</span>
+            <span class="p">)</span>  <span class="c1"># Gets list of args as if msg_text was a terminal command</span>
+
+            <span class="c1"># Bot must be mentioned first</span>
+            <span class="c1"># and message must contain a command (not just a bot mention)</span>
+            <span class="k">if</span> <span class="n">msg_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">client</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">mention</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg_args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">command_args</span> <span class="o">=</span> <span class="n">msg_args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c1"># remove chatbot mention</span>
+                <span class="k">await</span> <span class="n">run_admin_command</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">command_args</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># -- MESSAGE PROCESSING --</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">channel</span><span class="o">.</span><span class="n">typing</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">reply</span> <span class="o">=</span> <span class="n">handle_message</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">COURSE_ID</span><span class="p">,</span> <span class="n">msg_text</span><span class="p">)</span>
+            <span class="c1"># Send text reply</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1999</span><span class="p">:</span>
+                <span class="n">chunks</span> <span class="o">=</span> <span class="n">split_string</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Extract and send figures if referenced</span>
+
+                <span class="n">figure_dir</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BOT_DATA_PATH</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">COURSE_ID</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">RAG_VARS</span><span class="o">.</span><span class="n">recommended_topics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">figure_names</span> <span class="o">=</span> <span class="n">extract_figures_from_text</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="n">figure_names</span><span class="p">:</span>
+                    <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">figure_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fig</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
+                        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">discord</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fig</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[WARN] Figure not found: </span><span class="si">{</span><span class="n">image_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;❌ There was an issue sending figures.&quot;</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="run_discord_handler">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.discord_handler.html#maeser.discord_handler.run_discord_handler">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_discord_handler</span><span class="p">(</span><span class="n">course_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">COURSE_ID</span><span class="p">,</span> <span class="n">bot_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DISCORD_BOT_TOKEN</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs the discord handler by setting up a RAG Graph with **course_id** and connecting</span>
+<span class="sd">    it to a discord bot with **bot_token**.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        course_id (str, optional): The course ID the RAG Graph should use for context. Defaults to maeser.config.COURSE_ID.</span>
+<span class="sd">        bot_token (str, optional): _description_. Defaults to maeser.config.DISCORD_BOT_TOKEN.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">course_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">get_valid_course_ids</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: Course ID </span><span class="si">{</span><span class="n">course_id</span><span class="si">}</span><span class="s2"> not a valid course ID.&quot;</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">bot_token</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_discord_handler</span><span class="p">(</span><span class="n">COURSE_ID</span><span class="p">,</span> <span class="n">DISCORD_BOT_TOKEN</span><span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

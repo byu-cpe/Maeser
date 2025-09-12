@@ -1,0 +1,729 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. Managing Users and Chat Logs &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=2d4f5009"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'sysadmin/managing_users_and_logs';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../_static/js/mermaid-theme-switch.js?v=09a92c9e"></script>
+    <script src="../_static/js/dynamic-footer-disclaimers.js?v=7d45cba9"></script>
+    <link rel="icon" href="../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. SysAdmin Troubleshooting Guide" href="troubleshooting.html" />
+    <link rel="prev" title="1. Flask Deployment Guide" href="deployment.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/flask_setup.html">1. Getting Started with Maeser’s Flask Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/admin_portal.html">2. The Admin Portal: Generate and Modify Course Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/discord.html">3. Setting Up a Discord Bot</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../development/development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/flask_example.html">3. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/terminal_example.html">4. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/embedding.html">5. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/graphs.html">6. Graphs: Simple RAG, Pipeline RAG, and Universal RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/custom_graphs.html">7. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/libraries.html">8. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_troubleshooting.html">9. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">10. Helpful Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/handler_usage.html">11. Using Maeser with External Handlers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide (Flask)</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">1. Flask Deployment Guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Managing Users and Chat Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">3. SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.html">maeser.admin_portal package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.design_model.html">maeser.admin_portal.design_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.extract_figures.html">maeser.admin_portal.extract_figures module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.extract_text.html">maeser.admin_portal.extract_text module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.vector_store_operator.html">maeser.admin_portal.vector_store_operator module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.discord_handler.html">maeser.discord_handler package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.flask_app.html">maeser.flask_app package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.flask_app.blueprints.html">maeser.flask_app.blueprints module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.html">maeser.graphs package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.pipeline_rag.html">maeser.graphs.pipeline_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.simple_rag.html">maeser.graphs.simple_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.universal_rag.html">maeser.graphs.universal_rag module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.config.html">maeser.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.generate_response.html">maeser.generate_response module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/sysadmin/managing_users_and_logs.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Managing Users and Chat Logs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">2.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-management-page">2.2. User Management Page</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#user-management-filters">2.2.1. User Management Filters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#edit-user-options">2.2.2. Edit User Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#return-home-from-user-management">2.2.3. Return Home from User Management</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-logs-management-page">2.3. Chat Logs Management Page</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-logs-filters">2.3.1. Chat Logs Filters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-of-log-files">2.3.2. List of Log Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-individual-logs">2.3.3. View Individual Logs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#return-home-from-chat-logs-management">2.3.4. Return Home from Chat Logs Management</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obtaining-administrator-privileges">2.4. Obtaining Administrator Privileges</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#receive-privileges-from-another-administrator">2.4.1. Receive Privileges From Another Administrator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-user-manager-update-admin-status">2.4.2. Use <code class="docutils literal notranslate"><span class="pre">user_manager.update_admin_status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-the-user-database-directly">2.4.3. Modify the User Database Directly</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="managing-users-and-chat-logs">
+<h1><span class="section-number">2. </span>Managing Users and Chat Logs<a class="headerlink" href="#managing-users-and-chat-logs" title="Link to this heading">#</a></h1>
+<p>The Maeser Flask app comes with a built-in web interface for <a class="reference internal" href="#user-management-page"><strong>User Management</strong></a> and <a class="reference internal" href="#chat-logs-management-page"><strong>Chat Logs Management</strong></a>. These interfaces make it easy for an administrator to monitor usage of their chatbot and modify user permissions.</p>
+<hr class="docutils" />
+<section id="prerequisites">
+<h2><span class="section-number">2.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Administrator Privileges</strong>: You must be an administrator in your Maeser application to access the User Management and Chat Logs Management pages. For instructions on how to acquire administrator privileges, see <a class="reference internal" href="#obtaining-administrator-privileges"><strong>Obtaining Administrator Privileges</strong></a>.</p></li>
+</ul>
+</section>
+<section id="user-management-page">
+<h2><span class="section-number">2.2. </span>User Management Page<a class="headerlink" href="#user-management-page" title="Link to this heading">#</a></h2>
+<p>The User Management page lets you see and modify the permissions of all users registered in your Maeser app.</p>
+<section id="user-management-filters">
+<h3><span class="section-number">2.2.1. </span>User Management Filters<a class="headerlink" href="#user-management-filters" title="Link to this heading">#</a></h3>
+<p>The User Management page provides the following filters to sort through your user database:</p>
+<ol class="arabic simple">
+<li><p><strong>Authenticators:</strong> Display users from a specific authentication method. (<strong>Note:</strong> This filter is only visible if you have more than one authenticator registered with your app.)</p></li>
+<li><p><strong>Admin Status:</strong> Display either users that have administrator privileges or users that do not.</p></li>
+<li><p><strong>Banned Status:</strong> Display either banned or non-banned users.</p></li>
+</ol>
+</section>
+<section id="edit-user-options">
+<h3><span class="section-number">2.2.2. </span>Edit User Options<a class="headerlink" href="#edit-user-options" title="Link to this heading">#</a></h3>
+<p>To edit the permissions and options of a user, click on their user card in the list of users. A menu will appear where you can change the following:</p>
+<ul class="simple">
+<li><p><strong>Admin Status:</strong> Whether the user has elevated or standard privileges.</p></li>
+<li><p><strong>Ban Status:</strong> Whether or not the user is banned from accessing your web interface.</p></li>
+<li><p><strong>Requests:</strong> The number of messages the user has left before they will be rate-limited.</p></li>
+<li><p><strong>Remove User:</strong> Deletes a user from the user database. The user will have to re-create their account the next time they log in.</p></li>
+</ul>
+</section>
+<section id="return-home-from-user-management">
+<h3><span class="section-number">2.2.3. </span>Return Home from User Management<a class="headerlink" href="#return-home-from-user-management" title="Link to this heading">#</a></h3>
+<p>To return home, simply click your Maeser app’s logo at the top-left corner of the page.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="chat-logs-management-page">
+<h2><span class="section-number">2.3. </span>Chat Logs Management Page<a class="headerlink" href="#chat-logs-management-page" title="Link to this heading">#</a></h2>
+<p>The Chat Logs Management page lets you see the conversation history between users and your chatbot. Each log file corresponds to one conversation created by a user.</p>
+<section id="chat-logs-filters">
+<h3><span class="section-number">2.3.1. </span>Chat Logs Filters<a class="headerlink" href="#chat-logs-filters" title="Link to this heading">#</a></h3>
+<p>The Chat Logs Management page has the following sorting and filtering options:</p>
+<ul class="simple">
+<li><p><strong>Sort by Modification or Creation Time:</strong> Whether the logs should be sorted by when they were modified or when they were created.</p></li>
+<li><p><strong>Order:</strong> The direction in which the log entries should be sorted.</p></li>
+<li><p><strong>User:</strong> Display log files from a specific user.</p></li>
+<li><p><strong>Feedback:</strong> Display either log files with user-submitted feedback or log files without feedback.</p></li>
+</ul>
+</section>
+<section id="list-of-log-files">
+<h3><span class="section-number">2.3.2. </span>List of Log Files<a class="headerlink" href="#list-of-log-files" title="Link to this heading">#</a></h3>
+<p>The list of log files on the Chat Logs Management page displays a high-level overview of each log, including:</p>
+<ul class="simple">
+<li><p><strong>User:</strong> Formatted like <code class="docutils literal notranslate"><span class="pre">authenticator.user_id</span></code>.</p></li>
+<li><p><strong>Log File Name:</strong> A string of numbers followed by <code class="docutils literal notranslate"><span class="pre">-authenticator-user_id.log</span></code>.</p></li>
+<li><p><strong>Creation Date/Time:</strong> The time and date the log file was created, or in other words, the time and date the conversation started.</p></li>
+<li><p><strong>Last Modified Date/Time:</strong> The time and date the log file was last modified, or in other words, the time and date of the last message in the conversation.</p></li>
+<li><p><strong>Feedback:</strong> True or False, depending on whether the user submitted feedback in that conversation thread.</p></li>
+</ul>
+<p>A few helpful aggregate statistics are listed above the list of log files:</p>
+<ul class="simple">
+<li><p><strong>Total Tokens</strong></p></li>
+<li><p><strong>Total Cost</strong></p></li>
+</ul>
+<p>These statistics are a grand total for your Maeser app, summed from all log files saved.</p>
+</section>
+<section id="view-individual-logs">
+<h3><span class="section-number">2.3.3. </span>View Individual Logs<a class="headerlink" href="#view-individual-logs" title="Link to this heading">#</a></h3>
+<p>To view the contents of a single log file, simply click its file name to open its contents in a new page.</p>
+<p>The top of the log file contains statistics for the entire conversation thread:</p>
+<ul class="simple">
+<li><p><strong>Name:</strong> The name of the user conversing with your chatbot.</p></li>
+<li><p><strong>User Authentication:</strong> The authenticator and user id of the user, formatted like <code class="docutils literal notranslate"><span class="pre">authenticator.user_id</span></code></p></li>
+<li><p><strong>Time:</strong> The time and date the log file was created, or in other words, the time and date the conversation started.</p></li>
+<li><p><strong>Branch:</strong> The chat branch selected for the conversation. This should correspond to one of the branches registered to your app’s <code class="docutils literal notranslate"><span class="pre">ChatSessionManager</span></code> object (in your app’s Flask script).</p></li>
+<li><p><strong>Total Cost:</strong> The total cost of the conversation thread, accrued from the total tokens used during response generation.</p></li>
+<li><p><strong>Total Tokens:</strong> The total number of tokens used in the conversation thread by the LLM for response generation.</p></li>
+</ul>
+<p>The rest of the log file consists of the conversation history, following this general form:</p>
+<div class="no-copybutton highlight-text notranslate"><div class="highlight"><pre><span></span>────────────────────────
+&lt;user_question&gt;
+────────────────────────
+&lt;chatbot_response&gt;
+&lt;response_statistics&gt;
+────────────────────────
+</pre></div>
+</div>
+<p>The response statistics are as follows:</p>
+<ul class="simple">
+<li><p><strong>Cost:</strong> The precise cost of processing the chatbot’s response.</p></li>
+<li><p><strong>Tokens:</strong> The number of tokens used to process the chatbot’s response.</p></li>
+<li><p><strong>Time to Response:</strong> The amount of time it took for the chatbot to generate a response.</p></li>
+<li><p><strong>Feedback:</strong> Either “Positive” or “Negative” depending on the feedback selected by the user. (<strong>Note:</strong> This statistic is only visible if the user left feedback on the chatbot’s response.)</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Note: Vector Store Context in Log File</strong><br />
+The chat log files also record the context pulled from the vector store(s) that was used by the chatbot to generate a relevant response. For brevity, this context is not exposed on the Chat Logs Management web view, but it can be accessed directly in your chat logs directory if desired.</p>
+</div></blockquote>
+<p>The bottom of the Log page contains the link “Back to list”, which will take you back to the <strong>List of Log Files</strong>.</p>
+</section>
+<section id="return-home-from-chat-logs-management">
+<h3><span class="section-number">2.3.4. </span>Return Home from Chat Logs Management<a class="headerlink" href="#return-home-from-chat-logs-management" title="Link to this heading">#</a></h3>
+<p>To return home, simply click your Maeser app’s logo at the top-left corner of the page. If you are viewing a single log file, first click “Back to list”; then click your Maeser app’s logo at the top-left corner of the page.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="obtaining-administrator-privileges">
+<h2><span class="section-number">2.4. </span>Obtaining Administrator Privileges<a class="headerlink" href="#obtaining-administrator-privileges" title="Link to this heading">#</a></h2>
+<p>Before you can access the User and Chat Logs Management pages, you must first have administrator privileges. You have three options to acquire these privileges:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#receive-privileges-from-another-administrator"><strong>Receive privileges from another administrator.</strong></a></p></li>
+<li><p><a class="reference internal" href="#use-user-manager-update-admin-status"><strong>Use <code class="docutils literal notranslate"><span class="pre">user_manager.update_admin_status()</span></code>.</strong></a></p></li>
+<li><p><a class="reference internal" href="#modify-the-user-database-directly"><strong>Modify the user database directly.</strong></a></p></li>
+</ol>
+<p>For these methods to work, you must have logged in to your Maeser app at least once. You can <strong>check your administrator status</strong> by opening the side panel via the button at the top-left corner of the page. If you see buttons labeled “User Management” and “Logs”, then you have administrator privileges; if these buttons are missing, then you do not have administrator privileges.</p>
+<section id="receive-privileges-from-another-administrator">
+<h3><span class="section-number">2.4.1. </span>Receive Privileges From Another Administrator<a class="headerlink" href="#receive-privileges-from-another-administrator" title="Link to this heading">#</a></h3>
+<p>If another user already has administrator rights, they can simply log in and remotely grant administrator privileges to your account via the <a class="reference internal" href="#user-management-page"><strong>User Management Page</strong></a>. This is the most straightforward approach, but the other methods listed will work if you are unable to receive privileges from another administrator.</p>
+</section>
+<section id="use-user-manager-update-admin-status">
+<h3><span class="section-number">2.4.2. </span>Use <code class="docutils literal notranslate"><span class="pre">user_manager.update_admin_status()</span></code><a class="headerlink" href="#use-user-manager-update-admin-status" title="Link to this heading">#</a></h3>
+<p>This method will require you to temporarily modify your Maeser app’s Flask script. Open your Flask script and locate where your user manager is registered with its authenticators. This section will look similar to the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">user_manager</span> <span class="o">=</span> <span class="n">UserManager</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">USERS_DB_PATH</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="n">MAX_REQUESTS</span><span class="p">,</span> <span class="n">rate_limit_interval</span><span class="o">=</span><span class="n">RATE_LIMIT_INTERVAL</span><span class="p">)</span>
+<span class="n">user_manager</span><span class="o">.</span><span class="n">register_authenticator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;github&quot;</span><span class="p">,</span> <span class="n">authenticator</span><span class="o">=</span><span class="n">github_authenticator</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Below this section, add the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">user_manager</span> <span class="o">=</span> <span class="n">UserManager</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">USERS_DB_PATH</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="n">MAX_REQUESTS</span><span class="p">,</span> <span class="n">rate_limit_interval</span><span class="o">=</span><span class="n">RATE_LIMIT_INTERVAL</span><span class="p">)</span>
+<span class="n">user_manager</span><span class="o">.</span><span class="n">register_authenticator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;github&quot;</span><span class="p">,</span> <span class="n">authenticator</span><span class="o">=</span><span class="n">github_authenticator</span><span class="p">)</span>
+
+<span class="c1"># ---- New code starts here ---- #</span>
+<span class="n">user_manager</span><span class="o">.</span><span class="n">update_admin_status</span><span class="p">(</span>
+    <span class="n">auth_method</span><span class="o">=</span><span class="s2">&quot;github&quot;</span><span class="p">,</span>
+    <span class="n">ident</span><span class="o">=</span><span class="s2">&quot;your_username&quot;</span><span class="p">,</span>
+    <span class="n">is_admin</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">your_username</span></code> with the username registered under your authenticator, and if using an authenticator other than GitHub, replace <code class="docutils literal notranslate"><span class="pre">github</span></code> with the name of your authenticator.</p>
+<p>Save these changes and restart your Maeser app; you should now have administrator privileges. You may now remove <code class="docutils literal notranslate"><span class="pre">user_manager.update_admin_status(...)</span></code> from your code and your privileges will still be elevated.</p>
+</section>
+<section id="modify-the-user-database-directly">
+<h3><span class="section-number">2.4.3. </span>Modify the User Database Directly<a class="headerlink" href="#modify-the-user-database-directly" title="Link to this heading">#</a></h3>
+<p>The SQLite database file used to store user data is located at the path specified by <code class="docutils literal notranslate"><span class="pre">accounts_db_path</span></code> in your app’s <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> (located at <code class="docutils literal notranslate"><span class="pre">chat_logs/users.db</span></code> by default). You will need a program that can open SQLite database files; several programs and code editor extensions exist that can do this. To grant yourself administrator privileges using this method, do the following:</p>
+<ol class="arabic simple">
+<li><p><strong>Open the database file</strong> with a program of your choice.</p></li>
+<li><p><strong>Find your row in the database</strong> by entering the table corresponding to your authentication method (e.g. <code class="docutils literal notranslate"><span class="pre">githubUsers</span></code> for GitHub) and by using the <code class="docutils literal notranslate"><span class="pre">user_id</span></code> and <code class="docutils literal notranslate"><span class="pre">realname</span></code> columns to locate your entry.</p></li>
+<li><p><strong>Toggle your admin status</strong> by changing the value of the “admin” cell on your row from 0 to 1.</p></li>
+</ol>
+<p>Once you commit this change to the database, you will be granted administrator privileges.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="deployment.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Flask Deployment Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="troubleshooting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>SysAdmin Troubleshooting Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">2.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-management-page">2.2. User Management Page</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#user-management-filters">2.2.1. User Management Filters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#edit-user-options">2.2.2. Edit User Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#return-home-from-user-management">2.2.3. Return Home from User Management</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-logs-management-page">2.3. Chat Logs Management Page</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chat-logs-filters">2.3.1. Chat Logs Filters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-of-log-files">2.3.2. List of Log Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-individual-logs">2.3.3. View Individual Logs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#return-home-from-chat-logs-management">2.3.4. Return Home from Chat Logs Management</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obtaining-administrator-privileges">2.4. Obtaining Administrator Privileges</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#receive-privileges-from-another-administrator">2.4.1. Receive Privileges From Another Administrator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-user-manager-update-admin-status">2.4.2. Use <code class="docutils literal notranslate"><span class="pre">user_manager.update_admin_status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-the-user-database-directly">2.4.3. Modify the User Database Directly</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

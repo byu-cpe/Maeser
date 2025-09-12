@@ -1,0 +1,760 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>maeser.graphs.universal_rag &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=2d4f5009"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/maeser/graphs/universal_rag';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../../../_static/js/mermaid-theme-switch.js?v=09a92c9e"></script>
+    <script src="../../../_static/js/dynamic-footer-disclaimers.js?v=7d45cba9"></script>
+    <link rel="icon" href="../../../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../../../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user-setup/flask_setup.html">1. Getting Started with Maeser’s Flask Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-setup/admin_portal.html">2. The Admin Portal: Generate and Modify Course Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-setup/discord.html">3. Setting Up a Discord Bot</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../development/development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/flask_example.html">3. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/terminal_example.html">4. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/embedding.html">5. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/graphs.html">6. Graphs: Simple RAG, Pipeline RAG, and Universal RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/custom_graphs.html">7. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/libraries.html">8. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/dev_troubleshooting.html">9. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/resources.html">10. Helpful Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/handler_usage.html">11. Using Maeser with External Handlers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide (Flask)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/deployment.html">1. Flask Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/managing_users_and_logs.html">2. Managing Users and Chat Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sysadmin/troubleshooting.html">3. SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.html">maeser.admin_portal package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.design_model.html">maeser.admin_portal.design_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.extract_figures.html">maeser.admin_portal.extract_figures module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.extract_text.html">maeser.admin_portal.extract_text module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.admin_portal.vector_store_operator.html">maeser.admin_portal.vector_store_operator module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.discord_handler.html">maeser.discord_handler package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.flask_app.html">maeser.flask_app package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.flask_app.blueprints.html">maeser.flask_app.blueprints module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autodoc/maeser/maeser.graphs.html">maeser.graphs package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.graphs.pipeline_rag.html">maeser.graphs.pipeline_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.graphs.simple_rag.html">maeser.graphs.simple_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autodoc/maeser/maeser.graphs.universal_rag.html">maeser.graphs.universal_rag module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.config.html">maeser.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.generate_response.html">maeser.generate_response module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for maeser.graphs.universal_rag</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: LGPL-3.0-or-later</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for creating a universal **Retrieval-Augmented Generation (RAG) graph** using LangChain.</span>
+
+<span class="sd">This RAG graph accepts multiple vector stores, like **pipeline_rag**, but also pulls from</span>
+<span class="sd">as many vector stores as needed (or none at all) per response.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    recommended_topics (List[str]): The list of recommended topics/vectorstores from the last user request.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.documents.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span><span class="p">,</span> <span class="n">MessagesPlaceholder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateGraph</span><span class="p">,</span> <span class="n">START</span><span class="p">,</span> <span class="n">END</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompiledGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.checkpoint.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">SqliteSaver</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tiktoken</span>
+
+<span class="n">_enc</span> <span class="o">=</span> <span class="n">tiktoken</span><span class="o">.</span><span class="n">encoding_for_model</span><span class="p">(</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_messages</span><span class="p">(</span><span class="n">left</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">right</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_combine_documents</span><span class="p">(</span><span class="n">left</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span> <span class="n">right</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_GraphState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">messages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">_add_messages</span><span class="p">]</span>
+    <span class="n">retrieved_context</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span> <span class="n">_combine_documents</span><span class="p">]</span>
+    <span class="n">recommended_topics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">current_retrieval_index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">first_message</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">previous_question</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">previous_topics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">chat_summary</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_topic</span><span class="p">(</span><span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">topic</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_topic_keys</span><span class="p">(</span><span class="n">topics</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">topics</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;&quot;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;, or &#39;</span><span class="si">{</span><span class="n">keys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+
+
+<div class="viewcode-block" id="get_universal_rag">
+<a class="viewcode-back" href="../../../autodoc/maeser/maeser.graphs.universal_rag.html#maeser.graphs.universal_rag.get_universal_rag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_universal_rag</span><span class="p">(</span>
+    <span class="n">vectorstore_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">memory_filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">system_prompt_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;You are a helpful teacher helping a student with course material.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;You will answer a question based on the context provided.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;If the question is unrelated to the topic or the context, &quot;</span>
+        <span class="s2">&quot;politely inform the user that their question is outside the context of your resources.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;</span><span class="si">{context}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">),</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompiledGraph</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a universal **Retrieval-Augmented Generation (RAG)** graph.</span>
+
+<span class="sd">    This RAG graph pulls from as many vector stores as needed (or none at all) to generate a response.</span>
+<span class="sd">    The vector stores are chosen based on relevance to the user&#39;s input, and context from these</span>
+<span class="sd">    vectorstores are used along with a summary of recent chat history as input for response generation.</span>
+
+<span class="sd">    The following system prompt is used if none is provided:</span>
+
+<span class="sd">        \&quot;\&quot;\&quot;You are a helpful teacher helping a student with course material.</span>
+<span class="sd">        You will answer a question based on the context provided.</span>
+<span class="sd">        If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.</span>
+
+<span class="sd">        {context}</span>
+<span class="sd">        \&quot;\&quot;\&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vectorstore_config (Dict[str, str]):</span>
+<span class="sd">            Mapping of topic name to vector store path.</span>
+
+<span class="sd">                &gt; **WARNING:** The topic name must be **all lower case** due to limitations with the current implementation.</span>
+
+<span class="sd">        memory_filepath (str): Path for the memory checkpoint (SQLite database).</span>
+<span class="sd">        api_key (str | None): API key for the language model. Defaults to None,</span>
+<span class="sd">            in which case it will use the ``OPENAI_API_KEY`` environment variable.</span>
+<span class="sd">        system_prompt_text (str): System prompt template for answer generation. Defaults to a helpful teacher prompt.</span>
+<span class="sd">        model (str): Model name to use. Defaults to &#39;gpt-4o-mini&#39;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        CompiledGraph: _description_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">retrievers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">topic</span><span class="p">:</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">load_local</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span>
+            <span class="n">OpenAIEmbeddings</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span> <span class="k">if</span> <span class="n">api_key</span> <span class="k">else</span> <span class="n">OpenAIEmbeddings</span><span class="p">(),</span>
+            <span class="n">allow_dangerous_deserialization</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">topic</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">vectorstore_config</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="n">llm</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">api_key</span>
+        <span class="k">else</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">generate_chain</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="n">system_prompt_text</span><span class="p">),</span>
+                <span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="o">|</span> <span class="n">llm</span>
+        <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">determine_relevant_topics_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">_GraphState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">user_question</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">question_content</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">user_question</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">user_question</span><span class="p">)</span>
+
+        <span class="n">available_topics</span> <span class="o">=</span> <span class="n">vectorstore_config</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">formatted_topics</span> <span class="o">=</span> <span class="n">_format_topic_keys</span><span class="p">(</span><span class="n">vectorstore_config</span><span class="p">)</span>
+
+        <span class="n">topic_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;You are an assistant that identifies relevant topics for information retrieval. Given a user&#39;s question, identify 1 to 3 topics from the following list that are most relevant. Respond with a comma-separated list. Available topics: </span><span class="si">{</span><span class="n">formatted_topics</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Question content passed to topic prompt:&quot;</span><span class="p">,</span> <span class="n">question_content</span>
+        <span class="p">)</span>  <span class="c1"># Debug print</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">topic_prompt</span><span class="o">.</span><span class="n">format_messages</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question_content</span><span class="p">))</span>
+        <span class="n">raw_topics</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">global</span> <span class="n">recommended_topics</span>
+        <span class="n">recommended_topics</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">_normalize_topic</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">raw_topics</span>
+            <span class="k">if</span> <span class="n">_normalize_topic</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="n">available_topics</span> <span class="ow">and</span> <span class="n">_normalize_topic</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span>
+        <span class="p">]</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Recommended topics:&quot;</span><span class="p">,</span> <span class="n">recommended_topics</span>
+        <span class="p">)</span>  <span class="c1"># Print recommended topics to console</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;recommended_topics&quot;</span><span class="p">:</span> <span class="n">recommended_topics</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span>
+            <span class="s2">&quot;current_retrieval_index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;retrieved_context&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;previous_question&quot;</span><span class="p">:</span> <span class="n">question_content</span><span class="p">,</span>
+            <span class="s2">&quot;previous_topics&quot;</span><span class="p">:</span> <span class="n">recommended_topics</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve_and_accumulate_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">_GraphState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">topics</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;recommended_topics&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;current_retrieval_index&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No messages found in retrieve_and_accumulate_node&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;retrieved_context&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;current_retrieval_index&quot;</span><span class="p">:</span> <span class="n">idx</span><span class="p">}</span>
+        <span class="n">user_question</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">question_content</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">user_question</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">user_question</span><span class="p">)</span>
+
+        <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">topics</span><span class="p">):</span>
+            <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">retrievers</span><span class="p">:</span>
+                <span class="n">docs</span> <span class="o">=</span> <span class="n">retrievers</span><span class="p">[</span><span class="n">topic</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">question_content</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;retrieved_context&quot;</span><span class="p">:</span> <span class="n">docs</span><span class="p">,</span> <span class="s2">&quot;current_retrieval_index&quot;</span><span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">_GraphState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No messages found in generate_node&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retrieved_context&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chat_summary&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Input to the chain</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">generate_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">docs</span><span class="p">,</span>
+                <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">summary</span><span class="p">]</span> <span class="k">if</span> <span class="n">summary</span> <span class="k">else</span> <span class="n">messages</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Log token usage</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">count_tokens</span><span class="p">(</span><span class="n">msgs</span><span class="p">):</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">msgs</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">_enc</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">result</span><span class="p">]}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">summarize_chat_history_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">_GraphState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;chat_summary&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+        <span class="n">recent_messages</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="n">recent_content</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">recent_messages</span><span class="p">]</span>
+
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Summarize useful and relevant information from this chat history, discarding off-topic parts.&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;human&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;Messages:</span><span class="se">\n</span><span class="si">{</span><span class="n">recent_content</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">Output a concise useful summary.&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">summary</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">format_messages</span><span class="p">())</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;chat_summary&quot;</span><span class="p">:</span> <span class="n">summary</span><span class="o">.</span><span class="n">content</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_message_related_to_previous_node</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">_GraphState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No messages found in is_message_related_to_previous_node&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;recommended_topics&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;current_retrieval_index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;retrieved_context&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="p">}</span>
+        <span class="n">current_question</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">previous_question</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;previous_question&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;Determine if these two questions are topically related.&quot;</span><span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;human&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;Previous question: </span><span class="si">{</span><span class="n">previous_question</span><span class="si">}</span><span class="se">\n</span><span class="s2">Current question: </span><span class="si">{</span><span class="n">current_question</span><span class="si">}</span><span class="se">\n</span><span class="s2">Respond with only &#39;yes&#39; or &#39;no&#39;.&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">format_messages</span><span class="p">())</span>
+        <span class="n">related</span> <span class="o">=</span> <span class="s2">&quot;yes&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">related</span> <span class="ow">and</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;previous_topics&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;recommended_topics&quot;</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;previous_topics&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;current_retrieval_index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;retrieved_context&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;recommended_topics&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;current_retrieval_index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;retrieved_context&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">route_retrieval</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">_GraphState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;retrieve_and_accumulate&quot;</span>
+            <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;current_retrieval_index&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;recommended_topics&quot;</span><span class="p">,</span> <span class="p">[]))</span>
+            <span class="k">else</span> <span class="s2">&quot;generate&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">_GraphState</span><span class="p">)</span>
+
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;check_related&quot;</span><span class="p">,</span> <span class="n">is_message_related_to_previous_node</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;determine_relevant_topics&quot;</span><span class="p">,</span> <span class="n">determine_relevant_topics_node</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;summarize_chat&quot;</span><span class="p">,</span> <span class="n">summarize_chat_history_node</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;retrieve_and_accumulate&quot;</span><span class="p">,</span> <span class="n">retrieve_and_accumulate_node</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;generate&quot;</span><span class="p">,</span> <span class="n">generate_node</span><span class="p">)</span>
+
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">&quot;determine_relevant_topics&quot;</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;determine_relevant_topics&quot;</span><span class="p">,</span> <span class="s2">&quot;summarize_chat&quot;</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_conditional_edges</span><span class="p">(</span>
+        <span class="s2">&quot;summarize_chat&quot;</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">&quot;generate&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;recommended_topics&quot;</span><span class="p">)</span>
+        <span class="k">else</span> <span class="s2">&quot;retrieve_and_accumulate&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_conditional_edges</span><span class="p">(</span><span class="s2">&quot;retrieve_and_accumulate&quot;</span><span class="p">,</span> <span class="n">route_retrieval</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;generate&quot;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+
+    <span class="n">memory</span> <span class="o">=</span> <span class="n">SqliteSaver</span><span class="o">.</span><span class="n">from_conn_string</span><span class="p">(</span><span class="n">memory_filepath</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">checkpointer</span><span class="o">=</span><span class="n">memory</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,730 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Development Setup &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=2d4f5009"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'development/development_setup';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../_static/js/mermaid-theme-switch.js?v=09a92c9e"></script>
+    <script src="../_static/js/dynamic-footer-disclaimers.js?v=7d45cba9"></script>
+    <link rel="icon" href="../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Development Setup with WSL (Windows Subsystem for Linux)" href="wsl_development.html" />
+    <link rel="prev" title="3. Setting Up a Discord Bot" href="../user-setup/discord.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/flask_setup.html">1. Getting Started with Maeser’s Flask Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/admin_portal.html">2. The Admin Portal: Generate and Modify Course Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/discord.html">3. Setting Up a Discord Bot</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flask_example.html">3. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminal_example.html">4. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding.html">5. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">6. Graphs: Simple RAG, Pipeline RAG, and Universal RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_graphs.html">7. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">8. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_troubleshooting.html">9. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">10. Helpful Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handler_usage.html">11. Using Maeser with External Handlers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide (Flask)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/deployment.html">1. Flask Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/managing_users_and_logs.html">2. Managing Users and Chat Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/troubleshooting.html">3. SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.html">maeser.admin_portal package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.design_model.html">maeser.admin_portal.design_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.extract_figures.html">maeser.admin_portal.extract_figures module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.extract_text.html">maeser.admin_portal.extract_text module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.vector_store_operator.html">maeser.admin_portal.vector_store_operator module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.discord_handler.html">maeser.discord_handler package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.flask_app.html">maeser.flask_app package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.flask_app.blueprints.html">maeser.flask_app.blueprints module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.html">maeser.graphs package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.pipeline_rag.html">maeser.graphs.pipeline_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.simple_rag.html">maeser.graphs.simple_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.universal_rag.html">maeser.graphs.universal_rag module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.config.html">maeser.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.generate_response.html">maeser.generate_response module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/development/development_setup.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Development Setup</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-the-repository">1.2. Clone the Repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-and-activate-a-virtual-environment">1.3. Create and Activate a Virtual Environment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-virtual-environment">1.3.1. Creating the Virtual Environment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activating-the-virtual-environment">1.3.2. Activating the Virtual Environment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-the-virtual-environment-is-active">1.3.3. Check if the Virtual Environment is Active</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deactivating-the-virtual-environment">1.3.4. Deactivating the Virtual Environment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-maeser-dependencies-using-the-makefile">1.4. Install Maeser &amp; Dependencies Using the Makefile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-configuration">1.5. Environment Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-tests">1.6. Running Tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-documentation">1.7. Building the Documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-example-scripts">1.8. Run the Example Scripts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-setup-wsl">1.9. Windows Setup (WSL)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-tips">1.10. Additional Tips</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="development-setup">
+<h1><span class="section-number">1. </span>Development Setup<a class="headerlink" href="#development-setup" title="Link to this heading">#</a></h1>
+<p>This guide walks you through setting up a Maeser development environment from scratch. You’ll learn how to clone the repository, configure your Python environment, install dependencies, run tests, and build the docs.</p>
+<hr class="docutils" />
+<section id="prerequisites">
+<h2><span class="section-number">1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Python 3.10+</strong></p></li>
+<li><p><strong>Git</strong></p></li>
+<li><p><strong>Make</strong> (on macOS/Linux) or <strong>Make for Windows</strong> (e.g. via Git Bash)</p></li>
+<li><p><strong><a class="reference external" href="https://python-poetry.org/">Poetry</a> (Optional):</strong> for dependency management</p></li>
+<li><p><strong>WSL (Recommended for Windows):</strong> Windows Subsystem for Linux. See <strong><a class="reference internal" href="#windows-setup-wsl">Windows Setup (WSL)</a></strong> below.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="clone-the-repository">
+<h2><span class="section-number">1.2. </span>Clone the Repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/byu-cpe/Maeser.git
+<span class="nb">cd</span><span class="w"> </span>Maeser
+</pre></div>
+</div>
+<p>This gives you the latest <code class="docutils literal notranslate"><span class="pre">main</span></code> branch of the Maeser source code and examples.</p>
+</section>
+<hr class="docutils" />
+<section id="create-and-activate-a-virtual-environment">
+<h2><span class="section-number">1.3. </span>Create and Activate a Virtual Environment<a class="headerlink" href="#create-and-activate-a-virtual-environment" title="Link to this heading">#</a></h2>
+<p>Python comes with a module named <strong>venv</strong> that provides support for creating and activating virtual environments. <strong>Maeser’s top-level Makefile will create a new virtual environment if one does not exist, so this step can be skipped;</strong> however, some basic information about virtual environments is provided if you choose to create one manually or are unfamiliar with venv.</p>
+<blockquote>
+<div><p><strong>Note:</strong> <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">setup</span></code> creates the virtual environment but does not activate it. You will still need to activate and deactivate the virtual environment manually within the project.</p>
+</div></blockquote>
+<section id="creating-the-virtual-environment">
+<h3><span class="section-number">1.3.1. </span>Creating the Virtual Environment<a class="headerlink" href="#creating-the-virtual-environment" title="Link to this heading">#</a></h3>
+<p>To create the virtual environment, execute this command (at the root directory of your project):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+</pre></div>
+</div>
+<p>All of the packages and resources used by the virtual environment will be stored in the <code class="docutils literal notranslate"><span class="pre">.venv/</span></code> directory.</p>
+</section>
+<section id="activating-the-virtual-environment">
+<h3><span class="section-number">1.3.2. </span>Activating the Virtual Environment<a class="headerlink" href="#activating-the-virtual-environment" title="Link to this heading">#</a></h3>
+<p>To activate the virtual environment, execute one of the following commands, based on your operating system:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For Linux and Mac</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</pre></div>
+</div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># For Windows (in Powershell window)</span>
+<span class="p">.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">Activate</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+</section>
+<section id="check-if-the-virtual-environment-is-active">
+<h3><span class="section-number">1.3.3. </span>Check if the Virtual Environment is Active<a class="headerlink" href="#check-if-the-virtual-environment-is-active" title="Link to this heading">#</a></h3>
+<p>Most shells will indicate if a Python virtual environment is active by appending <code class="docutils literal notranslate"><span class="pre">(.venv)</span></code> to the command prompt:</p>
+<div class="no-copybutton highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>.venv<span class="o">)</span><span class="w"> </span>user@host:~/project/dir$
+</pre></div>
+</div>
+<p>If you are unsure if your virtual environment is active, check the location of the Python executable via <code class="docutils literal notranslate"><span class="pre">which</span></code> (Linux/Mac) or <code class="docutils literal notranslate"><span class="pre">where.exe</span></code> (Windows):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For Linux and Mac</span>
+$<span class="w"> </span>which<span class="w"> </span>python
+~/project/dir/.venv/bin/python
+</pre></div>
+</div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># For Windows</span>
+<span class="p">&gt;</span> <span class="n">where</span><span class="p">.</span><span class="n">exe</span> <span class="n">python</span>
+<span class="n">C</span><span class="p">:\</span><span class="n">project</span><span class="p">\</span><span class="n">dir</span><span class="p">\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">python</span><span class="p">.</span><span class="n">exe</span>
+<span class="c"># Other locations of python.exe may appear below</span>
+</pre></div>
+</div>
+<p>If the location of Python is inside your <code class="docutils literal notranslate"><span class="pre">.venv/</span></code> directory, then your virtual environment is active.</p>
+</section>
+<section id="deactivating-the-virtual-environment">
+<h3><span class="section-number">1.3.4. </span>Deactivating the Virtual Environment<a class="headerlink" href="#deactivating-the-virtual-environment" title="Link to this heading">#</a></h3>
+<p>You can deactivate your virtual environment any time by executing the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>deactivate
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="install-maeser-dependencies-using-the-makefile">
+<h2><span class="section-number">1.4. </span>Install Maeser &amp; Dependencies Using the Makefile<a class="headerlink" href="#install-maeser-dependencies-using-the-makefile" title="Link to this heading">#</a></h2>
+<p>The top-level Makefile can be used to set up Maeser with its dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>setup
+</pre></div>
+</div>
+<p>This will:</p>
+<ol class="arabic simple">
+<li><p><strong>Verify that a venv exists.</strong> If no virtual environment is found, a new one will be created in the <code class="docutils literal notranslate"><span class="pre">venv/</span></code> directory.</p></li>
+<li><p><strong>Install poetry</strong> (used for package management).</p></li>
+<li><p><strong>Install Maeser’s dependencies</strong> using poetry. This includes Maeser’s main dependencies as well as all extra dependency groups (<code class="docutils literal notranslate"><span class="pre">maeser[admin_portal]</span></code> and <code class="docutils literal notranslate"><span class="pre">maeser[discord]</span></code>).</p></li>
+<li><p><strong>Install development dependencies</strong> (including Sphinx, pytest, etc.).</p></li>
+<li><p><strong>Install the editable Maeser package</strong> (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code>).</p></li>
+<li><p><strong>Run the pytests</strong> to verify everything is working.</p></li>
+</ol>
+<p>If you are having issues, try running each line from the Makefile’s setup individually in your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="c1"># Activate your virtual environment</span>
+pip<span class="w"> </span>install<span class="w"> </span>poetry<span class="w"> </span><span class="c1"># Install poetry for package management</span>
+poetry<span class="w"> </span>lock<span class="w"> </span><span class="c1"># Update list of dependencies</span>
+poetry<span class="w"> </span>install<span class="w"> </span>--all-extras<span class="w"> </span><span class="c1"># Install all dependencies, including development dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span><span class="c1"># Install Maeser in editable mode</span>
+pytest<span class="w"> </span>tests<span class="w"> </span><span class="c1"># Run the pytests</span>
+</pre></div>
+</div>
+<p>The top-level Makefile also comes with the following recipes:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">setup</span></code>:</strong> As explained above.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">clean_venv</span></code>:</strong> Removes the <code class="docutils literal notranslate"><span class="pre">.venv/</span></code> directory and its contents. If you need to reset and rebuild your environment, run this recipe first before running <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">setup</span></code>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">test</span></code>:</strong> Runs the pytests to verify everything is working.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">testVerbose</span></code>:</strong> Runs the pytests with verbose printing.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="environment-configuration">
+<h2><span class="section-number">1.5. </span>Environment Configuration<a class="headerlink" href="#environment-configuration" title="Link to this heading">#</a></h2>
+<p>Maeser uses a small configuration file for API keys, file paths, and settings.</p>
+<p>First, <strong>make a copy of <code class="docutils literal notranslate"><span class="pre">example/apps/config_template.yaml</span></code> and name it <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>.</strong> You will populate the latter file with the necessary keys and configuration for your Maeser app.</p>
+<p>Next, <strong>update the following parameters in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code></strong>:</p>
+<div class="no-copybutton highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">OPENAI_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-openai-key-here&quot;</span>
+<span class="c1"># (Optional) GitHub OAuth Client ID/Secret if you plan to enable login</span>
+<span class="nt">GITHUB_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="nt">GITHUB_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="c1"># (Optional) Other settings (e.g., vector store path, LDAP server details, etc.)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="running-tests">
+<h2><span class="section-number">1.6. </span>Running Tests<a class="headerlink" href="#running-tests" title="Link to this heading">#</a></h2>
+<p>Validate your setup by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests
+</pre></div>
+</div>
+<p>Or simply:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+<p>All tests should pass before you start making changes.</p>
+</section>
+<hr class="docutils" />
+<section id="building-the-documentation">
+<h2><span class="section-number">1.7. </span>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading">#</a></h2>
+<p>Maeser’s documentation uses <strong>Sphinx</strong> (with <strong>MyST</strong> for Markdown support). To build the HTML site locally, navigate to the <code class="docutils literal notranslate"><span class="pre">sphinx-docs/</span></code> directory and execute the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>html
+</pre></div>
+</div>
+<p>When the process finishes, open <code class="docutils literal notranslate"><span class="pre">sphinx-docs/_build/html/index.html</span></code> in your browser to view the documentation.</p>
+</section>
+<hr class="docutils" />
+<section id="run-the-example-scripts">
+<h2><span class="section-number">1.8. </span>Run the Example Scripts<a class="headerlink" href="#run-the-example-scripts" title="Link to this heading">#</a></h2>
+<p>Several working example scripts can be found in the <code class="docutils literal notranslate"><span class="pre">example/apps/</span></code> directory. To run these examples locally, see <a class="reference internal" href="flask_example.html"><span class="std std-doc"><strong>Maeser Example (with Flask &amp; User Management)</strong></span></a>.</p>
+<p>You’re all set!
+If you run into any issues, refer to the <a class="reference internal" href="dev_troubleshooting.html"><span class="std std-doc"><strong>Dev Troubleshooting Guide</strong></span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="windows-setup-wsl">
+<h2><span class="section-number">1.9. </span>Windows Setup (WSL)<a class="headerlink" href="#windows-setup-wsl" title="Link to this heading">#</a></h2>
+<p>If you’re on Windows, we recommend using <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install"><strong>WSL (Windows Subsystem for Linux)</strong></a> for a smoother experience. WSL enables you to run the Maeser project in a Linux-powered shell, ensuring the best compatibility with the project’s Makefiles and dependencies. For instructions on how to set up Maeser in WSL, see <a class="reference internal" href="wsl_development.html"><span class="doc std std-doc"><strong>Development Setup with WSL (Windows Subsystem for Linux)</strong></span></a>.</p>
+</section>
+<hr class="docutils" />
+<section id="additional-tips">
+<h2><span class="section-number">1.10. </span>Additional Tips<a class="headerlink" href="#additional-tips" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Hot-reload during development</strong>: Run the Flask example in <a class="reference internal" href="flask_example.html#enable-debug-mode-optional"><span class="std std-ref"><strong>debug mode</strong></span></a> to auto-restart on code changes.</p></li>
+<li><p><strong>IDE integration</strong>: Point your IDE’s interpreter to the <code class="docutils literal notranslate"><span class="pre">.venv</span></code> for linting and Intellisense.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../user-setup/discord.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Setting Up a Discord Bot</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="wsl_development.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Development Setup with WSL (Windows Subsystem for Linux)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-the-repository">1.2. Clone the Repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-and-activate-a-virtual-environment">1.3. Create and Activate a Virtual Environment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-virtual-environment">1.3.1. Creating the Virtual Environment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#activating-the-virtual-environment">1.3.2. Activating the Virtual Environment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-the-virtual-environment-is-active">1.3.3. Check if the Virtual Environment is Active</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deactivating-the-virtual-environment">1.3.4. Deactivating the Virtual Environment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-maeser-dependencies-using-the-makefile">1.4. Install Maeser &amp; Dependencies Using the Makefile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-configuration">1.5. Environment Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-tests">1.6. Running Tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-documentation">1.7. Building the Documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-example-scripts">1.8. Run the Example Scripts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-setup-wsl">1.9. Windows Setup (WSL)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-tips">1.10. Additional Tips</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,706 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Flask Deployment Guide &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=2d4f5009"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'sysadmin/deployment';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../_static/js/mermaid-theme-switch.js?v=09a92c9e"></script>
+    <script src="../_static/js/dynamic-footer-disclaimers.js?v=7d45cba9"></script>
+    <link rel="icon" href="../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Managing Users and Chat Logs" href="managing_users_and_logs.html" />
+    <link rel="prev" title="11. Using Maeser with External Handlers" href="../development/handler_usage.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/flask_setup.html">1. Getting Started with Maeser’s Flask Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/admin_portal.html">2. The Admin Portal: Generate and Modify Course Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/discord.html">3. Setting Up a Discord Bot</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../development/development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/flask_example.html">3. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/terminal_example.html">4. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/embedding.html">5. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/graphs.html">6. Graphs: Simple RAG, Pipeline RAG, and Universal RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/custom_graphs.html">7. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/libraries.html">8. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_troubleshooting.html">9. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">10. Helpful Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/handler_usage.html">11. Using Maeser with External Handlers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide (Flask)</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Flask Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_users_and_logs.html">2. Managing Users and Chat Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">3. SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.html">maeser.admin_portal package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.design_model.html">maeser.admin_portal.design_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.extract_figures.html">maeser.admin_portal.extract_figures module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.extract_text.html">maeser.admin_portal.extract_text module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.vector_store_operator.html">maeser.admin_portal.vector_store_operator module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.discord_handler.html">maeser.discord_handler package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.flask_app.html">maeser.flask_app package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.flask_app.blueprints.html">maeser.flask_app.blueprints module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.html">maeser.graphs package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.pipeline_rag.html">maeser.graphs.pipeline_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.simple_rag.html">maeser.graphs.simple_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.universal_rag.html">maeser.graphs.universal_rag module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.config.html">maeser.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.generate_response.html">maeser.generate_response module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/sysadmin/deployment.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Flask Deployment Guide</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-your-app-for-deployment">1.2. Configure Your App for Deployment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-a-wsgi-server-to-run-your-app">1.3. Configure a WSGI Server to Run Your App</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-reverse-proxy-to-host-your-server-with-http">1.4. Use Reverse Proxy to Host Your Server with HTTP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-your-web-server-as-a-linux-service-optional">1.5. Run Your Web Server as a Linux Service (Optional)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-your-server-publicly-with-a-domain-name">1.6. Deploy Your Server Publicly With a Domain Name</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">1.7. Resources</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="flask-deployment-guide">
+<h1><span class="section-number">1. </span>Flask Deployment Guide<a class="headerlink" href="#flask-deployment-guide" title="Link to this heading">#</a></h1>
+<p>While Flask makes it easy to test your Maeser project locally, deploying your Flask app publicly is a layered process. Flask handles the functionality of your application, but it is not a server in and of itself. For full functionality, a <a class="reference external" href="https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface"><strong>WSGI</strong></a> server program is needed to serve your application. A typical Flask-based server connects a Flask app to a WSGI server, which communicates with an HTTP server by a “reverse proxy” protocol. See <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/"><strong>Deploying to Production</strong></a> from Flask’s official documentation for more information.</p>
+<p><strong>By following this guide, you will:</strong></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#configure-your-app-for-deployment"><strong>Configure your app for deployment</strong></a></p></li>
+<li><p><a class="reference internal" href="#configure-a-wsgi-server-to-run-your-app"><strong>Configure a WSGI server to run your app</strong></a></p></li>
+<li><p><a class="reference internal" href="#use-reverse-proxy-to-host-your-server-with-http"><strong>Use reverse proxy to host your server with HTTP</strong></a></p></li>
+<li><p><a class="reference internal" href="#run-your-web-server-as-a-linux-service-optional"><strong>Run your web server as a Linux service (optional)</strong></a></p></li>
+<li><p><a class="reference internal" href="#deploy-your-server-publicly-with-a-domain-name"><strong>Deploy your server publicly with a domain name</strong></a></p></li>
+</ol>
+<p>Because there are several ways to accomplish these steps, this guide will not explicitly explain how to get everything set up, but will instead provide resources that explain how to set things up for your preferences. The Maeser app has been tested to work with <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/gunicorn/"><strong>Gunicorn</strong></a> for WSGI server creation and <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/nginx/"><strong>nginx</strong></a> for reverse proxy, but feel free to choose any of Flask’s <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/#self-hosted-options">recommended programs for deployment</a> if they work better for your needs.</p>
+<hr class="docutils" />
+<section id="prerequisites">
+<h2><span class="section-number">1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A Maeser application that is set up and working locally. See either the <a class="reference internal" href="../user-setup/flask_setup.html"><span class="std std-doc"><strong>User Setup</strong></span></a> or <a class="reference internal" href="../development/development_setup.html"><span class="std std-doc"><strong>Development Setup</strong></span></a> workflows.</p></li>
+<li><p>A domain name and SSL/TLS certificate (explained in <a class="reference internal" href="#deploy-your-server-publicly-with-a-domain-name"><strong>Deploy Your Server Publicly With a Domain Name</strong></a>).</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="configure-your-app-for-deployment">
+<h2><span class="section-number">1.2. </span>Configure Your App for Deployment<a class="headerlink" href="#configure-your-app-for-deployment" title="Link to this heading">#</a></h2>
+<p>Not much needs to be changed within the application itself; however, if you have been working on your app from the <code class="docutils literal notranslate"><span class="pre">example/</span></code> directory, it is recommended that you restructure your project to include only the files that your application needs and remove the <code class="docutils literal notranslate"><span class="pre">example_</span></code> prefix from any remaining files. If you follow this recommendation, keep in mind that <code class="docutils literal notranslate"><span class="pre">config.py</span></code> looks for these specific paths:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">config_paths</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;config.yaml&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;./config.yaml&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;example/config.yaml&#39;</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>These paths should be updated to match the path and name of your app’s <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file.</p>
+<p>Additionally, if you have created your Maeser project using the <a class="reference internal" href="../development/development_setup.html"><span class="std std-doc"><strong>Development Setup Guide</strong></span></a>, the Maeser package is located in the <code class="docutils literal notranslate"><span class="pre">maeser/</span></code> directory by default. Rather than having this package copied within your project, you should instead consider using the official Maeser PyPI package. Making this change is simple:</p>
+<ol class="arabic">
+<li><p>In your project’s virtual environment, execute the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>maeser
+</pre></div>
+</div>
+</li>
+<li><p>Once the package is installed successfully, remove the <code class="docutils literal notranslate"><span class="pre">maeser/</span></code> directory from your project.</p></li>
+<li><p>All done! Your project should now reference Maeser functions from the PyPI package instead of from <code class="docutils literal notranslate"><span class="pre">maeser/</span></code>. Run your project locally to make sure these changes were successful.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="configure-a-wsgi-server-to-run-your-app">
+<h2><span class="section-number">1.3. </span>Configure a WSGI Server to Run Your App<a class="headerlink" href="#configure-a-wsgi-server-to-run-your-app" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>“Flask is a WSGI application. A WSGI server is used to run the application, converting incoming HTTP requests to the standard WSGI environ, and converting outgoing WSGI responses to HTTP responses.”<br />
+—<a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/">Deploying to Production</a>, Flask Documentation</p>
+</div></blockquote>
+<p>While Flask does have a development server that allows the app to be run locally, a separate program is required to run the application as a <strong>production WSGI server</strong>.</p>
+<p>Consult the list of <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/#self-hosted-options">Self-Hosted Options</a> from Flask’s deployment guide to start setting up your own WSGI server. Each of these options links to a guide on how to set them up and test them locally. Maeser has been tested to work with <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/gunicorn/"><strong>Gunicorn</strong></a>, but any of the listed options should work.</p>
+<p>Keep in mind that if you are using GitHub authentication, you will need to update the <strong>Homepage URL</strong> and <strong>Authorization callback URL</strong> within the settings of your OAuth app. As a reminder, this is accessible via the <a class="reference external" href="https://github.com/settings/developers">Developer Settings page</a> on GitHub. Be sure to also update <code class="docutils literal notranslate"><span class="pre">github_callback_uri</span></code> in your project’s <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>. If you are using other authentication methods, they will likely need to be updated as well. These settings will need to be updated again after you <a class="reference internal" href="#use-reverse-proxy-to-host-your-server-with-http"><strong>set up a reverse proxy</strong></a> for your WSGI server.</p>
+</section>
+<section id="use-reverse-proxy-to-host-your-server-with-http">
+<h2><span class="section-number">1.4. </span>Use Reverse Proxy to Host Your Server with HTTP<a class="headerlink" href="#use-reverse-proxy-to-host-your-server-with-http" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>“WSGI servers have HTTP servers built-in. However, a dedicated HTTP server may be safer, more efficient, or more capable. Putting an HTTP server in front of the WSGI server is called a ‘reverse proxy.’”<br />
+—<a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/">Deploying to Production</a>, Flask Documentation</p>
+</div></blockquote>
+<p>Running your WSGI server with a <strong>reverse proxy</strong> is standard for Flask apps and is relatively straightforward. <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/nginx/"><strong>nginx</strong></a> is one of the most commonly used HTTP servers and has been tested to work with Maeser. The official Flask guide recommends using either <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/nginx/"><strong>nginx</strong></a> or <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/apache-httpd/"><strong>Apache httpd</strong></a> for setting up the reverse proxy, so follow the guide for either service and you should have a functioning HTTP server in no time.</p>
+<p>Once your HTTP server is configured, follow the guide to <a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/proxy_fix/"><strong>Tell Flask it is Behind a Proxy</strong></a>. This will involve making a slight modification to your project’s main Python script. Be sure to update your GitHub OAuth settings (<a class="reference internal" href="#configure-a-wsgi-server-to-run-your-app"><strong>as described above</strong></a>) since the web server is now accessed through the HTTP server. Your Flask app should now be fully functional and accessible via reverse proxy.</p>
+</section>
+<hr class="docutils" />
+<section id="run-your-web-server-as-a-linux-service-optional">
+<h2><span class="section-number">1.5. </span>Run Your Web Server as a Linux Service (Optional)<a class="headerlink" href="#run-your-web-server-as-a-linux-service-optional" title="Link to this heading">#</a></h2>
+<p>A <strong>Linux systemctl service</strong> is a service that runs in the background (also known as a <strong>daemon</strong>). By creating a service to run your web server, you can more easily control when the server should start, stop, and restart, without needing to control the service manually in a terminal session.</p>
+<p>To create a Linux service for your web server, navigate to <code class="docutils literal notranslate"><span class="pre">/etc/systemd/system/</span></code> and create a new file named <code class="docutils literal notranslate"><span class="pre">my-maeser-app.service</span></code>, replacing <code class="docutils literal notranslate"><span class="pre">my-maeser-app</span></code> with whatever you would like the service to be called. This <strong>service file</strong> is where the configuration for your service will be stored. There are many ways to configure a Linux service, but the following configuration has proven to work well with a Maeser application:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">My Maeser WSGI Server</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">User</span><span class="o">=</span><span class="s">www-data</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">www-data</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/path/to/maeser/app</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/path/to/maeser/app/.venv/bin/gunicorn -w 16 --access-logfile=- &#39;my_maeser_app:app&#39;</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Note:</strong> If you have configured your server with a different WSGI server program or with different arguments, update the <code class="docutils literal notranslate"><span class="pre">ExecStart=...</span></code> line accordingly, making sure that <code class="docutils literal notranslate"><span class="pre">/path/to/maeser/app/.venv/bin/gunicorn</span></code> is the path to your WSGI server program within your virtual environment’s directory.</p>
+</div></blockquote>
+<p>Save this to your <code class="docutils literal notranslate"><span class="pre">my-maeser-app.service</span></code> file, and run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code>. This will reload the configurations for all daemons on your machine, which will allow systemctl to recognize the new Maeser service.</p>
+<blockquote>
+<div><p><strong>Note:</strong> If you make changes to your service file in the future, always be sure to run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> afterward.</p>
+</div></blockquote>
+<p>Before starting the service, you will need to grant user <code class="docutils literal notranslate"><span class="pre">www-data</span></code> necessary file permissions for your Maeser app. If you wish to retain ownership of your app’s directory, you can use <code class="docutils literal notranslate"><span class="pre">setfacl</span></code> to grant <code class="docutils literal notranslate"><span class="pre">www-data</span></code> read-write-execute access while also retaining your permissions. Run the following two commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>setfacl<span class="w"> </span>-R<span class="w"> </span>-m<span class="w"> </span>u:www-data:rwx<span class="w"> </span>/path/to/maeser/app
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>setfacl<span class="w"> </span>-R<span class="w"> </span>-d<span class="w"> </span>-m<span class="w"> </span>u:www-data:rwx<span class="w"> </span>/path/to/maeser/app
+</pre></div>
+</div>
+<p>The first command grants read-write-execute permissions for <code class="docutils literal notranslate"><span class="pre">www-data</span></code> for every file in your project directory. The second command sets these permissions as the default for files created in this directory in the future, so these commands only need to be run once.</p>
+<blockquote>
+<div><p><strong>Note:</strong> You can use <code class="docutils literal notranslate"><span class="pre">getfacl</span></code> to check the permissions set for any file or directory.</p>
+</div></blockquote>
+<p>To start your service, run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">start</span> <span class="pre">my-maeser-app.service</span></code>, or equivalently, <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">start</span> <span class="pre">my-maeser-app</span></code>. To confirm that it started successfully and is running, run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">status</span> <span class="pre">my-maeser-app.service</span></code>. If all is well, you should see something similar to the following:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>● my-maeser-app.service - My Maeser WSGI Server
+     Loaded: loaded (/etc/systemd/system/my-maeser-app.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-07-08 16:59:05 MDT; 8s ago
+     ...
+</pre></div>
+</div>
+<p>If your service is “<strong>active (running)</strong>”, then you are all set! You should be able to access your server in a web browser just as before. Your web server will now run in the background and will automatically start up when your machine starts up. You can manage your service in the following ways:</p>
+<ol class="arabic">
+<li><p>Start Service</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>my-maeser-app.service
+</pre></div>
+</div>
+</li>
+<li><p>Stop Service</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>my-maeser-app.service
+</pre></div>
+</div>
+</li>
+<li><p>Restart Service</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>my-maeser-app.service
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<div><p><strong>Note:</strong> To see a live feed of your service’s logs, you can use <code class="docutils literal notranslate"><span class="pre">journalctl</span></code>. Run the following command in its own terminal session:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>journalctl<span class="w"> </span>-fu<span class="w"> </span>my-maeser-app.service
+</pre></div>
+</div>
+<p>The terminal window will now show the live output of your web server.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="deploy-your-server-publicly-with-a-domain-name">
+<h2><span class="section-number">1.6. </span>Deploy Your Server Publicly With a Domain Name<a class="headerlink" href="#deploy-your-server-publicly-with-a-domain-name" title="Link to this heading">#</a></h2>
+<p>There are three main things you will need to acquire to fully deploy your server:</p>
+<ol class="arabic simple">
+<li><p><strong>A domain name</strong></p></li>
+<li><p><strong>An SSL/TLS certificate</strong></p></li>
+<li><p><strong>A private key</strong></p></li>
+</ol>
+<p>A <strong>domain name</strong> will need to be acquired from a <a class="reference external" href="https://en.wikipedia.org/wiki/Domain_name_registrar"><strong>domain name registrar</strong></a> — a company that registers domain names for a price (like <a class="reference external" href="https://www.cloudflare.com/products/registrar/"><strong>Cloudflare</strong></a>). Several registrars exist, so it is encouraged that you <strong>do your own research</strong> to find a domain name registrar that best fits your needs.</p>
+<p>An <strong>SSL/TLS certificate</strong> and a <strong>private key</strong> are needed to upgrade your web server from HTTP to HTTPS, which encrypts messages between the user’s web browser and the web server for added security. This certificate and key must be acquired from a <strong>Certificate Authority (CA)</strong>, such as <a class="reference external" href="https://letsencrypt.org/"><strong>Let’s Encrypt</strong></a>. There are many Certificate Authorities, and some offer certificates for free while others charge for them, so <strong>do your own research</strong> to find a Certificate Authority that best fits your needs.</p>
+<blockquote>
+<div><p>For more information on SSL/TLS Certificates, refer to <a class="reference external" href="https://aws.amazon.com/what-is/ssl-certificate/">this article</a> by Amazon.</p>
+</div></blockquote>
+<p>Once you have acquired your domain name, SSL certificate, and private key, you will need to configure your web server to work with them. For an nginx server, refer to its <a class="reference external" href="https://nginx.org/en/docs/http/configuring_https_servers.html">documentation</a> on how to configure your HTTP server with SSL. Configuration will vary for other HTTP server applications.</p>
+<p>Lastly, be sure to update your OAuth settings once more (<a class="reference internal" href="#configure-a-wsgi-server-to-run-your-app"><strong>as described above</strong></a>) since the web server is now accessed through your site’s domain name.</p>
+</section>
+<section id="resources">
+<h2><span class="section-number">1.7. </span>Resources<a class="headerlink" href="#resources" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://flask.palletsprojects.com/en/stable/deploying/"><strong>Deploying to Production</strong></a>, Flask documentation</p></li>
+<li><p>The section on directives for a <code class="docutils literal notranslate"><span class="pre">.service</span> <span class="pre">file</span></code> from <a class="reference external" href="https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files#the-service-section"><strong>this DigitalOcean article</strong></a></p></li>
+<li><p>Wikipedia article on <a class="reference external" href="https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface"><strong>Web Server Gateway Interface (WSGI)</strong></a></p></li>
+<li><p>Wikipedia article on <a class="reference external" href="https://en.wikipedia.org/wiki/Domain_name_registrar"><strong>Domain Name Registrars</strong></a></p></li>
+<li><p>Amazon article on <a class="reference external" href="https://aws.amazon.com/what-is/ssl-certificate/"><strong>SSL/TLS Certificates</strong></a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../development/handler_usage.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">11. </span>Using Maeser with External Handlers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="managing_users_and_logs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Managing Users and Chat Logs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-your-app-for-deployment">1.2. Configure Your App for Deployment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-a-wsgi-server-to-run-your-app">1.3. Configure a WSGI Server to Run Your App</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-reverse-proxy-to-host-your-server-with-http">1.4. Use Reverse Proxy to Host Your Server with HTTP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-your-web-server-as-a-linux-service-optional">1.5. Run Your Web Server as a Linux Service (Optional)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-your-server-publicly-with-a-domain-name">1.6. Deploy Your Server Publicly With a Domain Name</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">1.7. Resources</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

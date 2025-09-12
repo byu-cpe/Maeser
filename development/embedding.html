@@ -1,0 +1,746 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5. Embedding New Content &#8212; Maeser Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=125a713a"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=2d4f5009"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'development/embedding';</script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script src="../_static/js/mermaid-theme-switch.js?v=09a92c9e"></script>
+    <script src="../_static/js/dynamic-footer-disclaimers.js?v=7d45cba9"></script>
+    <link rel="icon" href="../_static/maeser-part.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. Graphs: Simple RAG, Pipeline RAG, and Universal RAG" href="graphs.html" />
+    <link rel="prev" title="4. Terminal Example: Interactive CLI with Maeser" href="terminal_example.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+     
+  
+
+<a class="navbar-brand logo" href="https://github.com/byu-cpe/Maeser">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/maeser-light.png" class="logo__image only-light" alt="Maeser Documentation"/>
+    <script>document.write(`<img src="../_static/maeser-dark.png" class="logo__image only-dark" alt="Maeser Documentation"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/flask_setup.html">1. Getting Started with Maeser’s Flask Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/admin_portal.html">2. The Admin Portal: Generate and Modify Course Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-setup/discord.html">3. Setting Up a Discord Bot</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="development_setup.html">1. Development Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wsl_development.html">2. Development Setup with WSL (Windows Subsystem for Linux)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flask_example.html">3. Maeser Example (with Flask &amp; User Management)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="terminal_example.html">4. Terminal Example: Interactive CLI with Maeser</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Embedding New Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">6. Graphs: Simple RAG, Pipeline RAG, and Universal RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_graphs.html">7. Custom Graphs: Advanced RAG Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">8. Library Dependencies &amp; Their Roles in Maeser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_troubleshooting.html">9. Dev Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">10. Helpful Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handler_usage.html">11. Using Maeser with External Handlers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SysAdmin Guide (Flask)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/deployment.html">1. Flask Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/managing_users_and_logs.html">2. Managing Users and Chat Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sysadmin/troubleshooting.html">3. SysAdmin Troubleshooting Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../autodoc/maeser/modules.html">maeser</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.html">maeser package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.html">maeser.admin_portal package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.design_model.html">maeser.admin_portal.design_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.extract_figures.html">maeser.admin_portal.extract_figures module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.extract_text.html">maeser.admin_portal.extract_text module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.admin_portal.vector_store_operator.html">maeser.admin_portal.vector_store_operator module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.chat.html">maeser.chat package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_logs.html">maeser.chat.chat_logs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.chat.chat_session_manager.html">maeser.chat.chat_session_manager module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.html">maeser.controllers package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.common.html">maeser.controllers.common package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_api.html">maeser.controllers.chat_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_interface.html">maeser.controllers.chat_interface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.chat_logs_overview.html">maeser.controllers.chat_logs_overview module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.conversation_history_api.html">maeser.controllers.conversation_history_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.display_chat_log.html">maeser.controllers.display_chat_log module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_api.html">maeser.controllers.feedback_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_get.html">maeser.controllers.feedback_form_get module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.feedback_form_post.html">maeser.controllers.feedback_form_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.login_api.html">maeser.controllers.login_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.logout.html">maeser.controllers.logout module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.manage_users_view.html">maeser.controllers.manage_users_view module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.new_session_api.html">maeser.controllers.new_session_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.remaining_requests_api.html">maeser.controllers.remaining_requests_api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training.html">maeser.controllers.training module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.training_post.html">maeser.controllers.training_post module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.controllers.user_management_api.html">maeser.controllers.user_management_api module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.discord_handler.html">maeser.discord_handler package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.flask_app.html">maeser.flask_app package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.flask_app.blueprints.html">maeser.flask_app.blueprints module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.html">maeser.graphs package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.pipeline_rag.html">maeser.graphs.pipeline_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.simple_rag.html">maeser.graphs.simple_rag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autodoc/maeser/maeser.graphs.universal_rag.html">maeser.graphs.universal_rag module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.config.html">maeser.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.generate_response.html">maeser.generate_response module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.render.html">maeser.render module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../autodoc/maeser/maeser.user_manager.html">maeser.user_manager module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Legal References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../legal/repository_info.html">About the licenses used in the Maeser project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LICENSE.DOCS.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/LGPL.html">GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/GPL.html">GNU GENERAL PUBLIC LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CCBYSA4.html">Creative Commons Attribution-ShareAlike 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/MIT.html">The MIT License (MIT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/CC0.html">CC0 1.0 Universal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal/AGPL.html">GNU Affero General Public License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/byu-cpe/Maeser" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/development/embedding.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Embedding New Content</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">5.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-your-text-documents">5.2. Prepare Your Text Documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embed-your-documents-into-a-new-vector-store">5.3. Embed Your Documents into a New Vector Store</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-your-documents">5.3.1. Chunk Your Documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#store-the-chunked-document-as-a-faiss-vector-store">5.3.2. Store the Chunked Document as a FAISS Vector Store</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrate-with-maeser">5.4. Integrate with Maeser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-tips">5.5. Additional Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">5.6. Next Steps</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="embedding-new-content">
+<h1><span class="section-number">5. </span>Embedding New Content<a class="headerlink" href="#embedding-new-content" title="Link to this heading">#</a></h1>
+<p>In order for the Maeser chatbot to use your documents, they must first be converted to a <strong>vector store</strong>. Each vector store is a directory containing an <code class="docutils literal notranslate"><span class="pre">index.faiss</span></code> and an <code class="docutils literal notranslate"><span class="pre">index.pkl</span></code> file. When you embed your documents as a vector store, the chatbot is able to pull relevant excerpts from the documents to aid its interactions with its users.</p>
+<p>This guide explains how to use a Python script to embed your own documents into a vector store, enabling Retrieval‑Augmented Generation (RAG) over custom knowledge bases.</p>
+<blockquote>
+<div><p><strong>Note:</strong> You can also use the <a class="reference internal" href="../user-setup/admin_portal.html"><span class="std std-doc"><strong>Admin Portal</strong></span></a> to create vector stores without any coding required.</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="prerequisites">
+<h2><span class="section-number">5.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A <strong>Maeser development</strong> or <strong>user</strong> environment set up (see <a class="reference internal" href="development_setup.html"><span class="std std-doc"><strong>Development Setup</strong></span></a>).</p></li>
+<li><p>Your documents in <strong>plain text</strong> format (e.g., <code class="docutils literal notranslate"><span class="pre">.txt</span></code>, Markdown <code class="docutils literal notranslate"><span class="pre">.md</span></code>, or PDF converted to text).</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="prepare-your-text-documents">
+<h2><span class="section-number">5.2. </span>Prepare Your Text Documents<a class="headerlink" href="#prepare-your-text-documents" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p>Collect all source files you want to embed into a single folder (e.g., <code class="docutils literal notranslate"><span class="pre">docs/homework</span></code>, <code class="docutils literal notranslate"><span class="pre">docs/labs</span></code>, etc.).</p></li>
+<li><p>If your files are not plain text (e.g., PDF), convert them first. A simple example using <code class="docutils literal notranslate"><span class="pre">pdftotext</span></code> on Linux:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pdftotext<span class="w"> </span>input.pdf<span class="w"> </span>output.txt
+</pre></div>
+</div>
+</li>
+<li><p>Ensure each file’s encoding is UTF‑8 to avoid errors when reading in Python.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="embed-your-documents-into-a-new-vector-store">
+<h2><span class="section-number">5.3. </span>Embed Your Documents into a New Vector Store<a class="headerlink" href="#embed-your-documents-into-a-new-vector-store" title="Link to this heading">#</a></h2>
+<p>This guide will walk you through building your own python script for storing your data into vector stores. This code mirrors <code class="docutils literal notranslate"><span class="pre">embeddings_example.py</span></code> in the <code class="docutils literal notranslate"><span class="pre">example/tools/</span></code> directory. Feel free to use that code as a basis and modify it to your liking.</p>
+<blockquote>
+<div><p><strong>Note:</strong> The <code class="docutils literal notranslate"><span class="pre">example/tools/</span></code> directory also contains the scripts <code class="docutils literal notranslate"><span class="pre">create_byu_vectorstore.py</span></code> and <code class="docutils literal notranslate"><span class="pre">create_maeser_vectorstore.py</span></code>. These scripts were used to create the example <code class="docutils literal notranslate"><span class="pre">byu</span></code> and <code class="docutils literal notranslate"><span class="pre">maeser</span></code> vector stores and can be a helpful reference to creating your own vector store script.</p>
+</div></blockquote>
+<p>Your script for storing data will consist of two parts:</p>
+<ul class="simple">
+<li><p><strong>Chunking the documents</strong> into smaller segments.</p></li>
+<li><p><strong>Storing the chunks</strong> in FAISS vector store format.</p></li>
+</ul>
+<section id="chunk-your-documents">
+<h3><span class="section-number">5.3.1. </span>Chunk Your Documents<a class="headerlink" href="#chunk-your-documents" title="Link to this heading">#</a></h3>
+<p>Large documents must be split into smaller, semantically meaningful chunks before embedding:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DOCS_PATH</span> <span class="o">=</span> <span class="s2">&quot;path/to/docs&quot;</span> <span class="c1"># Path to the files you want to embed</span>
+<span class="n">DOCS_TYPE</span> <span class="o">=</span> <span class="s2">&quot;txt&quot;</span> <span class="c1"># Type of documents to embed, e.g. &quot;txt&quot; or &quot;md&quot;</span>
+
+<span class="c1">### Chunk the documents ###</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.text_splitter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># Configure text splitter</span>
+<span class="n">splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Read all text files and generate chunks</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># this is where the text chunks will be stored</span>
+<span class="n">metadatas</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># this will keep track of which text chunks belong to which text file</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">DOCS_PATH</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">folder</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;*.</span><span class="si">{</span><span class="n">DOCS_TYPE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+    <span class="n">doc_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Get the file name without extension</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="n">texts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span> <span class="c1"># store text chunks in texts</span>
+    <span class="n">metadatas</span><span class="o">.</span><span class="n">extend</span><span class="p">([{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">doc_name</span><span class="p">}]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">))</span> <span class="c1"># store document name in metadatas</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Tip:</strong> Adjust <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> and <code class="docutils literal notranslate"><span class="pre">chunk_overlap</span></code> based on your document structure. Smaller chunks improve retrieval precision but increase vector store size.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="store-the-chunked-document-as-a-faiss-vector-store">
+<h3><span class="section-number">5.3.2. </span>Store the Chunked Document as a FAISS Vector Store<a class="headerlink" href="#store-the-chunked-document-as-a-faiss-vector-store" title="Link to this heading">#</a></h3>
+<p>Use <strong>FAISS</strong> (via <strong>LangChain</strong>) to embed and store your chunks:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="c1"># Initialize OpenAI embeddings</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+
+<span class="c1"># Build or load FAISS vector store</span>
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">FAISS</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">,</span>
+    <span class="n">embeddings</span><span class="p">,</span>
+    <span class="n">metadatas</span>
+<span class="p">)</span>
+
+<span class="c1"># Persist to disk</span>
+<span class="n">vectorstore</span><span class="o">.</span><span class="n">save_local</span><span class="p">(</span><span class="s2">&quot;my_vectorstore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">my_vectorstore/</span></code> will contain index files (<code class="docutils literal notranslate"><span class="pre">index.faiss</span></code> and <code class="docutils literal notranslate"><span class="pre">index.pkl</span></code>) that you can reuse in Maeser.</p></li>
+<li><p>Metadatas (<code class="docutils literal notranslate"><span class="pre">source</span></code> field) helps trace which document each vector store chunk originated from. This information will be passed to your chatbot when retrieving context from your vector store.</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Tip:</strong> The code above assumes the <strong>OPENAI_API_KEY environment variable</strong> is defined like so:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux and Mac</span>
+$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;&lt;your_api_key_here&gt;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Windows (Powershell)</span>
+<span class="p">&gt;</span> <span class="nv">$Env:OPENAI_API_KEY</span> <span class="p">=</span> <span class="s2">&quot;&lt;your_api_key_here&gt;&quot;</span>
+</pre></div>
+</div>
+<p>If you instead want to pass your api key into the script <strong>without using the environment variable</strong>, assign it when initializing your embeddings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;&lt;your_api_key_here&gt;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<hr class="docutils" />
+<section id="integrate-with-maeser">
+<h2><span class="section-number">5.4. </span>Integrate with Maeser<a class="headerlink" href="#integrate-with-maeser" title="Link to this heading">#</a></h2>
+<p>Now that you have created a new vector store for your documents, you must configure your chatbot to use this vector store when generating a response. To do this you’ll need to:</p>
+<ol class="arabic simple">
+<li><p>Write a system prompt for your chatbot to follow</p></li>
+<li><p>Initialize a RAG graph with your vector store</p></li>
+<li><p>Register the system prompt and RAG graph to a new chat branch</p></li>
+</ol>
+<p>If you are using one of the <strong>Simple RAG</strong> scripts in <code class="docutils literal notranslate"><span class="pre">example/apps/simple/</span></code>, add  this to your flask script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add rules in my_prompt for your chatbot to follow. Example:</span>
+<span class="n">my_prompt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;You are a helpful professor.</span>
+<span class="s2">    You will answer students&#39; questions based on the context provided.</span>
+<span class="s2">    If the question is unrelated to the context, politely inform the user that their question is outside the context of your resources.</span>
+
+<span class="s2">    </span><span class="si">{context}</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+<span class="c1"># Initialize the Simple RAG graph</span>
+<span class="n">my_simple_rag</span><span class="p">:</span> <span class="n">CompiledGraph</span> <span class="o">=</span> <span class="n">get_simple_rag</span><span class="p">(</span>
+    <span class="n">vectorstore_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VEC_STORE_PATH</span><span class="si">}</span><span class="s2">/my_vectorstore&quot;</span><span class="p">,</span>
+    <span class="n">vectorstore_index</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span>
+    <span class="n">memory_filepath</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LOG_SOURCE_PATH</span><span class="si">}</span><span class="s2">/my_course.db&quot;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="n">OPENAI_API_KEY</span><span class="p">,</span>
+    <span class="n">system_prompt_text</span><span class="o">=</span><span class="n">my_prompt</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL_NAME</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Register the system prompt and RAG graph to a new chat branch</span>
+<span class="n">sessions_manager</span><span class="o">.</span><span class="n">register_branch</span><span class="p">(</span><span class="n">branch_name</span><span class="o">=</span><span class="s2">&quot;my_course&quot;</span><span class="p">,</span> <span class="n">branch_label</span><span class="o">=</span><span class="s2">&quot;My Course&quot;</span><span class="p">,</span> <span class="n">graph</span><span class="o">=</span><span class="n">my_simple_rag</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you are using one of the  <strong>Universal RAG</strong> or <strong>Pipeline RAG</strong> scripts, add  this to your flask script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOTE: universal_prompt, vectorstore_config, and my_universal_rag already exist in your flask script and only need to be altered</span>
+
+<span class="c1"># Add rules in universal_prompt for your chatbot to follow. Example:</span>
+<span class="n">universal_prompt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;You are a helpful professor.</span>
+<span class="s2">    You will answer students&#39; questions based on the context provided.</span>
+<span class="s2">    If the question is unrelated to the context, politely inform the user that their question is outside the context of your resources.</span>
+
+<span class="s2">    </span><span class="si">{context}</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+<span class="c1"># Add your vector store to vectorstore_config</span>
+<span class="c1"># Ensure that topics are all lower case and spaces between words</span>
+<span class="n">vectorstore_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># -- Other vector stores listed here -- #</span>
+    <span class="s2">&quot;my course&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VEC_STORE_PATH</span><span class="si">}</span><span class="s2">/my_vectorstore&quot;</span><span class="p">,</span> <span class="c1"># Path to your vector store</span>
+<span class="p">}</span>
+
+<span class="c1"># Register your RAG Graph and chat branch</span>
+<span class="n">my_universal_rag</span><span class="p">:</span> <span class="n">CompiledGraph</span> <span class="o">=</span> <span class="n">get_universal_rag</span><span class="p">(</span>
+    <span class="n">vectorstore_config</span><span class="o">=</span><span class="n">vectorstore_config</span><span class="p">,</span>
+    <span class="n">memory_filepath</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LOG_SOURCE_PATH</span><span class="si">}</span><span class="s2">/my_course.db&quot;</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="n">OPENAI_API_KEY</span><span class="p">,</span>
+    <span class="n">system_prompt_text</span><span class="o">=</span><span class="n">universal_prompt</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">LLM_MODEL_NAME</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">sessions_manager</span><span class="o">.</span><span class="n">register_branch</span><span class="p">(</span><span class="n">branch_name</span><span class="o">=</span><span class="s2">&quot;my_course&quot;</span><span class="p">,</span> <span class="n">branch_label</span><span class="o">=</span><span class="s2">&quot;My Course&quot;</span><span class="p">,</span> <span class="n">graph</span><span class="o">=</span><span class="n">my_universal_rag</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="additional-tips">
+<h2><span class="section-number">5.5. </span>Additional Tips<a class="headerlink" href="#additional-tips" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Rebuilding embeddings:</strong> Whenever you update your source documents, delete <code class="docutils literal notranslate"><span class="pre">my_vectorstore/</span></code> and rerun the vector store creation step.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="next-steps">
+<h2><span class="section-number">5.6. </span>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Review the <strong>example Flask scripts</strong> in <a class="reference internal" href="flask_example.html"><span class="doc std std-doc"><strong>Maeser Example (with Flask &amp; User Management)</strong></span></a>.</p></li>
+<li><p>Explore <strong>custom graph workflows</strong> for advanced RAG pipelines in <a class="reference internal" href="graphs.html"><span class="std std-doc"><strong>Graphs</strong></span></a>.</p></li>
+<li><p>Prepare your custom Maeser application for <a class="reference internal" href="../sysadmin/deployment.html"><span class="std std-doc"><strong>server deployment</strong></span></a>.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="terminal_example.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Terminal Example: Interactive CLI with Maeser</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="graphs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Graphs: Simple RAG, Pipeline RAG, and Universal RAG</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">5.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-your-text-documents">5.2. Prepare Your Text Documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embed-your-documents-into-a-new-vector-store">5.3. Embed Your Documents into a New Vector Store</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chunk-your-documents">5.3.1. Chunk Your Documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#store-the-chunked-document-as-a-faiss-vector-store">5.3.2. Store the Chunked Document as a FAISS Vector Store</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrate-with-maeser">5.4. Integrate with Maeser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-tips">5.5. Additional Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">5.6. Next Steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Maeser Team [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025 [PLACEHOLDER: Replaced with content in _static/js/dynamic-footer-disclaimers.js].
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
