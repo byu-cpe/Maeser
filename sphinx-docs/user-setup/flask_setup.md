@@ -1,8 +1,8 @@
-# User Guide: Getting Started with Maeser
+# Getting Started with Maeser's Flask Applications
 
-This guide is designed for users who want to use Maeser’s chatbot capabilities without diving into development. You will learn how to install Maeser, configure it via a simple YAML file, and run the provided **web** and **terminal** chat interfaces with minimal technical overhead.
+This guide is designed for users who want to use Maeser’s chatbot capabilities without diving into development. You will learn how to install Maeser, configure it via a simple YAML file, and run the provided **Flask (web)** and **terminal** chat interfaces with minimal technical overhead.
 
-> **Note:** The following guide is for the Flask and terminal implementations of Maeser. For detailed instructions on setting up the Maeser Discord handler, see [Setting up a Discord Bot](./discord.md).
+> **Note:** The following guide is for the Flask and terminal implementations of Maeser. For detailed instructions on setting up the Maeser Discord handler, see [**Setting up a Discord Bot**](./discord.md).
 
 ---
 
