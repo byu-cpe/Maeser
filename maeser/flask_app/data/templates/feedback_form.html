@@ -1,0 +1,61 @@
+<!--
+  ~ SPDX-License-Identifier: LGPL-3.0-or-later
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    {% if favicon %}
+        <link rel="icon" href="{{ favicon }}">
+    {% else %}
+        <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+    {% endif %}
+    <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-wrapper">
+            <div id="logo-tab">
+                <a href="/">
+                    {% if main_logo_chat %}
+                    <img src="{{ main_logo_chat }}" class="logo">
+                    {% else %}
+                    <img src="{{ url_for('maeser.static', filename='maeser-dark-header.png') }}" class="logo">
+                    {% endif %}
+                </a>
+            </div>
+            <h2 style="color: white;">{{ app_name }} — Feedback</h2>
+        </div>
+    </header>
+
+    <main>
+        <form action="{{ url_for('maeser.submit_feedback') }}" method="POST" class="standalone-form" id="feedback">
+            <label for="name">Name <span id="required">*</span></label>
+            <input type="text" id="name" name="name" required>
+            <label for="feedback">Feedback <span id="required">*</span></label>
+            <textarea id="feedback" name="feedback" required style="min-height: 15rem;"></textarea>
+            <label for="role">Role <span id="required">*</span></label>
+            <select id="role" name="role" required>
+                {% for option in role_options %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="category">Category <span id="required">*</span></label>
+            <select id="category" name="category" required>
+                {% for option in category_options %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+            <div class="button-container">
+                <button type="submit">Submit</button>
+                <button onclick="goBack()" class="negative-button">Cancel</button>
+            </div>
+        </form>
+    </main>
+    <script src="{{ url_for('maeser.static', filename='feedback.js') }}"></script>
+</body>
+</html>

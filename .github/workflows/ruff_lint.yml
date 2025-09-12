@@ -1,6 +1,6 @@
 name: Ruff Linting
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   lint:
@@ -21,19 +21,22 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          path: |
+            ~/.cache/pypoetry
+            poetry.lock
+          key: ${{ runner.os }}-poetry-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
-            ${{ runner.os }}-pip-
+            ${{ runner.os }}-poetry-
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements/requirements.txt
+          pip install poetry
+          poetry lock
+          poetry install --all-extras
           pip install ruff
 
       - name: Run Ruff on maeser directory
-        run: ruff check maeser
+        run: poetry run ruff check maeser
 
       - name: Run Ruff on tests directory
-        run: ruff check tests
+        run: poetry run ruff check tests

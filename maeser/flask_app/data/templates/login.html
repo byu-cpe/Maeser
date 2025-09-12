@@ -1,0 +1,85 @@
+<!--
+  ~ SPDX-License-Identifier: LGPL-3.0-or-later
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - {{ app_name }}</title>
+    {% if favicon %}
+        <link rel="icon" href="{{ favicon }}">
+    {% else %}
+        <link rel="icon" type="image/png" href="{{ url_for('maeser.static', filename='maeser.png') }}">
+    {% endif %}    
+    <link rel="stylesheet" href="{{ url_for('maeser.static', filename='styles.css') }}">
+</head>
+<body>
+    <main>
+        <div class="form-login">
+            {% if main_logo_login %}
+                <img src="{{ main_logo_login }}">
+            {% else %}
+                <img src="{{ url_for('maeser.static', filename='maeser.png') }}">
+            {% endif %}
+            <h2 class="title">Login</h2>
+            {% if message %}
+                <p class="form-message">{{ message }}</p>
+            {% endif %}
+
+            <div id="login-methods-list" class="login-methods-list">
+                {% for auth in authenticators.values() %}
+                    <button onclick="login{{ auth.__str__() }}()" type="button">{{ auth.style.icon_html|safe }} {{ auth.__str__()|safe }}</button>
+                {% endfor %}
+            </div>
+
+            <div id="login-autopopulate" class="login-autopopulate hide">
+                {% for shortname, auth in authenticators.items() %}
+                    {% if not auth.style.direct_submit %}
+                    <form id="login-{{ shortname }}" class="login-plugin-form hide" action="{{ url_for(auth.style.login_submit, next=next) }}" method="post">
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <input type="hidden" name="authvalidator" value="{{ shortname }}">
+                        {{ auth.style.form_html|safe }}
+                        <button type="submit" class="form-button">Login</button>
+                    </form>
+                    {% endif %}
+                {% endfor %}
+                <button onclick="showAllLoginMethods()"><i class="bi bi-arrow-left"></i> Back</button>
+            </div>
+
+        </div>
+        {% if message %}
+            <p class="hint centered">Note: If authentication fails with the proper credentials, please clear all cookies (ctr + F5) for this webpage and try again.</p>
+        {% endif %}
+    </main>
+
+    <script>
+        const loginMethodsListContainer = document.getElementById('login-methods-list');
+        const autopopLogin = document.getElementById('login-autopopulate');
+        const allPluginForms = document.querySelectorAll('.login-plugin-form');
+
+        function showAllLoginMethods() {
+            allPluginForms.forEach((pluginForm) => {
+                pluginForm.classList.add('hide');
+            });
+            autopopLogin.classList.add('hide');
+            loginMethodsListContainer.classList.remove('hide');
+        }
+
+        {% for shortname, auth in authenticators.items() %}
+            function login{{ auth.__str__() }}() {
+                {% if auth.style.direct_submit %}
+                    location.href="{{ url_for(auth.style.login_submit, next=next) }}";
+                {% else %}
+                    const loginForm = document.getElementById('login-{{ shortname }}');
+                    loginForm.classList.remove('hide');
+                    autopopLogin.classList.remove('hide');
+                    loginMethodsListContainer.classList.add('hide');
+                {% endif %}
+            }
+        {% endfor %}
+    </script>
+
+</body>
+</html>

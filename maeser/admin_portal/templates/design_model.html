@@ -1,0 +1,38 @@
+<!--
+  ~ SPDX-License-Identifier: LGPL-3.0-or-later
+-->
+
+{% extends "base.html" %}
+{% block title %}Design New Model{% endblock title %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
+{% endblock stylesheets %}
+{% block content %}
+    <form id="model-form" method="POST" enctype="multipart/form-data">
+        <h2>Create New Model</h2>
+        
+        <!-- Model name -->
+        <label for="course_id">Course ID:</label><br>
+        <input type="text" id="course_id" name="course_id" required><br><br>
+        
+        <!-- File upload -->
+        <!-- File Groups/Datasets Section -->
+        <label>PDF Datasets:</label>
+        <div id="file-groups-container"></div>
+        <button type="button" onclick="addFileGroup()">Add Dataset</button><br><br>
+        
+        <!-- Rules section -->
+        <label>Rules:</label>
+        <div id="rules-container"></div>
+        <button type="button" onclick="addRule()">Add Rule</button><br><br>
+        
+        <input type="submit" value="Submit Model">
+    </form>
+    <div id="generate-model-status" style="display: none;">
+        <p id="status-text">Generating</p>
+        <div id="loading-spinner" class="loading-spinner"></div>
+    </div>
+{% endblock content %}
+{% block scripts %}
+    <script src="/static/js/design_model.js"></script>    
+{% endblock scripts %}

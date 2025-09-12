@@ -1,28 +1,23 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 Module for handling feedback form submissions.
-
-© 2024 Carson Bush, Blaine Freestone
-
-This file is part of Maeser.
-
-Maeser is free software: you can redistribute it and/or modify it under the terms of
-the GNU Lesser General Public License as published by the Free Software Foundation,
-either version 3 of the License, or (at your option) any later version.
-
-Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
 
 from maeser.chat.chat_session_manager import ChatSessionManager
-from flask import request, redirect
+from flask import request, redirect, Response
 
-def controller(chat_sessions_manager: ChatSessionManager):
+
+def controller(chat_sessions_manager: ChatSessionManager) -> Response:
     """
     Controller function to handle the feedback form submission.
+
+    Uses flask.request and expects a post request with the following fields:
+
+    - "**name**": The name of the form respondent.
+    - "**feedback**": The text content of the feedback submitted by the respondent.
+    - "**role**": The role/position of the respondent. Expected values are "Undergraduate Student", "Graduate Student", "Faculty", or "Other".
+    - "**category**": The category of the feedback. Expected values are "General Feedback", "Bug Report", "Feature Request", "Content Issue", or "Other".
 
     Args:
         chat_sessions_manager (ChatSessionManager): The manager for chat sessions.
@@ -33,17 +28,14 @@ def controller(chat_sessions_manager: ChatSessionManager):
 
     chat_logs_manager = chat_sessions_manager.chat_logs_manager
 
-    name = request.form.get('name')
-    feedback = request.form.get('feedback')
-    role = request.form.get('role')
-    category = request.form.get('category')
+    name = request.form.get("name")
+    feedback = request.form.get("feedback")
+    role = request.form.get("role")
+    category = request.form.get("category")
 
     if chat_logs_manager is not None:
-        chat_logs_manager.save_feedback({
-            'name': name,
-            'feedback': feedback,
-            'role': role,
-            'category': category
-        })
+        chat_logs_manager.save_feedback(
+            {"name": name, "feedback": feedback, "role": role, "category": category}
+        )
 
-    return redirect('/')
+    return redirect("/")

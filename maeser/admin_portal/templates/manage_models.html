@@ -1,0 +1,40 @@
+<!--
+  ~ SPDX-License-Identifier: LGPL-3.0-or-later
+-->
+
+{% extends "base.html" %}
+{% block title %}Manage Models{% endblock title %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
+{% endblock stylesheets %}
+{% block content %}
+    <h2>Existing Models</h2>
+    {% if models %}
+        <ul>
+        {% for model in models %}
+                <li class="file-entry">
+                    {{ model }}
+                    <a href="{{ url_for('edit_model', course_id=model) }}">Edit</a>
+                    
+                    <!-- Delete -->
+                    <form method="POST">
+                        <input type="hidden" name="course_id" value="{{ model }}">
+                        <button 
+                            type="submit"
+                            onclick="return confirm_delete('{{ model }}');"
+                            >
+                            Delete
+                        </button>
+                    </form>
+                </li>
+                {% endfor %}
+        </ul>
+    {% else %}
+        <p>No models found.</p>
+    {% endif %}
+    <script>
+        function confirm_delete(model) {
+            return confirm(`Are you sure you want to delete ${model}?`)
+        }
+    </script>
+{% endblock content %}

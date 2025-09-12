@@ -1,0 +1,35 @@
+name: Add Release Tag to Release Commit
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  add_release_tag:
+    name: Add release tag
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get release version
+        id: get_release_version
+        run: |
+          pip install toml
+          echo "release_version=$(python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])")" >> $GITHUB_OUTPUT
+
+      - name: Apply release tag to commit
+        env:
+          RELEASE_VERSION: 'v${{ steps.get_release_version.outputs.release_version }}'
+        run: |
+          git tag ${{ env.RELEASE_VERSION }}
+          git push origin ${{ env.RELEASE_VERSION }}
+          echo 'Applied tag "${{ env.RELEASE_VERSION }}" to commit.'

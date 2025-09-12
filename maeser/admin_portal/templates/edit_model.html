@@ -1,0 +1,62 @@
+<!--
+  ~ SPDX-License-Identifier: LGPL-3.0-or-later
+-->
+
+{% extends "base.html" %}
+{% block title %}Edit Model{% endblock title %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
+{% endblock stylesheets %}
+{% block content %}
+    <a href="/manage_models">
+        <b>&larr;</b>Back
+    </a>
+    <form id="model-form" method="POST" enctype="multipart/form-data">
+        <h2>Edit Model "{{ course_id }}"</h2>
+        <input type="hidden" id="course_id" name="course_id" value="{{ course_id }}">
+        
+        <!-- Rules Section -->
+        <label>Rules:</label>
+        <div id="rules-container">
+            {% for rule in rules %}
+                <div class="rule-entry">
+                    <input type="text" class="rule-input" name="rules[]" value="{{ rule|e }}" required>
+                    <button type="button" class="btn-delete-rule" onclick="this.parentElement.remove()">X</button>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" onclick="addRule()">Add Rule</button>
+            
+            <hr>
+            
+            <!-- Delete Existing Datasets -->
+            <h3>Delete Existing Datasets</h3>
+            {% if current_datasets %}
+            {% for dataset in current_datasets %}
+            <div>
+                <input type="checkbox" name="delete_datasets[]" value="{{ dataset }}" id="del_{{ loop.index }}">
+                <label for="del_{{ loop.index }}">{{ dataset }}</label>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No datasets currently exist.</p>
+            {% endif %}
+            
+            <hr>
+            
+            <!-- Upload New File Groups -->
+            <h3>Add New Datasets</h3>
+            <div id="file-groups-container"></div>
+            <button type="button" onclick="addFileGroup()">Add Dataset</button>
+            
+            <hr>
+            <input type="submit" value="Update Model">
+        </form>
+        <div id="generate-model-status" style="display: none;">
+            <p id="status-text">Updating</p>
+            <div id="loading-spinner" class="loading-spinner"></div>
+        </div>
+{% endblock content %}
+{% block scripts %}
+    <script src="/static/js/design_model.js"></script>
+{% endblock scripts %}

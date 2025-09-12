@@ -1,0 +1,43 @@
+<!--
+  ~ SPDX-License-Identifier: LGPL-3.0-or-later
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+    <title>{% block title %}title{% endblock title %} - Admin Portal</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    {% endblock stylesheets %}
+    {% endblock head %}
+</head>
+<body>
+    <div class="header">
+        {% block header %}
+        <div class="user-welcome">Welcome, {{ username }}! --Admin Portal: {% block page_name %}{{ self.title() }}{% endblock page_name %}--</div>
+        {% endblock header %}
+    </div>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            {% block sidebar %}
+            <h3>Admin Navigation</h3>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/design_model">Design New Model</a></li>
+                <li><a href="/manage_models">Manage Models</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+            {% endblock sidebar %}
+        </div>
+        
+        <div class="content">
+            {% block content %}
+            <p>content</p>
+            {% endblock content %}
+        </div>
+    </div>
+    {% block scripts %}{% endblock scripts %}
+</body>
+</html>

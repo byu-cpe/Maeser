@@ -1,0 +1,29 @@
+# Config used by SkyWalking Eyes for license_headers.yml workflow
+
+header:
+  license:
+    content: 'SPDX-License-Identifier: LGPL-3.0-or-later'
+
+  # See "About the licenses used in the Maeser project" in the documentation for info on which paths fall under the LGPL v3.0+ license
+  paths:
+    - maeser
+    - example
+    - admin_portal
+    - example_handlers
+    - tests/**/*.py
+    - .github/**/*.py
+    - .github/**/Makefile
+    - sphinx-docs/**/*.py
+    - sphinx-docs/**/Makefile
+    - sphinx-docs/**/*.js
+
+  paths-ignore:
+    - '**/*.toml'
+    - '**/*.md'
+    - '**/*.txt'
+    - '**/*.json'
+    - 'maeser/flask_app/data/static/bootstrap-icons'
+    - 'maeser/flask_app/data/static/normalize.css'
+    - 'example/resources/vectorstores'
+
+  comment: on-failure

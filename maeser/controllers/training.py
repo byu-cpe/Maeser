@@ -1,40 +1,37 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
 """
 This module contains the controller function to display the training form.
-
-© 2024 Carson Bush, Blaine Freestone
-
-This file is part of Maeser.
-
-Maeser is free software: you can redistribute it and/or modify it under the terms of
-the GNU Lesser General Public License as published by the Free Software Foundation,
-either version 3 of the License, or (at your option) any later version.
-
-Maeser is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-Maeser. If not, see <https://www.gnu.org/licenses/>.
 """
 
 from flask import render_template
 
-def controller(app_name: str | None = None, main_logo_login: str | None  = None, main_logo_chat: str | None = None, favicon: str | None = None) -> str:
-    """
-    Display the training form.
+
+def controller(
+    app_name: str = "Maeser",
+    main_logo_chat: str | None = None,
+    favicon: str | None = None,
+) -> str:
+    """Renders the training form template in HTML format.
+
+    Args:
+        app_name (str): The name of the application. Defaults to 'Maeser'.
+        main_logo_chat (str | None): The dark version of the main logo.
+            Defaults to None, in which case maeser/data/static/maeser-dark-header.png is used.
+        favicon (str | None): The favicon image URL. Defaults to None, in which case
+            maeser/data/static/maeser.png is used.
 
     Returns:
-        str: Rendered training template.
+        str: The rendered training form page.
     """
-    role_options = ['Professor', 'Teachers Assistant']
-    type_options = ['Information', 'Style']
+    role_options = ["Professor", "Teachers Assistant"]
+    type_options = ["Information", "Style"]
 
     return render_template(
-        'training.html',
+        "training.html",
         role_options=role_options,
         type_options=type_options,
-        app_name=app_name if app_name else "Maeser",
-        main_logo_login=main_logo_login,
+        app_name=app_name,
         main_logo_chat=main_logo_chat,
-        favicon=favicon
+        favicon=favicon,
     )

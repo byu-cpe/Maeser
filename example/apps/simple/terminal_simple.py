@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+from example.apps.config import (
+    LOG_SOURCE_PATH, OPENAI_API_KEY, VEC_STORE_PATH, CHAT_HISTORY_PATH, LLM_MODEL_NAME
+)
+
+import os
+
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+from maeser.chat.chat_logs import ChatLogsManager
+from maeser.chat.chat_session_manager import ChatSessionManager
+
+chat_logs_manager = ChatLogsManager(CHAT_HISTORY_PATH)
+sessions_manager = ChatSessionManager(chat_logs_manager=chat_logs_manager)
+
+maeser_prompt: str = """You are speaking from the perspective of Karl G. Maeser.
+    You will answer a question about your own life history based on the context provided.
+    If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
+
+    {context}
+    """
+
+byu_prompt: str = """You are speaking about the history of Brigham Young University.
+    You will answer a question about the history of BYU based on the context provided.
+    If the question is unrelated to the topic or the context, politely inform the user that their question is outside the context of your resources.
+
+    {context}
+    """
+
+from maeser.graphs.simple_rag import get_simple_rag
+from langgraph.graph.graph import CompiledGraph
+
+maeser_simple_rag: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/maeser",
+    vectorstore_index="index",
+    memory_filepath=f"{LOG_SOURCE_PATH}/maeser.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=maeser_prompt,
+    model=LLM_MODEL_NAME,
+)
+
+sessions_manager.register_branch(branch_name="simple_maeser", branch_label="Karl G. Maeser History", graph=maeser_simple_rag)
+
+byu_simple_rag: CompiledGraph = get_simple_rag(
+    vectorstore_path=f"{VEC_STORE_PATH}/byu",
+    vectorstore_index="index",
+    memory_filepath=f"{LOG_SOURCE_PATH}/byu.db",
+    api_key=OPENAI_API_KEY,
+    system_prompt_text=byu_prompt,
+    model=LLM_MODEL_NAME,
+)
+
+sessions_manager.register_branch(branch_name="simple_byu", branch_label="BYU History", graph=byu_simple_rag)
+
+import pyinputplus as pyip
+
+print("Welcome to the Maeser terminal example!")
+
+while True:
+    # structure branches dictionary for input menu
+    label_to_key = {value['label']: key for key, value in sessions_manager.branches.items()}
+    label_to_key["Exit terminal session"] = "exit"
+
+    # select a branch
+    branch = pyip.inputMenu(
+        list(label_to_key.keys()),
+        prompt="Select a branch: \n",
+        numbered=True
+    )
+
+    # get the key for the selected branch
+    if branch != "Exit terminal session":
+        branch = label_to_key[branch]
+    else:
+        print("Exiting terminal session.")
+        break
+
+    # create a new session
+    session = sessions_manager.get_new_session_id(branch)
+    print(f"\nSession {session} created for branch {branch}.")
+    print("Type 'exit' to end the session.\n")
+
+    # loop for conversation
+    while True:
+        # get user input
+        user_input = input("User:\n> ")
+
+        # check for exit
+        if user_input == "exit" or user_input == 'quit':
+            print("Session ended.\n")
+            break
+
+        # get response
+        response = sessions_manager.ask_question(user_input, branch, session)
+
+        print(f"\nSystem:\n{response['messages'][-1]}\n")
